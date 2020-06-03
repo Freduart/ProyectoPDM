@@ -15,7 +15,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation":"$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
     }
@@ -27,8 +27,8 @@ android {
         }
     }
 
-    dataBinding{
-        enabled=true;
+    dataBinding {
+        enabled = true
     }
 
 }

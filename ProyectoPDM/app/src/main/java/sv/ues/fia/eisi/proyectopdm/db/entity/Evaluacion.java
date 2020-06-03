@@ -28,10 +28,10 @@ public class Evaluacion {
     private String fechaInicio;
     private String fechaFin;
     private String descripcion;
-    private String fechaEntragaNotas;
+    private String fechaEntregaNotas;
 
 
-    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignatura, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntragaNotas) {
+    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignatura, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas) {
         this.idEvaluacion = idEvaluacion;
         this.carnetDocenteFK = carnetDocenteFK;
         this.idTipoEvaluacionFK = idTipoEvaluacionFK;
@@ -40,7 +40,7 @@ public class Evaluacion {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.descripcion = descripcion;
-        this.fechaEntragaNotas = fechaEntragaNotas;
+        this.fechaEntregaNotas = fechaEntregaNotas;
     }
 
     public int getIdEvaluacion() {
@@ -107,11 +107,11 @@ public class Evaluacion {
         this.descripcion = descripcion;
     }
 
-    public String getFechaEntragaNotas() {
-        return fechaEntragaNotas;
+    public String getFechaEntregaNotas() {
+        return fechaEntregaNotas;
     }
 
-    public void setFechaEntragaNotas(String fechaEntragaNotas) {
-        this.fechaEntragaNotas = fechaEntragaNotas;
+    public void setFechaEntregaNotas(String fechaEntregaNotas) {
+        this.fechaEntregaNotas = fechaEntregaNotas;
     }
 }

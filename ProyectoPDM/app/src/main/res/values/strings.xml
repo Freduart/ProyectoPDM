@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">ProyectoPDM</string>
+    <string name="idSolicitudRepetido">ID de Solicitud: </string>
+    <string name="carnetAlumno">Carnet del Alumno: </string>
+    <string name="idEvaluacion">ID de Evaluación: </string>
+    <string name="tipoSolicitudRepetido">Tipo de Solicitud: </string>
+    <string name="motivoSolicitudRepetido">Motivo: </string>
+    <string name="fechaSolicitudRepetido">Fecha de Solicitud: </string>
+    <string name="justificacionSoliRepetido">Justificación: </string>
+    <string name="textoJustiSoliRepetido">Marque si se presenta Justificación</string>
+    <string name="hintIdSoli">Correlativo</string>
+    <string name="hintCarnetAlumno">DUE</string>
+    <string name="hintIdEva">Código de Evaluación</string>
+    <string name="hintTipoSoli">Diferido(D) o Repetido(R)</string>
+    <string name="hintMotivoSoli">Razón de la Solicitud</string>
+    <string name="hintFechaSoli">Fecha</string>
 </resources>
