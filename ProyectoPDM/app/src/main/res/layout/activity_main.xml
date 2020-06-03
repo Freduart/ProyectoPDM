@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/recycler_list"
-        tools:listitem="@layout/escuela_item"
-        />
+        tools:listitem="@layout/escuela_item" />
 
 </LinearLayout>

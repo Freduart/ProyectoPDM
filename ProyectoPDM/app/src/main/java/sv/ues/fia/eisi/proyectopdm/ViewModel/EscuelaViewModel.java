@@ -13,7 +13,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 
 /*
-AndroidViewModel es una subclase de ViewModel
+    AndroidViewModel es una subclase de ViewModel, aca enlazamos la vista con el Modelo
  */
 public class EscuelaViewModel extends AndroidViewModel {
 
@@ -28,6 +28,7 @@ public class EscuelaViewModel extends AndroidViewModel {
 
 
     public void insert(Escuela escuela){
+        //Enlazamos con la clase dao
         repository.insertar(escuela);
     }
 

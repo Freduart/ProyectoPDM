@@ -25,10 +25,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
+            Se debe enlazar el objeto recyclerView con la vista que implementaremos aca hemos hecho uso
+            de los layout escuela_item y el activity_main en la cual esta el recycle_list
+         */
+
         RecyclerView recyclerView=findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);     //Para actualizaciones
 
+        //Aca enlazamos la vista con el adaptador y modificamos el recycleView a medida se actualize el adaptador
         final EscuelaAdapter adapter=new EscuelaAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -39,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
             */
             //escuelaViewModel= new ViewModelProvider(this).get(EscuelaViewModel.class);
             escuelaViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EscuelaViewModel.class);
-            //escuelaViewModel=new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(EscuelaViewModel.class);
             escuelaViewModel.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
                 @Override
                 public void onChanged(@Nullable List<Escuela> escuelas) {
@@ -48,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }catch (Exception e){
-            Toast.makeText(MainActivity.this, "Error en el VIewModel", Toast.LENGTH_SHORT).show();
+            //En caso de cierre inoportuno
+            Toast.makeText(MainActivity.this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
         }
     }
 }

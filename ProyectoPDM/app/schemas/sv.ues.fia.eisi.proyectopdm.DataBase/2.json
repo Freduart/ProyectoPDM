@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "4903338229e2b0d4bd2e234717556227",
+    "entities": [
+      {
+        "tableName": "Escuela",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEscuela` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nomEscuela` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "idEscuela",
+            "columnName": "idEscuela",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomEscuela",
+            "columnName": "nomEscuela",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idEscuela"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4903338229e2b0d4bd2e234717556227')"
+    ]
+  }
+}

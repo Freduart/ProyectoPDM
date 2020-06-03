@@ -10,7 +10,10 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.EscuelaDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
-
+/*
+    Las clases Repository se encargan de la conexion con las clases DAO para operaciones de datos
+    y las transformara en operaciones de la clase AsyncTask para operaciones de datos
+ */
 public class EscuelaRepository {
     private EscuelaDao escuelaDao;
     private LiveData<List<Escuela>> allEscuelas;
@@ -41,6 +44,12 @@ public class EscuelaRepository {
         return allEscuelas;
     }
 
+    /*
+        Los metodos AsyncTask se enlazan con los metodos en las clases DAO necesitaremos mandarles
+        1 parametros, 1 progreso y el resultado
+     */
+
+
     private static class InsertarEscuelaAsyncTask extends AsyncTask<Escuela, Void, Void>{
         private EscuelaDao escuelaDao;
 
@@ -59,6 +68,7 @@ public class EscuelaRepository {
         private EscuelaDao escuelaDao;
 
         private actualizarEscuelaAsyncTask(EscuelaDao escuelaDao){
+            //Aca enlazamos con el metodo DAO
             this.escuelaDao=escuelaDao;
         }
 
