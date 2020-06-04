@@ -21,12 +21,18 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder>
     @NonNull
     @Override
     public LocalAdapter.LocalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View itemView= LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.local_item,parent,false);
+        return new LocalHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull LocalAdapter.LocalHolder holder, int position) {
-
+        Local local=locales.get(position);
+        holder.codigo.setText(local.getIdLocal());
+        holder.ubicacion.setText(local.getUbicacion());
+        holder.latitud.setText(String.valueOf(local.getLatitud()));
+        holder.longitud.setText(String.valueOf(local.getLongitud()));
     }
 
     @Override

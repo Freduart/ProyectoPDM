@@ -44,7 +44,7 @@ public class EscuelaViewModel extends AndroidViewModel {
         repository.borrarTodas();
     }
 
-    public LiveData<List<Escuela>> getAllEscuelas() {
+    public LiveData<List<Escuela>> getAllEscuelas(){
         return allEscuelas;
     }
 }
