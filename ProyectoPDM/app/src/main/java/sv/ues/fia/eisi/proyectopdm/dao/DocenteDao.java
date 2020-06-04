@@ -12,16 +12,17 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 @Dao
 public interface DocenteDao {
     @Insert
-    void insert(Docente docente);
+    void insertDocente(Docente docente);
 
     @Update
-    void update(Docente docente);
+    void updateDocente(Docente docente);
 
     @Delete
-    void delete(Docente docente);
+    void deleteDocente(Docente docente);
 
     @Query("delete from Docente")
     void borrarDocente();
 
     @Query("select * from Docente")
-    LiveData<List<Docente>> obtenerDocentes();}
+    LiveData<List<Docente>> obtenerDocentes();
+}

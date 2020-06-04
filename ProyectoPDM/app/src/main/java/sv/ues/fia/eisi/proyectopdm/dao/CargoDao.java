@@ -12,13 +12,13 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 @Dao
 public interface CargoDao {
     @Insert
-    void insert(Cargo cargo);
+    void insertCargo(Cargo cargo);
 
     @Update
-    void update(Cargo cargo);
+    void updateCargo(Cargo cargo);
 
     @Delete
-    void delete(Cargo cargo);
+    void deleteCargo(Cargo cargo);
 
     @Query("delete from Cargo")
     void borrarCargo();

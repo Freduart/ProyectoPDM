@@ -11,13 +11,13 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.EncargadoImpresion;
 @Dao
 public interface EncargadoImpresionDao {
     @Insert
-    void insert(EncargadoImpresion encargadoImpresion);
+    void insertEncargadoImpresion(EncargadoImpresion encargadoImpresion);
 
     @Update
-    void update(EncargadoImpresion encargadoImpresion);
+    void updateEncargadoImpresion(EncargadoImpresion encargadoImpresion);
 
     @Delete
-    void delete(EncargadoImpresion encargadoImpresion);
+    void deleteEncargadoImpresion(EncargadoImpresion encargadoImpresion);
 
     @Query("delete from EncargadoImpresion")
     void borrarEncargadoImpresion();

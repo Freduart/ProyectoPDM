@@ -12,13 +12,13 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 @Dao
 public interface CicloDao {
     @Insert
-    void insert(Ciclo ciclo);
+    void insertCiclo(Ciclo ciclo);
 
     @Update
-    void update(Ciclo ciclo);
+    void updateCiclo(Ciclo ciclo);
 
     @Delete
-    void delete(Ciclo ciclo);
+    void deleteCiclo(Ciclo ciclo);
 
     @Query("delete from Ciclo")
     void borrarCiclo();
