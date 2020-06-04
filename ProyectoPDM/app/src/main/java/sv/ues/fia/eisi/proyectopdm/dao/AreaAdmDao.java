@@ -12,13 +12,13 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 @Dao
 public interface AreaAdmDao {
     @Insert
-    void insert(AreaAdm areaAdm);
+    void insertAreaAdm(AreaAdm areaAdm);
 
     @Update
-    void update(AreaAdm areaAdm);
+    void updateAreaAdm(AreaAdm areaAdm);
 
     @Delete
-    void delete(AreaAdm areaAdm);
+    void deleteAreaAdm(AreaAdm areaAdm);
 
     @Query("delete from AreaAdm")
     void borrarAreaAdm();
