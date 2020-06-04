@@ -14,11 +14,13 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.EscuelaAdapter;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 public class MainActivity extends AppCompatActivity {
 
     private EscuelaViewModel escuelaViewModel;
+    private LocalViewModel localViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import sv.ues.fia.eisi.proyectopdm.dao.EscuelaDao;
+import sv.ues.fia.eisi.proyectopdm.dao.LocalDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
@@ -50,6 +51,7 @@ public abstract class DataBase extends RoomDatabase {
 
     //Este atributo es para poder acceder a la clase Dao
     public abstract EscuelaDao escuelaDao();
+    public abstract LocalDao localDao();
 
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
@@ -80,16 +82,27 @@ public abstract class DataBase extends RoomDatabase {
     //Aca llenamos la base de datos con los objetos dao y las operaciones asignadas
     private static class PoblarDBAsyncTask extends AsyncTask<Void, Void, Void>{
         private EscuelaDao escuelaDao;
+        private LocalDao localDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
+            localDao=db.localDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            escuelaDao.insert(new Escuela(1,"Escuela de ingenieria de  sistemas informaticos"));
-            escuelaDao.insert(new Escuela(2,"Escuela de ingenieria industrial"));
-            escuelaDao.insert(new Escuela(3,"Escuela de ingenieria electrica"));
+            escuelaDao.insert(new Escuela(1,"Escuela de Ingeniería de Sistemas Informáticos"));
+            escuelaDao.insert(new Escuela(2,"Escuela de Ingeniería Industrial"));
+            escuelaDao.insert(new Escuela(3,"Escuela de Ingeniería Eléctrica"));
+            escuelaDao.insert(new Escuela(4,"Escuela de Ingeniería Civil"));
+            escuelaDao.insert(new Escuela(5,"Escuela de Ingeniería Química y Alimentos"));
+            escuelaDao.insert(new Escuela(6,"Escuela de Arquitectura"));
+            escuelaDao.insert(new Escuela(7,"Escuela de Ingeniería Mecánica"));
+            localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería Industrial", 13.711282d, -89.200222d));
+            localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
+            localDao.insertarLocal(new Local("D11","Aula D11", "Edificio D", 13.72077d,-89.200545));
+            localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
+
             return null;
         }
     }
