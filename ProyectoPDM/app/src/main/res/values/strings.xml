@@ -14,4 +14,11 @@
     <string name="hintTipoSoli">Diferido(D) o Repetido(R)</string>
     <string name="hintMotivoSoli">Razón de la Solicitud</string>
     <string name="hintFechaSoli">Fecha</string>
+    <string name="Email">Correo</string>
+    <string name="Password">Contraseña</string>
+    <string name="Login">Iniciar sesión</string>
+    <string name="FIA">FACULTAD DE INGENIERÍA Y ARQUITECTURA</string>
+    <string name="CD">Descripcion</string>
+    <string name="CVSoliImp">Solicitud</string>
+    <string name="CVMaterias">Materias</string>
 </resources>
