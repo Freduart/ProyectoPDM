@@ -24,17 +24,18 @@ public interface AlumnoDao {
     @Delete
     void deleteAlumno(Alumno alumno);
 
-
     /*
         En este Query nosotros borramos todos los datos que contenga la tabla Alumno
         Para borrar uno en especifico necesitaremos usar el id en el Query como un delete de SQL
      */
+
     @Query("delete from Alumno ")
-    void borrarAlumno();
+    void borrarAlumnos();
 
     /*
         LiveData tiene ventajas como mostrar los datos siempre actualizados en la app usando ROOM
      */
+
     @Query("Select * from Alumno")
     LiveData<List<Alumno>> obtenerAlumnos();
 }

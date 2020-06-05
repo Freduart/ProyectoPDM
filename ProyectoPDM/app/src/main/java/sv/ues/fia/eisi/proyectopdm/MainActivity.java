@@ -20,7 +20,6 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 public class MainActivity extends AppCompatActivity {
 
     private EscuelaViewModel escuelaViewModel;
-    private LocalViewModel localViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 debido a que ViewModel esta desfasado se tienen que buscar alternativas en este caso usamos AndroidViewModelFactory para dicha
                 solucion para comprobarlo podemos mandar un mensaje en un toast
             */
-            //escuelaViewModel= new ViewModelProvider(this).get(EscuelaViewModel.class);
+
             escuelaViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EscuelaViewModel.class);
             escuelaViewModel.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
                 @Override

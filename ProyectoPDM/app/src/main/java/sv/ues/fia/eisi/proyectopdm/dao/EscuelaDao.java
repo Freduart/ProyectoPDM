@@ -34,6 +34,7 @@ public interface EscuelaDao {
         En este Query nosotros borramos todos los datos que contenga la tabla Escuela
         Para borrar uno en especifico necesitaremos usar el id en el Query como un delete de SQL
      */
+
     @Query("delete from Escuela ")
     void borrarEscuelas();
 
