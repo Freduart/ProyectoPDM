@@ -2,6 +2,7 @@ package sv.ues.fia.eisi.proyectopdm.db.entity;
 
 
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 public class Ciclo {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     private int idCiclo;
     private String fechaDesde;
     private String fechaHasta;

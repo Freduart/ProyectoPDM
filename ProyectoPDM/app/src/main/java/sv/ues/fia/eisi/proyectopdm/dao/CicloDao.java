@@ -27,5 +27,5 @@ public interface CicloDao {
     LiveData<List<Ciclo>> obtenerCiclos();
 
     @Query("select * from Ciclo where idCiclo == :cicloid")
-    Ciclo obtenerCiclo(String cicloid);
+    Ciclo obtenerCiclo(int cicloid);
 }

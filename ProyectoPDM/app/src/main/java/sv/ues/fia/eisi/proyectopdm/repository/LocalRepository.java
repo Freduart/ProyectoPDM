@@ -42,12 +42,12 @@ public class LocalRepository {
         new DeleteAllLocalesAsyncTask(localDao).execute();
     }
 
-    //Obtener todos los locales de forma asíncrona
+    //Obtener todos los locales
     public LiveData<List<Local>> getAllLocales() {
         return allLocales;
     }
 
-    //Obtener un local de forma asíncrona
+    //Obtener un local
     public Local getLocal(String id){
         return localDao.obtenerLocal(id);
     }

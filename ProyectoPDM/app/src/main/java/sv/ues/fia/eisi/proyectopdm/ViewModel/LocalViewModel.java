@@ -13,9 +13,11 @@ import sv.ues.fia.eisi.proyectopdm.repository.LocalRepository;
 
 public class LocalViewModel extends AndroidViewModel {
 
+    //Atributos de Clase
     private LocalRepository repository;
     private LiveData<List<Local>> allLocales;
 
+    //Constructor
     public LocalViewModel(@NonNull Application application) {
         super(application);
         repository =  new LocalRepository(application);
