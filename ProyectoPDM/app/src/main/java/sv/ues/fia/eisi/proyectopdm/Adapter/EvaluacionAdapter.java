@@ -10,16 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
 public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.EvaluacionHolder> {
     private List<Evaluacion> evaluaciones=new ArrayList<>();
+
     //clase Holder
     class EvaluacionHolder extends RecyclerView.ViewHolder{
-        private TextView nombre;
+        private TextView nombreEval;
+        private TextView nombreMateria;
 
         public EvaluacionHolder(@NonNull View itemView) {
             super(itemView);
-            nombre=itemView.findViewById(R.id.text1);
+            nombreEval=itemView.findViewById(R.id.text_eval_nom);
+            nombreMateria=itemView.findViewById(R.id.text_eval_mat);
         }
     }
     //implementacion
@@ -27,14 +31,16 @@ public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.Ev
     @Override
     public EvaluacionAdapter.EvaluacionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.escuela_item,parent,false);
+                .inflate(R.layout.evaluacion_item,parent,false);
         return new EvaluacionHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EvaluacionAdapter.EvaluacionHolder holder, int position) {
         Evaluacion evaluacionActual = evaluaciones.get(position);
-        holder.nombre.setText(evaluacionActual.getNomEvaluacion());
+        int id = evaluacionActual.getIdEvaluacion();
+        holder.nombreEval.setText(id + ". " + evaluacionActual.getNomEvaluacion());
+        holder.nombreMateria.setText(evaluacionActual.getCodigoAsignatura());
     }
 
     @Override
