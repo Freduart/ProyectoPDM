@@ -17,6 +17,7 @@ public class Local {
     private String nombreLocal;
     private String ubicacion;
     private double latitud;
+    private double longitud;
 
     public Local(String idLocal, String nombreLocal, String ubicacion, double latitud, double longitud) {
         this.idLocal = idLocal;
@@ -65,8 +66,4 @@ public class Local {
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
-
-    private double longitud;
-
-
 }

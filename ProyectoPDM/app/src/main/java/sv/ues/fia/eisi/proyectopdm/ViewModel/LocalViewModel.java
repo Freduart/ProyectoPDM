@@ -22,24 +22,28 @@ public class LocalViewModel extends AndroidViewModel {
         allLocales = repository.getAllLocales();
     }
 
+    //Acciones CRUD para Local
     public void insert(Local local){
-        //Enlazamos con la clase dao
-        repository.insertar(local);
+        repository.insertarLocal(local);
     }
 
-    public void update(Local local){
-        repository.actualizar(local);
+    public void updateLocal(Local local){
+        repository.actualizarLocal(local);
     }
 
-    public void delete(Local local){
-        repository.borrar(local);
+    public void deleteLocal(Local local){
+        repository.borrarLocal(local);
     }
 
     public void deleteAllLocales(){
-        repository.borrarTodos();
+        repository.borrarTodosLocales();
     }
 
     public LiveData<List<Local>> getAllLocales() {
         return allLocales;
+    }
+
+    public Local getLoc(String id){
+        return repository.getLocal(id);
     }
 }

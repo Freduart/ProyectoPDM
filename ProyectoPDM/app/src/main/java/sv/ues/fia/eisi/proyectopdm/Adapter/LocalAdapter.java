@@ -18,6 +18,25 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder>
 
     private List<Local> locales = new ArrayList<>();
 
+    //Class Holder
+    class LocalHolder extends RecyclerView.ViewHolder{
+        private TextView codigo;
+        private TextView nombreLocal;
+        private TextView ubicacion;
+        private TextView latitud;
+        private TextView longitud;
+
+        public LocalHolder(@NonNull View itemView){
+            super(itemView);
+            codigo=itemView.findViewById(R.id.idLocal);
+            nombreLocal=itemView.findViewById(R.id.nomLocal);
+            ubicacion=itemView.findViewById(R.id.ubLocal);
+            latitud=itemView.findViewById(R.id.latLocal);
+            longitud=itemView.findViewById(R.id.logLocal);
+        }
+    }
+
+    //Implementación
     @NonNull
     @Override
     public LocalAdapter.LocalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,18 +59,8 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder>
         return locales.size();
     }
 
-    class LocalHolder extends RecyclerView.ViewHolder{
-        private TextView codigo;
-        private TextView ubicacion;
-        private TextView latitud;
-        private TextView longitud;
-
-        public LocalHolder(@NonNull View itemView){
-            super(itemView);
-            codigo=itemView.findViewById(R.id.idLocal);
-            ubicacion=itemView.findViewById(R.id.ubLocal);
-            latitud=itemView.findViewById(R.id.latLocal);
-            longitud=itemView.findViewById(R.id.logLocal);
-        }
+    public void setLocales(List<Local>locals){
+        this.locales=locals;
+        notifyDataSetChanged();
     }
 }

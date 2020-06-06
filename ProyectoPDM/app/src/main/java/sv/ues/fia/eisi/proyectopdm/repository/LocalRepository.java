@@ -11,35 +11,48 @@ import sv.ues.fia.eisi.proyectopdm.dao.LocalDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 
 public class LocalRepository {
+    //Atributos de Clase
     private LocalDao localDao;
     private LiveData<List<Local>> allLocales;
 
+    //Constructor
     public LocalRepository(Application application){
         DataBase dataBase = DataBase.getInstance(application);
         localDao = dataBase.localDao();
         allLocales = localDao.obtenerLocales();
     }
 
-    public void insertar(Local local){
+    //Insertar de forma asíncrona
+    public void insertarLocal(Local local){
         new InsertarLocalAsyncTask(localDao).execute(local);
     }
 
-    public void actualizar(Local local){
+    //Actualizar de forma asíncrona
+    public void actualizarLocal(Local local){
         new actualizarLocalAsyncTask(localDao).execute(local);
     }
 
-    public void borrar(Local local){
+    //Borrar un local de forma asíncrona
+    public void borrarLocal(Local local){
         new BorrarLocalAsyncTask(localDao).execute(local);
     }
 
-    public void borrarTodos(){
+    //Borrar todos los locales de forma asíncrona
+    public void borrarTodosLocales(){
         new DeleteAllLocalesAsyncTask(localDao).execute();
     }
 
+    //Obtener todos los locales de forma asíncrona
     public LiveData<List<Local>> getAllLocales() {
         return allLocales;
     }
 
+    //Obtener un local de forma asíncrona
+    public Local getLocal(String id){
+        return localDao.obtenerLocal(id);
+    }
+
+    //Clase Asíncrona de Insertar
     private static class InsertarLocalAsyncTask extends AsyncTask<Local, Void, Void>{
         private LocalDao localDao;
 
@@ -54,6 +67,7 @@ public class LocalRepository {
         }
     }
 
+    //Clase Asíncrona de Actualizar
     private static class actualizarLocalAsyncTask extends AsyncTask<Local, Void, Void>{
         private LocalDao localDao;
 
@@ -68,6 +82,7 @@ public class LocalRepository {
         }
     }
 
+    //Clase Asíncrona de BorrarLocal
     private static class BorrarLocalAsyncTask extends AsyncTask<Local, Void, Void>{
         private LocalDao localDao;
 
@@ -82,6 +97,7 @@ public class LocalRepository {
         }
     }
 
+    //Clase Asíncrona de Borrar Todos
     private static class DeleteAllLocalesAsyncTask extends AsyncTask<Void, Void, Void>{
         private LocalDao localDao;
 
