@@ -11,12 +11,11 @@ public class TipoEvaluacion {
     @PrimaryKey(autoGenerate = true)
     private int idTipoEvaluacion;
     private String tipoEvaluacion;
-    private int numParticipantes;
 
-    public TipoEvaluacion(int idTipoEvaluacion, String tipoEvaluacion, int numParticipantes) {
+    public TipoEvaluacion(int idTipoEvaluacion, String tipoEvaluacion) {
         this.idTipoEvaluacion = idTipoEvaluacion;
         this.tipoEvaluacion = tipoEvaluacion;
-        this.numParticipantes = numParticipantes;
+
     }
 
     public int getIdTipoEvaluacion() {
@@ -33,13 +32,5 @@ public class TipoEvaluacion {
 
     public void setTipoEvaluacion(String tipoEvaluacion) {
         this.tipoEvaluacion = tipoEvaluacion;
-    }
-
-    public int getNumParticipantes() {
-        return numParticipantes;
-    }
-
-    public void setNumParticipantes(int numParticipantes) {
-        this.numParticipantes = numParticipantes;
     }
 }

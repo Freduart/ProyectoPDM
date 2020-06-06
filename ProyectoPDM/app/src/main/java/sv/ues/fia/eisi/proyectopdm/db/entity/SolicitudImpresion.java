@@ -1,6 +1,7 @@
 package sv.ues.fia.eisi.proyectopdm.db.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -35,11 +36,12 @@ public class SolicitudImpresion {
     private String resultadoImpresion;
     private boolean estadoSolicitud;
     private String fechaSolicitud;
+    private String documento;
 
     public SolicitudImpresion() {
     }
 
-    public SolicitudImpresion(int idImpresion, @NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, boolean estadoSolicitud, String fechaSolicitud) {
+    public SolicitudImpresion(int idImpresion, @NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, boolean estadoSolicitud, String fechaSolicitud, String documento) {
         this.idImpresion = idImpresion;
         this.carnetDocenteFK = carnetDocenteFK;
         this.idEncargadoFK = idEncargadoFK;
@@ -49,6 +51,7 @@ public class SolicitudImpresion {
         this.resultadoImpresion = resultadoImpresion;
         this.estadoSolicitud = estadoSolicitud;
         this.fechaSolicitud = fechaSolicitud;
+        this.documento=documento;
     }
 
     public int getIdImpresion() {
@@ -123,5 +126,13 @@ public class SolicitudImpresion {
 
     public void setFechaSolicitud(String fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 }

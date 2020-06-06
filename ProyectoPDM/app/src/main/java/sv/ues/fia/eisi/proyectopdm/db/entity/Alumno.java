@@ -20,14 +20,16 @@ public class Alumno {
     private String nombre;
     private String apellido;
     private String carrera;
+    private String correo;
 
 
 
-    public Alumno(@NonNull String carnetAlumno, String nombre, String apellido, String carrera) {
+    public Alumno(@NonNull String carnetAlumno, String nombre, String apellido, String carrera, String correo) {
         this.carnetAlumno = carnetAlumno;
         this.nombre = nombre;
         this.apellido = apellido;
         this.carrera = carrera;
+        this.correo=correo;
     }
 
     @NonNull
@@ -61,5 +63,13 @@ public class Alumno {
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }

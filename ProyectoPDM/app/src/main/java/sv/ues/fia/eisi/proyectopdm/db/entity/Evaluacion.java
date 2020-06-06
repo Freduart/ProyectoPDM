@@ -29,9 +29,10 @@ public class Evaluacion {
     private String fechaFin;
     private String descripcion;
     private String fechaEntregaNotas;
+    private int numParticipantes;
 
 
-    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignatura, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas) {
+    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignatura, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes) {
         this.idEvaluacion = idEvaluacion;
         this.carnetDocenteFK = carnetDocenteFK;
         this.idTipoEvaluacionFK = idTipoEvaluacionFK;
@@ -41,6 +42,7 @@ public class Evaluacion {
         this.fechaFin = fechaFin;
         this.descripcion = descripcion;
         this.fechaEntregaNotas = fechaEntregaNotas;
+        this.numParticipantes=numParticipantes;
     }
 
     public int getIdEvaluacion() {
@@ -113,5 +115,13 @@ public class Evaluacion {
 
     public void setFechaEntregaNotas(String fechaEntregaNotas) {
         this.fechaEntregaNotas = fechaEntregaNotas;
+    }
+
+    public int getNumParticipantes() {
+        return numParticipantes;
+    }
+
+    public void setNumParticipantes(int numParticipantes) {
+        this.numParticipantes = numParticipantes;
     }
 }

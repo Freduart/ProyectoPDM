@@ -81,7 +81,7 @@ public abstract class DataBase extends RoomDatabase {
     public static synchronized DataBase getInstance(Context context){
         if(instance==null){
             instance= Room.databaseBuilder(context.getApplicationContext(),
-                    DataBase.class,"PDMDataBase").fallbackToDestructiveMigration().addCallback(roomCallback)
+                    DataBase.class,"PDMDataBaseVer2").fallbackToDestructiveMigration().addCallback(roomCallback)
                     .build();
         }
         return instance;
@@ -153,12 +153,12 @@ public abstract class DataBase extends RoomDatabase {
             asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
             asignaturaDao.insertAsignatura(new Asignatura("FQR215", 6, "Fisicoquímica II"));
             asignaturaDao.insertAsignatura(new Asignatura("OPU215", 7, "Operaciones Unitarias II"));
-            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "Ingeniería de Sistemas Informáticos"));
-            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "Ingeniería de Sistemas Informáticos"));
-            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "Ingeniería de Sistemas Informéticos"));
-            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "Ingeniería de Sistemas Informáticos"));
-            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "Ingeniería de Sistemas Informáticos"));
-            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "Ingeniería Química"));
+            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "Ingeniería de Sistemas Informáticos","fredymartinezues@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "Ingeniería de Sistemas Informáticos","vabcgv@outlook.com"));
+            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "Ingeniería de Sistemas Informéticos","rubper@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "Ingeniería de Sistemas Informáticos","efra.00@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "Ingeniería de Sistemas Informáticos","jairomontoya.raices@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "Ingeniería Química","prueba@gmail.com"));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "TAD115", 2, 1, 2));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
             inscripcionDao.insertInscripcion(new Inscripcion("MG17030","PDM115", 2, 1, 2));
@@ -171,9 +171,9 @@ public abstract class DataBase extends RoomDatabase {
             inscripcionDao.insertInscripcion(new Inscripcion("MC16022", "FQR215", 1, 1, 1));
             cicloDao.insertCiclo(new Ciclo(6, "08-08-19", "10-12-19", 6));
             cicloDao.insertCiclo(new Ciclo(7, "17-02-2020", "20-06-2020", 7));
-            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(1, "Ordinario", 45));
-            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(2, "Repetido", 20));
-            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(3, "Diferido", 15));
+            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(1, "Ordinario"));
+            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(2, "Repetido"));
+            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(3, "Diferido"));
             cargoDao.insertCargo(new Cargo(1, 1, "Director"));
             cargoDao.insertCargo(new Cargo(2, 1, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
             cargoDao.insertCargo(new Cargo(3, 1, "Jefe de Dpto. de Programación y Manejo de datos"));
