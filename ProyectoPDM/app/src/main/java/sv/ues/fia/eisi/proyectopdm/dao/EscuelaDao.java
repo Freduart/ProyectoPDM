@@ -44,5 +44,6 @@ public interface EscuelaDao {
     @Query("Select * from Escuela")
     LiveData<List<Escuela>> obtenerEscuelas();
 
-
+    @Query("Select * from Escuela where idEscuela == :escuelaid")
+    Escuela obtenerEscuela(int escuelaid);
 }

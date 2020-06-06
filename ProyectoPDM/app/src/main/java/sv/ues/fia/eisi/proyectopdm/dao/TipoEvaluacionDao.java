@@ -28,11 +28,14 @@ public interface TipoEvaluacionDao {
         Para borrar uno en especifico necesitaremos usar el id en el Query como un delete de SQL
      */
     @Query("delete from TipoEvaluacion ")
-    void borrarTipoEv();
+    void borrarTipos();
 
     /*
         LiveData tiene ventajas como mostrar los datos siempre actualizados en la app usando ROOM
      */
     @Query("Select * from TipoEvaluacion")
-    LiveData<List<TipoEvaluacion>> obtenerTipoEv();
+    LiveData<List<TipoEvaluacion>> obtenerTipos();
+
+    @Query("select * from TipoEvaluacion where idTipoEvaluacion == :tipoid")
+    TipoEvaluacion obtenerTipoEvaluacion(int tipoid);
 }

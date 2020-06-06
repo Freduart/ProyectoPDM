@@ -38,4 +38,7 @@ public interface AlumnoDao {
 
     @Query("Select * from Alumno")
     LiveData<List<Alumno>> obtenerAlumnos();
+
+    @Query("select * from Alumno where carnetAlumno == :alumnoid")
+    Alumno obtenerAlumno(String alumnoid);
 }

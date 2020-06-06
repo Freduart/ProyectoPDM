@@ -27,10 +27,13 @@ public interface SegundaRevision_DocenteDao {
     @Query("select * from SegundaRevision inner join SegundaRevision_Docente on " +
             "SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK "+
             "where SegundaRevision_Docente.carnetDocenteFK=:carnetDocenteFK")
-    List<Docente> getDocente(final String carnetDocenteFK);
+    List<Docente> getDocentes(final String carnetDocenteFK);
 
     @Query("select * from Docente inner join SegundaRevision_Docente on "+
             "Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
             "where SegundaRevision_Docente.idSegundaRevisionFK=:idSegundaRevisionFK")
-    List<SegundaRevision> getSegundaRevision(final String idSegundaRevisionFK);
+    List<SegundaRevision> getSegundaRevisions(final String idSegundaRevisionFK);
+
+    @Query("select * from SegundaRevision_Docente where idSegundaRevisionFK == :segundarevisionid and carnetDocenteFK == :docenteid")
+    SegundaRevision_Docente obtenerSegRev_Docente(int segundarevisionid, String docenteid);
 }

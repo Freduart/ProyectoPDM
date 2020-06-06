@@ -21,8 +21,11 @@ public interface DocenteDao {
     void deleteDocente(Docente docente);
 
     @Query("delete from Docente")
-    void borrarDocente();
+    void borrarDocentes();
 
     @Query("select * from Docente")
     LiveData<List<Docente>> obtenerDocentes();
+
+    @Query("select * from Docente where carnetDocente == :docenteid")
+    Docente obtenerDocente(String docenteid);
 }

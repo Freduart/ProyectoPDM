@@ -23,5 +23,8 @@ public interface EncargadoImpresionDao {
     void borrarEncargadoImpresion();
 
     @Query("select * from EncargadoImpresion")
-    LiveData<List<EncargadoImpresion>> obtenerEncargadoImpresion();
+    LiveData<List<EncargadoImpresion>> obtenerEncargados();
+
+    @Query("select * from EncargadoImpresion where idEncargadoImpresion == :encargadoid")
+    EncargadoImpresion obtenerEncargadoImpresion(String encargadoid);
 }

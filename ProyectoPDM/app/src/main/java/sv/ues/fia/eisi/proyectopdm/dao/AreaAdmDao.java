@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 import java.util.List;
+
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 
 @Dao
@@ -21,8 +23,11 @@ public interface AreaAdmDao {
     void deleteAreaAdm(AreaAdm areaAdm);
 
     @Query("delete from AreaAdm")
-    void borrarAreaAdm();
+    void borrarAreas();
 
     @Query("select * from AreaAdm")
-    LiveData<List<AreaAdm>> obtenerAreaAdm();
+    LiveData<List<AreaAdm>> obtenerAreas();
+
+    @Query("select * from AreaAdm where idDeptarmento == :areaid")
+    AreaAdm obtenerAreaAdm(int areaid);
 }

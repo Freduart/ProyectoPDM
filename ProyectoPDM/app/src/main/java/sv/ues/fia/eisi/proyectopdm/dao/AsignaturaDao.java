@@ -35,4 +35,7 @@ public interface AsignaturaDao {
      */
     @Query("Select * from Asignatura")
     LiveData<List<Asignatura>> obtenerAsignaturas();
+
+    @Query("select * from Asignatura where codigoAsignatura == :asignaturaid")
+    Asignatura obtenerAsignatura(String asignaturaid);
 }

@@ -36,4 +36,7 @@ public interface LocalDao {
      */
     @Query("Select * from Local")
     LiveData<List<Local>> obtenerLocales();
+
+    @Query("Select * from Local where idLocal == :localid")
+    Local obtenerLocal(String localid);
 }

@@ -21,8 +21,11 @@ public interface CicloDao {
     void deleteCiclo(Ciclo ciclo);
 
     @Query("delete from Ciclo")
-    void borrarCiclo();
+    void borrarCiclos();
 
     @Query("select * from Ciclo")
     LiveData<List<Ciclo>> obtenerCiclos();
+
+    @Query("select * from Ciclo where idCiclo == :cicloid")
+    Ciclo obtenerCiclo(String cicloid);
 }

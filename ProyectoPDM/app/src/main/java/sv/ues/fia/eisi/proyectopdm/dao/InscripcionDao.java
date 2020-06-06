@@ -35,4 +35,7 @@ public interface InscripcionDao {
      */
     @Query("Select * from Inscripcion")
     LiveData<List<Inscripcion>> obtenerInscripciones();
+
+    @Query("Select * from Inscripcion where carnetAlumnoFK == :alumnoid and codigoAsignaturaFK == :asignaturaid")
+    Inscripcion obtenerInscripcion(String alumnoid, String asignaturaid);
 }

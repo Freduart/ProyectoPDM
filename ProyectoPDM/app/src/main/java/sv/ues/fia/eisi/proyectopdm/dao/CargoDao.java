@@ -25,4 +25,7 @@ public interface CargoDao {
 
     @Query("select * from Cargo")
     LiveData<List<Cargo>> obtenerCargos();
+
+    @Query("select * from Cargo where idCargo == :cargoid")
+    Cargo obtenerCargo(String cargoid);
 }

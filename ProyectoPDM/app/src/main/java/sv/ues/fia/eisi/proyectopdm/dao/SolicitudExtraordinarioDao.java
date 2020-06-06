@@ -36,4 +36,7 @@ public interface SolicitudExtraordinarioDao {
      */
     @Query("Select * from SolicitudExtraordinario")
     LiveData<List<SolicitudExtraordinario>> obtenerSolicitudesExtraordinario();
+
+    @Query("select * from SolicitudExtraordinario where idSolicitud == :solicitudid")
+    SolicitudExtraordinario obtenerSolicitudExtraordinario(int solicitudid);
 }
