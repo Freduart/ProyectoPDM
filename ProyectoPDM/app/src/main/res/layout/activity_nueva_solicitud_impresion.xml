@@ -124,10 +124,10 @@
         <EditText
             android:id="@+id/text_detalleImpresion"
             style="@android:style/Widget.EditText"
-            android:layout_width="336dp"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
@@ -139,40 +139,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <Button
-            android:id="@+id/btnEnviar"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorNegro"
-            android:text="ENVIAR"
-            android:textColor="@color/colorBlanco"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.444"
-            app:layout_constraintStart_toEndOf="@+id/btnCancelar"
-            app:layout_constraintTop_toBottomOf="@+id/text_detalleImpresion"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/btnCancelar"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorNegro"
-            android:text="CANCELAR"
-            android:textColor="@color/colorBlanco"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_detalleImpresion"
-            app:layout_constraintVertical_bias="0.0" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_impresiones"
             android:layout_width="197dp"
@@ -180,6 +146,8 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            app:errorTextAppearance="@style/Error"
+            app:hintTextAppearance="@style/Hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider2">
 
@@ -200,6 +168,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            app:errorTextAppearance="@style/Error"
+            app:hintTextAppearance="@style/Hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_impresiones">
 
@@ -225,6 +195,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAñadirDocumento"
             app:layout_constraintVertical_bias="0.059" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_enviar_solicitud"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="32dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

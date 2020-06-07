@@ -7,5 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="Error" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">#FF9800</item>
+    </style>
+    <style name="Hint" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
 
 </resources>

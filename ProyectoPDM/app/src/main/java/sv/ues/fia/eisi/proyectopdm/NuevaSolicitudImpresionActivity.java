@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -65,6 +67,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion);
         text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones);
         text_anexos=(TextInputLayout)findViewById(R.id.text_anexos);
+        FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
         //RecyclerView
         recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos);
         recyclerDocumentos.setLayoutManager(new LinearLayoutManager(this));
@@ -78,6 +81,21 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
             }
         });
+        //Boton Enviar Solicitud
+        enviarSolicitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(contFiles==0){
+                    Snackbar.make(v, "Debe Añadir Un Documento...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }else if((text_impresiones.getEditText().getText().toString()==""||text_impresiones.getEditText().getText().toString()==null)){
+                    text_impresiones.setError("Ingrese N° Impreisones");
+                }else if((text_anexos.getEditText().getText().toString()==""||text_anexos.getEditText().getText().toString()==null)){
+                    text_anexos.setError("Ingrese N° Hojas Anexas");
+                }else{
+                    //Codigo para mandar los datos...
+                }
+            }
+        });
     }
 
     @Override
@@ -86,7 +104,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         if (requestCode == PICK_DOCUMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 documentUri = data.getData();
-                String path = getPathMethod(this, documentUri);
+                String path = getPathMethod(getApplicationContext(), documentUri);
                 if (path == null) {
                     Toast.makeText(this, "Archivo No Encontrado...", Toast.LENGTH_SHORT).show();
                 } else {
