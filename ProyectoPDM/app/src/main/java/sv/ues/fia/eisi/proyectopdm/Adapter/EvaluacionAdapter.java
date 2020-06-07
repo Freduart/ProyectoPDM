@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
 public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.EvaluacionHolder> {
     private List<Evaluacion> evaluaciones=new ArrayList<>();
