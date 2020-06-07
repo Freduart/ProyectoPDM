@@ -120,7 +120,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         // Inflar y establecer el layout para el dialogo
         // Pasar nulo como vista principal porque va en el diseño del diálogo
         View v = inflater.inflate(R.layout.dialog_opciones_documento, null);
-        //builder.setView(inflater.inflate(R.layout.dialog_signin, null))
         Button btnPrevisualizar = (Button)v.findViewById(R.id.btnPrevisualizar);
         Button btnQuitar = (Button)v.findViewById(R.id.btnQuitar);
         TextView textView=(TextView)v.findViewById(R.id.textTitulo);
@@ -132,7 +131,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Aceptar
+                        //Previsualizar
                         Intent intent = new Intent( Intent.ACTION_VIEW );
                         intent.setDataAndType(uri, "application/pdf");
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
@@ -145,6 +144,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //Quitar
                         alertDialog.dismiss();
                     }
                 }
