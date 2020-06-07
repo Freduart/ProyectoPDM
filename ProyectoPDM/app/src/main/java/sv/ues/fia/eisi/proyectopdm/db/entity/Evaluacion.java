@@ -23,7 +23,12 @@ public class Evaluacion {
             childColumns = "idTipoEvaluacionFK"
     )
     private int idTipoEvaluacionFK;
-    private String codigoAsignatura;
+    @ForeignKey(
+            entity = Asignatura.class,
+            parentColumns = "codigoAsignatura",
+            childColumns = "codigoAsignaturaFK"
+    )
+    private String codigoAsignaturaFK;
     private String nomEvaluacion;
     private String fechaInicio;
     private String fechaFin;
@@ -32,11 +37,11 @@ public class Evaluacion {
     private int numParticipantes;
 
 
-    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignatura, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes) {
+    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignaturaFK, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes) {
         this.idEvaluacion = idEvaluacion;
         this.carnetDocenteFK = carnetDocenteFK;
         this.idTipoEvaluacionFK = idTipoEvaluacionFK;
-        this.codigoAsignatura = codigoAsignatura;
+        this.codigoAsignaturaFK = codigoAsignaturaFK;
         this.nomEvaluacion = nomEvaluacion;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -69,12 +74,12 @@ public class Evaluacion {
         this.idTipoEvaluacionFK = idTipoEvaluacionFK;
     }
 
-    public String getCodigoAsignatura() {
-        return codigoAsignatura;
+    public String getCodigoAsignaturaFK() {
+        return codigoAsignaturaFK;
     }
 
-    public void setCodigoAsignatura(String codigoAsignatura) {
-        this.codigoAsignatura = codigoAsignatura;
+    public void setCodigoAsignaturaFK(String codigoAsignatura) {
+        this.codigoAsignaturaFK = codigoAsignatura;
     }
 
     public String getNomEvaluacion() {

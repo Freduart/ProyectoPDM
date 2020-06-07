@@ -39,7 +39,7 @@ public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.Ev
         Evaluacion evaluacionActual = evaluaciones.get(position);
         int id = evaluacionActual.getIdEvaluacion();
         holder.nombreEval.setText(id + ". " + evaluacionActual.getNomEvaluacion());
-        holder.nombreMateria.setText(evaluacionActual.getCodigoAsignatura());
+        holder.nombreMateria.setText(evaluacionActual.getCodigoAsignaturaFK());
     }
 
     @Override

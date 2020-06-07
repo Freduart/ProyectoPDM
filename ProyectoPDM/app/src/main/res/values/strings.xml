@@ -29,6 +29,15 @@
     <string name="hintImpresiones">ej.:50,60,...,para más de 1 doc.</string>
     <string name="hintHojasAnexas">ej.:5,3,...,para más de 1 doc.</string>
     <string name="textOtrosDetalles">Otros Detalles: </string>
+    <string name="nombre_eval">Nombre de evaluación</string>
+    <string name="tipo_eval">Tipo de evaluación</string>
+    <string name="fechaInicio_eval">Fecha de inicio de evaluación</string>
+    <string name="fechaFin_eval">Fecha de fin de evaluación</string>
+    <string name="descripcion_eval">Descripción de evaluación</string>
+    <string name="entregaNotas_eval">Fecha de entrega de notas </string>
+    <string name="participantes_eval">Participantes de evaluación</string>
+    <string name="titulo_nueva_eval">Nueva evaluación</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

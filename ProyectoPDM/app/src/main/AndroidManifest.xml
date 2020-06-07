@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NuevaSolicitudImpresionActivity"></activity>
+        <activity android:name=".NuevaEvaluacionActivity"></activity>
+        <activity android:name=".NuevaSolicitudImpresionActivity" />
         <activity android:name=".SolicitudImpresionActivity" />
         <activity android:name=".CicloActivity" />
         <activity android:name=".LocalActivity" />
