@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/alumno_item">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -15,60 +17,62 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:background="@color/colorNegro"
-            android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical"
-            android:padding="10dp">
-
+            android:padding="10dp"
+            android:background="@color/colorNegro">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@color/colorNegro"
-                android:foreground="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                android:background="@color/colorNegro">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="Carnet:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:padding="8dp"
+                    android:orientation="horizontal"
+                    android:background="@color/colorBlanco">
 
-                <TextView
-                    android:id="@+id/carnetAlumno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="Carnet"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/carnetAlumno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Carnet: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@color/colorNegro"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tw1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/carnet_alumno_list"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:textColor="@color/colorNegro"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
+                android:padding="8dp"
                 android:orientation="horizontal"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="10dp"
-                android:background="@color/colorNegro">
+                android:background="@color/colorBlanco">
 
                 <TextView
+                    android:id="@+id/tw2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="Nombre:"
+                    android:text="Nombre: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorNegro"
                     android:textSize="16sp" />
 
                 <TextView
@@ -77,29 +81,27 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="Nombre"
+                    android:text="@string/nombre_alumno_list"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorNegro"
                     android:textSize="16sp" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
+                android:padding="8dp"
                 android:orientation="horizontal"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="10dp"
-                android:background="@color/colorNegro">
+                android:background="@color/colorBlanco">
 
                 <TextView
+                    android:id="@+id/tw3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="Apellido:"
+                    android:text="Apellido: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorNegro"
                     android:textSize="16sp" />
 
                 <TextView
@@ -108,29 +110,27 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="Apellido"
+                    android:text="@string/apellido_alumno_list"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorNegro"
                     android:textSize="16sp" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:orientation="horizontal"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="10dp"
-                android:background="@color/colorNegro">
+                android:padding="8dp"
+                android:background="@color/colorBlanco">
 
                 <TextView
+                    android:id="@+id/tw4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="Carrera:"
+                    android:text="Carrera: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorNegro"
                     android:textSize="16sp" />
 
                 <TextView
@@ -140,13 +140,11 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:inputType="textMultiLine"
-                    android:text="Carrera"
+                    android:text="@string/carrera_alumno_list"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorNegro"
                     android:textSize="16sp" />
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 </ScrollView>

@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@color/colorNegro"
+                android:background="@color/colorBlanco"
                 android:foreground="?attr/selectableItemBackground"
                 android:orientation="horizontal"
                 android:padding="10dp">
@@ -37,8 +37,8 @@
                     android:layout_alignParentRight="true"
                     android:text="Id Cargo:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorNegro"
+                    android:textSize="26sp" />
 
                 <TextView
                     android:id="@+id/idCar"
@@ -48,8 +48,8 @@
                     android:layout_alignParentRight="true"
                     android:text="idCar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorNegro"
+                    android:textSize="26sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,7 +59,7 @@
                 android:orientation="horizontal"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="10dp"
-                android:background="@color/colorNegro">
+                android:background="@color/colorBlanco">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,8 +68,8 @@
                     android:layout_alignParentRight="true"
                     android:text="Id Escuela:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorNegro"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/idEsc"
@@ -79,8 +79,8 @@
                     android:layout_alignParentRight="true"
                     android:text="idEsc"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorNegro"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -90,7 +90,7 @@
                 android:orientation="horizontal"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="10dp"
-                android:background="@color/colorNegro">
+                android:background="@color/colorBlanco">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,8 +99,8 @@
                     android:layout_alignParentRight="true"
                     android:text="Cargo:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorNegro"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/nomCar"
@@ -111,10 +111,9 @@
                     android:inputType="textMultiLine"
                     android:text="nomCarg"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorBlanco"
-                    android:textSize="16sp" />
+                    android:textColor="@color/colorNegro"
+                    android:textSize="18sp" />
             </LinearLayout>
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

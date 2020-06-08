@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,22 +7,29 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.EscuelaAdapter;
+import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
+/*
+    De ahora en adelante si querran hacer pruebas de funcionalidad pueden modificar el intent del
+    login para redireccionar a la lista de Escuelas, se modificara
+ */
 public class MainActivity extends AppCompatActivity {
 
     private EscuelaViewModel escuelaViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,5 +64,15 @@ public class MainActivity extends AppCompatActivity {
             //En caso de cierre inoportuno
             Toast.makeText(MainActivity.this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void alumnoactivityOnClick(View view){
+        try{
+            Intent intent = new Intent(this, AlumnoActivity.class);
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, "Error en el AlumnoActivity "+e, Toast.LENGTH_LONG).show();
+        }
+
     }
 }

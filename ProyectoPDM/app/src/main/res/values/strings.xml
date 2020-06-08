@@ -44,4 +44,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Strings para Alumno -->
+    <string name="carnet_alumno">Carnet:</string>
+    <string name="carnet_alumno_list">CarnetResult</string>
+    <string name="nombre_alumno">Nombre: </string>
+    <string name="nombre_alumno_list">NombreResult</string>
+    <string name="apellido_alumno">Apellido: </string>
+    <string name="apellido_alumno_list">ApellidoResult</string>
+    <string name="carrera_alumno">Carrera: </string>
+    <string name="carrera_alumno_list">CarreraResult</string>
 </resources>

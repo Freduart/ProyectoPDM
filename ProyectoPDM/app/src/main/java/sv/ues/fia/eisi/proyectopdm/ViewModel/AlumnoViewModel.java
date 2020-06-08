@@ -11,7 +11,12 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.repository.AlumnoRepository;
 
+
+
+
+
 public class AlumnoViewModel extends AndroidViewModel {
+
     private AlumnoRepository repository;
     private LiveData<List<Alumno>> allAlumnos;
 
@@ -21,16 +26,25 @@ public class AlumnoViewModel extends AndroidViewModel {
         allAlumnos = repository.getAllAlumnos();
     }
 
+
     public void insert(Alumno alumno){
         //Enlace con la clase dao
         repository.insertar(alumno);
     }
 
-    public void update(Alumno alumno){ repository.actualizar(alumno); }
+    public void update(Alumno alumno){
+        repository.actualizar(alumno);
+    }
 
-    public void delete(Alumno alumno){ repository.eliminar(alumno); }
+    public void delete(Alumno alumno){
+        repository.eliminar(alumno);
+    }
 
-    public void deleteAllEscuelas() { repository.eliminarTodos();}
+    public void deleteAllEscuelas() {
+        repository.eliminarTodos();
+    }
 
-    public LiveData<List<Alumno>> getAllAlumnos() { return allAlumnos; }
+    public LiveData<List<Alumno>> getAllAlumnos() {
+        return allAlumnos;
+    }
 }

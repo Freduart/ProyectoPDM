@@ -1,9 +1,8 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,10 +19,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
 //import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 
 
 public class NuevaEvaluacionActivity extends AppCompatActivity {

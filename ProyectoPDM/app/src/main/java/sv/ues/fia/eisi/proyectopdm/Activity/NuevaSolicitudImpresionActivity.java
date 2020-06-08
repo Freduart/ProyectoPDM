@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
+import sv.ues.fia.eisi.proyectopdm.R;
 
 import static java.security.AccessController.getContext;
 

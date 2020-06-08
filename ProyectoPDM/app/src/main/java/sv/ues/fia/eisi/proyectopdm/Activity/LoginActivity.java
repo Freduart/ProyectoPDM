@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import sv.ues.fia.eisi.proyectopdm.R;
 
 public class LoginActivity extends AppCompatActivity {
     EditText email, pass;

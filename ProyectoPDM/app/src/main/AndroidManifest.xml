@@ -9,21 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NuevaEvaluacionActivity" />
-        <activity android:name=".NuevaSolicitudImpresionActivity" />
-        <activity android:name=".SolicitudImpresionActivity" />
-        <activity android:name=".CicloActivity" />
-        <activity android:name=".LocalActivity" />
-        <activity android:name=".EvaluacionActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Activity.NuevaEvaluacionActivity" />
+        <activity android:name=".Activity.NuevaSolicitudImpresionActivity" />
+        <activity android:name=".Activity.SolicitudImpresionActivity" />
+        <activity android:name=".Activity.CicloActivity" />
+        <activity android:name=".Activity.LocalActivity" />
+        <activity android:name=".Activity.EvaluacionActivity" />
+        <activity android:name=".Activity.AlumnoActivity"/>
+        <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NuevaSolicitudExtraordinarioActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activity.NuevaSolicitudExtraordinarioActivity" />
+        <activity android:name=".Activity.MainActivity" />
     </application>
 
 </manifest>

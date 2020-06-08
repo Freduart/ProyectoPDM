@@ -1,8 +1,10 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import sv.ues.fia.eisi.proyectopdm.R;
 
 public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
 

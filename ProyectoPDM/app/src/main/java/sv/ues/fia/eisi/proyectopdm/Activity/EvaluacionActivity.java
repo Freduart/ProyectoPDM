@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.EvaluacionAdapter;
+import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 

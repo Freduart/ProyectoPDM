@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.CicloAdapter;
+import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CicloViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 

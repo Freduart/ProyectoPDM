@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.proyectopdm;
+package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import sv.ues.fia.eisi.proyectopdm.Fragments.ListaSolicitudesImpresion;
+import sv.ues.fia.eisi.proyectopdm.R;
 
 public class SolicitudImpresionActivity extends AppCompatActivity {
 

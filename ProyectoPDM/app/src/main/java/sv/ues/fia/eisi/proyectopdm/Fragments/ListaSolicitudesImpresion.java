@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import sv.ues.fia.eisi.proyectopdm.NuevaSolicitudImpresionActivity;
+import sv.ues.fia.eisi.proyectopdm.Activity.NuevaSolicitudImpresionActivity;
 import sv.ues.fia.eisi.proyectopdm.R;
 
 public class ListaSolicitudesImpresion extends Fragment {

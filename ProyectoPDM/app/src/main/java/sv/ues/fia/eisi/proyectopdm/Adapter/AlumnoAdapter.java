@@ -52,7 +52,7 @@ public class AlumnoAdapter extends RecyclerView.Adapter<AlumnoAdapter.AlumnoHold
 
         public AlumnoHolder(@NonNull View itemView) {
             super(itemView);
-            carnet = itemView.findViewById(R.id.carnetAlumno);
+            carnet = itemView.findViewById(R.id.tw1);
             nombre = itemView.findViewById(R.id.nomAlum);
             apellido = itemView.findViewById(R.id.apeAlum);
             carrera = itemView. findViewById(R.id.nombreCarrera);
