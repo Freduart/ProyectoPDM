@@ -172,8 +172,8 @@ public abstract class DataBase extends RoomDatabase {
             inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "TAD115", 2, 1, 1));
             inscripcionDao.insertInscripcion(new Inscripcion("BC14026", "PDM115", 2, 1, 1));
             inscripcionDao.insertInscripcion(new Inscripcion("MC16022", "FQR215", 1, 1, 1));
-            cicloDao.insertCiclo(new Ciclo(6, "08-08-19", "10-12-19", 6));
-            cicloDao.insertCiclo(new Ciclo(7, "17-02-2020", "20-06-2020", 7));
+            cicloDao.insertCiclo(new Ciclo("08-08-19", "10-12-19", 6));
+            cicloDao.insertCiclo(new Ciclo("17-02-2020", "20-06-2020", 7));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(1, "Ordinario"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(2, "Repetido"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(3, "Diferido"));
