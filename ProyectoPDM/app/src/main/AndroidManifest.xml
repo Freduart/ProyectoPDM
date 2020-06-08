@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.CargoActivity"></activity>
-        <activity android:name=".Activity.AsignaturaActivity"></activity>
+        <activity android:name=".Activity.VerLocalActivity"></activity>
+        <activity android:name=".Activity.CargoActivity" />
+        <activity android:name=".Activity.AsignaturaActivity" />
         <activity android:name=".Activity.NuevaEvaluacionActivity" />
         <activity android:name=".Activity.NuevaSolicitudImpresionActivity" />
         <activity android:name=".Activity.SolicitudImpresionActivity" />

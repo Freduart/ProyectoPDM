@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,11 +70,25 @@ public class LocalActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View v = inflater.inflate(R.layout.dialog_opciones_local, null);
+        ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerLocal);
         ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminarLocal);
         TextView tv = (TextView) v.findViewById(R.id.tvADLocal);
         tv.setText(cod);
         builder.setView(v);
         alertDialog=builder.create();
+
+        ver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(LocalActivity.this, VerLocalActivity.class);
+                    intent.putExtra("ID Local Actual", cod);
+                    startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         del.setOnClickListener(new View.OnClickListener() {
             @Override

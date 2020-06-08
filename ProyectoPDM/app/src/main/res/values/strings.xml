@@ -80,7 +80,11 @@
     <string name="carrera_alumno_list">CarreraResult</string>
 
     <!-- Strings para Ciclo -->
-    <string name="IDLocal">Identificador: </string>
 
     <!-- Strings para Local -->
+    <string name="IDLocal">Identificador: </string>
+    <string name="nomLocal">Nombre del Local: </string>
+    <string name="ubicacionLocal">Ubicación del Local: </string>
+    <string name="latLocal">Latitud: </string>
+    <string name="lonLocal">Longitud: </string>
 </resources>
