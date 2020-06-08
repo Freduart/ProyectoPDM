@@ -41,6 +41,21 @@
     <string name="carnet_docente_eval">Docente encargado</string>
     <string name="codigo_asignatura_eval">Asignatura</string>
 
+    <!-- Strings para Cargo -->
+    <string name="AppBarNameCargos">Cargos</string>
+    <string name="IdCargo">Identificador: </string>
+    <string name="IdEscuelaCargo">Escuela: </string>
+    <string name="NombreCargo">Nombre: </string>
+    <string name="AppBarAddCargo">Agregar cargo</string>
+    <!-- Strings para Asignatura -->
+    <string name="AppBarAddAsignatura">Agregar asignatura</string>
+    <string name="CodigoAsignatura">Código: </string>
+    <string name="CodDptoAsignauta">Depatamento: </string>
+    <string name="NombreAsignatura">Nombre: </string>
+    <string name="AppBarNameAsignaturas">Asignaturas</string>
+    <!-- Strings para Primera Revisión -->
+    <string name="AppBarNamePrimerRevision">Primera revisión</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

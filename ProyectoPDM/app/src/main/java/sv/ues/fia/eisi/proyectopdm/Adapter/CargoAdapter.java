@@ -33,8 +33,8 @@ public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder>
             mostramos los valores en cada uno de los TextView y se ciclen con el LiveData
             Haremos uno por cada item que querramos mostar
         */
-        holder.idCargo.setText(currentCargo.getIdCargo());
-        holder.idEscuela.setText(currentCargo.getIdEscuelaFK());
+        holder.idCargo.setText(String.valueOf(currentCargo.getIdCargo()));
+        holder.idEscuela.setText(String.valueOf(currentCargo.getIdEscuelaFK()));
         holder.nomCargo.setText(currentCargo.getNomCargo());
     }
 

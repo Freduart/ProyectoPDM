@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 
@@ -22,7 +23,12 @@ public class LoginActivity extends AppCompatActivity {
         pass = (EditText) findViewById(R.id.etPassword);
     }
     public void Login(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, AsignaturaActivity.class);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage() +" "+e.getCause(), Toast.LENGTH_LONG).show();
+        }
+
     }
 }

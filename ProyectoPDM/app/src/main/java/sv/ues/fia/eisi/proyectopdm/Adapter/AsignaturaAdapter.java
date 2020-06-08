@@ -14,15 +14,17 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
-public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.AsignaturaHolder> {
+public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.AsignaturaHolder> implements View.OnClickListener{
 
     private List<Asignatura> asignaturas = new ArrayList<>();
+    private View.OnClickListener listener;
 
     @NonNull
     @Override
     public AsignaturaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.asinatura_item,parent,false);
+        itemView.setOnClickListener(this);
         return new AsignaturaHolder(itemView);
     }
 
@@ -30,7 +32,7 @@ public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.As
     public void onBindViewHolder(@NonNull AsignaturaHolder holder, int position) {
         Asignatura currentAsignatura = asignaturas.get(position);
         holder.idAs.setText(currentAsignatura.getCodigoAsignatura());
-        holder.idDpto.setText(currentAsignatura.getIdDepartamentoFK());
+        holder.idDpto.setText(String.valueOf(currentAsignatura.getIdDepartamentoFK()));
         holder.nomAs.setText(currentAsignatura.getNomasignatura());
     }
 
@@ -42,6 +44,21 @@ public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.As
     public void setAsignaturas(List<Asignatura> asignaturas){
         this.asignaturas = asignaturas;
         notifyDataSetChanged();
+    }
+
+    //Para obtener asignatura en una posicion especifica de la lista
+    public Asignatura getAsignaturaAt(int position){
+        return asignaturas.get(position);
+    }
+
+
+
+    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
+    @Override
+    public void onClick(View v) {
+        if(listener != null){
+            listener.onClick(v);
+        }
     }
 
     class AsignaturaHolder extends RecyclerView.ViewHolder {
