@@ -29,13 +29,55 @@
             android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/evalTitulo"
             />
+        <EditText
+            android:id="@+id/edit_descripcion_eval"
+            app:layout_constraintTop_toBottomOf="@+id/edit_nombre_eval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/descripcion_eval"
+            android:inputType="textMultiLine"
+            />
         <TextView
-            android:id="@+id/tipoEvalLabel"
+            android:id="@+id/asignaturaEvalLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tipo_eval"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/edit_nombre_eval"
+            app:layout_constraintTop_toBottomOf="@+id/edit_descripcion_eval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <Spinner
+            android:id="@+id/edit_asignatura_eval"
+            app:layout_constraintTop_toBottomOf="@+id/asignaturaEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            />
+        <TextView
+            android:id="@+id/docenteEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/carnet_docente_eval"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_asignatura_eval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <Spinner
+            android:id="@+id/edit_docente_eval"
+            app:layout_constraintTop_toBottomOf="@+id/docenteEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            />
+        <TextView
+            android:id="@+id/tipoEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/codigo_asignatura_eval"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_docente_eval"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingTop="20dp"
             />
@@ -84,22 +126,25 @@
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
             />
-        <EditText
-            android:id="@+id/edit_descripcion_eval"
-            app:layout_constraintTop_toBottomOf="@+id/edit_fechFin_eval"
+        <!--<TextView
+            android:id="@+id/fechaEntregaNotasLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/descripcion_eval"
-            android:inputType="textMultiLine"
-            />
-        <EditText
-            android:id="@+id/edit_entregaNotas_eval"
+            android:text="@string/entregaNotas_eval"
+            android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/edit_descripcion_eval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <DatePicker
+            android:id="@+id/edit_entregaNotas_eval"
+            app:layout_constraintTop_toBottomOf="@+id/fechaEntregaNotasLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/entregaNotas_eval"
             android:inputType="date"
-            />
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            />-->
         <EditText
             android:id="@+id/edit_numParticipantes_eval"
             app:layout_constraintTop_toBottomOf="@+id/edit_entregaNotas_eval"

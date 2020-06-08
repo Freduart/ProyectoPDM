@@ -38,6 +38,8 @@
     <string name="entregaNotas_eval">Fecha de entrega de notas </string>
     <string name="participantes_eval">Participantes de evaluación</string>
     <string name="titulo_nueva_eval">Nueva evaluación</string>
+    <string name="carnet_docente_eval">Docente encargado</string>
+    <string name="codigo_asignatura_eval">Asignatura</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

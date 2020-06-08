@@ -41,6 +41,10 @@ public class AsignaturaRepository {
         return allAsignaturas;
     }
 
+    public Asignatura obtenerAsignatura(String id){
+        return asignaturaDao.obtenerAsignatura(id);
+    }
+
     private static class InsertarAsignaturaAsyncTask extends AsyncTask<Asignatura,Void,Void>{
         private AsignaturaDao asignaturaDao;
 

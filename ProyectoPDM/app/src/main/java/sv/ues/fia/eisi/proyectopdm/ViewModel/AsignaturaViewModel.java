@@ -41,4 +41,8 @@ public class AsignaturaViewModel extends AndroidViewModel {
     public LiveData<List<Asignatura>> getAllAsignaturas(){
         return allAsignaturas;
     }
+
+    public Asignatura obtenerAsignatura(String id){
+        return asignaturaRepository.obtenerAsignatura(id);
+    }
 }
