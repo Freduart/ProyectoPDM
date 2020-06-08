@@ -8,54 +8,54 @@
     android:background="#393838">
 
     <TextView
-        android:id="@+id/tvADAsignatura"
+        android:id="@+id/tvADCargo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
+        android:text="@string/IdCargo"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:text="@string/CodigoAsignatura"
         android:textColor="@color/colorBlanco"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"/>
 
     <ImageButton
-        android:id="@+id/imBVer"
+        android:id="@+id/imBVerCargo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvADAsignatura"
+        android:layout_below="@+id/tvADCargo"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:layout_marginRight="2dp"
         android:src="@drawable/ic_ver"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvADAsignatura" />
+        app:layout_constraintTop_toBottomOf="@+id/tvADCargo" />
 
     <ImageButton
-        android:id="@+id/imBEditar"
+        android:id="@+id/imBEditarCargo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvADAsignatura"
+        android:layout_below="@+id/tvADCargo"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:layout_marginRight="1dp"
-        android:layout_toEndOf="@+id/imBVer"
-        android:layout_toRightOf="@+id/imBVer"
+        android:layout_toEndOf="@+id/imBVerCargo"
+        android:layout_toRightOf="@+id/imBVerCargo"
         android:src="@drawable/ic_editar" />
 
     <ImageButton
-        android:id="@+id/imBEliminar"
+        android:id="@+id/imBEliminarCargo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvADAsignatura"
+        android:layout_below="@+id/tvADCargo"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         android:layout_marginRight="1dp"
-        android:layout_toEndOf="@+id/imBEditar"
-        android:layout_toRightOf="@+id/imBEditar"
+        android:layout_toEndOf="@+id/imBEditarCargo"
+        android:layout_toRightOf="@+id/imBEditarCargo"
         android:src="@drawable/ic_eliminar" />
 
 </RelativeLayout>

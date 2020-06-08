@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
 public class LoginActivity extends AppCompatActivity {
     EditText email, pass;

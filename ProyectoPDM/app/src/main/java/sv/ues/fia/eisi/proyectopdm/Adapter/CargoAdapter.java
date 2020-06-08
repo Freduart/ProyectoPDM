@@ -14,14 +14,16 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 
-public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder> {
+public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder> implements View.OnClickListener{
     private List<Cargo> cargos =  new ArrayList<>();
+    private View.OnClickListener listener;
 
     @NonNull
     @Override
     public CargoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cargo_item,parent,false);
+        itemView.setOnClickListener(this);
         return new CargoHolder(itemView);
     }
 
@@ -46,6 +48,19 @@ public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder>
     public void setCargos(List<Cargo> cargos){
         this.cargos = cargos;
         notifyDataSetChanged();
+    }
+
+    //Para obtener cargo en una posición específica
+
+    public Cargo getCargoAt(int position) {return cargos.get(position);}
+
+    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
+
+    @Override
+    public void onClick(View v) {
+        if(listener != null){
+            listener.onClick(v);
+        }
     }
 
     class CargoHolder extends  RecyclerView.ViewHolder{

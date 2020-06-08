@@ -62,7 +62,7 @@ public class AsignaturaActivity extends AppCompatActivity {
                             adapter.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //Obtiene el codigo de asignatura eleccionada
+                                    //Obtiene el codigo de la asignatura seleccionada
                                     codigo=asignaturas.get(recyclerView.getChildAdapterPosition(v)).getCodigoAsignatura();
                                     //Obtiene la asignatura seleccionada
                                     asignaturaAt = adapter.getAsignaturaAt(recyclerView.getChildAdapterPosition(v));
@@ -97,10 +97,13 @@ public class AsignaturaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     asignaturaViewModel.delete(asignaturaAt);
-                    Toast.makeText(AsignaturaActivity.this, "Borrado", Toast.LENGTH_LONG);
+                    Toast.makeText(AsignaturaActivity.this, "Asignatura" + " " +
+                            asignaturaAt.getCodigoAsignatura() + " ha sido borrada exitosamente",
+                            Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
-                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " " +
+                            e.getCause(),Toast.LENGTH_LONG).show();
                 }
             }
         });

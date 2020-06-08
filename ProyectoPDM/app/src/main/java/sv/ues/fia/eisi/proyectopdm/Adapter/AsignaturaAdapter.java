@@ -31,6 +31,11 @@ public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.As
     @Override
     public void onBindViewHolder(@NonNull AsignaturaHolder holder, int position) {
         Asignatura currentAsignatura = asignaturas.get(position);
+        /*
+            Con el objeto holder recibimos objetos de tipo String y
+            mostramos los valores en cada uno de los TextView y se ciclen con el LiveData
+            se declara uno por cada item que querramos mostar en la cardview del recyclerView
+        */
         holder.idAs.setText(currentAsignatura.getCodigoAsignatura());
         holder.idDpto.setText(String.valueOf(currentAsignatura.getIdDepartamentoFK()));
         holder.nomAs.setText(currentAsignatura.getNomasignatura());
