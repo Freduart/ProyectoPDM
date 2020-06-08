@@ -1,16 +1,20 @@
 package sv.ues.fia.eisi.proyectopdm.Adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import sv.ues.fia.eisi.proyectopdm.R;
+
 public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes> {
     @NonNull
     @Override
     public ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_solicitud_impresion,null,false);
+        return new ViewHolderSolicitudes(view);
     }
 
     @Override

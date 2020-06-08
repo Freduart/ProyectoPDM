@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
+import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
 public class LoginActivity extends AppCompatActivity {
     EditText email, pass;
