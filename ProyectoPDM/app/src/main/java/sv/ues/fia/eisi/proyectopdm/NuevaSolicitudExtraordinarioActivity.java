@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class RegistrarSolicitudRepeActivity extends AppCompatActivity {
+public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar_solicitud_repe);
+        setContentView(R.layout.activity_nueva_solicitud_extraordinario);
     }
 }

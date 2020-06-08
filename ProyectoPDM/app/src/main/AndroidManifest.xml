@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NuevaEvaluacionActivity"></activity>
+        <activity android:name=".NuevaEvaluacionActivity" />
         <activity android:name=".NuevaSolicitudImpresionActivity" />
         <activity android:name=".SolicitudImpresionActivity" />
         <activity android:name=".CicloActivity" />
@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrarSolicitudRepeActivity" />
+        <activity android:name=".NuevaSolicitudExtraordinarioActivity" />
         <activity android:name=".MainActivity" />
     </application>
 
