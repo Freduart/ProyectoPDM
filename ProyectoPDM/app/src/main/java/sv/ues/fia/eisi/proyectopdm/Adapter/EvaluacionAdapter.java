@@ -3,6 +3,7 @@ package sv.ues.fia.eisi.proyectopdm.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,17 +14,41 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
 public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.EvaluacionHolder> {
     private List<Evaluacion> evaluaciones=new ArrayList<>();
+    private OnItemClickListener listener;
 
     //clase Holder
     class EvaluacionHolder extends RecyclerView.ViewHolder{
-        private TextView nombreEval;
-        private TextView nombreMateria;
+        private TextView nombreEvaluacion;
+        private TextView descripcionEvaluacion;
+        private TextView fechaFin;
 
         public EvaluacionHolder(@NonNull View itemView) {
             super(itemView);
-            nombreEval=itemView.findViewById(R.id.text_eval_nom);
-            nombreMateria=itemView.findViewById(R.id.text_eval_mat);
+            nombreEvaluacion=itemView.findViewById(R.id.text_eval_nom);
+            descripcionEvaluacion=itemView.findViewById(R.id.text_eval_mat);
+            fechaFin=itemView.findViewById(R.id.text_eval_fechaFin);
+
+            //obtener evento de click
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(listener != null && posicion != RecyclerView.NO_POSITION)
+                        listener.onItemClick(evaluaciones.get(posicion));
+                }
+            });
         }
+    }
+
+    //listener
+
+    public interface OnItemClickListener{
+        void onItemClick(Evaluacion evaluacion);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
     //implementacion
     @NonNull
@@ -38,8 +63,9 @@ public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.Ev
     public void onBindViewHolder(@NonNull EvaluacionAdapter.EvaluacionHolder holder, int position) {
         Evaluacion evaluacionActual = evaluaciones.get(position);
         int id = evaluacionActual.getIdEvaluacion();
-        holder.nombreEval.setText(id + ". " + evaluacionActual.getNomEvaluacion());
-        holder.nombreMateria.setText(evaluacionActual.getCodigoAsignaturaFK());
+        holder.nombreEvaluacion.setText(id + ". " + evaluacionActual.getNomEvaluacion());
+        holder.descripcionEvaluacion.setText(evaluacionActual.getDescripcion());
+        holder.fechaFin.setText(evaluacionActual.getFechaFin());
     }
 
     @Override

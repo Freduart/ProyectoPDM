@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.repository.DocenteRepository;
@@ -44,7 +46,7 @@ public class DocenteViewModel extends AndroidViewModel {
         return todosDocentes;
     }
 
-    public Docente getDocente(String id){
-        return repo.getDocente(id);
+    public Docente getDocente(String id) throws InterruptedException, ExecutionException, TimeoutException {
+        return repo.obtenerDocente(id);
     }
 }

@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.DocenteDao;
@@ -47,9 +50,11 @@ public class DocenteRepository {
         return todosDocentes;
     }
 
-    //obtener
-    public Docente getDocente(String id){
-        return docenteDao.obtenerDocente(id);
+
+    //obtener docente asíncrono
+    public Docente obtenerDocente(String id) throws InterruptedException, ExecutionException, TimeoutException {
+        //se puede ajustar el timeout para cancelar la recuperación del dato, el primer parametro indica la cantidad, el segundo la unidad
+        return new obtenerDocenteAsyncTask(docenteDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     //Async de insertar
@@ -109,6 +114,20 @@ public class DocenteRepository {
         protected Void doInBackground(Void... voids) {
             docenteDao.borrarDocentes();
             return null;
+        }
+    }
+
+    //async obtener docente
+    private static class obtenerDocenteAsyncTask extends AsyncTask<String, Void, Docente>{
+        private DocenteDao docenteDao;
+
+        private obtenerDocenteAsyncTask(DocenteDao docenteDao){
+            this.docenteDao=docenteDao;
+        }
+
+        @Override
+        protected Docente doInBackground(String... docentes) {
+            return docenteDao.obtenerDocente(docentes[0]);
         }
     }
 }

@@ -5,6 +5,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 import sv.ues.fia.eisi.proyectopdm.repository.EvaluacionRepository;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
@@ -42,7 +45,7 @@ public class EvaluacionViewModel extends AndroidViewModel{
         return todasEval;
     }
 
-    public Evaluacion getEval(int id){
-        return repo.getEvaluacion(id);
+    public Evaluacion getEval(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return repo.obtenerEvaluacion(id);
     }
 }

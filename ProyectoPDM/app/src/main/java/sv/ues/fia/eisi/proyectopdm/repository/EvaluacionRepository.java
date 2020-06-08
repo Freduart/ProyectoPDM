@@ -4,6 +4,11 @@ import android.app.Application;
 import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import sv.ues.fia.eisi.proyectopdm.Adapter.EvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
@@ -39,14 +44,14 @@ public class EvaluacionRepository {
         new DeleteAllEvaluacionesAsyncTask(evaluacionDao).execute();
     }
 
+    //obtener evaluacion asíncrono
+    public Evaluacion obtenerEvaluacion(Integer integer) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerEvaluacionAsyncTask(evaluacionDao).execute(integer).get(12, TimeUnit.SECONDS);
+    }
+
     //obtener todas
     public LiveData<List<Evaluacion>> getTodasEvaluaciones() {
         return todasEvaluaciones;
-    }
-
-    //obtener
-    public Evaluacion getEvaluacion(int id){
-        return evaluacionDao.obtenerEvaluacion(id);
     }
 
     //Async de insertar
@@ -106,6 +111,20 @@ public class EvaluacionRepository {
         protected Void doInBackground(Void... voids) {
             evaluacionDao.borrarEvaluaciones();
             return null;
+        }
+    }
+
+    //async obtener evaluacion
+    private static class obtenerEvaluacionAsyncTask extends AsyncTask<Integer, Void, Evaluacion>{
+        private EvaluacionDao evaluacionDao;
+
+        private obtenerEvaluacionAsyncTask(EvaluacionDao evaluacionDao){
+            this.evaluacionDao=evaluacionDao;
+        }
+
+        @Override
+        protected Evaluacion doInBackground(Integer... evaluaciones) {
+            return evaluacionDao.obtenerEvaluacion(evaluaciones[0]);
         }
     }
 }

@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.repository.TipoEvaluacionRepository;
@@ -44,7 +46,7 @@ public class TipoEvaluacionViewModel extends AndroidViewModel {
         return todosTipoEvaluacions;
     }
 
-    public TipoEvaluacion getTipoEvaluacion(int id){
-        return repo.getTipoEvaluacion(id);
+    public TipoEvaluacion getTipoEvaluacion(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return repo.obtenerTipoEvaluacion(id);
     }
 }

@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.TipoEvaluacionDao;
@@ -47,9 +50,9 @@ public class TipoEvaluacionRepository {
         return todasTipoEvaluaciones;
     }
 
-    //obtener
-    public TipoEvaluacion getTipoEvaluacion(int id){
-        return tipoEvaluacionDao.obtenerTipoEvaluacion(id);
+    //obtener tipo evaluacion asíncrono
+    public TipoEvaluacion obtenerTipoEvaluacion(Integer integer) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerTipoEvaluacionAsyncTask(tipoEvaluacionDao).execute(integer).get(12, TimeUnit.SECONDS);
     }
 
     //Async de insertar
@@ -109,6 +112,20 @@ public class TipoEvaluacionRepository {
         protected Void doInBackground(Void... voids) {
             tipoEvaluacionDao.borrarTipos();
             return null;
+        }
+    }
+
+    //async obtener tipo evaluacion
+    private static class obtenerTipoEvaluacionAsyncTask extends AsyncTask<Integer, Void, TipoEvaluacion>{
+        private TipoEvaluacionDao tipoEvaluacionDao;
+
+        private obtenerTipoEvaluacionAsyncTask(TipoEvaluacionDao tipoEvaluacionDao){
+            this.tipoEvaluacionDao=tipoEvaluacionDao;
+        }
+
+        @Override
+        protected TipoEvaluacion doInBackground(Integer... tipos) {
+            return tipoEvaluacionDao.obtenerTipoEvaluacion(tipos[0]);
         }
     }
 }

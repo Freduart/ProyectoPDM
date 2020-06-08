@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.repository.AsignaturaRepository;
@@ -42,7 +44,7 @@ public class AsignaturaViewModel extends AndroidViewModel {
         return allAsignaturas;
     }
 
-    public Asignatura obtenerAsignatura(String id){
+    public Asignatura obtenerAsignatura(String id) throws InterruptedException, ExecutionException, TimeoutException {
         return asignaturaRepository.obtenerAsignatura(id);
     }
 }

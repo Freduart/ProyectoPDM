@@ -32,6 +32,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 
 public class NuevaEvaluacionActivity extends AppCompatActivity {
+
     private EditText editNombreEvaluacion;
     private Spinner spinTipoEvaluacion;
     private Spinner spinCarnetDocenteEvaluacion;
@@ -123,7 +124,7 @@ public class NuevaEvaluacionActivity extends AppCompatActivity {
 
             //nomeacuerdoxdddddd
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-            setTitle("Evaluaciones");
+            setTitle("Nueva evaluación");
 
         } catch (Exception e){
             Toast.makeText(NuevaEvaluacionActivity.this, e.getMessage()+ " " + e.getCause(), Toast.LENGTH_LONG).show();

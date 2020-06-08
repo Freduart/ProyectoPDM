@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.AsignaturaDao;
@@ -41,8 +44,9 @@ public class AsignaturaRepository {
         return allAsignaturas;
     }
 
-    public Asignatura obtenerAsignatura(String id){
-        return asignaturaDao.obtenerAsignatura(id);
+    //obtener asignatura asíncrono
+    public Asignatura obtenerAsignatura(String id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerAsignaturaAsyncTask(asignaturaDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     private static class InsertarAsignaturaAsyncTask extends AsyncTask<Asignatura,Void,Void>{
@@ -98,6 +102,20 @@ public class AsignaturaRepository {
         protected Void doInBackground(Void... voids) {
             asignaturaDao.borrarAsignaturas();
             return null;
+        }
+    }
+
+    //async obtener evaluacion
+    private static class obtenerAsignaturaAsyncTask extends AsyncTask<String, Void, Asignatura>{
+        private AsignaturaDao asignaturaDao;
+
+        private obtenerAsignaturaAsyncTask(AsignaturaDao asignaturaDao){
+            this.asignaturaDao=asignaturaDao;
+        }
+
+        @Override
+        protected Asignatura doInBackground(String... asignaturas) {
+            return asignaturaDao.obtenerAsignatura(asignaturas[0]);
         }
     }
 }

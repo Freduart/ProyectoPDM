@@ -11,23 +11,13 @@
         android:layout_height="match_parent"
         android:stretchColumns="1"
         android:padding="16dp">
-        <TextView
-            android:id="@+id/evalTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/titulo_nueva_eval"
-            android:inputType="text"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:paddingBottom="20dp"
-            />
         <EditText
             android:id="@+id/edit_nombre_eval"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nombre_eval"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/evalTitulo"
+            app:layout_constraintTop_toBottomOf="parent"
             />
         <EditText
             android:id="@+id/edit_descripcion_eval"

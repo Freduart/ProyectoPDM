@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         pass = (EditText) findViewById(R.id.etPassword);
     }
     public void Login(View view){
-        Intent intent = new Intent(this, AsignaturaActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         try {
             startActivity(intent);
         }catch (Exception e){
