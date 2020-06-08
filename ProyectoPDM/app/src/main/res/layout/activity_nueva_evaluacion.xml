@@ -38,46 +38,12 @@
             android:inputType="textMultiLine"
             />
         <TextView
-            android:id="@+id/asignaturaEvalLabel"
+            android:id="@+id/tipoEvalLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tipo_eval"
             android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/edit_descripcion_eval"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:paddingTop="20dp"
-            />
-        <Spinner
-            android:id="@+id/edit_asignatura_eval"
-            app:layout_constraintTop_toBottomOf="@+id/asignaturaEvalLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            />
-        <TextView
-            android:id="@+id/docenteEvalLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/carnet_docente_eval"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/edit_asignatura_eval"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:paddingTop="20dp"
-            />
-        <Spinner
-            android:id="@+id/edit_docente_eval"
-            app:layout_constraintTop_toBottomOf="@+id/docenteEvalLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            />
-        <TextView
-            android:id="@+id/tipoEvalLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/codigo_asignatura_eval"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/edit_docente_eval"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingTop="20dp"
             />
@@ -89,12 +55,46 @@
             android:paddingTop="30dp"
             />
         <TextView
+            android:id="@+id/docenteEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/carnet_docente_eval"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_tipoEval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <Spinner
+            android:id="@+id/edit_docente_eval"
+            app:layout_constraintTop_toBottomOf="@+id/docenteEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            />
+        <TextView
+            android:id="@+id/asignaturaEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/codigo_asignatura_eval"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_docente_eval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <Spinner
+            android:id="@+id/edit_asignatura_eval"
+            app:layout_constraintTop_toBottomOf="@+id/asignaturaEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            />
+        <TextView
             android:id="@+id/fechaInicioEvalLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fechaInicio_eval"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/edit_tipoEval"
+            app:layout_constraintTop_toBottomOf="@+id/edit_asignatura_eval"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingTop="20dp"
             />

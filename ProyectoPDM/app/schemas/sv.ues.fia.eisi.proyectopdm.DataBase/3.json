@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "1c6a8264434c0f14da0b7fcaf5fb0ebf",
+    "identityHash": "0a0e5e0658df1efa7ebe6811dfbd27ed",
     "entities": [
       {
         "tableName": "Alumno",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`carnetAlumno` TEXT NOT NULL, `nombre` TEXT, `apellido` TEXT, `carrera` TEXT, PRIMARY KEY(`carnetAlumno`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`carnetAlumno` TEXT NOT NULL, `nombre` TEXT, `apellido` TEXT, `carrera` TEXT, `correo` TEXT, PRIMARY KEY(`carnetAlumno`))",
         "fields": [
           {
             "fieldPath": "carnetAlumno",
@@ -29,6 +29,12 @@
           {
             "fieldPath": "carrera",
             "columnName": "carrera",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "correo",
+            "columnName": "correo",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -378,7 +384,7 @@
       },
       {
         "tableName": "Evaluacion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEvaluacion` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `carnetDocenteFK` TEXT, `idTipoEvaluacionFK` INTEGER NOT NULL, `codigoAsignatura` TEXT, `nomEvaluacion` TEXT, `fechaInicio` TEXT, `fechaFin` TEXT, `descripcion` TEXT, `fechaEntregaNotas` TEXT, `numParticipantes` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEvaluacion` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `carnetDocenteFK` TEXT, `idTipoEvaluacionFK` INTEGER NOT NULL, `codigoAsignaturaFK` TEXT, `nomEvaluacion` TEXT, `fechaInicio` TEXT, `fechaFin` TEXT, `descripcion` TEXT, `fechaEntregaNotas` TEXT, `numParticipantes` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "idEvaluacion",
@@ -399,8 +405,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "codigoAsignatura",
-            "columnName": "codigoAsignatura",
+            "fieldPath": "codigoAsignaturaFK",
+            "columnName": "codigoAsignaturaFK",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -844,7 +850,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c6a8264434c0f14da0b7fcaf5fb0ebf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a0e5e0658df1efa7ebe6811dfbd27ed')"
     ]
   }
 }

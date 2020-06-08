@@ -6,7 +6,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -22,6 +26,15 @@ public class EvaluacionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluacion);
+
+        FloatingActionButton botonNuevaEvaluacion = findViewById(R.id.add_eval_button);
+        botonNuevaEvaluacion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EvaluacionActivity.this, NuevaEvaluacionActivity.class);
+                startActivity(intent);
+            }
+        });
 
         RecyclerView EvalRecycler = findViewById(R.id.recycler_eval_view);
         EvalRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -40,3 +53,4 @@ public class EvaluacionActivity extends AppCompatActivity {
 
     }
 }
+

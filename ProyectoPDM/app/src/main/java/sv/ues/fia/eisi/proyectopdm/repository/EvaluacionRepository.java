@@ -104,7 +104,7 @@ public class EvaluacionRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            evaluacionDao.obtenerEvaluaciones();
+            evaluacionDao.borrarEvaluaciones();
             return null;
         }
     }

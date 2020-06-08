@@ -37,8 +37,7 @@ public class Evaluacion {
     private int numParticipantes;
 
 
-    public Evaluacion(int idEvaluacion, String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignaturaFK, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes) {
-        this.idEvaluacion = idEvaluacion;
+    public Evaluacion(String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignaturaFK, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes) {
         this.carnetDocenteFK = carnetDocenteFK;
         this.idTipoEvaluacionFK = idTipoEvaluacionFK;
         this.codigoAsignaturaFK = codigoAsignaturaFK;

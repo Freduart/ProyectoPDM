@@ -56,7 +56,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class,
-    }, version = 2)
+    }, version = 3)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -177,12 +177,12 @@ public abstract class DataBase extends RoomDatabase {
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(1, "Ordinario"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(2, "Repetido"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(3, "Diferido"));
-            evaluacionDao.insertEvaluacion(new Evaluacion(1,"DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion(2,"DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion(3,"DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion(4,"DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion(5,"DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion(6,"DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
             cargoDao.insertCargo(new Cargo(1, 1, "Director"));
             cargoDao.insertCargo(new Cargo(2, 1, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
             cargoDao.insertCargo(new Cargo(3, 1, "Jefe de Dpto. de Programación y Manejo de datos"));
