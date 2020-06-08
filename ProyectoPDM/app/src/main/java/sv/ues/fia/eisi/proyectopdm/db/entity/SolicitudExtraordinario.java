@@ -31,8 +31,7 @@ public class SolicitudExtraordinario {
     private String fechaSolicitudExtr;
     private boolean justificacion;
 
-    public SolicitudExtraordinario(int idSolicitud, @NonNull String carnetAlumnoFK, int idEvaluacion, String tipoSolicitud, String motivoSolicitud, String fechaSolicitudExtr, boolean justificacion) {
-        this.idSolicitud = idSolicitud;
+    public SolicitudExtraordinario(@NonNull String carnetAlumnoFK, int idEvaluacion, String tipoSolicitud, String motivoSolicitud, String fechaSolicitudExtr, boolean justificacion) {
         this.carnetAlumnoFK = carnetAlumnoFK;
         this.idEvaluacion = idEvaluacion;
         this.tipoSolicitud = tipoSolicitud;

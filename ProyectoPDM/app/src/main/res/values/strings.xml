@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ProyectoPDM</string>
+    <!-- Strings para SolicitudExtraordinario -->
     <string name="nuevaSoliExtraName">Solicitud de Evaluación Extraordinaria</string>
     <string name="idSolicitudExtraordinario">ID de Solicitud: </string>
     <string name="carnetAlumno">Carnet del Alumno: </string>
@@ -15,11 +16,15 @@
     <string name="hintTipoSoli">Diferido(D) o Repetido(R)</string>
     <string name="hintMotivoSoli">Razón de la Solicitud</string>
     <string name="hintFechaSoli">Fecha</string>
+
+    <!-- Strings para Login -->
     <string name="Email">Correo</string>
     <string name="Password">Contraseña</string>
     <string name="Login">Iniciar sesión</string>
     <string name="FIA">FACULTAD DE INGENIERÍA Y ARQUITECTURA</string>
     <string name="CD">Descripcion</string>
+
+    <!-- Strings para SolicitudImpresion -->
     <string name="CVSoliImp">Solicitud</string>
     <string name="CVMaterias">Materias</string>
     <string name="btnAñadirArchivo">AÑADIR</string>
@@ -30,6 +35,8 @@
     <string name="hintImpresiones">ej.:50,60,...,para más de 1 doc.</string>
     <string name="hintHojasAnexas">ej.:5,3,...,para más de 1 doc.</string>
     <string name="textOtrosDetalles">Otros Detalles: </string>
+
+    <!-- Strings para Evaluacion -->
     <string name="nombre_eval">Nombre de evaluación</string>
     <string name="tipo_eval">Tipo de evaluación</string>
     <string name="fechaInicio_eval">Fecha de inicio de evaluación</string>
@@ -47,12 +54,14 @@
     <string name="IdEscuelaCargo">Escuela: </string>
     <string name="NombreCargo">Nombre: </string>
     <string name="AppBarAddCargo">Agregar cargo</string>
+
     <!-- Strings para Asignatura -->
     <string name="AppBarAddAsignatura">Agregar asignatura</string>
     <string name="CodigoAsignatura">Código: </string>
     <string name="CodDptoAsignauta">Depatamento: </string>
     <string name="NombreAsignatura">Nombre: </string>
     <string name="AppBarNameAsignaturas">Asignaturas</string>
+
     <!-- Strings para Primera Revisión -->
     <string name="AppBarNamePrimerRevision">Primera revisión</string>
 
@@ -69,4 +78,9 @@
     <string name="apellido_alumno_list">ApellidoResult</string>
     <string name="carrera_alumno">Carrera: </string>
     <string name="carrera_alumno_list">CarreraResult</string>
+
+    <!-- Strings para Ciclo -->
+    <string name="IDLocal">Identificador: </string>
+
+    <!-- Strings para Local -->
 </resources>

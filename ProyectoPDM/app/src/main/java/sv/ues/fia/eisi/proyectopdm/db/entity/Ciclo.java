@@ -18,8 +18,7 @@ public class Ciclo {
     private String fechaHasta;
     private int nomCiclo;
 
-    public Ciclo(int idCiclo, String fechaDesde, String fechaHasta, int nomCiclo) {
-        this.idCiclo = idCiclo;
+    public Ciclo(String fechaDesde, String fechaHasta, int nomCiclo) {
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
         this.nomCiclo = nomCiclo;

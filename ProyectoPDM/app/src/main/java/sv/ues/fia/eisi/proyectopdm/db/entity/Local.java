@@ -19,7 +19,7 @@ public class Local {
     private double latitud;
     private double longitud;
 
-    public Local(String idLocal, String nombreLocal, String ubicacion, double latitud, double longitud) {
+    public Local(@NonNull String idLocal, String nombreLocal, String ubicacion, double latitud, double longitud) {
         this.idLocal = idLocal;
         this.nombreLocal = nombreLocal;
         this.ubicacion = ubicacion;
