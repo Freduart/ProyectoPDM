@@ -34,14 +34,14 @@ public class SolicitudImpresion {
     private int numImpresiones;
     private String detalleImpresion;
     private String resultadoImpresion;
-    private boolean estadoSolicitud;
+    private String estadoSolicitud;
     private String fechaSolicitud;
     private String documento;
 
     public SolicitudImpresion() {
     }
 
-    public SolicitudImpresion(int idImpresion, @NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, boolean estadoSolicitud, String fechaSolicitud, String documento) {
+    public SolicitudImpresion(int idImpresion, @NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, String estadoSolicitud, String fechaSolicitud, String documento) {
         this.idImpresion = idImpresion;
         this.carnetDocenteFK = carnetDocenteFK;
         this.idEncargadoFK = idEncargadoFK;
@@ -112,11 +112,11 @@ public class SolicitudImpresion {
         this.resultadoImpresion = resultadoImpresion;
     }
 
-    public boolean isEstadoSolicitud() {
+    public String getEstadoSolicitud() {
         return estadoSolicitud;
     }
 
-    public void setEstadoSolicitud(boolean estadoSolicitud) {
+    public void setEstadoSolicitud(String estadoSolicitud) {
         this.estadoSolicitud = estadoSolicitud;
     }
 
