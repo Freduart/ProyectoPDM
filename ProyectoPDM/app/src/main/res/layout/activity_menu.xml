@@ -128,7 +128,8 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/card3"
+                        android:id="@+id/cardViewCargo"
+                        android:onClick="cargoRedirect"
                         android:layout_width="50dp"
                         android:layout_height="150dp"
                         android:layout_rowWeight="1"
@@ -158,7 +159,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/CVSoliImp"
+                                android:text="@string/AppBarNameCargos"
                                 android:textAlignment="center"
                                 android:textColor="@android:color/black"
                                 android:textSize="15sp"

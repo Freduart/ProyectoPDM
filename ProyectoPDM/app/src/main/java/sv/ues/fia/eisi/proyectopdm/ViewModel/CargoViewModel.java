@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 import sv.ues.fia.eisi.proyectopdm.repository.CargoRepository;
@@ -40,5 +42,9 @@ public class CargoViewModel extends AndroidViewModel {
 
     public LiveData<List<Cargo>> getAllCargos(){
         return allCargos;
+    }
+
+    public Cargo getCargo(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return cargoRepository.obtenerCargo(id);
     }
 }

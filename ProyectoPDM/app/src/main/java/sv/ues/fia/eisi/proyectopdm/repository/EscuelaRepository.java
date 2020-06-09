@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.EscuelaDao;
@@ -38,6 +41,10 @@ public class EscuelaRepository {
 
     public void borrarTodas(){
         new DeleteAllEscuelasAsyncTask(escuelaDao).execute();
+    }
+
+    public Escuela obtenerEscuela(Integer id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerEscuelaAsyncTask(escuelaDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     public LiveData<List<Escuela>> getAllEscuelas() {
@@ -104,6 +111,18 @@ public class EscuelaRepository {
         protected Void doInBackground(Void... voids) {
             escuelaDao.borrarEscuelas();
             return null;
+        }
+    }
+
+    private static class obtenerEscuelaAsyncTask extends AsyncTask<Integer, Void, Escuela>{
+        private  EscuelaDao escuelaDao;
+
+        private obtenerEscuelaAsyncTask(EscuelaDao escuelaDao) {
+            this.escuelaDao = escuelaDao;
+        }
+        @Override
+        protected Escuela doInBackground(Integer... escuelas) {
+            return escuelaDao.obtenerEscuela(escuelas[0]);
         }
     }
 }

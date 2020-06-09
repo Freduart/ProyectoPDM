@@ -44,9 +44,10 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //Redirect de btnEditable2
-    public void Redirect2(View view){
-
+    //Redirect de btnCargo_menu
+    public void cargoRedirect(View view){
+        Intent intent = new Intent(this, CargoActivity.class);
+        startActivity(intent);
     }
 
     //Redirect de btnEditable3
