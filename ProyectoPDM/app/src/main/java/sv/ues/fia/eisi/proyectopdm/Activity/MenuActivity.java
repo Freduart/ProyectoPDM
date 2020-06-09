@@ -39,8 +39,9 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     //Redirect de btnEditable1
-    public void Redirect(View view){
-
+    public void evaluacionRedirect(View view){
+        Intent intent=new Intent(this, EvaluacionActivity.class);
+        startActivity(intent);
     }
 
     //Redirect de btnEditable2

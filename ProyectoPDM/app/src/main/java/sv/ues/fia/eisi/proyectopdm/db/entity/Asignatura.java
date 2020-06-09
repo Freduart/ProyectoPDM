@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.lang.reflect.Type;
+
 @Entity(tableName = "Asignatura")
 public class Asignatura {
 
@@ -49,5 +51,11 @@ public class Asignatura {
 
     public void setNomasignatura(String nomasignatura) {
         this.nomasignatura = nomasignatura;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return codigoAsignatura + " - " + nomasignatura;
     }
 }

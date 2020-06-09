@@ -1,8 +1,10 @@
 package sv.ues.fia.eisi.proyectopdm.db.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Entity(tableName = "TipoEvaluacion")
@@ -32,5 +34,11 @@ public class TipoEvaluacion {
 
     public void setTipoEvaluacion(String tipoEvaluacion) {
         this.tipoEvaluacion = tipoEvaluacion;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return idTipoEvaluacion + ". " + tipoEvaluacion;
     }
 }

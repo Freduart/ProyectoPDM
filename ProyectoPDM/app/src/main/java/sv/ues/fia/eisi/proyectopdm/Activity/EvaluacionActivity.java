@@ -25,6 +25,11 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
 public class EvaluacionActivity extends AppCompatActivity {
+    public static final int AÑADIR_EVALUACION = 1;
+    public static final int EDITAR_EVALUACION = 2;
+    public static final String OPERACION_EVALUACION = "Operacion_AE_Evaluacion";
+    public static final String IDENTIFICADOR_EVALUACION = "ID_Evaluacion_Actual";
+
     private EvaluacionViewModel EvaluacionVM;
     private String identificador;
 
@@ -41,7 +46,9 @@ public class EvaluacionActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //intent hacia nueva evaluacion activity
-                    Intent intent = new Intent(EvaluacionActivity.this, NuevaEvaluacionActivity.class);
+                    Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
+                    //añadir extra que definirá si añade o edita
+                    intent.putExtra(OPERACION_EVALUACION, AÑADIR_EVALUACION);
                     //iniciar activity
                     startActivity(intent);
                 }
@@ -79,7 +86,7 @@ public class EvaluacionActivity extends AppCompatActivity {
                     //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
                     Intent intent = new Intent(EvaluacionActivity.this, VerEvaluacionActivity.class);
                     //se mete en un extra del intent, el id
-                    intent.putExtra("ID_Evaluacion_Actual", id);
+                    intent.putExtra(IDENTIFICADOR_EVALUACION, id);
                     //inicia la activity
                     startActivity(intent);
                 }
@@ -108,11 +115,30 @@ public class EvaluacionActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_opciones_cargo, null);
-        ImageButton eliminar = (ImageButton) view.findViewById(R.id.imBEliminarCargo);
-        TextView textViewv = (TextView) view.findViewById(R.id.tvADCargo);
+        ImageButton editar = view.findViewById(R.id.imBEditarCargo) ;
+        ImageButton eliminar = view.findViewById(R.id.imBEliminarCargo);
+        TextView textViewv = view.findViewById(R.id.tvADCargo);
         textViewv.setText(evaluacion.getNomEvaluacion());
         builder.setView(view);
         alertDialog = builder.create();
+        editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    //guardar id de evaluacion que se tocó
+                    int id = evaluacion.getIdEvaluacion();
+                    //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                    Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
+                    //se mete en un extra del intent, el id
+                    intent.putExtra(IDENTIFICADOR_EVALUACION, id);
+                    intent.putExtra(OPERACION_EVALUACION, EDITAR_EVALUACION);
+                    //inicia la activity
+                    startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText(EvaluacionActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

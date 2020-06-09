@@ -181,12 +181,12 @@ public abstract class DataBase extends RoomDatabase {
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(1, "Ordinario"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(2, "Repetido"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion(3, "Diferido"));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DS115","asd","111111","111111","asdfaDSASFD","111111",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DSI115","Parcial de prueba","11/11/2000","12/12/2005","descripción de parcial de prueba","Sin Fecha",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DSI115","Actividad de prueba","11/11/2000","10/12/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DSI115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI1",1,"DSI115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
             cargoDao.insertCargo(new Cargo(1, 1, "Director"));
             cargoDao.insertCargo(new Cargo(2, 1, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
             cargoDao.insertCargo(new Cargo(3, 1, "Jefe de Dpto. de Programación y Manejo de datos"));

@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Entity(tableName = "Docente")
@@ -81,5 +82,11 @@ public class Docente {
 
     public void setTelefonoDocente(String telefonoDocente) {
         this.telefonoDocente = telefonoDocente;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return carnetDocente + " - " + nomDocente + " " + apellidoDocente;
     }
 }
