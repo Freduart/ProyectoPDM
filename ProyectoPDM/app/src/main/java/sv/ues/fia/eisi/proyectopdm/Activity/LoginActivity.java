@@ -13,6 +13,10 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
+/*
+Login sin restriccion de acceso... De momento
+ */
+
 public class LoginActivity extends AppCompatActivity {
     EditText email, pass;
     @Override
@@ -25,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         pass = (EditText) findViewById(R.id.etPassword);
     }
     public void Login(View view){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         try {
             startActivity(intent);
         }catch (Exception e){

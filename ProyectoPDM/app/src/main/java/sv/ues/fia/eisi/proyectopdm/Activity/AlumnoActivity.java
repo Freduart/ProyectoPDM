@@ -23,6 +23,10 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
+/*
+Funcionalidad de Alumno enlace con sus pantallas correspondientes
+ */
+
 public class AlumnoActivity extends AppCompatActivity {
     private AlumnoViewModel alumnoViewModel;
 
