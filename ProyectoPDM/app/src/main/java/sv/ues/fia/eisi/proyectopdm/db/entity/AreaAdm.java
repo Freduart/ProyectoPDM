@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.db.entity;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -20,8 +21,7 @@ public class AreaAdm {
     private String nomDepartamento;
 
 
-    public AreaAdm(int idDeptarmento, int idEscuelaFK, String nomDepartamento) {
-        this.idDeptarmento = idDeptarmento;
+    public AreaAdm(int idEscuelaFK, String nomDepartamento) {
         this.idEscuelaFK = idEscuelaFK;
         this.nomDepartamento = nomDepartamento;
     }

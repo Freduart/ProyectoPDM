@@ -10,10 +10,11 @@ public class Escuela {
     @PrimaryKey(autoGenerate = true)
     private int idEscuela;
     private String nomEscuela;
+    private String carrera;
 
-    public Escuela(int idEscuela, String nomEscuela) {
-        this.idEscuela = idEscuela;
+    public Escuela(String nomEscuela,String carrera) {
         this.nomEscuela = nomEscuela;
+        this.carrera=carrera;
     }
 
     public int getIdEscuela() {
@@ -30,5 +31,13 @@ public class Escuela {
 
     public void setNomEscuela(String nomEscuela) {
         this.nomEscuela = nomEscuela;
+    }
+
+    public String getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
     }
 }

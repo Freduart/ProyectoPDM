@@ -14,8 +14,7 @@ public class TipoEvaluacion {
     private int idTipoEvaluacion;
     private String tipoEvaluacion;
 
-    public TipoEvaluacion(int idTipoEvaluacion, String tipoEvaluacion) {
-        this.idTipoEvaluacion = idTipoEvaluacion;
+    public TipoEvaluacion(String tipoEvaluacion) {
         this.tipoEvaluacion = tipoEvaluacion;
 
     }

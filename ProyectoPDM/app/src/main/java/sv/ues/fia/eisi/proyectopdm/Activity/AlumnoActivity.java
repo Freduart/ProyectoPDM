@@ -1,6 +1,8 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -49,5 +51,15 @@ public class AlumnoActivity extends AppCompatActivity {
                         adapter.setAlumnos(alumnos);
                     }
         });
+    }
+
+    public void addAlumno(View view){
+        try{
+            Intent intent=new Intent(this,AgregarAlumnoActivity.class);
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, "Algo salio mal"+e, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

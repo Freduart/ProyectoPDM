@@ -82,6 +82,14 @@
     <string name="carrera_alumno">Carrera: </string>
     <string name="carrera_alumno_list">CarreraResult</string>
 
+    <!-- Strings para Agregar Alumno -->
+    <string name="carnet_addhint_Alumno">DUE</string>
+    <string name="nombre_addhint_Alumno">Nombre</string>
+    <string name="apellidos_addhint_Alumno">Apellidos</string>
+    <string name="carrera_addhint_Alumno">Carrera</string>
+    <string name="correo_addhint_Alumno">Correo</string>
+
+
     <!-- Strings para Ciclo -->
     <string name="IDCiclo">Correlativo: </string>
     <string name="fechaDesde">Fecha de Inicio: </string>

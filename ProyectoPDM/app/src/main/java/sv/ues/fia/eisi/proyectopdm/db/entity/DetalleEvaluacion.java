@@ -29,8 +29,7 @@ public class DetalleEvaluacion {
     private double nota;
 
 
-    public DetalleEvaluacion(int idDetalleEv, int idEvaluacionFK, String carnetAlumnoFK, double nota) {
-        this.idDetalleEv = idDetalleEv;
+    public DetalleEvaluacion(int idEvaluacionFK, String carnetAlumnoFK, double nota) {
         this.idEvaluacionFK = idEvaluacionFK;
         this.carnetAlumnoFK = carnetAlumnoFK;
         this.nota = nota;

@@ -23,7 +23,6 @@ public class Alumno {
     private String correo;
 
 
-
     public Alumno(@NonNull String carnetAlumno, String nombre, String apellido, String carrera, String correo) {
         this.carnetAlumno = carnetAlumno;
         this.nombre = nombre;
