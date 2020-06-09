@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activity.MenuActivity">
 
-
-    <!-- Menu para aplicacion se debe de redireccionar segun usuario -->
-    <!-- Cada uno de los botones debe ser editado a gusto para seleccionar las opciones correspondientes
-     en este caso se esta usando para probar los mantenimientos de las tablas -->
     <LinearLayout
         android:id="@+id/LLp"
         android:layout_width="match_parent"
@@ -32,8 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:orientation="vertical">
 
                 <GridLayout
                     android:layout_width="match_parent"
@@ -72,17 +67,18 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:background="@drawable/materias"
-                                android:contentDescription="@string/CD" />
+                                android:contentDescription="@string/CD"
+                                android:src="@drawable/materias" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="@string/btnAlumno_menu"
+                                android:text="Alumno"
+                                android:textAlignment="center"
                                 android:textColor="@android:color/black"
                                 android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:gravity="center_horizontal" />
 
                         </LinearLayout>
 
@@ -114,16 +110,17 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:background="@drawable/solicitud"/>
+                                android:src="@drawable/solicitud" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/btnEditable1"
-                                android:gravity="center"
+                                android:text="@string/CVSoliImp"
+                                android:textAlignment="center"
                                 android:textColor="@android:color/black"
                                 android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:gravity="center_horizontal" />
 
                         </LinearLayout>
 
@@ -155,16 +152,17 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:background="@drawable/solicitud"/>
+                                android:src="@drawable/solicitud" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/btnEditable2"
-                                android:gravity="center"
+                                android:text="@string/CVSoliImp"
+                                android:textAlignment="center"
                                 android:textColor="@android:color/black"
                                 android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:gravity="center_horizontal" />
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -195,26 +193,24 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:background="@drawable/solicitud"/>
+                                android:src="@drawable/solicitud" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/btnEditable3"
-                                android:gravity="center"
+                                android:text="@string/CVSoliImp"
+                                android:textAlignment="center"
                                 android:textColor="@android:color/black"
                                 android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:gravity="center_horizontal" />
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
 
                 </GridLayout>
 
-
             </LinearLayout>
         </ScrollView>
-
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
