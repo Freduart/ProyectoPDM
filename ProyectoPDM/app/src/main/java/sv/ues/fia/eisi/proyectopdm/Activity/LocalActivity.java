@@ -36,23 +36,33 @@ public class LocalActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Lista de Locales");
 
+        //Inicializando RecyclerView
         final RecyclerView LocalRecycler = findViewById(R.id.recycler_local_view);
+        //Asignando Layout
         LocalRecycler.setLayoutManager(new LinearLayoutManager(this));
+        //Asignando tamaño al RecyclerView
         LocalRecycler.setHasFixedSize(true);
 
+        //Inicializando adaptador para RecyclerView
         final LocalAdapter adaptador = new LocalAdapter();
+        //Asignando adaptador
         LocalRecycler.setAdapter(adaptador);
 
         try{
+            //Inicializando ViewModel
             LocalVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LocalViewModel.class);
+            //Obtiene la lista de Locales en un LiveData
             LocalVM.getAllLocales().observe(this, new Observer<List<Local>>() {
                 @Override
                 public void onChanged(final List<Local> locals) {
+                    //Asigna los locales extraídos al adaptador
                     adaptador.setLocales(locals);
                     adaptador.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //Obtiene código del Local seleccionado y lo asigna a un string
                             cod=String.valueOf(locals.get(LocalRecycler.getChildAdapterPosition(v)).getIdLocal());
+                            //Obtiene local actual
                             localAt=adaptador.getLocalAt(LocalRecycler.getChildAdapterPosition(v));
                             createCustomDialog().show();
                         }
@@ -77,6 +87,7 @@ public class LocalActivity extends AppCompatActivity {
         builder.setView(v);
         alertDialog=builder.create();
 
+        //Botón Ver: Redirige a VerLocalActivity.
         ver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +101,7 @@ public class LocalActivity extends AppCompatActivity {
             }
         });
 
+        //Botón Borrar: Borra el local seleccionado.
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

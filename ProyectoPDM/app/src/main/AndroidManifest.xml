@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sv.ues.fia.eisi.proyectopdm">
+    package="sv.ues.fia.eisi.proyectopdm" >
 
     <application
         android:allowBackup="true"
@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Activity.VerLocalActivity"></activity>
+        android:theme="@style/AppTheme" >
+        <activity android:name=".Activity.VerCicloActivity" >
+        </activity>
+        <activity android:name=".Activity.VerLocalActivity" />
         <activity android:name=".Activity.CargoActivity" />
         <activity android:name=".Activity.AsignaturaActivity" />
         <activity android:name=".Activity.NuevaEvaluacionActivity" />
@@ -19,7 +21,7 @@
         <activity android:name=".Activity.LocalActivity" />
         <activity android:name=".Activity.EvaluacionActivity" />
         <activity android:name=".Activity.AlumnoActivity" />
-        <activity android:name=".Activity.LoginActivity">
+        <activity android:name=".Activity.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

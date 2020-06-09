@@ -80,6 +80,10 @@
     <string name="carrera_alumno_list">CarreraResult</string>
 
     <!-- Strings para Ciclo -->
+    <string name="IDCiclo">Correlativo: </string>
+    <string name="fechaDesde">Fecha de Inicio: </string>
+    <string name="fechaHasta">Fecha de Finalización: </string>
+    <string name="nomCiclo">Ciclo N°: </string>
 
     <!-- Strings para Local -->
     <string name="IDLocal">Identificador: </string>
