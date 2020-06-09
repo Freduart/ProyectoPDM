@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.NuevoLocalActivity"></activity>
+        <activity android:name=".Activity.VerSolicitudExtraordinarioActivity"></activity>
+        <activity android:name=".Activity.SolicitudExtraordinarioActivity" />
+        <activity android:name=".Activity.NuevoLocalActivity" />
         <activity android:name=".Activity.NuevoCicloActivity" />
         <activity android:name=".Activity.VerCicloActivity" />
         <activity android:name=".Activity.VerLocalActivity" />

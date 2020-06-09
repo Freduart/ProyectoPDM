@@ -44,7 +44,7 @@ public class LocalActivity extends AppCompatActivity {
         botonNuevoLocal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //intent hacia nueva evaluacion activity
+                //intent hacia nuevo Local activity
                 Intent intent = new Intent(LocalActivity.this, NuevoLocalActivity.class);
                 //iniciar activity
                 startActivity(intent);

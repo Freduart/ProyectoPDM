@@ -46,7 +46,7 @@ public class CicloActivity extends AppCompatActivity {
         botonNuevoCiclo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //intent hacia nueva evaluacion activity
+                //intent hacia nuevo ciclo activity
                 Intent intent = new Intent(CicloActivity.this, NuevoCicloActivity.class);
                 //iniciar activity
                 startActivity(intent);
