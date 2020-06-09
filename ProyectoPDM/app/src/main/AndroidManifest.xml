@@ -21,6 +21,7 @@
         <activity android:name=".Activity.LocalActivity" />
         <activity android:name=".Activity.EvaluacionActivity" />
         <activity android:name=".Activity.AlumnoActivity" />
+        <activity android:name=".Activity.MenuActivity"/>
         <activity android:name=".Activity.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

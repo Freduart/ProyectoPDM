@@ -91,4 +91,10 @@
     <string name="ubicacionLocal">Ubicación del Local: </string>
     <string name="latLocal">Latitud: </string>
     <string name="lonLocal">Longitud: </string>
+
+    <!-- Strings para activity_menu -->
+    <string name="btnAlumno_menu">Alumnos</string>
+    <string name="btnEditable1">Prueba</string>
+    <string name="btnEditable2">Prueba</string>
+    <string name="btnEditable3">Prueba</string>
 </resources>
