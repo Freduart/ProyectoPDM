@@ -99,6 +99,7 @@ public class CicloActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.dialog_opciones_ciclo, null);
         ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerCiclo);
         ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminarCiclo);
+        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditarCiclo);
         TextView tv = (TextView) v.findViewById(R.id.tvADCiclo);
         tv.setText(cod);
         builder.setView(v);
@@ -127,6 +128,21 @@ public class CicloActivity extends AppCompatActivity {
                     CicloVM.deleteCiclo(cicloAt);
                     Toast.makeText(CicloActivity.this, "Local" + " " + cicloAt.getIdCiclo() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
+                }catch (Exception e){
+                    Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //Botón edit: Redirige a EditarCicloActivity
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int id = cicloAt.getIdCiclo();
+                    Intent intent = new Intent(CicloActivity.this, EditarCicloActivity.class);
+                    intent.putExtra("ID Ciclo Actual", id);
+                    startActivity(intent);
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }

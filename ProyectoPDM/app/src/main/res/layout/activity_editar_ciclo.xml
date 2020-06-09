@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.EditarCicloActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editN_nombre_ciclo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nomCiclo"
+            android:inputType="number"
+            android:maxLength="1"
+            app:layout_constraintTop_toBottomOf="parent"
+            tools:ignore="Autofill"
+            />
+
+        <TextView
+            android:id="@+id/fechaInicioCicloLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fechaDesde"
+            app:layout_constraintTop_toBottomOf="@+id/editN_nombre_ciclo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <DatePicker
+            android:id="@+id/editN_fechaInicio_ciclo"
+            app:layout_constraintTop_toBottomOf="@+id/fechaInicioCicloLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            />
+        <TextView
+            android:id="@+id/fechaFinCicloLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fechaHasta"
+            app:layout_constraintTop_toBottomOf="@+id/editN_fechaInicio_ciclo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <DatePicker
+            android:id="@+id/editN_fechaFin_ciclo"
+            app:layout_constraintTop_toBottomOf="@+id/fechaFinCicloLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            />
+
+    </TableLayout>
+</ScrollView>

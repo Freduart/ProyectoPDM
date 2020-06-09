@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.NuevoLocalActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editN_id_Local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/IDLocal"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="parent"
+            tools:ignore="Autofill"
+            />
+
+        <EditText
+            android:id="@+id/editN_nombre_Local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nomLocal"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/editN_id_Local"
+            tools:ignore="Autofill"
+            />
+
+        <EditText
+            android:id="@+id/editN_ubicacion_Local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ubicacionLocal"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/editN_nombre_Local"
+            tools:ignore="Autofill"
+            />
+
+        <EditText
+            android:id="@+id/editN_latitud_Local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/latLocal"
+            android:inputType="numberDecimal|numberSigned"
+            app:layout_constraintTop_toBottomOf="@id/editN_ubicacion_Local"
+            tools:ignore="Autofill"
+            />
+
+        <EditText
+            android:id="@+id/editN_longitud_Local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lonLocal"
+            android:inputType="numberSigned|numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/editN_latitud_Local"
+            tools:ignore="Autofill"
+            />
+    </TableLayout>
+</ScrollView>

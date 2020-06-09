@@ -97,6 +97,7 @@ public class LocalActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.dialog_opciones_local, null);
         ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerLocal);
         ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminarLocal);
+        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditarLocal);
         TextView tv = (TextView) v.findViewById(R.id.tvADLocal);
         tv.setText(cod);
         builder.setView(v);
@@ -125,6 +126,20 @@ public class LocalActivity extends AppCompatActivity {
                     Toast.makeText(LocalActivity.this, "Local" + " " + localAt.getIdLocal() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
+                    Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //Botón edit: Redirige a EditarLocalActivity
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(LocalActivity.this, EditarLocalActivity.class);
+                    intent.putExtra("ID Local Actual", cod);
+                    startActivity(intent);
+                }catch(Exception e){
                     Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }
             }
