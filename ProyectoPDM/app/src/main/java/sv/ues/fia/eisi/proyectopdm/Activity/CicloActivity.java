@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.CicloAdapter;
@@ -33,8 +35,23 @@ public class CicloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciclo);
 
+        //Inicializa variable de Barra de Acción (Barra Superior)
         ActionBar actionBar = getSupportActionBar();
+        //Título personalizado para Activity
         actionBar.setTitle("Ciclos Académicos");
+
+        //Para Agregar Ciclo: Inicializa botón flotante de acción
+        FloatingActionButton botonNuevoCiclo = findViewById(R.id.add_ciclo_button);
+        //al hacer un clic corto
+        botonNuevoCiclo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //intent hacia nueva evaluacion activity
+                Intent intent = new Intent(CicloActivity.this, NuevoCicloActivity.class);
+                //iniciar activity
+                startActivity(intent);
+            }
+        });
 
         //Incializando RecyclerView
         final RecyclerView CicloRecycler = findViewById(R.id.recycler_ciclo_view);
@@ -64,6 +81,7 @@ public class CicloActivity extends AppCompatActivity {
                             cod = String.valueOf(ciclos.get(CicloRecycler.getChildAdapterPosition(v)).getIdCiclo());
                             //Obtiene el Ciclo Seleccionado
                             cicloAt = adaptador.getCicloAt(CicloRecycler.getChildAdapterPosition(v));
+                            createCustomDialog().show();
                         }
                     });
                 }

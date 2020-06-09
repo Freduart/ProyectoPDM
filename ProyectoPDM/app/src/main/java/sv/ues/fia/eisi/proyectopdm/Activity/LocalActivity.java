@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.LocalAdapter;
@@ -35,6 +37,19 @@ public class LocalActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Lista de Locales");
+
+        //Para Agregar Local: Inicializa botón flotante de acción
+        FloatingActionButton botonNuevoLocal = findViewById(R.id.add_ciclo_button);
+        //al hacer un clic corto
+        botonNuevoLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //intent hacia nueva evaluacion activity
+                Intent intent = new Intent(LocalActivity.this, NuevoLocalActivity.class);
+                //iniciar activity
+                startActivity(intent);
+            }
+        });
 
         //Inicializando RecyclerView
         final RecyclerView LocalRecycler = findViewById(R.id.recycler_local_view);

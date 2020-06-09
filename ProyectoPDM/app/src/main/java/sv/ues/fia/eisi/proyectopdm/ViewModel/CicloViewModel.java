@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 import sv.ues.fia.eisi.proyectopdm.repository.CicloRepository;
@@ -45,7 +47,7 @@ public class CicloViewModel extends AndroidViewModel {
         return allCiclos;
     }
 
-    public Ciclo getCic(int id){
+    public Ciclo getCic(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return repository.getCiclo(id);
     }
 }

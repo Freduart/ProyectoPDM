@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.CicloDao;
@@ -48,9 +51,9 @@ public class CicloRepository {
         return allCiclos;
     }
 
-    //Obtener un ciclo
-    public Ciclo getCiclo(int id){
-        return cicloDao.obtenerCiclo(id);
+    //Obtener un ciclo de forma asíncrona
+    public Ciclo getCiclo(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerCicloAsyncTask(cicloDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
 
@@ -111,6 +114,20 @@ public class CicloRepository {
         protected Void doInBackground(Void... voids) {
             cicloDao.borrarCiclos();
             return null;
+        }
+    }
+
+    //Clase Asíncrona de Obtener 1 Ciclo
+    private static class obtenerCicloAsyncTask extends AsyncTask<Integer, Void, Ciclo>{
+        private CicloDao cicloDao;
+
+        private obtenerCicloAsyncTask(CicloDao cicloDao){
+            this.cicloDao=cicloDao;
+        }
+
+        @Override
+        protected Ciclo doInBackground(Integer... ciclos) {
+            return cicloDao.obtenerCiclo(ciclos[0]);
         }
     }
 }
