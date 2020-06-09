@@ -57,6 +57,7 @@
     <string name="IdEscuelaCargo">Escuela: </string>
     <string name="NombreCargo">Nombre: </string>
     <string name="AppBarAddCargo">Agregar cargo</string>
+    <string name="DetalleCargo">Detalle de cargo</string>
 
     <!-- Strings para Asignatura -->
     <string name="AppBarAddAsignatura">Agregar asignatura</string>
@@ -64,6 +65,7 @@
     <string name="CodDptoAsignauta">Depatamento: </string>
     <string name="NombreAsignatura">Nombre: </string>
     <string name="AppBarNameAsignaturas">Asignaturas</string>
+    <string name="DetalleAsignatura">Detalle de asignatura</string>
 
     <!-- Strings para Primera Revisión -->
     <string name="AppBarNamePrimerRevision">Primera revisión</string>

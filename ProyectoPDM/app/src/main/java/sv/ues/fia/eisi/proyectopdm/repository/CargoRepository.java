@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.CargoDao;
@@ -35,6 +38,10 @@ public class CargoRepository {
 
     public void eliminarTodas(){
         new DeleteAllCargosAsyncTask(cargoDao).execute();
+    }
+
+    public Cargo obtenerCargo(Integer integer) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerCargoAsyncTask(cargoDao).execute(integer).get(12, TimeUnit.SECONDS);
     }
 
     public LiveData<List<Cargo>> getAllCargos(){
@@ -94,6 +101,17 @@ public class CargoRepository {
         protected Void doInBackground(Void... voids) {
             cargoDao.borrarCargo();
             return null;
+        }
+    }
+    private static class  obtenerCargoAsyncTask extends AsyncTask<Integer, Void, Cargo>{
+        private CargoDao cargoDao;
+        private obtenerCargoAsyncTask(CargoDao cargoDao){
+            this.cargoDao = cargoDao;
+        }
+
+        @Override
+        protected Cargo doInBackground(Integer... cargos) {
+            return cargoDao.obtenerCargo(cargos[0]);
         }
     }
 }
