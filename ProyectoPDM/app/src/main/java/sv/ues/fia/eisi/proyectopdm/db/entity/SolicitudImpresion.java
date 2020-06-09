@@ -41,8 +41,7 @@ public class SolicitudImpresion {
     public SolicitudImpresion() {
     }
 
-    public SolicitudImpresion(int idImpresion, @NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, String estadoSolicitud, String fechaSolicitud, String documento) {
-        this.idImpresion = idImpresion;
+    public SolicitudImpresion(@NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, String estadoSolicitud, String fechaSolicitud, String documento) {
         this.carnetDocenteFK = carnetDocenteFK;
         this.idEncargadoFK = idEncargadoFK;
         DocDirector = docDirector;

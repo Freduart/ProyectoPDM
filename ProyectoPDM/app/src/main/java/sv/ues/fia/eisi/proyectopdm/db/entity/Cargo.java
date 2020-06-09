@@ -20,8 +20,7 @@ public class Cargo {
     private String nomCargo;
 
 
-    public Cargo(int idCargo, int idEscuelaFK, String nomCargo) {
-        this.idCargo = idCargo;
+    public Cargo(int idEscuelaFK, String nomCargo) {
         this.idEscuelaFK = idEscuelaFK;
         this.nomCargo = nomCargo;
     }

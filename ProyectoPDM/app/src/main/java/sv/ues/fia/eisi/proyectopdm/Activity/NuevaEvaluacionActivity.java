@@ -140,18 +140,21 @@ public class NuevaEvaluacionActivity extends AppCompatActivity {
             //---obtener valor de spinner ASIGNATURA
             String asignaturaAux1 = spinCodigoAsignaturaEvaluacion.getSelectedItem().toString();
             String[] asignaturaAux2 = asignaturaAux1.split("-");
+
             //almacenar id de ASIGNATURA
             String asignatura = asignaturaAux2[0].trim();
 
             //---obtener valor de spinner TIPO EVALUACION
             String tipoEvalAux1 = spinTipoEvaluacion.getSelectedItem().toString();
             String[] tipoEvalAux2 = tipoEvalAux1.split("-");
+
             //almacenar TIPO EVAL
             String tipoEval = tipoEvalAux2[0].trim();
 
             //---obtener valor de spinner DOCENTE
             String docenteAux1 = spinCarnetDocenteEvaluacion.getSelectedItem().toString();
             String[] docenteAux2 = docenteAux1.split("-");
+
             //almacenar DOCENTE
             String docente = docenteAux2[0].trim();
 
