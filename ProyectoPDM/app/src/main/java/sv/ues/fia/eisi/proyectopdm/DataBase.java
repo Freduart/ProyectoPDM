@@ -19,6 +19,7 @@ import sv.ues.fia.eisi.proyectopdm.dao.EncargadoImpresionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.EscuelaDao;
 import sv.ues.fia.eisi.proyectopdm.dao.InscripcionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.LocalDao;
+import sv.ues.fia.eisi.proyectopdm.dao.SegundaRevisionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SegundaRevision_DocenteDao;
 import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SolicitudExtraordinarioDao;
@@ -77,6 +78,7 @@ public abstract class DataBase extends RoomDatabase {
     public abstract SolicitudExtraordinarioDao solicitudExtraordinarioDao();
     public abstract EvaluacionDao evaluacionDao();
     public abstract SolicitudImpresionDao solicitudImpresionDao();
+    public abstract SegundaRevisionDao segundaRevisionDao();
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
         es util para cuando todos los usuarios esten usando la misma instancia
@@ -119,6 +121,7 @@ public abstract class DataBase extends RoomDatabase {
         private SolicitudExtraordinarioDao solicitudExtraordinarioDao;
         private EvaluacionDao evaluacionDao;
         private SolicitudImpresionDao solicitudImpresionDao;
+        private SegundaRevisionDao segundaRevisionDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
@@ -135,6 +138,7 @@ public abstract class DataBase extends RoomDatabase {
             solicitudExtraordinarioDao=db.solicitudExtraordinarioDao();
             evaluacionDao=db.evaluacionDao();
             solicitudImpresionDao=db.solicitudImpresionDao();
+            segundaRevisionDao=db.segundaRevisionDao();
         }
 
         @Override
