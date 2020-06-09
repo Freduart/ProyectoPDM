@@ -14,19 +14,19 @@ import sv.ues.fia.eisi.proyectopdm.R;
 
 public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdapter.ViewHolderArchivos> implements View.OnClickListener{
 
-    ArrayList<String> listaDocumentos;
+    ArrayList<String> listaDocumentos=new ArrayList<>();
     private View.OnClickListener listener;
 
-    public ListaArchivosAdapter(ArrayList<String> listaDocumentos) {
+    public void setListaDocumentos(ArrayList<String> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
     }
 
     @NonNull
     @Override
-    public ListaArchivosAdapter.ViewHolderArchivos onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_archivos_impresion,null,false);
-        view.setOnClickListener(this);
-        return new ViewHolderArchivos(view);
+    public ViewHolderArchivos onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_archivos_impresion,parent,false);
+        itemView.setOnClickListener(this);
+        return new ViewHolderArchivos(itemView);
     }
 
     @Override

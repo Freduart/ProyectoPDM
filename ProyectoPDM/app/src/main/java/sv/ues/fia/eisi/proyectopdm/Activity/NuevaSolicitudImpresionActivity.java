@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -59,6 +60,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     String[] uploadFilePath={};
     ArrayList<String> listaDocumentos;
     RecyclerView recyclerDocumentos;
+    ListaArchivosAdapter listaArchivosAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +71,13 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones);
         text_anexos=(TextInputLayout)findViewById(R.id.text_anexos);
         FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
+        listaDocumentos=new ArrayList<>();
         //RecyclerView
         recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos);
         recyclerDocumentos.setLayoutManager(new LinearLayoutManager(this));
+        recyclerDocumentos.setHasFixedSize(true);
+        listaArchivosAdapter=new ListaArchivosAdapter();
+        recyclerDocumentos.setAdapter(listaArchivosAdapter);
         //Boton AÑADIR
         btnAñadirDocumento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,14 +111,15 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         if (requestCode == PICK_DOCUMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 documentUri = data.getData();
-                String path = getPathMethod(getApplicationContext(), documentUri);
+                String path = getPathMethod(this, documentUri);
+                Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                 if (path == null) {
                     Toast.makeText(this, "Archivo No Encontrado...", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                     //Actualizamos la lista de documentos con el Adapter.
                     listaDocumentos.add(path);
-                    ListaArchivosAdapter listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
+                    /*listaArchivosAdapter.setListaDocumentos(listaDocumentos);
                     //Ponemos a la escucha cada item agregado
                     listaArchivosAdapter.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -122,8 +129,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                             nombreDocumento=getFileName(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)));
                             createCustomDialog().show();
                         }
-                    });
-                    recyclerDocumentos.setAdapter(listaArchivosAdapter);
+                    });*/
                     uploadFilePath[contFiles] = path;
                     contFiles+=1;
                 }

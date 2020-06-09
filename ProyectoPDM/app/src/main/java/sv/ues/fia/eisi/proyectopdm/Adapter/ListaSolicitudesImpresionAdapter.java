@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
@@ -15,7 +16,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
 public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes> implements View.OnClickListener{
 
-    List<SolicitudImpresion> listaSolicitudesImpresion;
+    List<SolicitudImpresion> listaSolicitudesImpresion = new ArrayList<>();
     View.OnClickListener listener;
 
     public void setOnClickListener(View.OnClickListener listener) {
@@ -28,10 +29,10 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
 
     @NonNull
     @Override
-    public ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_soliticud_impresion,null,false);
-        view.setOnClickListener(this);
-        return new ViewHolderSolicitudes(view);
+    public ViewHolderSolicitudes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_soliticud_impresion,parent,false);
+        itemView.setOnClickListener(this);
+        return new ViewHolderSolicitudes(itemView);
     }
 
     @Override

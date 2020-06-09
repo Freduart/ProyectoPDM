@@ -27,11 +27,20 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 11;
     public static final int RESULT_CODE = 12;
     private SolicitudImpresionViewModel solicitudImpresionViewModel;
-
+    private ListaSolicitudesImpresionAdapter listaSolicitudesImpresionAdapter;
+    private RecyclerView recyclerSolicitudImpresiones;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud_impresion);
+
+        recyclerSolicitudImpresiones=(RecyclerView)findViewById(R.id.recycler_lista_solicitudes);
+        recyclerSolicitudImpresiones.setLayoutManager(new LinearLayoutManager(this));
+        recyclerSolicitudImpresiones.setHasFixedSize(true);
+        //AdapterSolicitudesimpresion
+        listaSolicitudesImpresionAdapter=new ListaSolicitudesImpresionAdapter();
+        recyclerSolicitudImpresiones.setAdapter(listaSolicitudesImpresionAdapter);
+
         FloatingActionButton nuevaSolicitud=(FloatingActionButton)findViewById(R.id.nuevaSolicitudImpresion);
         nuevaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,13 +49,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 startActivity(nuevaSolicitud);
             }
         });
-        final RecyclerView recyclerSolicitudes=(RecyclerView)findViewById(R.id.recycler_lista_solicitudes);
-        recyclerSolicitudes.setLayoutManager(new LinearLayoutManager(this));
-        recyclerSolicitudes.setHasFixedSize(true);
-        //AdapterSolicitudesimpresion
-        final ListaSolicitudesImpresionAdapter listaSolicitudesImpresionAdapter=new ListaSolicitudesImpresionAdapter();
-        recyclerSolicitudes.setAdapter(listaSolicitudesImpresionAdapter);
-
+/*
         try{
             solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
             solicitudImpresionViewModel.getAllSolicitudesImpresion().observe(this, new Observer<List<SolicitudImpresion>>() {
@@ -63,7 +66,8 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             });
         }catch (Exception e){
             Toast.makeText(this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
-        }
+        }*/
+
         /*ListaSolicitudesImpresion listaSolicitudesImpresion=new ListaSolicitudesImpresion();
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
