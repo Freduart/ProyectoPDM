@@ -43,13 +43,29 @@
     <string name="fechaInicio_eval">Fecha de inicio de evaluación</string>
     <string name="fechaFin_eval">Fecha de fin de evaluación</string>
     <string name="descripcion_eval">Descripción de evaluación</string>
-    <string name="entregaNotas_eval">Fecha de entrega de notas </string>
+    <string name="entregaNotas_eval">Fecha de entrega de notas</string>
     <string name="participantes_eval">Participantes de evaluación</string>
     <string name="titulo_nueva_eval">Nueva evaluación</string>
     <string name="carnet_docente_eval">Docente encargado</string>
     <string name="codigo_asignatura_eval">Asignatura</string>
     <string name="titulo_EA_editarEval">Editar evaluación</string>
     <string name="titulo_EA_nuevaEval">Añadir evaluación</string>
+    <string name="titulo_ver_eval">Detalle de evaluación</string>
+    <string name="inic_notif_eval">La evaluación \u0020</string>
+    <string name="accion_borrar_notif_eval">\u0020 ha sido borrada con éxito.</string>
+    <string name="accion_actualizar_notif_eval">\u0020 ha sido actualizada.</string>
+    <string name="accion_insertar_notif_eval">\u0020 se ha insertado con éxito.</string>
+    <string name="fecha_placeholder_eval">Sin Fecha</string>
+    <string name="error_form_incompleto_eval">Por favor, llena todos los campos.</string>
+
+    <!-- Strings para Area Administrativa -->
+    <string name="nombre_area">Nombre de área administrativa</string>
+    <string name="escuela_area_adm">Escuela del área administrativa</string>
+    <string name="area_adm">Áreas administrativas</string>
+    <string name="titulo_EA_editararea">Editar área administrativa</string>
+    <string name="titulo_EA_nuevaarea">Añadir área administrativa</string>
+    <string name="titulo_ver_area">Detalle de área administrativa</string>
+    <string name="inic_notif_aarea">El área \u0020</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>

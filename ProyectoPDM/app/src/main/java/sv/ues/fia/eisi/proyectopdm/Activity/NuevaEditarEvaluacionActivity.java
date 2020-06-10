@@ -39,8 +39,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 
 public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
-    public static final String ENTREGA_NOTAS_PLACEHOLDER = "Sin Fecha";
-
+    public final String ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
     private EditText editNombreEvaluacion;
     private Spinner spinTipoEvaluacion;
     private Spinner spinCarnetDocenteEvaluacion;
@@ -119,7 +118,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     }
                 }
             });
-            //--fin llenado spinner asignatura extras.getInt(EvaluacionActivity.OPERACION_EVALUACION)
+            //--fin llenado spinner asignatura
 
             //Spinner Tipo evaluacion
             final ArrayList<TipoEvaluacion> tipoEvaluacionesNom = new ArrayList<>();
@@ -257,21 +256,12 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
 
             //---obtener valor de spinner ASIGNATURA
             Asignatura asignaturaAux1 = (Asignatura) spinCodigoAsignaturaEvaluacion.getSelectedItem();
-            //String[] asignaturaAux2 = asignaturaAux1.split("-");
-            //almacenar id de ASIGNATURA
-            //String asignatura = asignaturaAux2[0].trim();
 
             //---obtener valor de spinner TIPO EVALUACION
             TipoEvaluacion tipoEvalAux1 = (TipoEvaluacion) spinTipoEvaluacion.getSelectedItem();
-            //String[] tipoEvalAux2 = tipoEvalAux1.split("-");
-            //almacenar TIPO EVAL
-            //String tipoEval = tipoEvalAux2[0].trim();
 
             //---obtener valor de spinner DOCENTE
             Docente docenteAux1 = (Docente) spinCarnetDocenteEvaluacion.getSelectedItem();
-            //String[] docenteAux2 = docenteAux1.split("-");
-            //almacenar DOCENTE
-            //String docente = docenteAux2[0].trim();
 
             //---obtener valor de datepicker FECHA INICIO evaluacion
             StringBuilder fechInBuilder = new StringBuilder(10);
@@ -301,7 +291,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             String participantes = editNumParticipantesEvaluacion.getText().toString();
 
             if(nombre.trim().isEmpty() || descripcion.trim().isEmpty() || participantes.trim().isEmpty()){
-                Toast.makeText(this,"Por favor, llena todos los campos.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,getText(R.string.error_form_incompleto_eval), Toast.LENGTH_LONG).show();
                 return;
             }            //instancia View Model de evaluacion
             evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
@@ -319,15 +309,17 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     aux.setIdEvaluacion(idEvaluacion);
                     //insertar
                     evaluacionViewModel.updateEval(aux);
+                    //convertir a string
+                    String idEval = aux.getIdEvaluacion() + "";
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
-                    Toast.makeText(NuevaEditarEvaluacionActivity.this, "actualizado con éxito: " + nombre + "-" + fechaInicio + "-" + fechaFin + "-" + descripcion + "-" + participantes, Toast.LENGTH_LONG).show();
+                    Toast.makeText(NuevaEditarEvaluacionActivity.this, getText(R.string.inic_notif_eval) + idEval + "-" + nombre + getText(R.string.accion_actualizar_notif_eval), Toast.LENGTH_LONG).show();
                 } else if (operacionEv == EvaluacionActivity.AÑADIR_EVALUACION && idEvaluacion == 0) {
                     //Objeto Evaluación auxiliar construido a partir de los datos almacenados
                     Evaluacion aux = new Evaluacion(docenteAux1.getCarnetDocente(),tipoEvalAux1.getIdTipoEvaluacion(),asignaturaAux1.getCodigoAsignatura(),nombre,fechaInicio,fechaFin,descripcion,ENTREGA_NOTAS_PLACEHOLDER,Integer.parseInt(participantes));
                     //insertar
                     evaluacionViewModel.insertEval(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
-                    Toast.makeText(NuevaEditarEvaluacionActivity.this, "insertado con éxito: " + nombre  + "-" + fechaInicio + "-" + fechaFin + "-" + descripcion + "-" + participantes, Toast.LENGTH_LONG).show();
+                    Toast.makeText(NuevaEditarEvaluacionActivity.this, getText(R.string.inic_notif_eval) + nombre  + getText(R.string.accion_insertar_notif_eval), Toast.LENGTH_LONG).show();
                 }
             }
             //salir de la actividad

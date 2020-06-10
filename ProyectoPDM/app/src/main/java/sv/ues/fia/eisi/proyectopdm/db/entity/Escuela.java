@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.db.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -39,5 +40,11 @@ public class Escuela {
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return idEscuela + ". " + nomEscuela;
     }
 }

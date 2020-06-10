@@ -65,7 +65,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         int idEvaluacion = 0;
             if (extras != null) {
-                idEvaluacion = extras.getInt("ID_Evaluacion_Actual");
+                idEvaluacion = extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION);
             }
         //obtener evaluación actual por medio de EXTRA_ID de intent
         evaluacionActual = evaluacionViewModel.getEval(idEvaluacion);
@@ -86,7 +86,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
         dispFechaEntregaEvaluacion.setText(evaluacionActual.getFechaEntregaNotas());
         dispParticipantesEvaluacion.setText(partAux);
         //título
-        setTitle("Detalle de evaluación");
+        setTitle(R.string.titulo_ver_eval);
         }
         catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.fillInStackTrace().toString() ,Toast.LENGTH_LONG).show();

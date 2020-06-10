@@ -103,7 +103,7 @@ public class EvaluacionActivity extends AppCompatActivity {
             });
 
             //título de la pantalla
-            setTitle("Evaluaciones");
+            setTitle(R.string.evaluacion);
         } catch (Exception e){
             Toast.makeText(this,e.getMessage() ,Toast.LENGTH_LONG).show();
         }
@@ -144,8 +144,9 @@ public class EvaluacionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     EvaluacionVM.deleteEval(evaluacion);
-                    Toast.makeText(EvaluacionActivity.this, "La evaluación " +
-                                    evaluacion.getNomEvaluacion() +" ha sido borrado exitosamente",
+
+                    Toast.makeText(EvaluacionActivity.this, getText(R.string.inic_notif_eval) +
+                                    evaluacion.getNomEvaluacion() +getText(R.string.accion_borrar_notif_eval),
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){

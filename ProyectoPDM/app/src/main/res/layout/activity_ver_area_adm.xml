@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activity.VerAreaAdmActivity">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="16dp">
+        <TextView
+            android:id="@+id/nombre_ver_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nombre_area"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/disp_nombre_ver_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de area"
+            app:layout_constraintTop_toBottomOf="@+id/nombre_ver_area"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/escuela_ver_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/descripcion_eval"
+            app:layout_constraintTop_toBottomOf="@+id/disp_nombre_ver_area"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:paddingTop="20dp"
+            />
+        <TextView
+            android:id="@+id/disp_escuela_ver_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Escuela de prueba desconocido"
+            app:layout_constraintTop_toBottomOf="@+id/escuela_ver_area"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+    </TableLayout>
+</ScrollView>

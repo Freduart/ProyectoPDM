@@ -51,7 +51,9 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     //Redirect de btnEditable3
-    public void Redirect3(View view){
+    public void areaAdmRedirect(View view){
+        Intent intent = new Intent(this, AreaAdmActivity.class);
+        startActivity(intent);
 
     }
 }

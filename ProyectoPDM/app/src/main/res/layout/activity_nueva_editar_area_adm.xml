@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.NuevaEditarAreaAdmActivity">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:orientation="vertical"
+    tools:context=".Activity.NuevaEditarEvaluacionActivity">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="16dp">
+        <EditText
+            android:id="@+id/edit_nombre_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nombre_area"
+            android:inputType="text"
+            />
+        <TextView
+            android:id="@+id/escuela_area_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/escuela_area_adm"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_nombre_area"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="40dp"
+            />
+        <Spinner
+            android:id="@+id/edit_escuela_area"
+            app:layout_constraintTop_toBottomOf="@+id/escuela_area_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </TableLayout>
+</ScrollView>
