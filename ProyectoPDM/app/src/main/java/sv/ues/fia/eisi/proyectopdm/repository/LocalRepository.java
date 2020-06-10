@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.LocalDao;
@@ -47,9 +50,9 @@ public class LocalRepository {
         return allLocales;
     }
 
-    //Obtener un local
-    public Local getLocal(String id){
-        return localDao.obtenerLocal(id);
+    //Obtener un local de forma asíncrona
+    public Local getLocal(String id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new getLocalAsyncTask(localDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     //Clase Asíncrona de Insertar
@@ -109,6 +112,19 @@ public class LocalRepository {
         protected Void doInBackground(Void... voids) {
             localDao.borrarLocales();
             return null;
+        }
+    }
+
+    //Clase Asíncrona de Obtener Local
+    private static class  getLocalAsyncTask extends AsyncTask<String, Void, Local>{
+        private LocalDao localDao;
+        private getLocalAsyncTask(LocalDao localDao){
+            this.localDao = localDao;
+        }
+
+        @Override
+        protected Local doInBackground(String... locales) {
+            return localDao.obtenerLocal(locales[0]);
         }
     }
 }

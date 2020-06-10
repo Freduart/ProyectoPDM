@@ -99,6 +99,7 @@
     <string name="nomCiclo">Ciclo N°: </string>
 
     <!-- Strings para Local -->
+    <string name="AppBarNameLocal">Local</string>
     <string name="IDLocal">Identificador: </string>
     <string name="nomLocal">Nombre del Local: </string>
     <string name="ubicacionLocal">Ubicación del Local: </string>

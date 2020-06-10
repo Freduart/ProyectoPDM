@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 import sv.ues.fia.eisi.proyectopdm.repository.LocalRepository;
@@ -45,7 +47,7 @@ public class LocalViewModel extends AndroidViewModel {
         return allLocales;
     }
 
-    public Local getLoc(String id){
+    public Local getLoc(String id) throws InterruptedException, ExecutionException, TimeoutException {
         return repository.getLocal(id);
     }
 }

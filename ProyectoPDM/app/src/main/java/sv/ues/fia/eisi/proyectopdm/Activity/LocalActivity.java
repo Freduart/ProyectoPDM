@@ -40,6 +40,7 @@ public class LocalActivity extends AppCompatActivity {
 
         //Para Agregar Local: Inicializa botón flotante de acción
         FloatingActionButton botonNuevoLocal = findViewById(R.id.add_ciclo_button);
+
         //al hacer un clic corto
         botonNuevoLocal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +112,7 @@ public class LocalActivity extends AppCompatActivity {
                     Intent intent = new Intent(LocalActivity.this, VerLocalActivity.class);
                     intent.putExtra("ID Local Actual", cod);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }
@@ -139,6 +141,7 @@ public class LocalActivity extends AppCompatActivity {
                     Intent intent = new Intent(LocalActivity.this, EditarLocalActivity.class);
                     intent.putExtra("ID Local Actual", cod);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch(Exception e){
                     Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }
