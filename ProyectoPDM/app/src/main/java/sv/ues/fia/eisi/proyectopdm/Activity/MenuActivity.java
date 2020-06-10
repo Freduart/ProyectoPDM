@@ -63,4 +63,11 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SolicitudImpresionActivity.class);
         startActivity(intent);
     }
+
+    //Redirect de Asignaturas
+    public void asignaturaRedirect(View view){
+        Intent intent = new Intent(this, AsignaturaActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EditarSolicitudExtraordinarioActivity"></activity>
+        <activity android:name=".Activity.VerAsignaturaActivity"></activity>
+        <activity android:name=".Activity.NuevaAsignaturaActivity" />
+        <activity android:name=".Activity.EditarSolicitudExtraordinarioActivity" />
         <activity android:name=".Activity.VerSegundaRevisionActivity" />
         <activity android:name=".Activity.NuevaEditarSegundaRevisionActivity" />
         <activity android:name=".Activity.VerAreaAdmActivity" />
