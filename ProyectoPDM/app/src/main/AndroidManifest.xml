@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EditarCargoActivity"></activity>
+        <activity android:name=".Activity.VerSegundaRevisionActivity"></activity>
+        <activity android:name=".Activity.NuevaEditarSegundaRevisionActivity" />
+        <activity android:name=".Activity.VerAreaAdmActivity" />
+        <activity android:name=".Activity.NuevaEditarAreaAdmActivity" />
+        <activity android:name=".Activity.AreaAdmActivity" />
+        <activity android:name=".Activity.EditarCargoActivity" />
         <activity android:name=".Activity.VerCargoActivity" />
         <activity android:name=".Activity.NuevoCargoActivity" />
         <activity android:name=".Activity.VerSolicitudExtraordinarioActivity" />
