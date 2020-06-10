@@ -96,6 +96,7 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.dialog_opciones_soli_ext, null);
         ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerSoliExt);
         ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminarSoliExt);
+        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditarSoliExt);
         TextView tv = (TextView) v.findViewById(R.id.tvADSoliExt);
         tv.setText(cod);
         builder.setView(v);
@@ -124,6 +125,17 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
                     soliExtraVM.delete(soliExtraActual);
                     Toast.makeText(SolicitudExtraordinarioActivity.this, "Local" + " " + soliExtraActual.getIdSolicitud() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
+                }catch (Exception e){
+                    Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
                 }catch (Exception e){
                     Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }

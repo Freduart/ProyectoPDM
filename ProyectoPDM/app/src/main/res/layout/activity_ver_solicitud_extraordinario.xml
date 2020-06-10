@@ -14,51 +14,99 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/vciclo_nomCiclo"
+            android:id="@+id/vSoliExtra_IDAlum"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/nomCiclo"
+            android:text="@string/carnetAlumno"
             app:layout_constraintTop_toBottomOf="parent"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
-            android:id="@+id/vciclo_disp_nomCiclo"
+            android:id="@+id/vSoliExtra_disp_IDAlum"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Número de Ciclo"
-            app:layout_constraintTop_toBottomOf="@id/vciclo_nomCiclo"
+            android:text="@string/hintCarnetAlumno"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_IDAlum"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/vciclo_fechaDesde"
+            android:id="@+id/vSoliExtra_IDEval"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/fechaDesde"
-            app:layout_constraintTop_toBottomOf="@id/vciclo_disp_nomCiclo"
+            android:text="@string/idEvaluacion"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_IDAlum"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
-            android:id="@+id/vciclo_disp_fDesde"
+            android:id="@+id/vSoliExtra_disp_IDEval"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Inicio de Clases"
-            app:layout_constraintTop_toBottomOf="@id/vciclo_fechaDesde"
+            android:text="@string/hintIdEva"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_IDEval"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/vciclo_fHasta"
+            android:id="@+id/vSoliExtra_tipo"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/fechaHasta"
-            app:layout_constraintTop_toBottomOf="@id/vciclo_disp_fDesde"
+            android:text="@string/tipoSolicitudExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_IDEval"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
-            android:id="@+id/vciclo_disp_fHasta"
+            android:id="@+id/vSoliExtra_disp_tipo"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Cierre del Sistema"
-            app:layout_constraintTop_toBottomOf="@id/vciclo_fHasta"
+            android:text="@string/hintTipoSoli"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_tipo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_motivo"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/motivoSolicitudExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_tipo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_disp_motivo"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/hintMotivoSoli"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_motivo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_fecha"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/fechaSolicitudExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_tipo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_disp_fecha"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/hintFechaSoli"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_fecha"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_justi"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/justificacionSoliExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_fecha"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_disp_justi"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/textoJustiSoliExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_justi"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     </TableLayout>
