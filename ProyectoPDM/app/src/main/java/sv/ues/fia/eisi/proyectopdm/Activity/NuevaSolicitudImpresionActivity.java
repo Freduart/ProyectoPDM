@@ -50,14 +50,12 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     EditText text_detalleImpresiones;
     TextInputLayout text_impresiones,text_anexos;
     //Variables
-    private int contFiles=0;
     private Uri documentUri;
     //Uri del documento del recyclerDocumentos
     Uri uri;
     String nombreDocumento;
     int[] numImpresiones={}, hojasAnexas={};
     String detallesImpresion, acumPath="";
-    String[] uploadFilePath={};
     ArrayList<String> listaDocumentos;
     RecyclerView recyclerDocumentos;
     ListaArchivosAdapter listaArchivosAdapter;
@@ -75,9 +73,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         //RecyclerView
         recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos);
         recyclerDocumentos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerDocumentos.setHasFixedSize(true);
-        listaArchivosAdapter=new ListaArchivosAdapter();
-        recyclerDocumentos.setAdapter(listaArchivosAdapter);
         //Boton AÑADIR
         btnAñadirDocumento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +87,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         enviarSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(contFiles==0){
+                if(listaDocumentos.size()==0){
                     Snackbar.make(v, "Debe Añadir Un Documento...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }else if((text_impresiones.getEditText().getText().toString()==""||text_impresiones.getEditText().getText().toString()==null)){
                     text_impresiones.setError("Ingrese N° Impreisones");
@@ -111,27 +106,31 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         if (requestCode == PICK_DOCUMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 documentUri = data.getData();
-                String path = getPathMethod(this, documentUri);
-                Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
-                if (path == null) {
-                    Toast.makeText(this, "Archivo No Encontrado...", Toast.LENGTH_SHORT).show();
-                } else {
+                try{
+                    String path = getPathMethod(this, documentUri);
                     Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
-                    //Actualizamos la lista de documentos con el Adapter.
-                    listaDocumentos.add(path);
-                    /*listaArchivosAdapter.setListaDocumentos(listaDocumentos);
-                    //Ponemos a la escucha cada item agregado
-                    listaArchivosAdapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Obtenemos la ruta del documento seleccionado del recyclerDocumentos
-                            uri=Uri.fromFile(new File(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v))));
-                            nombreDocumento=getFileName(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)));
-                            createCustomDialog().show();
-                        }
-                    });*/
-                    uploadFilePath[contFiles] = path;
-                    contFiles+=1;
+                    if (path == null) {
+                        Toast.makeText(this, "Archivo No Encontrado...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+                        listaDocumentos.add(path);
+                        //Actualizamos la lista de documentos con el Adapter.
+                        listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
+                        //Ponemos a la escucha cada item agregado
+                        listaArchivosAdapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //Obtenemos la ruta del documento seleccionado del recyclerDocumentos
+                                uri=Uri.fromFile(new File(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v))));
+                                nombreDocumento=getFileName(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)));
+                                createCustomDialog().show();
+                            }
+                        });
+                        recyclerDocumentos.setAdapter(listaArchivosAdapter);
+                    }
+                }catch (Exception e){
+                    Toast.makeText(this, "Ha Ocurrido Un Error: "+e, Toast.LENGTH_SHORT).show();
+                    text_detalleImpresiones.setText(e.toString());
                 }
             }
         }
