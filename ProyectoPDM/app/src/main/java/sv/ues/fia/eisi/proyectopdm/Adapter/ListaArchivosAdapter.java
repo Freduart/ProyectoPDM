@@ -14,10 +14,10 @@ import sv.ues.fia.eisi.proyectopdm.R;
 
 public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdapter.ViewHolderArchivos> implements View.OnClickListener{
 
-    ArrayList<String> listaDocumentos=new ArrayList<>();
+    ArrayList<String> listaDocumentos;
     private View.OnClickListener listener;
 
-    public void setListaDocumentos(ArrayList<String> listaDocumentos) {
+    public ListaArchivosAdapter(ArrayList<String> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
     }
 

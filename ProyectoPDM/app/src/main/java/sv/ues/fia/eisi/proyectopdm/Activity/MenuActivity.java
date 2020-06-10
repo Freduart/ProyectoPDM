@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
 /*
 menu principal de la aplicaicon en este tendra acceso el usuario asginado mas adelante
@@ -55,5 +56,11 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AreaAdmActivity.class);
         startActivity(intent);
 
+    }
+
+    //Redirect de SolicitudImpresion
+    public void solicitudImpresionRedirect(View view){
+        Intent intent = new Intent(this, SolicitudImpresionActivity.class);
+        startActivity(intent);
     }
 }
