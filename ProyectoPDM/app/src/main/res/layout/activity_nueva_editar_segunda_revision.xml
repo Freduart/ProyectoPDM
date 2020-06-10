@@ -1,9 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activity.NuevaEditarSegundaRevisionActivity">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!--ID-->
+        <EditText
+            android:id="@+id/edit_id_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/id_segunda_revision"
+            android:inputType="text"
+            android:paddingTop="20dp"
+            />
+
+        <!--Nota Final-->
+        <EditText
+            android:id="@+id/edit_notafinal_segundarevision"
+            app:layout_constraintTop_toBottomOf="@+id/edit_id_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nota_final_segunda_revision"
+            android:inputType="numberDecimal"
+            />
+
+        <!--Observaciones-->
+        <EditText
+            android:id="@+id/edit_observaciones_segundarevision"
+            app:layout_constraintTop_toBottomOf="@+id/edit_notafinal_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/observaciones_segunda_revision"
+            android:inputType="textMultiLine"
+            />
+
+        <!--Fecha Solicitud-->
+        <TextView
+            android:id="@+id/label_fecha_solicitud_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha_solicitud_Segunda_revision"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_descripcion_eval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <DatePicker
+            android:id="@+id/edit_fecha_solicitud_segundarevision"
+            app:layout_constraintTop_toBottomOf="@+id/fechaEntregaNotasLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            />
+
+        <!--Hora revisión-->
+        <TextView
+            android:id="@+id/label_hora_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hora_segunda_revision"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_observaciones_segundarevision"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <TimePicker
+            android:id="@+id/edit_hora_segundarevision"
+            app:layout_constraintTop_toBottomOf="@+id/docenteEvalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            />
+
+        <!--Fecha revision-->
+        <TextView
+            android:id="@+id/label_fecha_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha_segunda_revision"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_tipoEval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingTop="20dp"
+            />
+        <DatePicker
+            android:id="@+id/edit_fecha_segundarevision"
+            app:layout_constraintTop_toBottomOf="@+id/fechaEntregaNotasLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            />
+    </TableLayout>
+</ScrollView>

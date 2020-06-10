@@ -67,6 +67,15 @@
     <string name="titulo_ver_area">Detalle de área administrativa</string>
     <string name="inic_notif_aarea">El área \u0020</string>
 
+    <!-- Strings para Segunda Revision -->
+    <string name="id_segunda_revision">Identificador único de segunda revisión</string>
+    <string name="fecha_segunda_revision">Fecha de segunda revisión</string>
+    <string name="hora_segunda_revision">Hora de segunda revisión</string>
+    <string name="nota_final_segunda_revision">Nota final de revisión</string>
+    <string name="observaciones_segunda_revision">Observaciones de revisión</string>
+    <string name="fecha_solicitud_Segunda_revision">Fecha de solicitud de revisión</string>
+
+
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>
     <string name="IdCargo">Identificador: </string>
