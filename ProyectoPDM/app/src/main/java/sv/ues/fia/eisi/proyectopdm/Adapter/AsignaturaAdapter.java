@@ -23,7 +23,7 @@ public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.As
     @Override
     public AsignaturaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.asinatura_item,parent,false);
+                .inflate(R.layout.asignatura_item,parent,false);
         itemView.setOnClickListener(this);
         return new AsignaturaHolder(itemView);
     }

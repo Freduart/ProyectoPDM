@@ -8,12 +8,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -34,6 +37,17 @@ public class AsignaturaActivity extends AppCompatActivity {
 
         ActionBar actionBar= getSupportActionBar();
         actionBar.setTitle(R.string.AppBarNameAsignaturas);
+
+        FloatingActionButton btnNuevaAsignatura = findViewById(R.id.add_asign_button);
+
+        btnNuevaAsignatura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Para dirigir a la activity de nueva asignatura
+                Intent intent = new Intent(AsignaturaActivity.this, NuevaAsignaturaActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         /*Para enlazar el objeto RecyclerView con la View que se implementa para asignaturas,
@@ -84,21 +98,35 @@ public class AsignaturaActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View v = inflater.inflate(R.layout.dialog_opciones_asignaturas, null);
-        //ImageButton ver = (ImageButton) v.findViewById(R.id.imBVer);
-        //ImageButton editar = (ImageButton) v.findViewById(R.id.imBEditar);
+        ImageButton ver = (ImageButton) v.findViewById(R.id.imBVer);
+        ImageButton editar = (ImageButton) v.findViewById(R.id.imBEditar);
         ImageButton eliminar = (ImageButton) v. findViewById(R.id.imBEliminar);
         TextView tv = (TextView) v.findViewById(R.id.tvADAsignatura);
         tv.setText(codigo);
         builder.setView(v);
         alertDialog = builder.create();
 
+        ver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    codigo = asignaturaAt.getCodigoAsignatura();
+                    Intent intent = new Intent(AsignaturaActivity.this, VerAsignaturaActivity.class);
+                    intent.putExtra("ID_Asignatura_Actual", codigo);
+                    startActivity(intent);
+                    alertDialog.dismiss();
+                }catch (Exception e){
+                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     asignaturaViewModel.delete(asignaturaAt);
                     Toast.makeText(AsignaturaActivity.this, "Asignatura" + " " +
-                            asignaturaAt.getCodigoAsignatura() + " ha sido borrada exitosamente",
+                                    asignaturaAt.getCodigoAsignatura() + " ha sido borrada exitosamente",
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){

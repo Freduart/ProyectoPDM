@@ -14,11 +14,13 @@ import sv.ues.fia.eisi.proyectopdm.dao.AreaAdmDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AsignaturaDao;
 import sv.ues.fia.eisi.proyectopdm.dao.CargoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.CicloDao;
+import sv.ues.fia.eisi.proyectopdm.dao.DetalleEvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.DocenteDao;
 import sv.ues.fia.eisi.proyectopdm.dao.EncargadoImpresionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.EscuelaDao;
 import sv.ues.fia.eisi.proyectopdm.dao.InscripcionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.LocalDao;
+import sv.ues.fia.eisi.proyectopdm.dao.PrimeraRevisionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SegundaRevisionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SegundaRevision_DocenteDao;
 import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
@@ -79,6 +81,8 @@ public abstract class DataBase extends RoomDatabase {
     public abstract EvaluacionDao evaluacionDao();
     public abstract SolicitudImpresionDao solicitudImpresionDao();
     public abstract SegundaRevisionDao segundaRevisionDao();
+    public abstract DetalleEvaluacionDao detalleEvaluacionDao();
+    public abstract PrimeraRevisionDao primeraRevisionDao();
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
         es util para cuando todos los usuarios esten usando la misma instancia
@@ -122,6 +126,8 @@ public abstract class DataBase extends RoomDatabase {
         private EvaluacionDao evaluacionDao;
         private SolicitudImpresionDao solicitudImpresionDao;
         private SegundaRevisionDao segundaRevisionDao;
+        private DetalleEvaluacionDao detalleEvaluacionDao;
+        private PrimeraRevisionDao primeraRevisionDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
@@ -139,6 +145,8 @@ public abstract class DataBase extends RoomDatabase {
             evaluacionDao=db.evaluacionDao();
             solicitudImpresionDao=db.solicitudImpresionDao();
             segundaRevisionDao=db.segundaRevisionDao();
+            detalleEvaluacionDao = db.detalleEvaluacionDao();
+            primeraRevisionDao = db.primeraRevisionDao();
         }
 
         @Override
@@ -221,6 +229,10 @@ public abstract class DataBase extends RoomDatabase {
             localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
             localDao.insertarLocal(new Local("D11","Aula D11", "Edificio D", 13.72077d,-89.200545));
             localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
+            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7f));
+            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"MM16045", 6f));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("PR1", "Lcomp1", 1, "7/06/2020", true, 7f, 9f, "jdfhf"));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("PR2", "D11", 2, "09062020", true, 6f, 8f, "sjd"));
             encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion(1, "Pedro Eliseo Peñate"));
             return null;
         }

@@ -77,6 +77,9 @@
     <string name="nota_final_segunda_revision">Nota final de revisión</string>
     <string name="observaciones_segunda_revision">Observaciones de revisión</string>
     <string name="fecha_solicitud_Segunda_revision">Fecha de solicitud de revisión</string>
+    <string name="inic_notif_segrev">La segunda revisión \u0020</string>
+    <string name="titulo_EA_editarsegrev">Editar segunda revisión</string>
+    <string name="titulo_EA_nuevasegrev">Añadir segunda revisión</string>
 
 
     <!-- Strings para Cargo -->
@@ -97,7 +100,15 @@
 
     <!-- Strings para Primera Revisión -->
     <string name="AppBarNamePrimerRevision">Primera revisión</string>
-
+    <string name="CodigoPR">Código: </string>
+    <string name="LocalPR">Local: </string>
+    <string name="DetallePR">Detalle de evaluación: </string>
+    <string name="fechaSolPR">Fecha de solicitud: </string>
+    <string name="estadoPR">Estado: </string>
+    <string name="notaActualPR">Nota actual: </string>
+    <string name="notaCorregida">Nota resultado: </string>
+    <string name="AppBarNamePrimerasRevisiones">Primeras revisiones</string>
+    <string name="detallePrimera">Detalle de primera revisión</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -3,6 +3,7 @@ package sv.ues.fia.eisi.proyectopdm.db.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.sql.Time;
@@ -33,6 +34,24 @@ public class SegundaRevision {
         this.horaSegundaRev = horaSegundaRev;
         this.notaFinalSegundaRev = notaFinalSegundaRev;
         this.observacionesSegundaRev = observacionesSegundaRev;
+        this.fechaSolicitudSegRev = fechaSolicitudSegRev;
+    }
+    @Ignore
+    public SegundaRevision(@NonNull String idSegundaRevision, @NonNull String idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, String observacionesSegundaRev, String fechaSolicitudSegRev) {
+        this.idSegundaRevision = idSegundaRevision;
+        this.idPrimeraRevisionFK = idPrimeraRevisionFK;
+        this.fechaSegundaRev = fechaSegundaRev;
+        this.horaSegundaRev = horaSegundaRev;
+        this.observacionesSegundaRev = observacionesSegundaRev;
+        this.fechaSolicitudSegRev = fechaSolicitudSegRev;
+    }
+
+    @Ignore
+    public SegundaRevision(@NonNull String idSegundaRevision, @NonNull String idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, String fechaSolicitudSegRev) {
+        this.idSegundaRevision = idSegundaRevision;
+        this.idPrimeraRevisionFK = idPrimeraRevisionFK;
+        this.fechaSegundaRev = fechaSegundaRev;
+        this.horaSegundaRev = horaSegundaRev;
         this.fechaSolicitudSegRev = fechaSolicitudSegRev;
     }
 

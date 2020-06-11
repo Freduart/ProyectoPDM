@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.AsignaturaActivity">
+    tools:context=".Activity.PrimeraRevisionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,14 +15,14 @@
         android:orientation="horizontal"
         android:padding="10dp">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_list_asignatura"
+            android:id="@+id/recycler_list_primerarevision"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/asignatura_item" />
+            tools:listitem="@layout/primerarevision_item" />
 
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_asign_button"
+        android:id="@+id/add_pr_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
