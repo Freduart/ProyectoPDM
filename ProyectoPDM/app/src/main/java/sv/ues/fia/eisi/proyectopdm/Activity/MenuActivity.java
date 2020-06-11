@@ -70,4 +70,10 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Redirect de PR
+    public  void primerarevisionRedirect(View view){
+        Intent intent = new Intent(this, PrimeraRevisionActivity.class);
+        startActivity(intent);
+    }
+
 }

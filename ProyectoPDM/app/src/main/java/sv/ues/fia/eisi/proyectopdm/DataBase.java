@@ -229,7 +229,10 @@ public abstract class DataBase extends RoomDatabase {
             localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
             localDao.insertarLocal(new Local("D11","Aula D11", "Edificio D", 13.72077d,-89.200545));
             localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7));
+            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7f));
+            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"MM16045", 6f));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("PR1", "Lcomp1", 1, "7/06/2020", true, 7f, 9f, "jdfhf"));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("PR2", "D11", 2, "09062020", true, 6f, 8f, "sjd"));
             encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion(1, "Pedro Eliseo Peñate"));
             return null;
         }
