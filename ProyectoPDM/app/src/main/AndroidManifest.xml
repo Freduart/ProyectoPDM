@@ -39,6 +39,8 @@
         <activity android:name=".Activity.AlumnoActivity" />
         <activity android:name=".Activity.MenuActivity" />
         <activity android:name=".Activity.AgregarAlumnoActivity" />
+        <activity android:name=".Activity.verAlumnoActivity"/>
+        <activity android:name=".Activity.NuevaEditarAlumnoActivity"/>
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

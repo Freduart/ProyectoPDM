@@ -13,7 +13,7 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
+
 
 
 /*
@@ -31,7 +31,7 @@ public class AlumnoAdapter extends RecyclerView.Adapter<AlumnoAdapter.AlumnoHold
         private TextView carnet;
         private TextView nombre;
         private TextView apellido;
-        //private TextView carrera;
+        private TextView carrera;
         private TextView correo;
 
         //Metodo Holder para la pantalla
@@ -40,7 +40,7 @@ public class AlumnoAdapter extends RecyclerView.Adapter<AlumnoAdapter.AlumnoHold
             carnet = itemView.findViewById(R.id.tw1);
             nombre = itemView.findViewById(R.id.nomAlum);
             apellido = itemView.findViewById(R.id.apeAlum);
-            //carrera = itemView. findViewById(R.id.nombreCarrera);
+            carrera = itemView. findViewById(R.id.nombreCarrera);
             correo = itemView.findViewById(R.id.correo);
 
             //Acciones para los item de la lista, pulsacion corta
@@ -108,7 +108,7 @@ public class AlumnoAdapter extends RecyclerView.Adapter<AlumnoAdapter.AlumnoHold
         holder.carnet.setText(currentAlumno.getCarnetAlumno());
         holder.nombre.setText(currentAlumno.getNombre());
         holder.apellido.setText(currentAlumno.getApellido());
-        //holder.carrera.setText(currentAlumno.getCarrera());
+        holder.carrera.setText(currentAlumno.getCarrera());
         holder.correo.setText(currentAlumno.getCorreo());
 
     }
