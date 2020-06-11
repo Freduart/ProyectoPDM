@@ -48,6 +48,7 @@
         <activity android:name=".Activity.NuevaSolicitudExtraordinarioActivity" />
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.VerEvaluacionActivity" />
+        <activity android:name=".Activity.DetalleEvaluacionActivity"/>
     </application>
 
 </manifest>

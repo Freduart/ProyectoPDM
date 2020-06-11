@@ -39,7 +39,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 
 public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
-    public final String ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
+    public String ENTREGA_NOTAS_PLACEHOLDER;
     private EditText editNombreEvaluacion;
     private Spinner spinTipoEvaluacion;
     private Spinner spinCarnetDocenteEvaluacion;
@@ -61,6 +61,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nueva_evaluacion);
+            ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
             //obtener extras del intent
             final Bundle extras = getIntent().getExtras();
 
@@ -244,7 +245,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             }
 
         } catch (Exception e){
-            Toast.makeText(NuevaEditarEvaluacionActivity.this, e.getMessage()+ " " + e.getCause() + "\n", Toast.LENGTH_LONG).show();
+            Toast.makeText(NuevaEditarEvaluacionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -325,7 +326,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             //salir de la actividad
             finish();
         } catch (Exception e){
-            Toast.makeText(NuevaEditarEvaluacionActivity.this, e.getMessage() + " /// " + " /// " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(NuevaEditarEvaluacionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

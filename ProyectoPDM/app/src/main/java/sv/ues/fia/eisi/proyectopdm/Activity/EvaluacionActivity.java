@@ -135,7 +135,7 @@ public class EvaluacionActivity extends AppCompatActivity {
                     //inicia la activity
                     startActivity(intent);
                 }catch (Exception e){
-                    Toast.makeText(EvaluacionActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -150,7 +150,7 @@ public class EvaluacionActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
-                    Toast.makeText(EvaluacionActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
