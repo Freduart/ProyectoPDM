@@ -101,7 +101,7 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
             }
 
             //Objeto auxiliar creado por los datos ingresados
-            Alumno alumno=new Alumno(carnet,nombre,apellidos,carrera,correo);
+            Alumno alumno=new Alumno(carnet,nombre,apellidos,correo,carrera);
 
             //Instancia VMAlumno
             alumnoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
