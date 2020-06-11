@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.AlumnoDao;
@@ -98,5 +101,38 @@ public class AlumnoRepository {
         new DeleteAllAlumnosAsyncTask(alumnoDao).execute();
     }
 
+    //obtener alumno async
+    public Alumno obtenerAlumno(String string)throws InterruptedException, ExecutionException, TimeoutException{
+        return new obtenerAlumnoAsyncTask(alumnoDao).execute(string).get(12, TimeUnit.SECONDS);
+    }
+
     public LiveData<List<Alumno>> getAllAlumnos() {return allAlumnos;}
+
+    /*
+    //async obtener evaluacion
+    private static class obtenerEvaluacionAsyncTask extends AsyncTask<Integer, Void, Evaluacion>{
+        private EvaluacionDao evaluacionDao;
+
+        private obtenerEvaluacionAsyncTask(EvaluacionDao evaluacionDao){
+            this.evaluacionDao=evaluacionDao;
+        }
+
+        @Override
+        protected Evaluacion doInBackground(Integer... evaluaciones) {
+            return evaluacionDao.obtenerEvaluacion(evaluaciones[0]);
+        }
+    }*/
+
+    //async obtener alumno
+    private static class obtenerAlumnoAsyncTask extends AsyncTask<String, Void, Alumno>{
+        private AlumnoDao alumnoDao;
+        private obtenerAlumnoAsyncTask(AlumnoDao alumnoDao){
+            this.alumnoDao=alumnoDao;
+        }
+
+        @Override
+        protected Alumno doInBackground(String... alumnos) {
+            return alumnoDao.obtenerAlumno(alumnos[0]);
+        }
+    }
 }

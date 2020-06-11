@@ -77,22 +77,27 @@ public class AlumnoActivity extends AppCompatActivity {
 
         //Consultar alumno
         //Funcionalidad al hacer click sobre el objeto de la lista
-        adapter.setOnItemClickListener(new AlumnoAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Alumno alumno) {
+        try{
+            adapter.setOnItemClickListener(new AlumnoAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Alumno alumno) {
 
-                //Opciones a mostrar
-                //Guardamos el id del item seleccionado para la nueva pantalla
-                String carnet=alumno.getCarnetAlumno();
-                //Inicializamos la pantalla con los datos del alumno seleccionado
-                Intent intent=new Intent(AlumnoActivity.this,verAlumnoActivity.class);
-                //Lo enlazamos con un putExtra para que no haya perdida de informacion
-                intent.putExtra(IDENTIFICADOR_ALUMNO,carnet);
-                startActivity(intent);
-            }
-        });
+                    //Opciones a mostrar
+                    //Guardamos el id del item seleccionado para la nueva pantalla
+                    String carnet=alumno.getCarnetAlumno();
+                    //Inicializamos la pantalla con los datos del alumno seleccionado
+                    Intent intent=new Intent(AlumnoActivity.this,verAlumnoActivity.class);
+                    //Lo enlazamos con un putExtra para que no haya perdida de informacion
+                    intent.putExtra(IDENTIFICADOR_ALUMNO,carnet);
+                    startActivity(intent);
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(this, "ERROR AL VISUALIZAR DATOS "+e, Toast.LENGTH_SHORT).show();
+        }
 
-        //Eliminar item de la lista
+
+        //Para opciones de larga pulsacion
         adapter.setOnLongClickListener(new AlumnoAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(Alumno alumno) {
@@ -129,7 +134,7 @@ public class AlumnoActivity extends AppCompatActivity {
                     intent.putExtra(OPERACION_ALUMNO, EDITAR_ALUMNO);
                     startActivity(intent);
                 } catch (Exception e) {
-                    Toast.makeText(AlumnoActivity.this, e + " ERROR", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR EDITAR "+e, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -145,7 +150,7 @@ public class AlumnoActivity extends AppCompatActivity {
                     alertDialog.dismiss();
 
                 } catch (Exception e) {
-                    Toast.makeText(AlumnoActivity.this, e + " ERROR" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR BORRAR "+e , Toast.LENGTH_SHORT).show();
                 }
             }
         });

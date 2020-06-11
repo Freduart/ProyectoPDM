@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.verAlumnoActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp">
+
+        <TextView
+            android:id="@+id/ver_carnet_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_carnet_alumno"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:id="@+id/disp_carnet_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_carnet_alumno"
+            app:layout_constraintTop_toBottomOf="@+id/ver_carnet_alumno"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/ver_nombre_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_nombre_alumno"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:id="@+id/disp_nombre_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_nombre_alumno"
+            app:layout_constraintTop_toBottomOf="@+id/ver_carnet_alumno"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/ver_apellido_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_apellido_alumno"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:id="@+id/disp_apellido_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_apellido_alumno"
+            app:layout_constraintTop_toBottomOf="@+id/ver_carnet_alumno"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/ver_correo_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_correo_alumno"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:id="@+id/disp_correo_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_correo_alumno"
+            app:layout_constraintTop_toBottomOf="@+id/ver_carnet_alumno"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/ver_carrera_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_carrera_alumno"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:id="@+id/disp_carrera_alumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ver_carrera_alumno"
+            app:layout_constraintTop_toBottomOf="@+id/ver_carnet_alumno"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+    </TableLayout>
+
+
+</ScrollView>

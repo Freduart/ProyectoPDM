@@ -134,6 +134,14 @@
     <string name="correo_addhint_Alumno">Correo</string>
 
 
+    <!-- Strings para Ver Alumno -->
+    <string name="ver_carnet_alumno">Carnet</string>
+    <string name="ver_nombre_alumno">Nombre</string>
+    <string name="ver_apellido_alumno">Apellidos</string>
+    <string name="ver_correo_alumno">Correo</string>
+    <string name="ver_carrera_alumno">Carrera</string>
+
+
     <!-- Strings para Ciclo -->
     <string name="IDCiclo">Correlativo: </string>
     <string name="fechaDesde">Fecha de Inicio: </string>
