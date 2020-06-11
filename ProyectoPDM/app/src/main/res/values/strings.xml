@@ -122,6 +122,8 @@
     <string name="apellido_alumno_list">ApellidoResult</string>
     <string name="carrera_alumno">Carrera: </string>
     <string name="carrera_alumno_list">CarreraResult</string>
+    <string name="correo_alumno">Correo: </string>
+    <string name="correo_alumno_list">CorreoResult</string>
 
     <!-- Strings para Agregar Alumno -->
     <string name="carnet_addhint_Alumno">DUE</string>
