@@ -29,12 +29,15 @@
     <string name="CVMaterias">Materias</string>
     <string name="btnAñadirArchivo">AÑADIR</string>
     <string name="textDocumento">DOCUMENTO</string>
-    <string name="textDetalles">DETALLES</string>
+    <string name="textDetalles">DETALLES DE IMPRESIÓN</string>
     <string name="textNImpresiones">N° Impresiones: </string>
     <string name="textNAnexos">N° Hojas Anexas: </string>
     <string name="hintImpresiones">ej.:50,60,...,para más de 1 doc.</string>
     <string name="hintHojasAnexas">ej.:5,3,...,para más de 1 doc.</string>
     <string name="textOtrosDetalles">Otros Detalles: </string>
+    <string name="textInformacionAdicional">INFORMACIÓN ADICIONAL</string>
+    <string name="textDocDirector">Docente Director: </string>
+    <string name="textEncImpres">Encargado Impresión: </string>
 
     <!-- Strings para Evaluacion -->
     <string name="evaluacion">Evaluación</string>
