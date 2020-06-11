@@ -27,7 +27,7 @@ public class EditarCicloActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_nuevo_ciclo);
+            setContentView(R.layout.activity_editar_ciclo);
 
             //Inicializa variable de Barra de Acción (Barra Superior)
             ActionBar actionBar = getSupportActionBar();
@@ -85,6 +85,8 @@ public class EditarCicloActivity extends AppCompatActivity {
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
             Toast.makeText(EditarCicloActivity.this, "Actualizado con éxito: " + nomAux + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
+
+            finish();
         }catch (Exception e){
             Toast.makeText(EditarCicloActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }

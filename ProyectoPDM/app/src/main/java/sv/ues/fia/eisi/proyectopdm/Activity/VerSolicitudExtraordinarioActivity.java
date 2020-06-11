@@ -58,8 +58,10 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
 
             soliExtraActual = soliExtraVM.getSoliExtra(idSoliExtra);
             evaActual = evalVM.getEval(soliExtraActual.getIdEvaluacion());
+            alumnoActual = alumnoVM.getAlumn(soliExtraActual.getCarnetAlumnoFK());
 
             idSoliExtraordinario.setText(String.valueOf(soliExtraActual.getIdSolicitud()));
+            idAlumno.setText(String.valueOf(alumnoActual.getCarnetAlumno()));
             idEvaluacion.setText(String.valueOf(evaActual.getIdEvaluacion() + " - " + evaActual.getNomEvaluacion()));
             tipoSoli.setText(soliExtraActual.getTipoSolicitud());
             motivoSoli.setText(soliExtraActual.getMotivoSolicitud());

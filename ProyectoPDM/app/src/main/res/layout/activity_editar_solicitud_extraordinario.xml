@@ -49,7 +49,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editTipoSoliRepetido"
+                android:id="@+id/editTipoSoliExtra"
                 android:inputType="text"
                 android:maxLength="1"
                 android:hint="@string/hintTipoSoli"
@@ -62,7 +62,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editMotivoSoliRepetido"
+                android:id="@+id/editMotivoSoliExtra"
                 android:hint="@string/hintMotivoSoli"
                 android:inputType="text"
                 tools:ignore="Autofill"
@@ -74,7 +74,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editFechaSoliRepetido"
+                android:id="@+id/editFechaSoliExtra"
                 android:inputType="date|text"
                 android:hint="@string/hintFechaSoli"
                 tools:ignore="Autofill"
@@ -86,7 +86,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <CheckBox
-                android:id="@+id/JustiSoliRepe"
+                android:id="@+id/JustiSoliExtra"
                 android:text="@string/textoJustiSoliExtra"
                 android:textAlignment="center"
                 android:layout_gravity="center_horizontal"

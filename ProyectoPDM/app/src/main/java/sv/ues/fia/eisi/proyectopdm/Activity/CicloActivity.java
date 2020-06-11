@@ -114,6 +114,7 @@ public class CicloActivity extends AppCompatActivity {
                     Intent intent = new Intent(CicloActivity.this, VerCicloActivity.class);
                     intent.putExtra("ID Ciclo Actual", id);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }
@@ -143,6 +144,7 @@ public class CicloActivity extends AppCompatActivity {
                     Intent intent = new Intent(CicloActivity.this, EditarCicloActivity.class);
                     intent.putExtra("ID Ciclo Actual", id);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }

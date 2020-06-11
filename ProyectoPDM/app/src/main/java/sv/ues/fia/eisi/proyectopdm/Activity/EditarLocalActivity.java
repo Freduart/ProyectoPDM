@@ -28,7 +28,7 @@ public class EditarLocalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_nuevo_local);
+            setContentView(R.layout.activity_editar_local);
 
             //Inicializa variable de Barra de Acción (Barra Superior)
             ActionBar actionBar = getSupportActionBar();
@@ -75,6 +75,8 @@ public class EditarLocalActivity extends AppCompatActivity {
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
             Toast.makeText(EditarLocalActivity.this, "Actualizado con éxito: " + idLocal + "-"+ nomLocal + "-" + ubLocal, Toast.LENGTH_SHORT).show();
+
+            finish();
         }catch (Exception e){
             Toast.makeText(EditarLocalActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }
