@@ -26,5 +26,5 @@ public interface EncargadoImpresionDao {
     LiveData<List<EncargadoImpresion>> obtenerEncargados();
 
     @Query("select * from EncargadoImpresion where idEncargadoImpresion == :encargadoid")
-    EncargadoImpresion obtenerEncargadoImpresion(String encargadoid);
+    EncargadoImpresion obtenerEncargadoImpresion(int encargadoid);
 }

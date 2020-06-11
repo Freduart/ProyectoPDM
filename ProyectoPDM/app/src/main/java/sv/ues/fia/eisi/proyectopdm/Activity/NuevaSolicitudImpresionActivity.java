@@ -1,12 +1,15 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -21,9 +24,14 @@ import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,50 +47,55 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
-
-import static java.security.AccessController.getContext;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.EncargadoImpresion;
 
 public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
 
     static final int PICK_DOCUMENT_REQUEST = 1;
     //Botones
-    Button btnAñadirDocumento,btnEnviar,btnCancelar;
     EditText text_detalleImpresiones;
     TextInputLayout text_impresiones,text_anexos;
+    RecyclerView recyclerDocumentos;
+    ListaArchivosAdapter listaArchivosAdapter;
+    Spinner docDirector,encImpres;
     //Variables
-    private Uri documentUri;
+    Uri documentUri;
     //Uri del documento del recyclerDocumentos
-    Uri uri;
+    Uri uriSeleccionado;
     String nombreDocumento;
+    int index=0;
     int[] numImpresiones={}, hojasAnexas={};
     String detallesImpresion, acumPath="";
     ArrayList<String> listaDocumentos;
-    RecyclerView recyclerDocumentos;
-    ListaArchivosAdapter listaArchivosAdapter;
+    DocenteViewModel docenteViewModel;
+    EncargadoImpresionViewModel encargadoImpresionViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_solicitud_impresion);
-        btnAñadirDocumento=(Button)findViewById(R.id.btnAñadirDocumento);
+        //Titulo de ActionBar
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setTitle("NUEVA SOLICITUD");
+        //Cajas de texto
         text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion);
         text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones);
         text_anexos=(TextInputLayout)findViewById(R.id.text_anexos);
+        //Spinners
+        docDirector=(Spinner)findViewById(R.id.spinnerDocDirector);
+        encImpres=(Spinner)findViewById(R.id.spinnerEncImpres);
+        //Boton flotante
         FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
-        listaDocumentos=new ArrayList<>();
         //RecyclerView
         recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos);
         recyclerDocumentos.setLayoutManager(new LinearLayoutManager(this));
-        //Boton AÑADIR
-        btnAñadirDocumento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
-                intent.setDataAndType(uri, "application/pdf");
-                startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
-            }
-        });
+        listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
+        recyclerDocumentos.setAdapter(listaArchivosAdapter);
+        //Inicialización de variables
+        listaDocumentos=new ArrayList<>();
         //Boton Enviar Solicitud
         enviarSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +109,38 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 }else{
                     //Codigo para mandar los datos...
                 }
+            }
+        });
+        //Spinner DocDirector:
+        final ArrayList<String> listDocDirector=new ArrayList<>();
+        final ArrayAdapter<String> adapterDocDirector=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item);
+        docDirector.setAdapter(adapterDocDirector);
+        //DocenteViewModel
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+        docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
+            @Override
+            public void onChanged(List<Docente> docentes) {
+                for (Docente docente:docentes){
+                    if(docente.getIdCargoFK()==1){
+                        listDocDirector.add(" - "+docente.getNomDocente()+" "+docente.getApellidoDocente());
+                    }
+                }
+                adapterDocDirector.notifyDataSetChanged();
+            }
+        });
+        //Spinner EncImpres:
+        final ArrayList<String> listEncImpres=new ArrayList<>();
+        final ArrayAdapter<String> adapterEncImpres=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item);
+        encImpres.setAdapter(adapterEncImpres);
+        //EncargadoImpresionViewModel
+        encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
+        encargadoImpresionViewModel.getAllEncargadoImpresion().observe(this, new Observer<List<EncargadoImpresion>>() {
+            @Override
+            public void onChanged(List<EncargadoImpresion> encargadoImpresions) {
+                for(EncargadoImpresion encargadoImpresion:encargadoImpresions){
+                    listEncImpres.add(encargadoImpresion.getIdEncargadoImpresion()+" - "+encargadoImpresion.getNomEncargado());
+                }
+                adapterEncImpres.notifyDataSetChanged();
             }
         });
     }
@@ -121,8 +166,13 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 //Obtenemos la ruta del documento seleccionado del recyclerDocumentos
-                                uri=Uri.fromFile(new File(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v))));
+                                uriSeleccionado=Uri.fromFile(new File(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v))));
                                 nombreDocumento=getFileName(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)));
+                                for(int i=0;i<listaDocumentos.size();i++){
+                                    if(listaDocumentos.get(i).equalsIgnoreCase(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)))){
+                                        index=i;
+                                    }
+                                }
                                 createCustomDialog().show();
                             }
                         });
@@ -133,6 +183,29 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     text_detalleImpresiones.setText(e.toString());
                 }
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater=getMenuInflater();
+        menuInflater.inflate(R.menu.nueva_solicitud_impresion_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.añadirDocumento:
+                //Intent para seleccionar un documento...
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
+                intent.setDataAndType(uri, "application/pdf");
+                startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
+            case R.id.ajustesServer:
+                Toast.makeText(this, "Ajustes Del Servidor", Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -157,7 +230,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         //Previsualizar
                         Intent intent = new Intent( Intent.ACTION_VIEW );
-                        intent.setDataAndType(uri, "application/pdf");
+                        intent.setDataAndType(uriSeleccionado, "application/pdf");
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity(intent);
                         alertDialog.dismiss();
@@ -169,13 +242,17 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //Quitar
+                        listaDocumentos.remove(index);
+                        listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
+                        recyclerDocumentos.setAdapter(listaArchivosAdapter);
                         alertDialog.dismiss();
                     }
                 }
         );
         return alertDialog;
     }
-
+    /*Cuando el intent para seleccionar un documento es iniciado, se enlistan todos los proveedores de contenido que existen en el
+      dispositivo, a través de este metodo se obtiene la ruta del archivo obtenidos los datos de su proveedor y su key.*/
     public static String getPathMethod(Context context, Uri uri) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // DocumentProvider
@@ -261,6 +338,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         return null;
     }
 
+    //A través de este método obtenemos la ruta original del documento consultando al proveedor de contenido correspondiente.
     public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
@@ -277,6 +355,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         }
         return null;
     }
+    /*Se valida que la ruta corresponda a cualquiera de estos proveedores de contenido y se devuelve el contenedor padre de este*/
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
@@ -331,6 +410,8 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         }
         return file.getPath();
     }
+
+    //Con este metodo obtenemos el nombre del documento dada la ruta especifica donde este se encuentra.
     private String getFileName(String filePath){
         String[] path=filePath.split("/");
         String name;
