@@ -43,8 +43,10 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_editar_solicitud_extraordinario);
 
+            //Título personalizado para Activity
             setTitle("Editar Solicitud");
 
+            //Inicializa elementos del Layout en Activity
             idAlumno = (EditText) findViewById(R.id.editCarnetAlumno);
             idEvaluacion = (EditText) findViewById(R.id.editIdEvaluacion);
             tipoSoli = (EditText) findViewById(R.id.editTipoSoliExtra);
@@ -52,20 +54,24 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             fechaSoli = (EditText) findViewById(R.id.editFechaSoliExtra);
             justiSoli = (CheckBox) findViewById(R.id.JustiSoliExtra);
 
+            //Inicializa los ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
             alumnoVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
             evalVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
 
+            //Se extrae el identificador de la solicitud a editar del Intent
             Bundle extras = getIntent().getExtras();
             int idSoliExtra = 0;
             if(extras != null){
                 idSoliExtra = extras.getInt("ID Solicitud Extraordinaria Actual");
             }
 
+            //Se asignan objetos extraídos del ViewModel
             soliExtraActual = soliExtraVM.getSoliExtra(idSoliExtra);
             evaActual = evalVM.getEval(soliExtraActual.getIdEvaluacion());
             alumnoActual = alumnoVM.getAlumn(soliExtraActual.getCarnetAlumnoFK());
 
+            //Se asignan los valores correspondientes en elementos del Layout
             idAlumno.setText(alumnoActual.getCarnetAlumno());
             idEvaluacion.setText(String.valueOf(evaActual.getIdEvaluacion()));
             tipoSoli.setText(soliExtraActual.getTipoSolicitud());
@@ -85,6 +91,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
 
     public void actualizarSoliExtra(){
         try {
+            //Almacena valores de los datos que se modifiquen
             String carnetAlumno = idAlumno.getText().toString();
             int idEval = Integer.parseInt(idEvaluacion.getText().toString());
             String tipo = tipoSoli.getText().toString();
@@ -92,11 +99,15 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             String fecha = fechaSoli.getText().toString();
             boolean justi = justiSoli.isChecked();
 
+            //Se crea una instancia de la clase SolicitudExtraordinario para operar el VM
             SolicitudExtraordinario soliAux = new SolicitudExtraordinario(carnetAlumno, idEval, tipo, motivo, fecha, justi);
 
+            //Se inicializa de nuevo el ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
+            //Se actualiza la Solicitud
             soliExtraVM.update(soliAux);
 
+            //Mensaje de éxito de la operación. En caso de error, es atrapado y se muestra en el Toast del segmento de catch
             Toast.makeText(EditarSolicitudExtraordinarioActivity.this, "Solicitud Actualizada con éxito", Toast.LENGTH_SHORT).show();
 
             finish();

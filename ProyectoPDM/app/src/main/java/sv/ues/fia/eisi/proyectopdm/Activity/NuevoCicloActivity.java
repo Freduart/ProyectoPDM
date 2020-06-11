@@ -30,10 +30,8 @@ public class NuevoCicloActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nuevo_ciclo);
 
-            //Inicializa variable de Barra de Acción (Barra Superior)
-            ActionBar actionBar = getSupportActionBar();
             //Título personalizado para Activity
-            actionBar.setTitle("Nuevo Ciclo");
+            setTitle("Nuevo Ciclo");
 
             //Inicializa elementos del Layout en Activity
             editNombreCiclo = findViewById(R.id.edit_nombre_ciclo);

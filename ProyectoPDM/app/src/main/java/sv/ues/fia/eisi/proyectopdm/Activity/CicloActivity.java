@@ -35,10 +35,8 @@ public class CicloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciclo);
 
-        //Inicializa variable de Barra de Acción (Barra Superior)
-        ActionBar actionBar = getSupportActionBar();
         //Título personalizado para Activity
-        actionBar.setTitle("Ciclos Académicos");
+        setTitle("Ciclos Académicos");
 
         //Para Agregar Ciclo: Inicializa botón flotante de acción
         FloatingActionButton botonNuevoCiclo = findViewById(R.id.add_ciclo_button);

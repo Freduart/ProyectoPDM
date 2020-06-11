@@ -33,6 +33,7 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nueva_solicitud_extraordinario);
 
+            //Inicializa elementos del Layout en Activity
             idAlumno = (EditText) findViewById(R.id.editNCarnetAlumno);
             idEvaluacion = (EditText) findViewById(R.id.editNIdEvaluacion);
             tipoSoli = (EditText) findViewById(R.id.editNTipoSoliExtra);
@@ -40,6 +41,7 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             fechaSoli = (EditText) findViewById(R.id.editNFechaSoliExtra);
             justiSoli = (CheckBox) findViewById(R.id.NJustiSoliExtra);
 
+            //Título personalizado para Activity
             setTitle("Nueva Solicitud Extraordinaria");
         }catch(Exception e){
             Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, e.getMessage() + " " +

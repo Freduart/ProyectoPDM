@@ -27,8 +27,8 @@ public class VerCicloActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_ver_ciclo);
 
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle("Detalle de Ciclo");
+            //Título personalizado para Activity
+            setTitle("Detalle de Ciclo");
 
             //Asociando tVs de XML con tVs de Activity
             dispNomCiclo = (TextView) findViewById(R.id.vciclo_disp_nomCiclo);
