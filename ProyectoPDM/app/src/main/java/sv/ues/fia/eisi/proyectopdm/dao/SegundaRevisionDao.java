@@ -26,6 +26,6 @@ public interface SegundaRevisionDao {
     @Query("select * from SegundaRevision")
     LiveData<List<SegundaRevision>> obtenerSegundasRevisiones();
 
-    @Query("select * from SegundaRevision where idSegundaRevision == :segundarevisionid")
-    SegundaRevision obtenerSegundaRevision(int segundarevisionid);
+    @Query("select * from SegundaRevision where idPrimeraRevisionFK == :primerarevisionid")
+    SegundaRevision obtenerSegundaRevision(String primerarevisionid);
 }

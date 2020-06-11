@@ -45,7 +45,7 @@ public class SegundaRevisionViewModel extends AndroidViewModel{
         return todasEval;
     }
 
-    public SegundaRevision getSegundaRevision(int id) throws InterruptedException, ExecutionException, TimeoutException {
+    public SegundaRevision getSegundaRevision(String id) throws InterruptedException, ExecutionException, TimeoutException {
         return repo.obtenerSegundaRevision(id);
     }
 }
