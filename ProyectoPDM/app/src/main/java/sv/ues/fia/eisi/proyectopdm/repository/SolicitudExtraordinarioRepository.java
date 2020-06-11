@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.SolicitudExtraordinarioDao;
@@ -40,6 +43,10 @@ public class SolicitudExtraordinarioRepository {
 
     public LiveData<List<SolicitudExtraordinario>> getAllSolicitudesExtraordinario(){
         return allSolicitudesExtraordinario;
+    }
+
+    public SolicitudExtraordinario getSoliExtra(int id) throws InterruptedException, ExecutionException, TimeoutException{
+        return new getSoliExtra(solicitudExtraordinarioDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     private static class InsertarSolicitudExtraordinarioAsyncTask extends AsyncTask<SolicitudExtraordinario,Void,Void> {
@@ -95,6 +102,19 @@ public class SolicitudExtraordinarioRepository {
         protected Void doInBackground(Void... voids) {
             solicitudExtraordinarioDao.borrarSolicitudesExtraordinario();
             return null;
+        }
+    }
+
+    //Clase Asíncrona de Obtener Solicitud
+    private static class getSoliExtra extends AsyncTask<Integer, Void, SolicitudExtraordinario>{
+        private SolicitudExtraordinarioDao solicitudExtraordinarioDao;
+        private getSoliExtra(SolicitudExtraordinarioDao solicitudExtraordinarioDao){
+            this.solicitudExtraordinarioDao = solicitudExtraordinarioDao;
+        }
+
+        @Override
+        protected SolicitudExtraordinario doInBackground(Integer... solicitudesExtra) {
+            return solicitudExtraordinarioDao.obtenerSolicitudExtraordinario(solicitudesExtra[0]);
         }
     }
 }

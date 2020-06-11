@@ -14,11 +14,27 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/vSoliExtra_IDSoli"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/idSolicitudExtraordinario"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_disp_IDSoli"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/hintIdSoli"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_IDSoli"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
             android:id="@+id/vSoliExtra_IDAlum"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="@string/carnetAlumno"
-            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_IDSoli"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView

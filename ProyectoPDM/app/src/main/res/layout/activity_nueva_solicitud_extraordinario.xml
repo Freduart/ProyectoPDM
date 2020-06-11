@@ -23,7 +23,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editCarnetAlumno"
+                android:id="@+id/editNCarnetAlumno"
                 android:inputType="text"
                 android:maxLength="7"
                 android:hint="@string/hintCarnetAlumno"
@@ -36,7 +36,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editIdEvaluacion"
+                android:id="@+id/editNIdEvaluacion"
                 android:inputType="text"
                 android:maxLength="8"
                 android:hint="@string/hintIdEva"
@@ -49,7 +49,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editTipoSoliRepetido"
+                android:id="@+id/editNTipoSoliRepetido"
                 android:inputType="text"
                 android:maxLength="1"
                 android:hint="@string/hintTipoSoli"
@@ -62,7 +62,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editMotivoSoliRepetido"
+                android:id="@+id/editNMotivoSoliRepetido"
                 android:hint="@string/hintMotivoSoli"
                 android:inputType="text"
                 tools:ignore="Autofill"
@@ -74,7 +74,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
             <EditText
-                android:id="@+id/editFechaSoliRepetido"
+                android:id="@+id/editNFechaSoliRepetido"
                 android:inputType="date|text"
                 android:hint="@string/hintFechaSoli"
                 tools:ignore="Autofill"

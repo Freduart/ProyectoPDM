@@ -2,7 +2,7 @@
     <string name="app_name">ProyectoPDM</string>
     <!-- Strings para SolicitudExtraordinario -->
     <string name="nuevaSoliExtraName">Solicitud de Evaluación Extraordinaria</string>
-    <string name="idSolicitudExtraordinario">ID de Solicitud: </string>
+    <string name="idSolicitudExtraordinario">N° de Solicitud: </string>
     <string name="carnetAlumno">Carnet del Alumno: </string>
     <string name="idEvaluacion">ID de Evaluación: </string>
     <string name="tipoSolicitudExtra">Tipo de Solicitud: </string>

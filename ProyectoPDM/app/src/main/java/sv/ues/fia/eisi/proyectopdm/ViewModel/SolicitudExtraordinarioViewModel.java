@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
 import sv.ues.fia.eisi.proyectopdm.repository.SolicitudExtraordinarioRepository;
@@ -40,5 +42,9 @@ public class SolicitudExtraordinarioViewModel extends AndroidViewModel {
 
     public LiveData<List<SolicitudExtraordinario>> getAllSolicitudesExtraordinario(){
         return allSolicitudesExtraordinario;
+    }
+
+    public SolicitudExtraordinario getSoliExtra(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return solicitudExtraordinarioRepository.getSoliExtra(id);
     }
 }

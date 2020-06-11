@@ -12,6 +12,6 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nueva_solicitud_extraordinario);
+        setContentView(R.layout.activity_editar_solicitud_extraordinario);
     }
 }
