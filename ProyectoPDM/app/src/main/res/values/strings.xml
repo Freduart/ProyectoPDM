@@ -74,6 +74,9 @@
     <string name="nota_final_segunda_revision">Nota final de revisión</string>
     <string name="observaciones_segunda_revision">Observaciones de revisión</string>
     <string name="fecha_solicitud_Segunda_revision">Fecha de solicitud de revisión</string>
+    <string name="inic_notif_segrev">La segunda revisión \u0020</string>
+    <string name="titulo_EA_editarsegrev">Editar segunda revisión</string>
+    <string name="titulo_EA_nuevasegrev">Añadir segunda revisión</string>
 
 
     <!-- Strings para Cargo -->
