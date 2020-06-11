@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.PrimeraRevisionActivity"></activity>
+        <activity android:name=".Activity.VerPrimeraRevisionActivity"></activity>
+        <activity android:name=".Activity.PrimeraRevisionActivity" />
         <activity android:name=".Activity.VerAsignaturaActivity" />
         <activity android:name=".Activity.NuevaAsignaturaActivity" />
         <activity android:name=".Activity.EditarSolicitudExtraordinarioActivity" />
@@ -48,7 +49,7 @@
         <activity android:name=".Activity.NuevaSolicitudExtraordinarioActivity" />
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.VerEvaluacionActivity" />
-        <activity android:name=".Activity.DetalleEvaluacionActivity"/>
+        <activity android:name=".Activity.DetalleEvaluacionActivity" />
     </application>
 
 </manifest>

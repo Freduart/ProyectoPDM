@@ -106,7 +106,8 @@
     <string name="fechaSolPR">Fecha de solicitud: </string>
     <string name="estadoPR">Estado: </string>
     <string name="notaActualPR">Nota actual: </string>
-    <string name="notaCorregida">Nota resultado: </string>
+    <string name="notaCorregida">Nota final: </string>
+    <string name="observacionesPR">Observaciones</string>
     <string name="AppBarNamePrimerasRevisiones">Primeras revisiones</string>
     <string name="detallePrimera">Detalle de primera revisión</string>
 

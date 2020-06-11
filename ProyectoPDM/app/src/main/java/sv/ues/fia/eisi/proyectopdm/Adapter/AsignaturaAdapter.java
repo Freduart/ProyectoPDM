@@ -3,6 +3,7 @@ package sv.ues.fia.eisi.proyectopdm.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.AsignaturaHolder> implements View.OnClickListener{
 
     private List<Asignatura> asignaturas = new ArrayList<>();
+
     private View.OnClickListener listener;
 
     @NonNull
