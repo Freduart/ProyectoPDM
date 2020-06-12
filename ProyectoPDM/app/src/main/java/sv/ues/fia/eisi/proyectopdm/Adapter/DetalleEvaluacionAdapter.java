@@ -1,51 +1,103 @@
 package sv.ues.fia.eisi.proyectopdm.Adapter;
 
+import android.app.Application;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
+import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
+import sv.ues.fia.eisi.proyectopdm.repository.AlumnoRepository;
 
 public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvaluacionAdapter.DetalleEvaluacionHolder> {
-    private List<DetalleEvaluacion> detalles = new ArrayList<>();
-    private View.OnClickListener listener;
+    private List<DetalleEvaluacion> detalleEvaluaciones=new ArrayList<>();
+    private OnItemClickListener listener;
+    private AlumnoViewModel alumnoViewModel;
 
+    //clase Holder
+    class DetalleEvaluacionHolder extends RecyclerView.ViewHolder{
+        private TextView nombreAlumno;
+        private TextView carnetAlumno;
+        private TextView carreraAlumno;
+
+        public DetalleEvaluacionHolder(@NonNull View itemView) {
+            super(itemView);
+            //asocia los elementos de los items de lista con los atriutos de la clase interna
+            nombreAlumno=itemView.findViewById(R.id.disp_nombre_alumno_detalle);
+            carnetAlumno=itemView.findViewById(R.id.disp_carnet_alumno_detalle);
+            carreraAlumno=itemView.findViewById(R.id.disp_carrera_alumno_detalle);
+
+            //settea evento de click CORTO
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(listener != null && posicion != RecyclerView.NO_POSITION)
+                        listener.onItemClick(detalleEvaluaciones.get(posicion));
+                }
+            });
+
+        }
+    }
+
+    //listener para click corto
+    public interface OnItemClickListener{
+        void onItemClick(DetalleEvaluacion detalleEvaluacion);
+    }
+    //set listener click corto
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
+
+    //implementacion interfaz
     @NonNull
     @Override
-    public DetalleEvaluacionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        return null;
+    public DetalleEvaluacionAdapter.DetalleEvaluacionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //inflate item view
+        View itemView= LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.detalleevaluacion_item,parent,false);
+        return new DetalleEvaluacionHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DetalleEvaluacionHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull DetalleEvaluacionAdapter.DetalleEvaluacionHolder holder, int position) {
+        //obtener detalleEvaluacion en la posicion actual
+        DetalleEvaluacion detalleEvaluacionActual = detalleEvaluaciones.get(position);
+        try {
+            Alumno alumnoActual = alumnoViewModel.getAlumn(detalleEvaluacionActual.getCarnetAlumnoFK());
+            //settea los datos que se mostraran en los elementos de los items de lista
+            holder.nombreAlumno.setText(String.format("%s %s", alumnoActual.getNombre(), alumnoActual.getApellido()));
+            holder.carnetAlumno.setText(detalleEvaluacionActual.getCarnetAlumnoFK());
+            holder.carreraAlumno.setText(alumnoActual.getCarrera());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return detalleEvaluaciones.size();
     }
 
-    public void setDetalles(List<DetalleEvaluacion> detalles){
-        this.detalles = detalles;
+    public void setDetalleEvaluaciones(List<DetalleEvaluacion>detalleEvaluaciones, AlumnoViewModel alumnoViewModel){
+        this.detalleEvaluaciones=detalleEvaluaciones;
+        this.alumnoViewModel=alumnoViewModel;
         notifyDataSetChanged();
     }
-
-    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
-
-
-
-    class DetalleEvaluacionHolder extends RecyclerView.ViewHolder{
-
-        public DetalleEvaluacionHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
-
 }

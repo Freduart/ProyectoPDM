@@ -1,9 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activity.DetalleEvaluacionActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorBlanco"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/healine_alumno_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="@string/headline_lista_alumnos_detalleeval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_detalle_view"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_detalle_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/spinner_alumnos_detalle"
+            app:layout_constraintTop_toBottomOf="@+id/healine_alumno_detalle"
+            tools:listitem="@layout/detalleevaluacion_item" />
+
+        <Spinner
+            android:id="@+id/spinner_alumnos_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_detalle_view"
+            app:layout_constraintBottom_toTopOf="@+id/agregar_alumno_detalle"/>
+
+        <Button
+            android:id="@+id/agregar_alumno_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/añadir_estudiante_evaluacion"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_alumnos_detalle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="ejecutarAñadirDetalle"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,7 +3,6 @@ package sv.ues.fia.eisi.proyectopdm.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,7 +93,7 @@ public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.Ev
         //obtener id de la evaluacion actual
         int id = evaluacionActual.getIdEvaluacion();
         //settea los datos que se mostraran en los elementos de los items de lista
-        holder.nombreEvaluacion.setText(id + ". " + evaluacionActual.getNomEvaluacion());
+        holder.nombreEvaluacion.setText(String.format("%d. %s", id, evaluacionActual.getNomEvaluacion()));
         holder.descripcionEvaluacion.setText(evaluacionActual.getDescripcion());
         holder.fechaFin.setText(evaluacionActual.getFechaFin());
     }

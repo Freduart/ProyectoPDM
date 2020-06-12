@@ -78,8 +78,8 @@ public class VerEvaluacionActivity extends AppCompatActivity {
         //coloca texto en textviews
         dispNombreEvaluacion.setText(evaluacionActual.getNomEvaluacion());
         dispDescripcionEvaluacion.setText(evaluacionActual.getDescripcion());
-        dispAsignaturaEvaluacion.setText(asignaturaActual.getCodigoAsignatura() + " - " + asignaturaActual.getNomasignatura());
-        dispDocenteEvaluacion.setText(docenteActual.getCarnetDocente() + " - " + docenteActual.getNomDocente() + " " + docenteActual.getApellidoDocente());
+        dispAsignaturaEvaluacion.setText(String.format("%s - %s", asignaturaActual.getCodigoAsignatura(), asignaturaActual.getNomasignatura()));
+        dispDocenteEvaluacion.setText(String.format("%s - %s %s", docenteActual.getCarnetDocente(), docenteActual.getNomDocente(), docenteActual.getApellidoDocente()));
         dispTipoEvaluacion.setText(tipoEvaluacionActual.getTipoEvaluacion());
         dispFechaInicioEvaluacion.setText(evaluacionActual.getFechaInicio());
         dispFechaFinEvaluacion.setText(evaluacionActual.getFechaFin());

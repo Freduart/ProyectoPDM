@@ -30,4 +30,7 @@ public interface DetalleEvaluacionDao {
 
     @Query("select * from DetalleEvaluacion where idDetalleEv == :detalleevaluacionid")
     DetalleEvaluacion obtenerDetalleEvaluacion(int detalleevaluacionid);
+
+    @Query("select * from DetalleEvaluacion where carnetAlumnoFK == :carnetalumno")
+    List<DetalleEvaluacion> obtenerDetallePorEstudiante(String carnetalumno);
 }

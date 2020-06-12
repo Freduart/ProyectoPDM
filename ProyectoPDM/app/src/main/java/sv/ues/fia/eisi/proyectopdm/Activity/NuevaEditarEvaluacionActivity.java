@@ -6,14 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -54,6 +55,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
     private EvaluacionViewModel evaluacionViewModel;
     private DatePicker dpickFechaEntregaEvaluacion;
     private TextView fechaEntregaEvaluacionLabel;
+    private Button botonDetalleEval;
 
 
     @Override
@@ -76,6 +78,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             editNumParticipantesEvaluacion = findViewById(R.id.edit_numParticipantes_eval);
             dpickFechaEntregaEvaluacion = findViewById(R.id.edit_fechaEntregaNotas);
             fechaEntregaEvaluacionLabel = findViewById(R.id.fechaEntregaNotas);
+            botonDetalleEval = findViewById(R.id.agregar_detalle_evaluacion);
 
             //LLENAR SPINNERS
             //Spinner asignatura
@@ -243,6 +246,26 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     setTitle(R.string.titulo_EA_nuevaEval);
                 }
             }
+
+            if(extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION) {
+                botonDetalleEval.setVisibility(View.VISIBLE);
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.activity_nueva_evaluacion, null);
+                final int id = idEvaluacion;
+                //al hacer clic corto en un objeto del recycler
+                botonDetalleEval.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                        Intent intent = new Intent(NuevaEditarEvaluacionActivity.this, DetalleEvaluacionActivity.class);
+                        //se mete en un extra del intent, el id
+                        intent.putExtra(EvaluacionActivity.IDENTIFICADOR_EVALUACION, id);
+                        //inicia la activity
+                        startActivity(intent);
+                    }
+                });
+            } else
+                botonDetalleEval.setVisibility(View.GONE);
 
         } catch (Exception e){
             Toast.makeText(NuevaEditarEvaluacionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
