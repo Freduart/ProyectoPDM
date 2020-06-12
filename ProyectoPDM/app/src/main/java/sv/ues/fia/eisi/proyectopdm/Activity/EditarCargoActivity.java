@@ -27,8 +27,6 @@ import sv.ues.fia.eisi.proyectopdm.repository.CargoRepository;
 
 public class EditarCargoActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ID_CARGO = "sv.ues.fia.eisi.proyectopdm.Activity.EXTRA_ID_CARGO";
-
     private Cargo cargoActual;
     private Escuela escuelaActual;
     private CargoViewModel cargoViewModel;
@@ -54,7 +52,7 @@ public class EditarCargoActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             int identCargo = 0;
             if (extras != null) {
-                identCargo = extras.getInt("ID_Cargo_Actual");
+                identCargo = extras.getInt(CargoActivity.IDENTIFICADOR_CARGO);
             }
             //Obtiene cargo actual por medio de EXTRA_ID_CARGO
             cargoActual =cargoViewModel.getCargo(identCargo);
@@ -81,13 +79,19 @@ public class EditarCargoActivity extends AppCompatActivity {
             escuelaViewModel.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
                 @Override
                 public void onChanged(List<Escuela> escuelas) {
-                    //añade los elementos del livedata a las listas para almacenar id y nombre de escuelas
-                    for (Escuela e : escuelas) {
-                        escuelasNom.add(e.getIdEscuela() + " - " + e.getNomEscuela());
-                    }
+                    try {
+                        Cargo c = cargoViewModel.getCargo(cargoActual.getIdCargo());
+                        //añade los elementos del livedata a las listas para almacenar id y nombre de escuelas
+                        for (Escuela e : escuelas) {
+                            escuelasNom.add(e.getIdEscuela() + " - " + e.getNomEscuela());
+                            if(e.getIdEscuela()==(c.getIdEscuelaFK()))
+                                idEscuelaCargo.setSelection(escuelasNom.indexOf(e.getIdEscuela() + " - " + e.getNomEscuela()));
+                        }
+                        //Refresca
+                        adapterSpinnerEscuela.notifyDataSetChanged();
+                    }catch (Exception e){
 
-                    //Refresca
-                    adapterSpinnerEscuela.notifyDataSetChanged();
+                    }
                 }
             });
 
@@ -96,7 +100,6 @@ public class EditarCargoActivity extends AppCompatActivity {
             setTitle("Editar cargo");
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.getCause(),Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -144,14 +147,14 @@ public class EditarCargoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.nuevo_cargo_menu, menu);
+        inflater.inflate(R.menu.agregar_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.guardar_cargo:
+            case R.id.guardar:
                 actualizarCargo();
                 return true;
             default:

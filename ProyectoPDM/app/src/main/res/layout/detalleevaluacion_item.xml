@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="8dp">
+        <TextView
+            android:id="@+id/disp_nombre_alumno_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:ellipsize="end"
+            android:text="Nombre de estudiante de cuatro palabras"/>
+        <TextView
+            android:id="@+id/disp_carnet_alumno_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/disp_nombre_alumno_detalle"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:text="AA00000"
+            android:paddingRight="20dp"/>
+        <TextView
+            android:id="@+id/disp_carrera_alumno_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/disp_nombre_alumno_detalle"
+            android:ellipsize="end"
+            android:layout_toStartOf="@id/disp_carnet_alumno_detalle"
+            android:layout_toLeftOf="@id/disp_carnet_alumno_detalle"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Placeholder de carrera de estudiante" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

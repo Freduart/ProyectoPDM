@@ -109,14 +109,14 @@ public class NuevoCargoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.nuevo_cargo_menu, menu);
+        inflater.inflate(R.menu.agregar_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.guardar_cargo:
+            case R.id.guardar:
                 guardarCargo();
                 return true;
             default:

@@ -45,7 +45,7 @@ public class VerAsignaturaActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             String idCodigo = "";
             if (extras != null) {
-                idCodigo = extras.getString("ID_Asignatura_Actual");
+                idCodigo = extras.getString(AsignaturaActivity.IDENTIFICADOR_AS);
             }
             //Obtiene asignatura actual por medio de EXTRA_ID de intent
             asignaturaActual = asignaturaViewModel.obtenerAsignatura(idCodigo);

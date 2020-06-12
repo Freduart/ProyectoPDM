@@ -44,6 +44,10 @@ public class DetalleEvaluacionRepository {
         return new DetalleEvaluacionRepository.obtenerDetalleEvaluacionAsyncTask(detalleEvaluacionDao).execute(integer).get(12, TimeUnit.SECONDS);
     }
 
+    public List<DetalleEvaluacion> obtenerDetallePorAlumno(String string) throws InterruptedException, ExecutionException, TimeoutException {
+        return new DetalleEvaluacionRepository.obtenerDetallePorAlumnoAsyncTask(detalleEvaluacionDao).execute(string).get(12, TimeUnit.SECONDS);
+    }
+
     public LiveData<List<DetalleEvaluacion>> getAllDetalleEvaluaciones(){
         return allDetalleEvaluaciones;
     }
@@ -110,6 +114,18 @@ public class DetalleEvaluacionRepository {
         @Override
         protected DetalleEvaluacion doInBackground(Integer... detalleEvaluaciones) {
             return detalleEvaluacionDao.obtenerDetalleEvaluacion(detalleEvaluaciones[0]);
+        }
+    }
+
+    private static class obtenerDetallePorAlumnoAsyncTask extends AsyncTask<String, Void, List<DetalleEvaluacion>>{
+        private DetalleEvaluacionDao detalleEvaluacionDao;
+
+        private obtenerDetallePorAlumnoAsyncTask(DetalleEvaluacionDao detalleEvaluacionDao){
+            this.detalleEvaluacionDao=detalleEvaluacionDao;
+        }
+        @Override
+        protected List<DetalleEvaluacion> doInBackground(String... strings) {
+            return detalleEvaluacionDao.obtenerDetallePorEstudiante(strings[0]);
         }
     }
 

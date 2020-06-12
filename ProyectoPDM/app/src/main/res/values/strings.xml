@@ -62,6 +62,9 @@
     <string name="accion_insertar_notif_eval">\u0020 se ha insertado con éxito.</string>
     <string name="fecha_placeholder_eval">Sin Fecha</string>
     <string name="error_form_incompleto_eval">Por favor, llena todos los campos.</string>
+    <string name="añadir_estudiante_evaluacion">Añadir</string>
+    <string name="headline_lista_alumnos_detalleeval">Estudiantes en la evaluación:</string>
+    <string name="detalle_eval">Estudiantes en evaluación</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>
@@ -82,15 +85,18 @@
     <string name="inic_notif_segrev">La segunda revisión \u0020</string>
     <string name="titulo_EA_editarsegrev">Editar segunda revisión</string>
     <string name="titulo_EA_nuevasegrev">Añadir segunda revisión</string>
-
+    <string name="antesmeridiano">\u0020 AM</string>
+    <string name="posmeridiano">\u0020 PM</string>
+    <string name="titulo_ver_segundarevision">Detalle de segunda revisión</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>
-    <string name="IdCargo">Identificador: </string>
-    <string name="IdEscuelaCargo">Escuela: </string>
-    <string name="NombreCargo">Nombre: </string>
+    <string name="IdCargo">Identificador:</string>
+    <string name="IdEscuelaCargo">Escuela:</string>
+    <string name="NombreCargo">Nombre:</string>
     <string name="AppBarAddCargo">Agregar cargo</string>
     <string name="DetalleCargo">Detalle de cargo</string>
+    <string name="EditarCargo">Editar cargo</string>
 
     <!-- Strings para Asignatura -->
     <string name="AppBarAddAsignatura">Agregar asignatura</string>
@@ -99,6 +105,7 @@
     <string name="NombreAsignatura">Nombre: </string>
     <string name="AppBarNameAsignaturas">Asignaturas</string>
     <string name="DetalleAsignatura">Detalle de asignatura</string>
+    <string name="EditarAsignatura">Editar asignatura</string>
 
     <!-- Strings para Primera Revisión -->
     <string name="AppBarNamePrimerRevision">Primera revisión</string>
@@ -110,8 +117,10 @@
     <string name="notaActualPR">Nota actual: </string>
     <string name="notaCorregida">Nota final: </string>
     <string name="observacionesPR">Observaciones</string>
+    <string name="agregarPrimera">Agregar primera revisión</string>
     <string name="AppBarNamePrimerasRevisiones">Primeras revisiones</string>
     <string name="detallePrimera">Detalle de primera revisión</string>
+    <string name="EditarPrimera">Editar primera revisión</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -71,4 +71,10 @@ public class Alumno {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getCarnetAlumno() + " - " + getNombre() + " " + getApellido();
+    }
 }

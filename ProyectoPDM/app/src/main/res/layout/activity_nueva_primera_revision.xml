@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.VerPrimeraRevisionActivity">
+    tools:context=".Activity.VerEvaluacionActivity">
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,8 +20,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             />
 
-        <TextView
-            android:id="@+id/tvCodPR"
+        <EditText
+            android:id="@+id/editarCodPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Codigo de pr"
@@ -33,15 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/LocalPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvCodPR"
+            app:layout_constraintTop_toBottomOf="@+id/editarCodPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvLocalFK"
+        <Spinner
+            android:id="@+id/editarLocalFK"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Local de prueba "
             app:layout_constraintTop_toBottomOf="@+id/localPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
@@ -50,15 +49,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/DetallePR"
-            app:layout_constraintTop_toBottomOf="@+id/tvLocalFK"
+            app:layout_constraintTop_toBottomOf="@+id/editarLocalFK"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvDetalleEvaFK"
+        <Spinner
+            android:id="@+id/editarDetalleEvaFK"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Detalle de prueba"
             app:layout_constraintTop_toBottomOf="@+id/detalleEvaFK"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
@@ -67,29 +65,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fechaSolPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvDetalleEvaFK"
+            app:layout_constraintTop_toBottomOf="@+id/editarDetalleEvaFK"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvFechaSolicitud"
+        <DatePicker
+            android:id="@+id/editarFechaSolicitud"
+            app:layout_constraintTop_toBottomOf="@+id/fechaEntregaNotas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="06/05/2020"
-            app:layout_constraintTop_toBottomOf="@+id/fechaSolicitud"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
             />
         <TextView
             android:id="@+id/estadoPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/estadoPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvFechaSolicitud"
+            app:layout_constraintTop_toBottomOf="@+id/editarFechaSolicitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvEstadoPR"
+        <Spinner
+            android:id="@+id/editarEstadoPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="true"
@@ -101,12 +100,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notaActualPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvEstadoPR"
+            app:layout_constraintTop_toBottomOf="@+id/editarEstadoPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvNotaAntesPR"
+        <EditText
+            android:id="@+id/editarNotaAntesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="7.0"
@@ -118,12 +117,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notaCorregida"
-            app:layout_constraintTop_toBottomOf="@+id/tvNotaAntesPR"
+            app:layout_constraintTop_toBottomOf="@+id/editarNotaAntesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvNotaDespuesPR"
+        <EditText
+            android:id="@+id/editarNotaDespuesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="8.0"
@@ -135,12 +134,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/observacionesPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvNotaDespuesPR"
+            app:layout_constraintTop_toBottomOf="@+id/editarNotaDespuesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
-        <TextView
-            android:id="@+id/tvObservacionesPR"
+        <EditText
+            android:id="@+id/editarObservacionesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="oajdfjksjfdklsdfkkjsdkfjksdkklskfkdksj"

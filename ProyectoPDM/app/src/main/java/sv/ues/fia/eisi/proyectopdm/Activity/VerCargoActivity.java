@@ -43,7 +43,7 @@ public class VerCargoActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             int identCargo = 0;
             if (extras != null) {
-                identCargo = extras.getInt("ID_Cargo_Actual");
+                identCargo = extras.getInt(CargoActivity.IDENTIFICADOR_CARGO);
             }
             //Obtiene cargo actual por medio de EXTRA_ID_CARGO
             cargoActual =cargoViewModel.getCargo(identCargo);

@@ -15,18 +15,31 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
-public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.AsignaturaHolder> implements View.OnClickListener{
+public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.AsignaturaHolder>{
 
     private List<Asignatura> asignaturas = new ArrayList<>();
+    private OnItemClickListener listener;
+    private OnItemLongClickListener longListener;
 
-    private View.OnClickListener listener;
+    public interface OnItemClickListener{
+        void onItemClick(Asignatura asignatura);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {this.listener= listener;}
+
+    public interface OnItemLongClickListener{
+        void onItemLongClick(Asignatura asignatura);
+    }
+
+    public void setOnLongClickListener(OnItemLongClickListener longListener){
+        this.longListener = longListener;
+    }
 
     @NonNull
     @Override
     public AsignaturaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.asignatura_item,parent,false);
-        itemView.setOnClickListener(this);
         return new AsignaturaHolder(itemView);
     }
 
@@ -53,20 +66,6 @@ public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.As
         notifyDataSetChanged();
     }
 
-    //Para obtener asignatura en una posicion especifica de la lista
-    public Asignatura getAsignaturaAt(int position){
-        return asignaturas.get(position);
-    }
-
-
-
-    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
-    @Override
-    public void onClick(View v) {
-        if(listener != null){
-            listener.onClick(v);
-        }
-    }
 
     class AsignaturaHolder extends RecyclerView.ViewHolder {
         private TextView idAs;
@@ -77,6 +76,27 @@ public class AsignaturaAdapter extends RecyclerView.Adapter<AsignaturaAdapter.As
             idAs = itemView.findViewById(R.id.idAsignatura);
             idDpto = itemView.findViewById(R.id.idDepartamento);
             nomAs = itemView.findViewById(R.id.nombreAsignatura);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION)
+                        listener.onItemClick(asignaturas.get(position));
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int posicion = getAdapterPosition();
+                    if (longListener != null && posicion != RecyclerView.NO_POSITION){
+                        longListener.onItemLongClick(asignaturas.get(posicion));
+                        return true;
+                    }else
+                        return false;
+                }
+            });
         }
     }
 }

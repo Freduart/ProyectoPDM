@@ -26,6 +26,7 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 
 public class CargoActivity extends AppCompatActivity {
+    public static final String IDENTIFICADOR_CARGO = "ID_CARGO_ACTUAL";
     private CargoViewModel cargoViewModel;
     Cargo cargoAt;
     String codigo;
@@ -69,17 +70,28 @@ public class CargoActivity extends AppCompatActivity {
                 public void onChanged(final List<Cargo> cargos) {
                     //Actualiza el RecyclerView
                     adapter.setCargos(cargos);
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Obtiene el código del cargo seleccionado
-                            codigo = String.valueOf(cargos.get(recyclerView
-                                    .getChildAdapterPosition(v)).getIdCargo());
-                            //Obtiene el cargo seleccionado
-                            cargoAt = adapter.getCargoAt(recyclerView.getChildAdapterPosition(v));
-                            createCustomDialog().show();
-                        }
-                    });
+                }
+            });
+            //Consultar cargo con click corto
+            adapter.setOnItemClickListener(new CargoAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Cargo cargo) {
+                    int id = cargo.getIdCargo();
+                    Intent intent = new Intent(CargoActivity.this, VerCargoActivity.class);
+                    intent.putExtra(IDENTIFICADOR_CARGO, id);
+                    startActivity(intent);
+                }
+            });
+            //Click largo para mostrar alertdialog con opciones
+            adapter.setOnLongClickListner(new CargoAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(Cargo cargo) {
+                    try {
+                        int id = cargo.getIdCargo();
+                        createCustomDialog(cargo).show();
+                    }catch (Exception e){
+                        Toast.makeText(CargoActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -90,40 +102,24 @@ public class CargoActivity extends AppCompatActivity {
     }
 
     //Para cuando se selecciona un cargo
-    public AlertDialog createCustomDialog(){
+    public AlertDialog createCustomDialog(final Cargo cargo){
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.dialog_opciones_cargo, null);
-        ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerCargo);
-        ImageButton eliminar = (ImageButton) v.findViewById(R.id.imBEliminarCargo);
-        ImageButton editar = (ImageButton)v.findViewById(R.id.imBEditarCargo);
-        TextView tv = (TextView) v.findViewById(R.id.tvADCargo);
-        tv.setText(codigo);
+        View v = inflater.inflate(R.layout.dialog_opciones, null);
+        ImageButton eliminar = (ImageButton) v.findViewById(R.id.imBEliminar);
+        ImageButton editar = (ImageButton)v.findViewById(R.id.imBEditar);
+        TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
+        tv.setText(cargo.getNomCargo());
         builder.setView(v);
         alertDialog = builder.create();
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    int id = cargoAt.getIdCargo();
+                    int id = cargo.getIdCargo();
                     Intent intent = new Intent(CargoActivity.this, EditarCargoActivity.class);
-                    intent.putExtra("ID_Cargo_Actual", id);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(CargoActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        ver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    int id = cargoAt.getIdCargo();
-
-                    Intent intent = new Intent(CargoActivity.this, VerCargoActivity.class);
-                    intent.putExtra("ID_Cargo_Actual", id);
+                    intent.putExtra(IDENTIFICADOR_CARGO, id);
                     startActivity(intent);
                     alertDialog.dismiss();
                 }catch (Exception e){
@@ -135,9 +131,9 @@ public class CargoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    cargoViewModel.delete(cargoAt);
+                    cargoViewModel.delete(cargo);
                     Toast.makeText(CargoActivity.this, "Cargo" + " "+
-                                    cargoAt.getIdCargo() +" ha sido borrado exitosamente",
+                                    cargo.getIdCargo() +" ha sido borrado exitosamente",
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
