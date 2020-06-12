@@ -121,6 +121,9 @@
     <string name="AppBarNamePrimerasRevisiones">Primeras revisiones</string>
     <string name="detallePrimera">Detalle de primera revisión</string>
     <string name="EditarPrimera">Editar primera revisión</string>
+    <string name="nota_place_holder_PR">0.0</string>
+    <string name="local_placeholder_PR">LComp1</string>
+    <string name="estado_placeholder_PR">false</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

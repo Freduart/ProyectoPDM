@@ -45,7 +45,11 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrimeraRevisionActivity.this, NuevaPrimeraRevisionActivity.class);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                }catch (Exception e){
+                       Toast.makeText(PrimeraRevisionActivity.this, e.getMessage()+" - "+e.getCause(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

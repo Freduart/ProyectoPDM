@@ -28,22 +28,7 @@
             app:layout_constraintTop_toBottomOf="@+id/codPrimeraR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
-        <TextView
-            android:id="@+id/localPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/LocalPR"
-            app:layout_constraintTop_toBottomOf="@+id/editarCodPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <Spinner
-            android:id="@+id/editarLocalFK"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/localPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+
         <TextView
             android:id="@+id/detalleEvaFK"
             android:layout_width="match_parent"
@@ -78,23 +63,7 @@
             android:datePickerMode="spinner"
             android:calendarViewShown="false"
             />
-        <TextView
-            android:id="@+id/estadoPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/estadoPR"
-            app:layout_constraintTop_toBottomOf="@+id/editarFechaSolicitud"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <Spinner
-            android:id="@+id/editarEstadoPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="true"
-            app:layout_constraintTop_toBottomOf="@+id/estadoPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+
         <TextView
             android:id="@+id/notaAntesPR"
             android:layout_width="match_parent"
@@ -112,23 +81,7 @@
             app:layout_constraintTop_toBottomOf="@+id/notaAntesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
-        <TextView
-            android:id="@+id/notaDespuesPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/notaCorregida"
-            app:layout_constraintTop_toBottomOf="@+id/editarNotaAntesPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <EditText
-            android:id="@+id/editarNotaDespuesPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="8.0"
-            app:layout_constraintTop_toBottomOf="@+id/notaDespuesPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+
         <TextView
             android:id="@+id/observacionesPR"
             android:layout_width="match_parent"
@@ -146,6 +99,5 @@
             app:layout_constraintTop_toBottomOf="@+id/observacionesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
-
     </TableLayout>
 </ScrollView>
