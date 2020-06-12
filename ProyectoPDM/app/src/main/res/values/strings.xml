@@ -28,7 +28,7 @@
     <string name="CVSoliImp">Solicitud</string>
     <string name="CVMaterias">Materias</string>
     <string name="btnAñadirArchivo">AÑADIR</string>
-    <string name="textDocumento">DOCUMENTO</string>
+    <string name="textDocumento">DOCUMENTOS</string>
     <string name="textDetalles">DETALLES DE IMPRESIÓN</string>
     <string name="textNImpresiones">N° Impresiones: </string>
     <string name="textNAnexos">N° Hojas Anexas: </string>
@@ -38,6 +38,8 @@
     <string name="textInformacionAdicional">INFORMACIÓN ADICIONAL</string>
     <string name="textDocDirector">Docente Director: </string>
     <string name="textEncImpres">Encargado Impresión: </string>
+    <string name="textEstado">ESTADO: </string>
+
 
     <!-- Strings para Evaluacion -->
     <string name="evaluacion">Evaluación</string>

@@ -23,7 +23,7 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
         this.listener = listener;
     }
 
-    public void setListaSolicitudesImpresion(List<SolicitudImpresion> listaSolicitudesImpresion) {
+    public ListaSolicitudesImpresionAdapter(List<SolicitudImpresion> listaSolicitudesImpresion) {
         this.listaSolicitudesImpresion = listaSolicitudesImpresion;
     }
 
@@ -37,10 +37,15 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
 
     @Override
     public void onBindViewHolder(@NonNull ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes holder, int position) {
-        holder.textTitulo.setText(listaSolicitudesImpresion.get(position).getDetalleImpresion());
-        holder.textDocente.setText(listaSolicitudesImpresion.get(position).getCarnetDocenteFK());
+        holder.textTitulo.setText(listaSolicitudesImpresion.get(position).getCarnetDocenteFK());
         holder.textDocumentos.setText(listaSolicitudesImpresion.get(position).getDocumento());
         holder.textEstado.setText(listaSolicitudesImpresion.get(position).getEstadoSolicitud());
+        holder.textDetallesImpresion.setText(listaSolicitudesImpresion.get(position).getDetalleImpresion());
+        String fechayhora=listaSolicitudesImpresion.get(position).getFechaSolicitud();
+        String[] splitfecha=fechayhora.split(" ");
+        String fecha=splitfecha[0],hora=splitfecha[1];
+        holder.textFechaSolicitud.setText(fecha);
+        holder.textHoraSolicitud.setText(hora);
     }
 
     @Override
@@ -57,14 +62,16 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
 
     public class ViewHolderSolicitudes extends RecyclerView.ViewHolder {
 
-        TextView textTitulo,textDocente,textDocumentos,textEstado;
+        TextView textTitulo,textDocumentos,textEstado,textDetallesImpresion,textFechaSolicitud,textHoraSolicitud;
 
         public ViewHolderSolicitudes(@NonNull View itemView) {
             super(itemView);
             textTitulo=(TextView)itemView.findViewById(R.id.textTitulo);
-            textDocente=(TextView)itemView.findViewById(R.id.textDocente);
             textDocumentos=(TextView)itemView.findViewById(R.id.textDocumentos);
             textEstado=(TextView)itemView.findViewById(R.id.textEstado);
+            textDetallesImpresion=(TextView)itemView.findViewById(R.id.textDetallesDeImpresion);
+            textFechaSolicitud=(TextView)itemView.findViewById(R.id.textFechaSolicitud);
+            textHoraSolicitud=(TextView)itemView.findViewById(R.id.textHoraSolicitud);
         }
     }
 }

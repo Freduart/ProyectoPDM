@@ -42,15 +42,20 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.EncargadoImpresion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
 public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
 
@@ -68,10 +73,13 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     String nombreDocumento;
     int index=0;
     int[] numImpresiones={}, hojasAnexas={};
-    String detallesImpresion, acumPath="";
-    ArrayList<String> listaDocumentos;
+    String detallesImpresion, acumPath="",carnetDocente;
+    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres;
+    ArrayAdapter<String> adapterDocDirector,adapterEncImpres;
     DocenteViewModel docenteViewModel;
     EncargadoImpresionViewModel encargadoImpresionViewModel;
+    SolicitudImpresionViewModel solicitudImpresionViewModel;
+    private SolicitudImpresion solicitudImpresion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +92,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion);
         text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones);
         text_anexos=(TextInputLayout)findViewById(R.id.text_anexos);
+        listaDocumentos=new ArrayList<>();
         //Spinners
         docDirector=(Spinner)findViewById(R.id.spinnerDocDirector);
         encImpres=(Spinner)findViewById(R.id.spinnerEncImpres);
@@ -95,52 +104,118 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
         recyclerDocumentos.setAdapter(listaArchivosAdapter);
         //Inicialización de variables
-        listaDocumentos=new ArrayList<>();
+        try {
+            //Spinner DocDirector:
+            listDocDirector=new ArrayList<>();
+            adapterDocDirector=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,listDocDirector);
+            adapterDocDirector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            docDirector.setAdapter(adapterDocDirector);
+            //DocenteViewModel
+            docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+            docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
+                @Override
+                public void onChanged(List<Docente> docentes) {
+                    for (Docente docente:docentes){
+                        if(docente.getIdCargoFK()==1){
+                            listDocDirector.add(docente.getCarnetDocente()+"-"+docente.getNomDocente()+" "+docente.getApellidoDocente());
+                        }
+                    }
+                    adapterDocDirector.notifyDataSetChanged();
+                }
+            });
+            //Spinner EncImpres:
+            listEncImpres=new ArrayList<>();
+            adapterEncImpres=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,listEncImpres);
+            adapterEncImpres.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            encImpres.setAdapter(adapterEncImpres);
+            //EncargadoImpresionViewModel
+            encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
+            encargadoImpresionViewModel.getAllEncargadoImpresion().observe(this, new Observer<List<EncargadoImpresion>>() {
+                @Override
+                public void onChanged(List<EncargadoImpresion> encargadoImpresions) {
+                    for(EncargadoImpresion encargadoImpresion:encargadoImpresions){
+                        listEncImpres.add(encargadoImpresion.getIdEncargadoImpresion()+"-"+encargadoImpresion.getNomEncargado());
+                    }
+                    adapterEncImpres.notifyDataSetChanged();
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(this, "Ha ocurrido un error: "+e, Toast.LENGTH_SHORT).show();
+        }
         //Boton Enviar Solicitud
         enviarSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                solicitudImpresion=new SolicitudImpresion("carnetDocente",1,"DocDirector",10,"Detalle","Resultado","Nuevo",
+                        "Hoy","Documento.pdf");
+                solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                        .create(SolicitudImpresionViewModel.class);
+                solicitudImpresionViewModel.insert(solicitudImpresion);
+                Toast.makeText(NuevaSolicitudImpresionActivity.this, "Guardado...", Toast.LENGTH_SHORT).show();
+                /*
+                String nImpresiones=text_impresiones.getEditText().getText().toString();
                 if(listaDocumentos.size()==0){
                     Snackbar.make(v, "Debe Añadir Un Documento...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }else if((text_impresiones.getEditText().getText().toString()==""||text_impresiones.getEditText().getText().toString()==null)){
+                }else if((text_impresiones.getEditText().getText().toString().trim().isEmpty())){
                     text_impresiones.setError("Ingrese N° Impreisones");
-                }else if((text_anexos.getEditText().getText().toString()==""||text_anexos.getEditText().getText().toString()==null)){
-                    text_anexos.setError("Ingrese N° Hojas Anexas");
+                }else if(nImpresiones.contains("*")||nImpresiones.contains("#")||nImpresiones.contains("(")||nImpresiones.contains(")")||nImpresiones.contains("/")||nImpresiones.contains("N")||nImpresiones.contains(";")||nImpresiones.contains("+")||nImpresiones.contains("-")||nImpresiones.contains(".")){
+                    text_impresiones.setError("Ingrese Los Datos Correctamente.");
                 }else{
-                    //Codigo para mandar los datos...
-                }
-            }
-        });
-        //Spinner DocDirector:
-        final ArrayList<String> listDocDirector=new ArrayList<>();
-        final ArrayAdapter<String> adapterDocDirector=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item);
-        docDirector.setAdapter(adapterDocDirector);
-        //DocenteViewModel
-        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
-        docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
-            @Override
-            public void onChanged(List<Docente> docentes) {
-                for (Docente docente:docentes){
-                    if(docente.getIdCargoFK()==1){
-                        listDocDirector.add(" - "+docente.getNomDocente()+" "+docente.getApellidoDocente());
+                    //Docente Director
+                    String docente=docDirector.getSelectedItem().toString();
+                    String docente2[]=docente.split("-");
+                    String carnetDocDirector=docente2[0];
+                    //Encargado Impresión
+                    String encargado=encImpres.getSelectedItem().toString();
+                    String encargado2[]=encargado.split("-");
+                    String encargadoID=encargado2[0];
+                    //N° Impresiones
+                    nImpresiones=nImpresiones.replace(" ","");
+                    String[] splitImpresiones,splitHojasAnexas;
+                    splitImpresiones=nImpresiones.split(",");
+                    //Variables
+                    String nHojasAnexas="0",detallesDeImpresion1,detalleImpresion2,fechaHoy;
+                    if(splitImpresiones.length!=listaDocumentos.size()){
+                        text_impresiones.setError("Ingrese Los Datos Correctamente.");
+                    }else{
+                        try {
+                            //Hojas Anexas
+                            if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
+                                nHojasAnexas=text_anexos.getEditText().getText().toString();
+                                if(nHojasAnexas.contains("*")||nHojasAnexas.contains("#")||nHojasAnexas.contains("(")||nHojasAnexas.contains(")")||nHojasAnexas.contains("/")||nHojasAnexas.contains("N")||nHojasAnexas.contains(";")||nHojasAnexas.contains("+")||nHojasAnexas.contains("-")||nHojasAnexas.contains(".")){
+                                    text_anexos.setError("Ingrese Los Datos Correctamente.");
+                                }else{
+                                    nHojasAnexas=nHojasAnexas.replace(" ","");
+                                    splitHojasAnexas=nHojasAnexas.split(",");
+                                    if(splitHojasAnexas.length!=listaDocumentos.size()){
+                                        text_anexos.setError("Ingrese Los Datos Correctamente.");
+                                    }else{
+                                        //Detalles de Impresión
+                                        detallesDeImpresion1=text_detalleImpresiones.getText().toString();
+                                        //Fecha del sistema
+                                        Calendar calendar=Calendar.getInstance();
+                                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        fechaHoy=simpleDateFormat.format(calendar.getTime());
+                                        //Documentos
+                                        for(int i=0;i<listaDocumentos.size();i++){
+                                            detalleImpresion2="Hojas Anexas Por Documento: "+splitHojasAnexas[i]+".\n"+detallesDeImpresion1;
+                                            solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
+                                                    Integer.parseInt(splitImpresiones[i]),detalleImpresion2,"En Curso",
+                                                    "Nueva",fechaHoy,listaDocumentos.get(i));
+                                            solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                                                    .create(SolicitudImpresionViewModel.class);
+                                            solicitudImpresionViewModel.insert(solicitudImpresion);
+                                        }
+                                        Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }
+                            }
+                        }catch (Exception e){
+                            Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-                adapterDocDirector.notifyDataSetChanged();
-            }
-        });
-        //Spinner EncImpres:
-        final ArrayList<String> listEncImpres=new ArrayList<>();
-        final ArrayAdapter<String> adapterEncImpres=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item);
-        encImpres.setAdapter(adapterEncImpres);
-        //EncargadoImpresionViewModel
-        encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
-        encargadoImpresionViewModel.getAllEncargadoImpresion().observe(this, new Observer<List<EncargadoImpresion>>() {
-            @Override
-            public void onChanged(List<EncargadoImpresion> encargadoImpresions) {
-                for(EncargadoImpresion encargadoImpresion:encargadoImpresions){
-                    listEncImpres.add(encargadoImpresion.getIdEncargadoImpresion()+" - "+encargadoImpresion.getNomEncargado());
-                }
-                adapterEncImpres.notifyDataSetChanged();
+                }*/
             }
         });
     }
@@ -153,34 +228,25 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 documentUri = data.getData();
                 try{
                     String path = getPathMethod(this, documentUri);
-                    Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                     if (path == null) {
                         Toast.makeText(this, "Archivo No Encontrado...", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                         listaDocumentos.add(path);
-                        //Actualizamos la lista de documentos con el Adapter.
-                        listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
                         //Ponemos a la escucha cada item agregado
-                        listaArchivosAdapter.setOnClickListener(new View.OnClickListener() {
+                        listaArchivosAdapter.setOnItemClickListener(new ItemClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                //Obtenemos la ruta del documento seleccionado del recyclerDocumentos
-                                uriSeleccionado=Uri.fromFile(new File(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v))));
-                                nombreDocumento=getFileName(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)));
-                                for(int i=0;i<listaDocumentos.size();i++){
-                                    if(listaDocumentos.get(i).equalsIgnoreCase(listaDocumentos.get(recyclerDocumentos.getChildAdapterPosition(v)))){
-                                        index=i;
-                                    }
-                                }
+                            public void OnItemClick(int position, String documento) {
+                                uriSeleccionado=Uri.fromFile(new File(documento));
+                                nombreDocumento=getFileName(documento);
+                                index=position;
                                 createCustomDialog().show();
                             }
                         });
-                        recyclerDocumentos.setAdapter(listaArchivosAdapter);
+                        listaArchivosAdapter.notifyDataSetChanged();
                     }
                 }catch (Exception e){
-                    Toast.makeText(this, "Ha Ocurrido Un Error: "+e, Toast.LENGTH_SHORT).show();
-                    text_detalleImpresiones.setText(e.toString());
+                    e.printStackTrace();
                 }
             }
         }
@@ -203,7 +269,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 intent.setDataAndType(uri, "application/pdf");
                 startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
             case R.id.ajustesServer:
-                Toast.makeText(this, "Ajustes Del Servidor", Toast.LENGTH_SHORT).show();
+                //ajustes del servidor
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -243,8 +309,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         //Quitar
                         listaDocumentos.remove(index);
-                        listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
-                        recyclerDocumentos.setAdapter(listaArchivosAdapter);
+                        listaArchivosAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
                 }
