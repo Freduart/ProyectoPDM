@@ -6,21 +6,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.Activity.ItemClickListenerImpresion;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
-public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes> implements View.OnClickListener{
+public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes>{
 
     List<SolicitudImpresion> listaSolicitudesImpresion = new ArrayList<>();
-    View.OnClickListener listener;
+    ItemClickListenerImpresion itemClickListener;
 
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
+    public void setOnItemClickListener(ItemClickListenerImpresion itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     public ListaSolicitudesImpresionAdapter(List<SolicitudImpresion> listaSolicitudesImpresion) {
@@ -31,12 +34,11 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
     @Override
     public ViewHolderSolicitudes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_soliticud_impresion,parent,false);
-        itemView.setOnClickListener(this);
         return new ViewHolderSolicitudes(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes holder, int position) {
+    public void onBindViewHolder(@NonNull ListaSolicitudesImpresionAdapter.ViewHolderSolicitudes holder, final int position) {
         holder.textTitulo.setText(listaSolicitudesImpresion.get(position).getCarnetDocenteFK());
         holder.textDocumentos.setText(listaSolicitudesImpresion.get(position).getDocumento());
         holder.textEstado.setText(listaSolicitudesImpresion.get(position).getEstadoSolicitud());
@@ -46,18 +48,18 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
         String fecha=splitfecha[0],hora=splitfecha[1];
         holder.textFechaSolicitud.setText(fecha);
         holder.textHoraSolicitud.setText(hora);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.OnItemClick(position,listaSolicitudesImpresion.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return listaSolicitudesImpresion.size();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(listener!=null){
-            listener.onClick(v);
-        }
     }
 
     public class ViewHolderSolicitudes extends RecyclerView.ViewHolder {

@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import sv.ues.fia.eisi.proyectopdm.Activity.ItemClickListener;
+import sv.ues.fia.eisi.proyectopdm.Activity.ItemClickListenerArchivos;
 import sv.ues.fia.eisi.proyectopdm.R;
 
-public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdapter.ViewHolderArchivos> implements View.OnClickListener{
+public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdapter.ViewHolderArchivos>{
 
     ArrayList<String> listaDocumentos;
-    private View.OnClickListener listener;
-    ItemClickListener itemClickListener;
+    ItemClickListenerArchivos itemClickListenerArchivos;
 
     public ListaArchivosAdapter(ArrayList<String> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
@@ -27,7 +26,6 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
     @Override
     public ViewHolderArchivos onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_archivos_impresion,parent,false);
-        itemView.setOnClickListener(this);
         return new ViewHolderArchivos(itemView);
     }
 
@@ -46,7 +44,7 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.OnItemClick(position,ruta);
+                itemClickListenerArchivos.OnItemClick(position,ruta);
             }
         });
     }
@@ -54,17 +52,6 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
     @Override
     public int getItemCount() {
         return listaDocumentos.size();
-    }
-
-    public void setOnClickListener(View.OnClickListener listener){
-        this.listener=listener;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(listener!=null){
-            listener.onClick(v);
-        }
     }
 
     public class ViewHolderArchivos extends RecyclerView.ViewHolder {
@@ -78,7 +65,7 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
         }
     }
 
-    public void setOnItemClickListener(ItemClickListener itemClickListener){
-        this.itemClickListener=itemClickListener;
+    public void setOnItemClickListener(ItemClickListenerArchivos itemClickListenerArchivos){
+        this.itemClickListenerArchivos = itemClickListenerArchivos;
     }
 }

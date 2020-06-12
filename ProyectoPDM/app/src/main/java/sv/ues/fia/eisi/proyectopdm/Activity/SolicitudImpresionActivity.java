@@ -61,10 +61,10 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(final List<SolicitudImpresion> solicitudImpresions) {
                     solicitudImpresion.addAll(solicitudImpresions);
-                    listaSolicitudesImpresionAdapter.setOnClickListener(new View.OnClickListener() {
+                    listaSolicitudesImpresionAdapter.setOnItemClickListener(new ItemClickListenerImpresion() {
                         @Override
-                        public void onClick(View v) {
-                            //custom alertDialog...
+                        public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
+
                         }
                     });
                     listaSolicitudesImpresionAdapter.notifyDataSetChanged();

@@ -45,7 +45,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
@@ -65,7 +64,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     TextInputLayout text_impresiones,text_anexos;
     RecyclerView recyclerDocumentos;
     ListaArchivosAdapter listaArchivosAdapter;
-    Spinner docDirector,encImpres;
+    Spinner docDirector,encImpres,carnetDoc;
     //Variables
     Uri documentUri;
     //Uri del documento del recyclerDocumentos
@@ -74,8 +73,8 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     int index=0;
     int[] numImpresiones={}, hojasAnexas={};
     String detallesImpresion, acumPath="",carnetDocente;
-    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres;
-    ArrayAdapter<String> adapterDocDirector,adapterEncImpres;
+    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres,listDocentes;
+    ArrayAdapter<String> adapterDocDirector,adapterEncImpres,adapterCarnetDocente;
     DocenteViewModel docenteViewModel;
     EncargadoImpresionViewModel encargadoImpresionViewModel;
     SolicitudImpresionViewModel solicitudImpresionViewModel;
@@ -96,6 +95,8 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         //Spinners
         docDirector=(Spinner)findViewById(R.id.spinnerDocDirector);
         encImpres=(Spinner)findViewById(R.id.spinnerEncImpres);
+        carnetDoc=(Spinner)findViewById(R.id.spinnerCarnetDocente);
+
         //Boton flotante
         FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
         //RecyclerView
@@ -139,6 +140,23 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     adapterEncImpres.notifyDataSetChanged();
                 }
             });
+            //Spinner CarnetDocente:
+            listDocentes=new ArrayList<>();
+            adapterCarnetDocente=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,listDocentes);
+            adapterCarnetDocente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            carnetDoc.setAdapter(adapterCarnetDocente);
+            //DocenteViewModel
+            docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+            docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
+                @Override
+                public void onChanged(List<Docente> docentes) {
+                    for (Docente docente:docentes){
+                        listDocentes.add(docente.getCarnetDocente()+"-"+docente.getNomDocente()+" "+docente.getApellidoDocente());
+                    }
+                    adapterCarnetDocente.notifyDataSetChanged();
+                }
+            });
+
         }catch (Exception e){
             Toast.makeText(this, "Ha ocurrido un error: "+e, Toast.LENGTH_SHORT).show();
         }
@@ -146,13 +164,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         enviarSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                solicitudImpresion=new SolicitudImpresion("carnetDocente",1,"DocDirector",10,"Detalle","Resultado","Nuevo",
-                        "Hoy","Documento.pdf");
-                solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
-                        .create(SolicitudImpresionViewModel.class);
-                solicitudImpresionViewModel.insert(solicitudImpresion);
-                Toast.makeText(NuevaSolicitudImpresionActivity.this, "Guardado...", Toast.LENGTH_SHORT).show();
-                /*
                 String nImpresiones=text_impresiones.getEditText().getText().toString();
                 if(listaDocumentos.size()==0){
                     Snackbar.make(v, "Debe Añadir Un Documento...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -161,6 +172,10 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 }else if(nImpresiones.contains("*")||nImpresiones.contains("#")||nImpresiones.contains("(")||nImpresiones.contains(")")||nImpresiones.contains("/")||nImpresiones.contains("N")||nImpresiones.contains(";")||nImpresiones.contains("+")||nImpresiones.contains("-")||nImpresiones.contains(".")){
                     text_impresiones.setError("Ingrese Los Datos Correctamente.");
                 }else{
+                    //Carnet Docente
+                    String carnetDocente1=carnetDoc.getSelectedItem().toString();
+                    String[] carnetDocente2=carnetDocente1.split("-");
+                    String carnetDocente=carnetDocente2[0];
                     //Docente Director
                     String docente=docDirector.getSelectedItem().toString();
                     String docente2[]=docente.split("-");
@@ -215,7 +230,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
                         }
                     }
-                }*/
+                }
             }
         });
     }
@@ -234,7 +249,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                         Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                         listaDocumentos.add(path);
                         //Ponemos a la escucha cada item agregado
-                        listaArchivosAdapter.setOnItemClickListener(new ItemClickListener() {
+                        listaArchivosAdapter.setOnItemClickListener(new ItemClickListenerArchivos() {
                             @Override
                             public void OnItemClick(int position, String documento) {
                                 uriSeleccionado=Uri.fromFile(new File(documento));
