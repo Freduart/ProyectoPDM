@@ -26,12 +26,18 @@ public class SolicitudExtraordinario {
             childColumns = "idEvaluacionFK"
     )
     private int idEvaluacion;
-    private String tipoSolicitud;
+    @ForeignKey(
+            entity = TipoEvaluacion.class,
+            parentColumns = "idTipoEvaluacion",
+            childColumns = "tipoSolicitudFK"
+    )
+    private int tipoSolicitud;
     private String motivoSolicitud;
+
     private String fechaSolicitudExtr;
     private boolean justificacion;
 
-    public SolicitudExtraordinario(@NonNull String carnetAlumnoFK, int idEvaluacion, String tipoSolicitud, String motivoSolicitud, String fechaSolicitudExtr, boolean justificacion) {
+    public SolicitudExtraordinario(@NonNull String carnetAlumnoFK, int idEvaluacion, int tipoSolicitud, String motivoSolicitud, String fechaSolicitudExtr, boolean justificacion) {
         this.carnetAlumnoFK = carnetAlumnoFK;
         this.idEvaluacion = idEvaluacion;
         this.tipoSolicitud = tipoSolicitud;
@@ -65,11 +71,11 @@ public class SolicitudExtraordinario {
         this.idEvaluacion = idEvaluacion;
     }
 
-    public String getTipoSolicitud() {
+    public int getTipoSolicitud() {
         return tipoSolicitud;
     }
 
-    public void setTipoSolicitud(String tipoSolicitud) {
+    public void setTipoSolicitud(int tipoSolicitud) {
         this.tipoSolicitud = tipoSolicitud;
     }
 

@@ -48,13 +48,12 @@
                 android:text="@string/tipoSolicitudExtra"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:paddingBottom="20dp"/>
-            <EditText
-                android:id="@+id/editTipoSoliExtra"
-                android:inputType="text"
-                android:maxLength="1"
-                android:hint="@string/hintTipoSoli"
-                tools:ignore="Autofill"
-                android:paddingBottom="20dp"/>
+            <Spinner
+                android:id="@+id/editTipoSoli"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="40dp"
+                />
         </TableRow>
         <TableRow>
             <TextView
