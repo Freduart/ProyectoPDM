@@ -11,19 +11,40 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.Activity.CargoActivity;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 
-public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder> implements View.OnClickListener{
+public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder> {
     private List<Cargo> cargos =  new ArrayList<>();
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
+    private OnItemLongClickListener longListener;
+
+
+    //listener para click corto
+    public interface OnItemClickListener{
+        void onItemClick(Cargo cargo);
+    }
+    //set listener click corto
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener =listener;
+    }
+    //listener para click largo
+    public interface OnItemLongClickListener{
+        void onItemLongClick(Cargo cargo);
+    }
+    //set listener click largo
+    public void setOnLongClickListner(OnItemLongClickListener longListener){
+        this.longListener=longListener;
+    }
+
 
     @NonNull
     @Override
     public CargoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cargo_item,parent,false);
-        itemView.setOnClickListener(this);
+
         return new CargoHolder(itemView);
     }
 
@@ -50,18 +71,6 @@ public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder>
         notifyDataSetChanged();
     }
 
-    //Para obtener cargo en una posición específica
-
-    public Cargo getCargoAt(int position) {return cargos.get(position);}
-
-    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
-
-    @Override
-    public void onClick(View v) {
-        if(listener != null){
-            listener.onClick(v);
-        }
-    }
 
     class CargoHolder extends  RecyclerView.ViewHolder{
         private TextView idCargo;
@@ -73,6 +82,29 @@ public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder>
             idCargo = itemView.findViewById(R.id.idCar);
             idEscuela = itemView.findViewById(R.id.idEsc);
             nomCargo = itemView.findViewById(R.id.nomCar);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Obtener  posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(listener != null && posicion != RecyclerView.NO_POSITION)
+                        listener.onItemClick(cargos.get(posicion));
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(longListener != null && posicion != RecyclerView.NO_POSITION) {
+                        longListener.onItemLongClick(cargos.get(posicion));
+                        return true;
+                    } else
+                        return false;
+                }
+            });
         }
     }
 }

@@ -26,9 +26,10 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
 public class AsignaturaActivity extends AppCompatActivity {
+    public static final String IDENTIFICADOR_AS = "ID_ASIGNATURA_ACTUAL";
+
     private AsignaturaViewModel asignaturaViewModel;
-    Asignatura asignaturaAt;
-    String codigo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +74,25 @@ public class AsignaturaActivity extends AppCompatActivity {
                         public void onChanged(final List<Asignatura> asignaturas) {
                             //Actualiza el RecyclerView
                             adapter.setAsignaturas(asignaturas);
-                            adapter.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //Obtiene el codigo de la asignatura seleccionada
-                                    codigo=asignaturas.get(recyclerView.getChildAdapterPosition(v)).getCodigoAsignatura();
-                                    //Obtiene la asignatura seleccionada
-                                    asignaturaAt = adapter.getAsignaturaAt(recyclerView.getChildAdapterPosition(v));
-                                    createCustomDialog().show();
-                                }
-                            });
+                        }
+                    });
+
+                    //Consultar asignatura seleccionada con click corto
+                    adapter.setOnItemClickListener(new AsignaturaAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Asignatura asignatura) {
+                            String id = asignatura.getCodigoAsignatura();
+                            Intent intent = new Intent(AsignaturaActivity.this, VerAsignaturaActivity.class);
+                            intent.putExtra(IDENTIFICADOR_AS, id);
+                            startActivity(intent);
+                        }
+                    });
+
+                    //Click largo para mostrar alert dialog con opciones
+                    adapter.setOnLongClickListener(new AsignaturaAdapter.OnItemLongClickListener() {
+                        @Override
+                        public void onItemLongClick(Asignatura asignatura) {
+                            createCustomDialog(asignatura).show();
                         }
                     });
         }catch (Exception e){
@@ -92,41 +102,41 @@ public class AsignaturaActivity extends AppCompatActivity {
     }
 
     //Para cuando se selecciona una asignatura
-    public AlertDialog createCustomDialog(){
+    public AlertDialog createCustomDialog(final Asignatura asignatura){
 
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.dialog_opciones_asignaturas, null);
-        ImageButton ver = (ImageButton) v.findViewById(R.id.imBVer);
+        final LayoutInflater inflater = getLayoutInflater();
+        View v = inflater.inflate(R.layout.dialog_opciones, null);
         ImageButton editar = (ImageButton) v.findViewById(R.id.imBEditar);
         ImageButton eliminar = (ImageButton) v. findViewById(R.id.imBEliminar);
-        TextView tv = (TextView) v.findViewById(R.id.tvADAsignatura);
-        tv.setText(codigo);
+        TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
+        tv.setText(asignatura.getCodigoAsignatura());
         builder.setView(v);
         alertDialog = builder.create();
 
-        ver.setOnClickListener(new View.OnClickListener() {
+        editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    codigo = asignaturaAt.getCodigoAsignatura();
-                    Intent intent = new Intent(AsignaturaActivity.this, VerAsignaturaActivity.class);
-                    intent.putExtra("ID_Asignatura_Actual", codigo);
+                try{
+                    String id = asignatura.getCodigoAsignatura();
+                    Intent intent = new Intent(AsignaturaActivity.this, EditarAsignaturaActivity.class);
+                    intent.putExtra(IDENTIFICADOR_AS, id);
                     startActivity(intent);
                     alertDialog.dismiss();
                 }catch (Exception e){
-                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
                 }
             }
         });
+
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    asignaturaViewModel.delete(asignaturaAt);
+                    asignaturaViewModel.delete(asignatura);
                     Toast.makeText(AsignaturaActivity.this, "Asignatura" + " " +
-                                    asignaturaAt.getCodigoAsignatura() + " ha sido borrada exitosamente",
+                                    asignatura.getCodigoAsignatura() + " ha sido borrada exitosamente",
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){

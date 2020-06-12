@@ -108,14 +108,14 @@ public class NuevaAsignaturaActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.nueva_asignatura_menu, menu);
+        inflater.inflate(R.menu.agregar_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.guardar_asignatura:
+            case R.id.guardar:
                 guardarAsignatura();
                 return true;
             default:

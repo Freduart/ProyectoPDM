@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
+
+    android:id="@+id/RLayout"
     android:background="#393838">
 
     <TextView
         android:id="@+id/tituloAlert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/CodigoAsignatura"
         android:textColor="@color/colorBlanco"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_alignParentLeft="true"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/imBEditar"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tituloAlert"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginRight="1dp"
-        android:src="@drawable/ic_editar" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:padding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloAlert">
 
-    <ImageButton
-        android:id="@+id/imBEliminar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tituloAlert"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_toEndOf="@+id/imBEditar"
-        android:layout_toRightOf="@+id/imBEditar"
-        android:src="@drawable/ic_eliminar" />
+        <ImageButton
+            android:id="@+id/imBEditar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/ic_editar" />
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/imBEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_eliminar"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

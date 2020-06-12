@@ -84,11 +84,12 @@
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>
-    <string name="IdCargo">Identificador: </string>
-    <string name="IdEscuelaCargo">Escuela: </string>
-    <string name="NombreCargo">Nombre: </string>
+    <string name="IdCargo">Identificador:</string>
+    <string name="IdEscuelaCargo">Escuela:</string>
+    <string name="NombreCargo">Nombre:</string>
     <string name="AppBarAddCargo">Agregar cargo</string>
     <string name="DetalleCargo">Detalle de cargo</string>
+    <string name="EditarCargo">Editar cargo</string>
 
     <!-- Strings para Asignatura -->
     <string name="AppBarAddAsignatura">Agregar asignatura</string>
@@ -97,6 +98,7 @@
     <string name="NombreAsignatura">Nombre: </string>
     <string name="AppBarNameAsignaturas">Asignaturas</string>
     <string name="DetalleAsignatura">Detalle de asignatura</string>
+    <string name="EditarAsignatura">Editar asignatura</string>
 
     <!-- Strings para Primera Revisión -->
     <string name="AppBarNamePrimerRevision">Primera revisión</string>
@@ -108,8 +110,10 @@
     <string name="notaActualPR">Nota actual: </string>
     <string name="notaCorregida">Nota final: </string>
     <string name="observacionesPR">Observaciones</string>
+    <string name="agregarPrimera">Agregar primera revisión</string>
     <string name="AppBarNamePrimerasRevisiones">Primeras revisiones</string>
     <string name="detallePrimera">Detalle de primera revisión</string>
+    <string name="EditarPrimera">Editar primera revisión</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.PrimeraRevisionAdapter;
@@ -36,6 +38,16 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_primera_revision);
 
         setTitle(R.string.AppBarNamePrimerasRevisiones);
+
+        FloatingActionButton btnNuevaPR = findViewById(R.id.add_pr_button);
+
+        btnNuevaPR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PrimeraRevisionActivity.this, NuevaPrimeraRevisionActivity.class);
+                startActivity(intent);
+            }
+        });
 
         final RecyclerView recyclerView = findViewById(R.id.recycler_list_primerarevision);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,7 +79,6 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             adapter.setOnLongClickListener(new PrimeraRevisionAdapter.OnItemLongClickListener() {
                 @Override
                 public void onItemLongClick(PrimeraRevision primeraRevision) {
-                    String id = primeraRevision.getIdPrimerRevision();
                     createCustomDialog(primeraRevision).show();
                 }
             });
@@ -93,8 +104,10 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     String id = primeraRevision.getIdPrimerRevision();
-                    Intent intent = new Intent(PrimeraRevisionActivity.this, VerPrimeraRevisionActivity.class);
-                    //intent.putExtra()
+                    Intent intent = new Intent(PrimeraRevisionActivity.this, EditarPrimeraRevisionActivity.class);
+                    intent.putExtra(IDENTIFICADOR_PR, id);
+                    startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(PrimeraRevisionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -104,9 +117,9 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    primeraRevisionViewModel.deletePrimeraRevision(primeraRevisionAt);
+                    primeraRevisionViewModel.deletePrimeraRevision(primeraRevision);
                     Toast.makeText(PrimeraRevisionActivity.this, "Primera revision "+
-                            primeraRevisionAt.getIdPrimerRevision() + " ha sido borrada exitosamente", Toast.LENGTH_SHORT).show();
+                            primeraRevision.getIdPrimerRevision() + " ha sido borrada exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(PrimeraRevisionActivity.this, e.getMessage() + " " +

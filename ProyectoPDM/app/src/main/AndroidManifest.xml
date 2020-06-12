@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.VerPrimeraRevisionActivity"></activity>
+        <activity android:name=".Activity.EditarPrimeraRevisionActivity"></activity>
+        <activity android:name=".Activity.EditarAsignaturaActivity" />
+        <activity android:name=".Activity.NuevaPrimeraRevisionActivity" />
+        <activity android:name=".Activity.VerPrimeraRevisionActivity" />
         <activity android:name=".Activity.PrimeraRevisionActivity" />
         <activity android:name=".Activity.VerAsignaturaActivity" />
         <activity android:name=".Activity.NuevaAsignaturaActivity" />
@@ -39,8 +42,8 @@
         <activity android:name=".Activity.AlumnoActivity" />
         <activity android:name=".Activity.MenuActivity" />
         <activity android:name=".Activity.AgregarAlumnoActivity" />
-        <activity android:name=".Activity.verAlumnoActivity"/>
-        <activity android:name=".Activity.NuevaEditarAlumnoActivity"/>
+        <activity android:name=".Activity.verAlumnoActivity" />
+        <activity android:name=".Activity.NuevaEditarAlumnoActivity" />
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
