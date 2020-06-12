@@ -35,10 +35,8 @@ public class CicloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciclo);
 
-        //Inicializa variable de Barra de Acción (Barra Superior)
-        ActionBar actionBar = getSupportActionBar();
         //Título personalizado para Activity
-        actionBar.setTitle("Ciclos Académicos");
+        setTitle("Ciclos Académicos");
 
         //Para Agregar Ciclo: Inicializa botón flotante de acción
         FloatingActionButton botonNuevoCiclo = findViewById(R.id.add_ciclo_button);
@@ -114,6 +112,7 @@ public class CicloActivity extends AppCompatActivity {
                     Intent intent = new Intent(CicloActivity.this, VerCicloActivity.class);
                     intent.putExtra("ID Ciclo Actual", id);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }
@@ -143,6 +142,7 @@ public class CicloActivity extends AppCompatActivity {
                     Intent intent = new Intent(CicloActivity.this, EditarCicloActivity.class);
                     intent.putExtra("ID Ciclo Actual", id);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }

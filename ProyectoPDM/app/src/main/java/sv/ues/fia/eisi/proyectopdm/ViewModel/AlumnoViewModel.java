@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.repository.AlumnoRepository;
@@ -46,5 +48,9 @@ public class AlumnoViewModel extends AndroidViewModel {
 
     public LiveData<List<Alumno>> getAllAlumnos() {
         return allAlumnos;
+    }
+
+    public Alumno getAlumn(String carnet) throws InterruptedException, ExecutionException, TimeoutException {
+        return repository.obtenerAlumno(carnet);
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
+
 
 
 /*

@@ -30,10 +30,8 @@ public class NuevoLocalActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nuevo_local);
 
-            //Inicializa variable de Barra de Acción (Barra Superior)
-            ActionBar actionBar = getSupportActionBar();
             //Título personalizado para Activity
-            actionBar.setTitle("Nuevo Local");
+            setTitle("Nuevo Local");
 
             //Inicializa elementos del Layout en Activity
             editIdLocal = findViewById(R.id.edit_id_Local);
@@ -75,6 +73,8 @@ public class NuevoLocalActivity extends AppCompatActivity {
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
             Toast.makeText(NuevoLocalActivity.this, "Insertado con éxito: " + idLocal + "-"+ nomLocal + "-" + ubLocal, Toast.LENGTH_SHORT).show();
+
+            finish();
         }catch (Exception e){
             Toast.makeText(NuevoLocalActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }

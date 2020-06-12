@@ -2,7 +2,7 @@
     <string name="app_name">ProyectoPDM</string>
     <!-- Strings para SolicitudExtraordinario -->
     <string name="nuevaSoliExtraName">Solicitud de Evaluación Extraordinaria</string>
-    <string name="idSolicitudExtraordinario">ID de Solicitud: </string>
+    <string name="idSolicitudExtraordinario">N° de Solicitud: </string>
     <string name="carnetAlumno">Carnet del Alumno: </string>
     <string name="idEvaluacion">ID de Evaluación: </string>
     <string name="tipoSolicitudExtra">Tipo de Solicitud: </string>
@@ -134,6 +134,14 @@
     <string name="apellidos_addhint_Alumno">Apellidos</string>
     <string name="carrera_addhint_Alumno">Carrera</string>
     <string name="correo_addhint_Alumno">Correo</string>
+
+
+    <!-- Strings para Ver Alumno -->
+    <string name="ver_carnet_alumno">Carnet</string>
+    <string name="ver_nombre_alumno">Nombre</string>
+    <string name="ver_apellido_alumno">Apellidos</string>
+    <string name="ver_correo_alumno">Correo</string>
+    <string name="ver_carrera_alumno">Carrera</string>
 
 
     <!-- Strings para Ciclo -->

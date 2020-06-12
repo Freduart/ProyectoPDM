@@ -35,8 +35,8 @@ public class LocalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Lista de Locales");
+        //Título personalizado para Activity
+        setTitle("Lista de Locales");
 
         //Para Agregar Local: Inicializa botón flotante de acción
         FloatingActionButton botonNuevoLocal = findViewById(R.id.add_ciclo_button);

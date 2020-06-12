@@ -1,6 +1,5 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -35,10 +34,8 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud_extraordinario);
 
-        //Inicializa variable de Barra de Acción (Barra Superior)
-        ActionBar actionBar = getSupportActionBar();
         //Título personalizado para Activity
-        actionBar.setTitle("Solicitudes de Evaluación Extraordinaria");
+        setTitle("Solicitudes de Evaluación Extraordinaria");
 
         //Para Agregar Solicitud Extraordinaria: Inicializa botón flotante de acción
         FloatingActionButton botonNuevaSoliExtra = findViewById(R.id.add_soliExtra_button);
@@ -108,9 +105,10 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     int id = soliExtraActual.getIdEvaluacion();
-                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerCicloActivity.class);
+                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
                     intent.putExtra("ID Solicitud Extraordinaria Actual", id);
                     startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }
@@ -131,11 +129,16 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
             }
         });
 
+        //Botón edit: Redirige a EditarSolicitudExtraordinario
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-
+                    int id = soliExtraActual.getIdEvaluacion();
+                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, EditarSolicitudExtraordinarioActivity.class);
+                    intent.putExtra("ID Solicitud Extraordinaria Actual", id);
+                    startActivity(intent);
+                    alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
                 }

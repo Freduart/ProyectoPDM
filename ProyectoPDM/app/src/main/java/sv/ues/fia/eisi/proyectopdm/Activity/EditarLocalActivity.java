@@ -18,6 +18,8 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 
 public class EditarLocalActivity extends AppCompatActivity {
     private LocalViewModel localVM;
+    private Local localActual;
+
     private EditText editIdLocal;
     private EditText editNomLocal;
     private EditText editUbLocal;
@@ -28,7 +30,7 @@ public class EditarLocalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_nuevo_local);
+            setContentView(R.layout.activity_editar_local);
 
             //Inicializa variable de Barra de Acción (Barra Superior)
             ActionBar actionBar = getSupportActionBar();
@@ -41,6 +43,26 @@ public class EditarLocalActivity extends AppCompatActivity {
             editUbLocal = findViewById(R.id.edit_ubicacion_Local);
             editLatitud = findViewById(R.id.edit_latitud_Local);
             editLongitud = findViewById(R.id.edit_longitud_Local);
+
+            //Inicializa el ViewModel
+            localVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LocalViewModel.class);
+
+            //Extrae el id del Local a editar del Intent
+            Bundle extras = getIntent().getExtras();
+            String idLoc = "";
+            if(extras != null){
+                idLoc = idLoc + extras.getString("ID Local Actual");
+            }
+
+            //Se asigna el objeto extraído del ViewModel usando el id
+            localActual = localVM.getLoc(idLoc);
+
+            //Se asignan los valores correspondientes en elementos del Layout
+            editIdLocal.setText(localActual.getIdLocal());
+            editNomLocal.setText(localActual.getNombreLocal());
+            editUbLocal.setText(localActual.getUbicacion());
+            editLatitud.setText(String.valueOf(localActual.getLatitud()));
+            editLongitud.setText(String.valueOf(localActual.getLongitud()));
         }catch (Exception e){
             Toast.makeText(EditarLocalActivity.this, e.getMessage()+ " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -75,6 +97,8 @@ public class EditarLocalActivity extends AppCompatActivity {
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
             Toast.makeText(EditarLocalActivity.this, "Actualizado con éxito: " + idLocal + "-"+ nomLocal + "-" + ubLocal, Toast.LENGTH_SHORT).show();
+
+            finish();
         }catch (Exception e){
             Toast.makeText(EditarLocalActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }

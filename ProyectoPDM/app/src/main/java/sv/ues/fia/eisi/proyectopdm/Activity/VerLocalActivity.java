@@ -29,8 +29,8 @@ public class VerLocalActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_ver_local);
 
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setTitle("Detalle de Local");
+            //Título personalizado para Activity
+            setTitle("Detalle de Local");
 
             //Asociando tVs de XML con tVs de Activity
             dispIdLocal = (TextView) findViewById(R.id.vlocal_disp_idLocal);

@@ -19,6 +19,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 
 public class EditarCicloActivity extends AppCompatActivity {
     private CicloViewModel cicloVM;
+    private Ciclo cicloActual;
     private EditText editNombreCiclo;
     private DatePicker dpFechaInicio;
     private DatePicker dpFechaFin;
@@ -27,7 +28,7 @@ public class EditarCicloActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_nuevo_ciclo);
+            setContentView(R.layout.activity_editar_ciclo);
 
             //Inicializa variable de Barra de Acción (Barra Superior)
             ActionBar actionBar = getSupportActionBar();
@@ -38,6 +39,22 @@ public class EditarCicloActivity extends AppCompatActivity {
             editNombreCiclo = findViewById(R.id.edit_nombre_ciclo);
             dpFechaInicio = findViewById(R.id.edit_fechaInicio_ciclo);
             dpFechaFin = findViewById(R.id.edit_fechaFin_ciclo);
+
+            //Inicializa el ViewModel
+            cicloVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CicloViewModel.class);
+
+            //Se extrae el identificador del ciclo a editar del Intent
+            Bundle extras = getIntent().getExtras();
+            int idCicloAct = 0;
+            if(extras != null){
+                idCicloAct = extras.getInt("ID Ciclo Actual");
+            }
+
+            //Se asigna el objeto extraído del ViewModel usando el id
+            cicloActual = cicloVM.getCic(idCicloAct);
+
+            //Se asigna el valor correspondiente en el elemento del Layout
+            editNombreCiclo.setText(cicloActual.getNomCiclo());
         }catch(Exception e){
             Toast.makeText(EditarCicloActivity.this, e.getMessage()+ " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -85,6 +102,8 @@ public class EditarCicloActivity extends AppCompatActivity {
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
             Toast.makeText(EditarCicloActivity.this, "Actualizado con éxito: " + nomAux + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
+
+            finish();
         }catch (Exception e){
             Toast.makeText(EditarCicloActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }

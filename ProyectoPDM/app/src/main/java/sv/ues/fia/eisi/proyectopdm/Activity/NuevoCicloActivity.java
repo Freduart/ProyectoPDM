@@ -30,10 +30,8 @@ public class NuevoCicloActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nuevo_ciclo);
 
-            //Inicializa variable de Barra de Acción (Barra Superior)
-            ActionBar actionBar = getSupportActionBar();
             //Título personalizado para Activity
-            actionBar.setTitle("Nuevo Ciclo");
+            setTitle("Nuevo Ciclo");
 
             //Inicializa elementos del Layout en Activity
             editNombreCiclo = findViewById(R.id.edit_nombre_ciclo);
@@ -75,6 +73,8 @@ public class NuevoCicloActivity extends AppCompatActivity {
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
             Toast.makeText(NuevoCicloActivity.this, "Insertado con éxito: " + nomAux + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
+
+            finish();
         }catch (Exception e){
             Toast.makeText(NuevoCicloActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }

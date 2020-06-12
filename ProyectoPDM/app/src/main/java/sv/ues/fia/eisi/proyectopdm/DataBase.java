@@ -173,12 +173,12 @@ public abstract class DataBase extends RoomDatabase {
             asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
             asignaturaDao.insertAsignatura(new Asignatura("FQR215", 6, "Fisicoquímica II"));
             asignaturaDao.insertAsignatura(new Asignatura("OPU215", 7, "Operaciones Unitarias II"));
-            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "Ingeniería de Sistemas Informáticos","fredymartinezues@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "Ingeniería de Sistemas Informáticos","vabcgv@outlook.com"));
-            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "Ingeniería de Sistemas Informéticos","rubper@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "Ingeniería de Sistemas Informáticos","efra.00@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "Ingeniería de Sistemas Informáticos","jairomontoya.raices@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "Ingeniería Química","prueba@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com"));
+            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","prueba@gmail.com"));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "TAD115", 2, 1, 2));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
             inscripcionDao.insertInscripcion(new Inscripcion("MG17030","PDM115", 2, 1, 2));
