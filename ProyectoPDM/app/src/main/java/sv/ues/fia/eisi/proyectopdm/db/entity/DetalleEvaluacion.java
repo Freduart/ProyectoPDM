@@ -5,6 +5,7 @@ package sv.ues.fia.eisi.proyectopdm.db.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.List;
@@ -33,6 +34,12 @@ public class DetalleEvaluacion {
         this.idEvaluacionFK = idEvaluacionFK;
         this.carnetAlumnoFK = carnetAlumnoFK;
         this.nota = nota;
+    }
+
+    @Ignore
+    public DetalleEvaluacion(int idEvaluacionFK, String carnetAlumnoFK) {
+        this.idEvaluacionFK = idEvaluacionFK;
+        this.carnetAlumnoFK = carnetAlumnoFK;
     }
 
     public int getIdDetalleEv() {

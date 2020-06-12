@@ -50,7 +50,7 @@ public class ListaSolicitudesImpresion extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_lista_solicitudes_impresion, container, false);
-        FloatingActionButton nuevaSolicitud=(FloatingActionButton)view.findViewById(R.id.nuevaSolicitudImpresion);
+        /*FloatingActionButton nuevaSolicitud=(FloatingActionButton)view.findViewById(R.id.nuevaSolicitudImpresion);
         nuevaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +82,7 @@ public class ListaSolicitudesImpresion extends Fragment {
         }catch (Exception e){
             Toast.makeText(getContext(), "Error en el ViewModel",
                     Toast.LENGTH_SHORT).show();
-        }
+        }*/
         return view;
     }
 

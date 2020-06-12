@@ -38,6 +38,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_ver_solicitud_extraordinario);
 
+            //Se inicializan elementos del Layout en Activity
             idSoliExtraordinario = (TextView) findViewById(R.id.vSoliExtra_disp_IDSoli);
             idAlumno = (TextView) findViewById(R.id.vSoliExtra_disp_IDAlum);
             idEvaluacion = (TextView) findViewById(R.id.vSoliExtra_disp_IDEval);
@@ -46,20 +47,24 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             fechaSoli = (TextView) findViewById(R.id.vSoliExtra_disp_fecha);
             justiSoli = (TextView) findViewById(R.id.vSoliExtra_disp_justi);
 
+            //Se inicializan los ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
             alumnoVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
             evalVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
 
+            //Se extrae el id de la solicitud a través del Intent
             Bundle extras = getIntent().getExtras();
             int idSoliExtra = 0;
             if(extras != null){
                 idSoliExtra = extras.getInt("ID Solicitud Extraordinaria Actual");
             }
 
+            //Se asignan objetos extraídos del ViewModel
             soliExtraActual = soliExtraVM.getSoliExtra(idSoliExtra);
             evaActual = evalVM.getEval(soliExtraActual.getIdEvaluacion());
             alumnoActual = alumnoVM.getAlumn(soliExtraActual.getCarnetAlumnoFK());
 
+            //Se asignan los valores correspondientes en elementos del Layout
             idSoliExtraordinario.setText(String.valueOf(soliExtraActual.getIdSolicitud()));
             idAlumno.setText(String.valueOf(alumnoActual.getCarnetAlumno()));
             idEvaluacion.setText(String.valueOf(evaActual.getIdEvaluacion() + " - " + evaActual.getNomEvaluacion()));
@@ -68,6 +73,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             fechaSoli.setText(soliExtraActual.getFechaSolicitudExtr());
             justiSoli.setText(String.valueOf(soliExtraActual.isJustificacion()));
 
+            //Titulo personalizado para Activity
             setTitle("Detalle de Solicitud Extraordinaria");
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.fillInStackTrace().toString(),Toast.LENGTH_LONG).show();

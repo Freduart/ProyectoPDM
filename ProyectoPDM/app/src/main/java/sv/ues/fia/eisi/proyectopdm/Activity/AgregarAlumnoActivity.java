@@ -69,7 +69,7 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<Escuela> carreras) {
                     for (Escuela x : carreras) {
-                        carrerasNom.add(x.getIdEscuela()+" - "+x.getCarrera());
+                        carrerasNom.add(x.getIdEscuela() + " - "+x.getCarrera());
                     }
                     adapter.notifyDataSetChanged();
                 }

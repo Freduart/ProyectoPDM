@@ -28,7 +28,7 @@
     <string name="CVSoliImp">Solicitud</string>
     <string name="CVMaterias">Materias</string>
     <string name="btnAñadirArchivo">AÑADIR</string>
-    <string name="textDocumento">DOCUMENTO</string>
+    <string name="textDocumento">DOCUMENTOS</string>
     <string name="textDetalles">DETALLES DE IMPRESIÓN</string>
     <string name="textNImpresiones">N° Impresiones: </string>
     <string name="textNAnexos">N° Hojas Anexas: </string>
@@ -38,6 +38,8 @@
     <string name="textInformacionAdicional">INFORMACIÓN ADICIONAL</string>
     <string name="textDocDirector">Docente Director: </string>
     <string name="textEncImpres">Encargado Impresión: </string>
+    <string name="textEstado">ESTADO: </string>
+
 
     <!-- Strings para Evaluacion -->
     <string name="evaluacion">Evaluación</string>
@@ -60,6 +62,9 @@
     <string name="accion_insertar_notif_eval">\u0020 se ha insertado con éxito.</string>
     <string name="fecha_placeholder_eval">Sin Fecha</string>
     <string name="error_form_incompleto_eval">Por favor, llena todos los campos.</string>
+    <string name="añadir_estudiante_evaluacion">Añadir</string>
+    <string name="headline_lista_alumnos_detalleeval">Estudiantes en la evaluación:</string>
+    <string name="detalle_eval">Estudiantes en evaluación</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>
@@ -80,7 +85,9 @@
     <string name="inic_notif_segrev">La segunda revisión \u0020</string>
     <string name="titulo_EA_editarsegrev">Editar segunda revisión</string>
     <string name="titulo_EA_nuevasegrev">Añadir segunda revisión</string>
-
+    <string name="antesmeridiano">\u0020 AM</string>
+    <string name="posmeridiano">\u0020 PM</string>
+    <string name="titulo_ver_segundarevision">Detalle de segunda revisión</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>

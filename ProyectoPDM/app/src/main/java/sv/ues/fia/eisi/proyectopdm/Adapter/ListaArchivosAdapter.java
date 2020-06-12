@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import sv.ues.fia.eisi.proyectopdm.Activity.ItemClickListener;
 import sv.ues.fia.eisi.proyectopdm.R;
 
 public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdapter.ViewHolderArchivos> implements View.OnClickListener{
 
     ArrayList<String> listaDocumentos;
     private View.OnClickListener listener;
+    ItemClickListener itemClickListener;
 
     public ListaArchivosAdapter(ArrayList<String> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
@@ -30,9 +32,9 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListaArchivosAdapter.ViewHolderArchivos holder, int position) {
+    public void onBindViewHolder(@NonNull ListaArchivosAdapter.ViewHolderArchivos holder, final int position) {
         //Obtenemos el nombre del documento a partir de la ruta dada.
-        String ruta=listaDocumentos.get(position);
+        final String ruta=listaDocumentos.get(position);
         String[] path=ruta.split("/");
         int posicion=0;
         posicion=path.length-1;
@@ -40,6 +42,13 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
         //Asignamos los datos al holder
         holder.nombreDocumento.setText(nomDoc);
         holder.rutaDocumento.setText(ruta);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.OnItemClick(position,ruta);
+            }
+        });
     }
 
     @Override
@@ -67,5 +76,9 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
             nombreDocumento=(TextView)itemView.findViewById(R.id.textNombreDocumento);
             rutaDocumento=(TextView)itemView.findViewById(R.id.textRuta);
         }
+    }
+
+    public void setOnItemClickListener(ItemClickListener itemClickListener){
+        this.itemClickListener=itemClickListener;
     }
 }
