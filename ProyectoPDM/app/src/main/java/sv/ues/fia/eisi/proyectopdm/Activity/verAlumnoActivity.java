@@ -17,7 +17,7 @@ public class verAlumnoActivity extends AppCompatActivity {
 
     //Enlaces con las tablas para poder obtener informacion del alumno y de la carrera que cursa
     private Alumno alumnoActual;
-    private Escuela escuela;
+    private Escuela escuelaActual;
 
     private AlumnoViewModel alumnoViewModel;
     private EscuelaViewModel escuelaViewModel;
@@ -57,31 +57,47 @@ public class verAlumnoActivity extends AppCompatActivity {
             alumnoActual=alumnoViewModel.getAlumn(carnet);
 
             //Obtenemos sus datos relacionados
-            //Escuela
-//
-//            //obtener evaluación actual por medio de EXTRA_ID de intent
-//            evaluacionActual = evaluacionViewModel.getEval(idEvaluacion);
-//            //obtener objetos relacionados
-//            tipoEvaluacionActual = tipoEvaluacionViewModel.getTipoEvaluacion(evaluacionActual.getIdTipoEvaluacionFK());
-//            docenteActual = docenteViewModel.getDocente(evaluacionActual.getCarnetDocenteFK());
-//            asignaturaActual = asignaturaViewModel.obtenerAsignatura(evaluacionActual.getCodigoAsignaturaFK());
-//            //convertir participantes en string
-//            String partAux = evaluacionActual.getNumParticipantes() + "";
-//            //coloca texto en textviews
-//            dispNombreEvaluacion.setText(evaluacionActual.getNomEvaluacion());
-//            dispDescripcionEvaluacion.setText(evaluacionActual.getDescripcion());
-//            dispAsignaturaEvaluacion.setText(asignaturaActual.getCodigoAsignatura() + " - " + asignaturaActual.getNomasignatura());
-//            dispDocenteEvaluacion.setText(docenteActual.getCarnetDocente() + " - " + docenteActual.getNomDocente() + " " + docenteActual.getApellidoDocente());
-//            dispTipoEvaluacion.setText(tipoEvaluacionActual.getTipoEvaluacion());
-//            dispFechaInicioEvaluacion.setText(evaluacionActual.getFechaInicio());
-//            dispFechaFinEvaluacion.setText(evaluacionActual.getFechaFin());
-//            dispFechaEntregaEvaluacion.setText(evaluacionActual.getFechaEntregaNotas());
-//            dispParticipantesEvaluacion.setText(partAux);
-//            //título
-//            setTitle(R.string.titulo_ver_eval);
-//        }
+            //escuelaActual=escuelaViewModel.getEscuela(alumnoActual.getCarrera());
+
+            //Colocar los datos en los TextView
+            disp_Carnet.setText(alumnoActual.getCarnetAlumno());
+            disp_Nombre.setText(alumnoActual.getNombre());
+            disp_Apellido.setText(alumnoActual.getApellido());
+            disp_Correo.setText(alumnoActual.getCorreo());
+
+            /*
+                Debido a que la entidad Alumno no esta enlazada con la tabla escuela se guarda el id en lugar del
+                nombre de la carrera de esa escuela debido a ese problema se compara el id de la escuela y se manda a mostrar segun
+                ese id
+             */
+
+            if(Integer.parseInt(alumnoActual.getCarrera())==1){
+                disp_Carrera.setText("Ingenieria de Sistemas Informaticos");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==2){
+                disp_Carrera.setText("Ingenieria Industrial");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==3){
+                disp_Carrera.setText("Ingenieria Electrica");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==4){
+                disp_Carrera.setText("Ingenieria Civil");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==5){
+                disp_Carrera.setText("Ingenieria Quimica");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==6){
+                disp_Carrera.setText("Ingenieria de Alimentos");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==7){
+                disp_Carrera.setText("Arquitectura");
+            }
+            if(Integer.parseInt(alumnoActual.getCarrera())==8){
+                disp_Carrera.setText("Ingenieria Mecanica");
+            }
+
         }catch (Exception e){
-            Toast.makeText(this, e.getMessage()+ " "+e.getCause(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  "ERROR AL CONSULTAR ALUMNO " +e, Toast.LENGTH_SHORT).show();
         }
     }
 
