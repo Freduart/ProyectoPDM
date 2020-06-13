@@ -51,7 +51,7 @@ public class SegundaRevisionAdapter extends RecyclerView.Adapter<SegundaRevision
         SegundaRevision segundaRevisionActual = segundasRevisiones.get(position);
 
         //obtener id de la segundaRevision actual
-        String id = segundaRevisionActual.getIdSegundaRevision();
+        int id = segundaRevisionActual.getIdSegundaRevision();
         //settea los datos que se mostraran en los elementos de los items de lista
         holder.nombreSegundaRevision.setText(id + ". " + segundaRevisionActual.getIdPrimeraRevisionFK());
     }

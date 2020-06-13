@@ -25,12 +25,15 @@ import sv.ues.fia.eisi.proyectopdm.Adapter.DetalleEvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 
 public class DetalleEvaluacionActivity extends AppCompatActivity {
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
     private AlumnoViewModel alumnoViewModel;
+    private EscuelaViewModel escuelaViewModel;
+
     private Button botonAgregar;
     private Spinner spinnerAlumnos;
     private int idEvaluacion;
@@ -47,6 +50,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             final Bundle extras = getIntent().getExtras();
             //obtener int con el nombre EvaluacionActivity.IDENTIFICADOR_EVALUACION
             idEvaluacion = extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION);
+            botonAgregar = findViewById(R.id.agregar_alumno_detalle);
 
             //--lista de evaluaciones
             //inicializa recycler view
@@ -63,6 +67,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             //inicializa viewmodel de detalleevaluacion
             alumnoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
             detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
+            escuelaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EscuelaViewModel.class);
             //obtiene todas los detalles en un livedata
             detalleEvaluacionViewModel.getAllDetalles().observe(this, new Observer<List<DetalleEvaluacion>>() {
                 @Override
@@ -72,7 +77,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                         if (x.getIdEvaluacionFK()==idEvaluacion)
                             listaSalida.add(x);
                     //mete los detalles en el adaptador
-                    adaptador.setDetalleEvaluaciones(listaSalida, alumnoViewModel);
+                    adaptador.setDetalleEvaluaciones(listaSalida, alumnoViewModel, escuelaViewModel);
                     adaptador.notifyDataSetChanged();
                 }
             });
@@ -105,6 +110,10 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                                 //refresca (necesario para mostrar los datos recuperados en el spinner)
                                 adaptadorSpinner.notifyDataSetChanged();
                                 adaptador.notifyDataSetChanged();
+                                if(adaptadorSpinner.getCount()==0)
+                                    botonAgregar.setEnabled(false);
+                                else
+                                    botonAgregar.setEnabled(true);
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
                             } catch (ExecutionException ex) {
@@ -157,6 +166,10 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                             //refresca (necesario para mostrar los datos recuperados en el spinner)
                             adaptadorSpinner.notifyDataSetChanged();
                             adaptador.notifyDataSetChanged();
+                            if(adaptadorSpinner.getCount()==0)
+                                botonAgregar.setEnabled(false);
+                            else
+                                botonAgregar.setEnabled(true);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         } catch (ExecutionException ex) {

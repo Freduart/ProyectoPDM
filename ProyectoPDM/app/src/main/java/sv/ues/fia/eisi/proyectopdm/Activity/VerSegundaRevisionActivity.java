@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.lang.String;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
@@ -47,12 +48,27 @@ public class VerSegundaRevisionActivity extends AppCompatActivity {
 
             //obtener intent de activity
             Bundle extras = getIntent().getExtras();
-            String idPrimeraRevision = "";
+            int idPrimeraRevision = 0;
             if (extras != null) {
-                idPrimeraRevision = extras.getString(VerPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
+                idPrimeraRevision = extras.getInt(VerPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
             }
             try {
                 segundaRevision = segundaRevisionViewModel.getSegundaRevision(idPrimeraRevision);
+                dispSegundaRevision.setText(String.format("%d", segundaRevision.getIdSegundaRevision()));
+                dispPrimeraRevision.setText(String.format("%d", idPrimeraRevision));
+                dispObservaciones.setText(segundaRevision.getObservacionesSegundaRev());
+                dispNotaFinal.setText(String.format("%s", segundaRevision.getNotaFinalSegundaRev()));
+                String[] horas = segundaRevision.getHoraSegundaRev().split(":");
+                int hora = Integer.parseInt(horas[0]);
+                int horaen12 = 0;
+                if (Integer.parseInt(horas[0]) + 1 > 12) {
+                    horaen12 = hora - 12;
+                    dispHoraRevision.setText(String.format("%s:%s%s", String.format("%d", horaen12), horas[1], getText(R.string.posmeridiano)));
+                } else
+                    dispHoraRevision.setText(String.format("%s:%s%s", horas[0], horas[1], getText(R.string.antesmeridiano)));
+                dispFechaRevision.setText(segundaRevision.getFechaSegundaRev());
+                dispFechaSolicitud.setText(segundaRevision.getFechaSolicitudSegRev());
+                setTitle(getText(R.string.titulo_ver_segundarevision));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -60,22 +76,6 @@ public class VerSegundaRevisionActivity extends AppCompatActivity {
             } catch (TimeoutException e) {
                 e.printStackTrace();
             }
-
-            dispSegundaRevision.setText(segundaRevision.getIdSegundaRevision());
-            dispPrimeraRevision.setText(idPrimeraRevision);
-            dispObservaciones.setText(segundaRevision.getObservacionesSegundaRev());
-            dispNotaFinal.setText(String.format("%s", segundaRevision.getNotaFinalSegundaRev()));
-            String[] horas = segundaRevision.getHoraSegundaRev().split(":");
-            int hora = Integer.parseInt(horas[0]);
-            int horaen12 = 0;
-            if (Integer.parseInt(horas[0]) + 1 > 12) {
-                horaen12 = hora - 12;
-                dispHoraRevision.setText(String.format("%s:%s%s", String.format("%d", horaen12), horas[1], getText(R.string.posmeridiano)));
-            } else
-                dispHoraRevision.setText(String.format("%s:%s%s", horas[0], horas[1], getText(R.string.antesmeridiano)));
-            dispFechaRevision.setText(segundaRevision.getFechaSegundaRev());
-            dispFechaSolicitud.setText(segundaRevision.getFechaSolicitudSegRev());
-            setTitle(getText(R.string.titulo_ver_segundarevision));
         } catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.fillInStackTrace().toString() ,Toast.LENGTH_LONG).show();
         }

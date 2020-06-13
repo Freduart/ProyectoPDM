@@ -35,8 +35,10 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 
 
-public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
-/*    public final String ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
+public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
+    public final String ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
+
+    private int idPrimera;
 
     private EditText editIdSegundaRevision;
     private EditText editNotaFinalSegundaRevision;
@@ -71,16 +73,15 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
             //instancia View Model de segundaRevision
             segundaRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SegundaRevisionViewModel.class);
             SegundaRevision auxiliar;
-            String idPrimeraRevision = "";
-            int operacionEv = 0;
+            int idPrimeraRevision = 0, operacionEv = 0;
             if (extras != null) {
-                idPrimeraRevision = extras.getString(PrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
+                idPrimeraRevision = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
                 operacionEv = extras.getInt(PrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION);
                 //verificar extras de intent
-                if(operacionEv == PrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION && !idPrimeraRevision.equals("")){
+                if(operacionEv == PrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION){
                     //obtener segundaRevision auxiliar
                     auxiliar = segundaRevisionViewModel.getSegundaRevision(idPrimeraRevision);
-
+                    idPrimera = idPrimeraRevision;
                     //obtener primeraRevision actual
                     PrimeraRevision primeraRevisionActual = primeraRevisionViewModel.getPrimeraRevision(auxiliar.getIdPrimeraRevisionFK());
                     //settear editTexts con los objetos obtenidos
@@ -101,7 +102,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
                     editNotaFinalSegundaRevision.setVisibility(View.VISIBLE);
                     editObservacionesSegundaRevision.setVisibility(View.VISIBLE);
                 }
-                else if (operacionEv == PrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION && idPrimeraRevision.equals("")){
+                else if (operacionEv == PrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION){
                     editNotaFinalSegundaRevision.setVisibility(View.GONE);
                     editObservacionesSegundaRevision.setVisibility(View.GONE);
                     setTitle(R.string.titulo_EA_nuevasegrev);
@@ -109,7 +110,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
             }
 
         } catch (Exception e){
-            Toast.makeText(NuevaEditarSegundaRevisionActivity.this, e.getMessage()+ " " + e.getCause() + "\n", Toast.LENGTH_LONG).show();
+            Toast.makeText(NuevaEditarSegundaRevisionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -120,7 +121,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
             String nombre = editIdSegundaRevision.getText().toString();
 
             //---obtener PRimeraRevision
-            PrimeraRevision primeraRevision = primeraRevisionViewModel.getPrimeraRevision();
+            PrimeraRevision primeraRevision = primeraRevisionViewModel.getPrimeraRevision(idPrimera);
 
             //---obtener valor de datepicker FECHA REVISION segundaRevision
             StringBuilder fechaRevisionBuilder = new StringBuilder(10);
@@ -152,12 +153,12 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
 
             //obtener extras del intent
             Bundle extras = getIntent().getExtras();
-            String idPrimeraRevision = ""; int operacionEv = 0;
+            int idPrimeraRevision = 0, operacionEv = 0;
             if (extras != null) {
-                idPrimeraRevision = extras.getString(PrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
+                idPrimeraRevision = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
                 operacionEv = extras.getInt(PrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION);
                 //verificar extras de intent
-                if (operacionEv == PrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION && idPrimeraRevision != "") {
+                if (operacionEv == PrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION) {
 
                     //---almacenar NOTA FINAL
                     String notaFinal = editNotaFinalSegundaRevision.getText().toString();
@@ -166,22 +167,22 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
                     String observaciones = editObservacionesSegundaRevision.getText().toString();
 
                     //Objeto SegRevuación auxiliar construido a partir de los datos almacenados
-                    SegundaRevision aux = new SegundaRevision(nombre,idPrimeraRevision,fechaRevision,hora,Double.parseDouble(notaFinal),observaciones,fechaSolicitud);
+                    SegundaRevision aux = new SegundaRevision(idPrimeraRevision,fechaRevision,hora,Double.parseDouble(notaFinal),observaciones,fechaSolicitud);
 
                     //insertar
                     segundaRevisionViewModel.updateSegundaRevision(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
                     Toast.makeText(NuevaEditarSegundaRevisionActivity.this, getText(R.string.inic_notif_segrev) + nombre + getText(R.string.accion_actualizar_notif_eval), Toast.LENGTH_LONG).show();
-                } else if (operacionEv == PrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION && idPrimeraRevision.equals("")) {
+                } else if (operacionEv == PrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION ) {
                     //---almacenar OBSERVACIONES
                     String observaciones = editObservacionesSegundaRevision.getText().toString();
 
                     //Objeto SegRevuación auxiliar construido a partir de los datos almacenados
                     SegundaRevision aux;
                     if(observaciones.isEmpty())
-                        aux = new SegundaRevision(nombre,idPrimeraRevision,fechaRevision,hora,fechaSolicitud);
+                        aux = new SegundaRevision(idPrimeraRevision,fechaRevision,hora,fechaSolicitud);
                     else
-                        aux = new SegundaRevision(nombre,idPrimeraRevision,fechaRevision,hora,observaciones,fechaSolicitud);
+                        aux = new SegundaRevision(idPrimeraRevision,fechaRevision,hora,observaciones,fechaSolicitud);
                     //insertar
                     segundaRevisionViewModel.insertSegundaRevision(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
