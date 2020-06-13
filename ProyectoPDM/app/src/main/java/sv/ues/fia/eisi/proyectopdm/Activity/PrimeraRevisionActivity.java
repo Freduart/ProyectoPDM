@@ -26,7 +26,7 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
 public class PrimeraRevisionActivity extends AppCompatActivity {
-    public static final String IDENTIFICADOR_PR = "ID_PRIMERAREVISION_ACTUAL";
+    public static final String IDENTIFICADOR_PR = "ID_PRIMERA_REVISION_ACTUAL";
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
 

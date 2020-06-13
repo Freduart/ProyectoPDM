@@ -90,7 +90,7 @@ public class EditarCargoActivity extends AppCompatActivity {
                         //Refresca
                         adapterSpinnerEscuela.notifyDataSetChanged();
                     }catch (Exception e){
-
+                        Toast.makeText(EditarCargoActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
                     }
                 }
             });

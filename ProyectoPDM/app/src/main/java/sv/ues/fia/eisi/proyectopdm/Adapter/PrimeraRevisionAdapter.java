@@ -65,12 +65,6 @@ public class PrimeraRevisionAdapter extends RecyclerView.Adapter<PrimeraRevision
         notifyDataSetChanged();
     }
 
-    public PrimeraRevision getPrimeraRevisionAt(int position) {return prs.get(position);}
-
-
-
-
-
     class PrimeraRevisionHolder extends RecyclerView.ViewHolder{
         private TextView codPR;
         private TextView idDetalleEvFK;
