@@ -1,7 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,10 +31,8 @@ public class EditarLocalActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_editar_local);
 
-            //Inicializa variable de Barra de Acción (Barra Superior)
-            ActionBar actionBar = getSupportActionBar();
             //Título personalizado para Activity
-            actionBar.setTitle("Nuevo Local");
+            setTitle("Nuevo Local");
 
             //Inicializa elementos del Layout en Activity
             editIdLocal = findViewById(R.id.edit_id_Local);
@@ -51,7 +48,7 @@ public class EditarLocalActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             String idLoc = "";
             if(extras != null){
-                idLoc = idLoc + extras.getString("ID Local Actual");
+                idLoc = idLoc + extras.getString(LocalActivity.IDENTIFICADOR_LOCAL);
             }
 
             //Se asigna el objeto extraído del ViewModel usando el id
@@ -71,7 +68,8 @@ public class EditarLocalActivity extends AppCompatActivity {
     private void guardarCambiosLocal(){
         try {
             //Almacena el valor del Id
-            String idLocal = editIdLocal.getText().toString();
+            String idLocal = localActual.getIdLocal();
+
             //Almacena el valor del Nombre
             String nomLocal = editNomLocal.getText().toString();
             //Almacena el valor de la Ubicación
@@ -87,16 +85,21 @@ public class EditarLocalActivity extends AppCompatActivity {
             //Convierte variable auxiliar en Double
             double longitud = Double.parseDouble(lonAux);
 
-            //Se crea una instancia de Local para usar en el ViewModel
-            Local aux = new Local(idLocal,nomLocal,ubLocal,latitud,longitud);
-
             //Inicializa el ViewModel
             localVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LocalViewModel.class);
+
+            //Se crea una instancia de Local para usar en el ViewModel
+            Local aux = localVM.getLoc(idLocal);
+            aux.setNombreLocal(nomLocal);
+            aux.setUbicacion(ubLocal);
+            aux.setLatitud(latitud);
+            aux.setLongitud(longitud);
+
             //Actualiza el Local
             localVM.updateLocal(aux);
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
-            Toast.makeText(EditarLocalActivity.this, "Actualizado con éxito: " + idLocal + "-"+ nomLocal + "-" + ubLocal, Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditarLocalActivity.this, "Local " + aux.getIdLocal() + " Actualizado con éxito", Toast.LENGTH_LONG).show();
 
             finish();
         }catch (Exception e){

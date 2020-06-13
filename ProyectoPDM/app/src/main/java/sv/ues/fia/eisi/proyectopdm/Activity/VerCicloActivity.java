@@ -42,7 +42,7 @@ public class VerCicloActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             int idCiclo = 0;
             if(extras != null){
-                idCiclo = extras.getInt("ID Ciclo Actual");
+                idCiclo = extras.getInt(CicloActivity.IDENTIFICADOR_CICLO);
             }
 
             //Extraer Ciclo Actual

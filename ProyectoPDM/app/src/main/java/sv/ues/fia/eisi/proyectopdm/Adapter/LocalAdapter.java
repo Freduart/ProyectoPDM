@@ -14,10 +14,28 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 
-public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder> implements View.OnClickListener{
+public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder> {
 
     private List<Local> locales = new ArrayList<>();
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
+    private OnItemLongClickListener longListener;
+
+    //listener para click corto
+    public interface OnItemClickListener{
+        void onItemClick(Local local);
+    }
+    //set listener click corto
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener =listener;
+    }
+    //listener para click largo
+    public interface OnItemLongClickListener{
+        void onItemLongClick(Local local);
+    }
+    //set listener click largo
+    public void setOnLongClickListner(OnItemLongClickListener longListener){
+        this.longListener=longListener;
+    }
 
     //Class Holder
     class LocalHolder extends RecyclerView.ViewHolder{
@@ -34,16 +52,39 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder>
             ubicacion=itemView.findViewById(R.id.ubLocal);
             latitud=itemView.findViewById(R.id.latLocal);
             longitud=itemView.findViewById(R.id.logLocal);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Obtener  posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(listener != null && posicion != RecyclerView.NO_POSITION)
+                        listener.onItemClick(locales.get(posicion));
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(longListener != null && posicion != RecyclerView.NO_POSITION) {
+                        longListener.onItemLongClick(locales.get(posicion));
+                        return true;
+                    } else
+                        return false;
+                }
+            });
         }
     }
 
     //Implementación
     @NonNull
     @Override
-    public LocalAdapter.LocalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LocalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.local_item,parent,false);
-        itemView.setOnClickListener(this);
         return new LocalHolder(itemView);
     }
 
@@ -56,6 +97,7 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder>
             se declara uno por cada item que querramos mostar en la cardview del recyclerView
         */
         holder.codigo.setText(local.getIdLocal());
+        holder.nombreLocal.setText(local.getNombreLocal());
         holder.ubicacion.setText(local.getUbicacion());
         holder.latitud.setText(String.valueOf(local.getLatitud()));
         holder.longitud.setText(String.valueOf(local.getLongitud()));
@@ -76,11 +118,4 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalHolder>
         return locales.get(position);
     }
 
-    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
-    @Override
-    public void onClick(View v) {
-        if(listener != null){
-            listener.onClick(v);
-        }
-    }
 }
