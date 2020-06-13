@@ -1,6 +1,5 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -26,9 +25,11 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.CicloViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 
 public class CicloActivity extends AppCompatActivity {
+    public static final String IDENTIFICADOR_CICLO = "ID_CICLO_ACTUAL";
+
     private CicloViewModel CicloVM;
     Ciclo cicloAt;
-    String cod;
+    int cod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +73,30 @@ public class CicloActivity extends AppCompatActivity {
                 public void onChanged(final List<Ciclo> ciclos) {
                     //Asigan ciclos extraídos al adaptador
                     adaptador.setCiclos(ciclos);
-                    adaptador.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //Obtiene id del ciclo seleccionado, y lo guarda en un String
-                            cod = String.valueOf(ciclos.get(CicloRecycler.getChildAdapterPosition(v)).getIdCiclo());
-                            //Obtiene el Ciclo Seleccionado
-                            cicloAt = adaptador.getCicloAt(CicloRecycler.getChildAdapterPosition(v));
-                            createCustomDialog().show();
-                        }
-                    });
+                }
+            });
+
+
+            //Consultar Local con click corto
+            adaptador.setOnItemClickListener(new CicloAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Ciclo ciclo) {
+                    cod = ciclo.getIdCiclo();
+                    Intent intent = new Intent(CicloActivity.this, VerCicloActivity.class);
+                    intent.putExtra(IDENTIFICADOR_CICLO, cod);
+                    startActivity(intent);
+                }
+            });
+            //Click largo para mostrar alertdialog con opciones
+            adaptador.setOnLongClickListner(new CicloAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(Ciclo ciclo) {
+                    try {
+                        cod = ciclo.getIdCiclo();
+                        createCustomDialog(ciclo).show();
+                    }catch (Exception e){
+                        Toast.makeText(CicloActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }catch (Exception e){
@@ -90,41 +105,25 @@ public class CicloActivity extends AppCompatActivity {
         }
     }
 
-    public AlertDialog createCustomDialog(){
+    public AlertDialog createCustomDialog(final Ciclo ciclo){
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.dialog_opciones_ciclo, null);
-        ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerCiclo);
-        ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminarCiclo);
-        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditarCiclo);
-        TextView tv = (TextView) v.findViewById(R.id.tvADCiclo);
+        View v = inflater.inflate(R.layout.dialog_opciones, null);
+        ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminar);
+        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditar);
+        TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
         tv.setText(cod);
+        del.setVisibility(View.GONE);
         builder.setView(v);
         alertDialog = builder.create();
-
-        //Botón ver: Redirige a VerCicloActivity
-        ver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    int id = cicloAt.getIdCiclo();
-                    Intent intent = new Intent(CicloActivity.this, VerCicloActivity.class);
-                    intent.putExtra("ID Ciclo Actual", id);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         //Botón del: Elimina el Ciclo seleccionado
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    CicloVM.deleteCiclo(cicloAt);
+                    CicloVM.deleteCiclo(ciclo);
                     Toast.makeText(CicloActivity.this, "Local" + " " + cicloAt.getIdCiclo() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
@@ -140,7 +139,7 @@ public class CicloActivity extends AppCompatActivity {
                 try {
                     int id = cicloAt.getIdCiclo();
                     Intent intent = new Intent(CicloActivity.this, EditarCicloActivity.class);
-                    intent.putExtra("ID Ciclo Actual", id);
+                    intent.putExtra(IDENTIFICADOR_CICLO, id);
                     startActivity(intent);
                     alertDialog.dismiss();
                 }catch (Exception e){

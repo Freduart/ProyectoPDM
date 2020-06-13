@@ -14,10 +14,28 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 
-public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CicloHolder> implements View.OnClickListener{
+public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CicloHolder>{
 
     private List<Ciclo> ciclos = new ArrayList<>();
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
+    private OnItemLongClickListener longListener;
+
+    //listener para click corto
+    public interface OnItemClickListener{
+        void onItemClick(Ciclo ciclo);
+    }
+    //set listener click corto
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener =listener;
+    }
+    //listener para click largo
+    public interface OnItemLongClickListener{
+        void onItemLongClick(Ciclo ciclo);
+    }
+    //set listener click largo
+    public void setOnLongClickListner(OnItemLongClickListener longListener){
+        this.longListener=longListener;
+    }
 
     //Class Holder
     class CicloHolder extends RecyclerView.ViewHolder{
@@ -32,15 +50,38 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CicloHolder>
             nomCiclo=itemView.findViewById(R.id.nomCiclo);
             fechaDesde=itemView.findViewById(R.id.fechaDesde);
             fechaHasta=itemView.findViewById(R.id.fechaHasta);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Obtener  posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(listener != null && posicion != RecyclerView.NO_POSITION)
+                        listener.onItemClick(ciclos.get(posicion));
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(longListener != null && posicion != RecyclerView.NO_POSITION) {
+                        longListener.onItemLongClick(ciclos.get(posicion));
+                        return true;
+                    } else
+                        return false;
+                }
+            });
         }
     }
 
     //Implementación
     @NonNull
     @Override
-    public CicloAdapter.CicloHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public CicloHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ciclo_item, parent, false);
-        itemView.setOnClickListener(this);
         return new CicloHolder(itemView);
     }
 
@@ -73,11 +114,4 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CicloHolder>
         return ciclos.get(position);
     }
 
-    public void setOnClickListener(View.OnClickListener listener){this.listener=listener;}
-    @Override
-    public void onClick(View v) {
-        if(listener != null){
-            listener.onClick(v);
-        }
-    }
 }
