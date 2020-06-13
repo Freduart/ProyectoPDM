@@ -46,8 +46,8 @@ public class SegundaRevisionRepository {
     }
 
     //obtener segundaRevision asíncrono
-    public SegundaRevision obtenerSegundaRevision(String string) throws InterruptedException, ExecutionException, TimeoutException {
-        return new SegundaRevisionRepository.obtenerSegundaRevisionAsyncTask(segundaRevisionDao).execute(string).get(12, TimeUnit.SECONDS);
+    public SegundaRevision obtenerSegundaRevision(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new SegundaRevisionRepository.obtenerSegundaRevisionAsyncTask(segundaRevisionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     //obtener todas
@@ -116,7 +116,7 @@ public class SegundaRevisionRepository {
     }
 
     //async obtener segundaRevision
-    private static class obtenerSegundaRevisionAsyncTask extends AsyncTask<String, Void, SegundaRevision>{
+    private static class obtenerSegundaRevisionAsyncTask extends AsyncTask<Integer, Void, SegundaRevision>{
         private SegundaRevisionDao segundaRevisionDao;
 
         private obtenerSegundaRevisionAsyncTask(SegundaRevisionDao segundaRevisionDao){
@@ -124,7 +124,7 @@ public class SegundaRevisionRepository {
         }
 
         @Override
-        protected SegundaRevision doInBackground(String... primerasRevisiones) {
+        protected SegundaRevision doInBackground(Integer... primerasRevisiones) {
             return segundaRevisionDao.obtenerSegundaRevision(primerasRevisiones[0]);
         }
     }
