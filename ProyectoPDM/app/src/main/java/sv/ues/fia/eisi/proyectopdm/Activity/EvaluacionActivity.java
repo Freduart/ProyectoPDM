@@ -114,10 +114,10 @@ public class EvaluacionActivity extends AppCompatActivity {
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_opciones_cargo, null);
-        ImageButton editar = view.findViewById(R.id.imBEditarCargo) ;
-        ImageButton eliminar = view.findViewById(R.id.imBEliminarCargo);
-        TextView textViewv = view.findViewById(R.id.tvADCargo);
+        View view = inflater.inflate(R.layout.dialog_opciones, null);
+        ImageButton editar = view.findViewById(R.id.imBEditar) ;
+        ImageButton eliminar = view.findViewById(R.id.imBEliminar);
+        TextView textViewv = view.findViewById(R.id.tituloAlert);
         textViewv.setText(evaluacion.getNomEvaluacion());
         builder.setView(view);
         alertDialog = builder.create();

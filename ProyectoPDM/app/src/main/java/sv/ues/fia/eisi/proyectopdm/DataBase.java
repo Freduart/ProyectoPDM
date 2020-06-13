@@ -2,12 +2,16 @@ package sv.ues.fia.eisi.proyectopdm;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.RoomOpenHelper;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import sv.ues.fia.eisi.proyectopdm.dao.AlumnoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AreaAdmDao;
@@ -103,8 +107,17 @@ public abstract class DataBase extends RoomDatabase {
     private static RoomDatabase.Callback roomCallback=new RoomDatabase.Callback(){
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new PoblarDBAsyncTask(instance).execute();
+            try {
+                super.onCreate(db);
+                db.execSQL("create trigger eliminar_detalle before delete on Evaluacion \n" +
+                        " begin \n" +
+                        " delete from DetalleEvaluacion where DetalleEvaluacion.idEvaluacionFK=old.idEvaluacion; \n" +
+                        " end");
+                new PoblarDBAsyncTask(instance).execute();
+            } catch (Exception e) {
+                Log.d("equisde", e.getMessage() + "\n");
+                e.fillInStackTrace();
+            }
         }
     };
 

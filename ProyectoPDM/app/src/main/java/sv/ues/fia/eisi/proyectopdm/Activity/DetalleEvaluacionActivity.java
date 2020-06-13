@@ -1,6 +1,7 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
@@ -8,12 +9,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -81,50 +85,13 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                     adaptador.notifyDataSetChanged();
                 }
             });
-            //Spinner alumnos
-            final ArrayList<Alumno> alumnosLista = new ArrayList<>();
-            adaptadorSpinner = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,alumnosLista);
-            adaptadorSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerAlumnos.setAdapter(adaptadorSpinner);
-            alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
+            adaptador.setOnItemLongClickListener(new DetalleEvaluacionAdapter.OnItemLongClickListener() {
                 @Override
-                public void onChanged(@Nullable List<Alumno> alumnos) {
-                    alumnosLista.clear();
-                    boolean flagExcl;
-                        for (Alumno x : alumnos) {
-                            try {
-                                List<DetalleEvaluacion> detalleAux = detalleEvaluacionViewModel.getDetallePorAlumno(x.getCarnetAlumno());
-                                flagExcl = false;
-                                if(!detalleAux.isEmpty())
-                                for(DetalleEvaluacion det : detalleAux) {
-                                    if (det.getIdEvaluacionFK() != idEvaluacion && !alumnosLista.contains(x) && flagExcl == false){
-                                        alumnosLista.add(x);
-                                        flagExcl = true;
-                                    }
-                                    else if (det.getIdEvaluacionFK() == idEvaluacion){
-                                        alumnosLista.remove(x);
-                                        flagExcl = true;
-                                    }
-                                } else
-                                    alumnosLista.add(x);
-                                //refresca (necesario para mostrar los datos recuperados en el spinner)
-                                adaptadorSpinner.notifyDataSetChanged();
-                                adaptador.notifyDataSetChanged();
-                                if(adaptadorSpinner.getCount()==0)
-                                    botonAgregar.setEnabled(false);
-                                else
-                                    botonAgregar.setEnabled(true);
-                            } catch (InterruptedException ex) {
-                                ex.printStackTrace();
-                            } catch (ExecutionException ex) {
-                                ex.printStackTrace();
-                            } catch (TimeoutException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-
-                }});
-
+                public void onItemClick(DetalleEvaluacion detalleEvaluacion) {
+                    createCustomDialog(detalleEvaluacion).show();
+                }
+            });
+            actualizarScrollAlumnos();
         } catch (Exception e) {
             Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -136,52 +103,87 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             DetalleEvaluacion detalleAux = new DetalleEvaluacion(idEvaluacion, alumno.getCarnetAlumno(), -1);
             detalleEvaluacionViewModel.insertDetaleEvalulacion(detalleAux);
             adaptador.notifyDataSetChanged();
-
-            //Spinner alumnos
-            final ArrayList<Alumno> alumnosLista = new ArrayList<>();
-            adaptadorSpinner = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,alumnosLista);
-            adaptadorSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerAlumnos.setAdapter(adaptadorSpinner);
-            alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
-                @Override
-                public void onChanged(@Nullable List<Alumno> alumnos) {
-                    alumnosLista.clear();
-                    boolean flagExcl;
-                    for (Alumno x : alumnos) {
-                        try {
-                            List<DetalleEvaluacion> detalleAux = detalleEvaluacionViewModel.getDetallePorAlumno(x.getCarnetAlumno());
-                            flagExcl = false;
-                            if(!detalleAux.isEmpty())
-                                for(DetalleEvaluacion det : detalleAux) {
-                                    if (det.getIdEvaluacionFK() != idEvaluacion && !alumnosLista.contains(x) && flagExcl == false){
-                                        alumnosLista.add(x);
-                                        flagExcl = true;
-                                    }
-                                    else if (det.getIdEvaluacionFK() == idEvaluacion){
-                                        alumnosLista.remove(x);
-                                        flagExcl = true;
-                                    }
-                                } else
-                                alumnosLista.add(x);
-                            //refresca (necesario para mostrar los datos recuperados en el spinner)
-                            adaptadorSpinner.notifyDataSetChanged();
-                            adaptador.notifyDataSetChanged();
-                            if(adaptadorSpinner.getCount()==0)
-                                botonAgregar.setEnabled(false);
-                            else
-                                botonAgregar.setEnabled(true);
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        } catch (ExecutionException ex) {
-                            ex.printStackTrace();
-                        } catch (TimeoutException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-
-                }});
+            actualizarScrollAlumnos();
         } catch (Exception e) {
             Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public AlertDialog createCustomDialog(final DetalleEvaluacion detalleEvaluacion){
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_opciones, null);
+        ImageButton editar = view.findViewById(R.id.imBEditar) ;
+        editar.setVisibility(View.GONE);
+        ImageButton eliminar = view.findViewById(R.id.imBEliminar);
+        TextView textViewv = view.findViewById(R.id.tituloAlert);
+        textViewv.setText(detalleEvaluacion.getCarnetAlumnoFK());
+        builder.setView(view);
+        alertDialog = builder.create();
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    detalleEvaluacionViewModel.deleteDetalleEvaluacion(detalleEvaluacion);
+
+                    Toast.makeText(DetalleEvaluacionActivity.this, getText(R.string.inic_notif_eval) +
+                                    detalleEvaluacion.getCarnetAlumnoFK() +getText(R.string.accion_borrar_notif_eval),
+                            Toast.LENGTH_SHORT).show();
+                    alertDialog.dismiss();
+                    actualizarScrollAlumnos();
+                }catch (Exception e){
+                    Toast.makeText(DetalleEvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        return alertDialog;
+    }
+
+    public void actualizarScrollAlumnos(){
+        //Spinner alumnos
+        final ArrayList<Alumno> alumnosLista = new ArrayList<>();
+        adaptadorSpinner = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,alumnosLista);
+        adaptadorSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAlumnos.setAdapter(adaptadorSpinner);
+        alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
+            @Override
+            public void onChanged(@Nullable List<Alumno> alumnos) {
+                alumnosLista.clear();
+                boolean flagExcl;
+                for (Alumno x : alumnos) {
+                    try {
+                        List<DetalleEvaluacion> detalleAux = detalleEvaluacionViewModel.getDetallePorAlumno(x.getCarnetAlumno());
+                        flagExcl = false;
+                        if(!detalleAux.isEmpty())
+                            for(DetalleEvaluacion det : detalleAux) {
+                                if (det.getIdEvaluacionFK() != idEvaluacion && !alumnosLista.contains(x) && flagExcl == false){
+                                    alumnosLista.add(x);
+                                    flagExcl = true;
+                                }
+                                else if (det.getIdEvaluacionFK() == idEvaluacion){
+                                    alumnosLista.remove(x);
+                                    flagExcl = true;
+                                }
+                            } else
+                            alumnosLista.add(x);
+                        //refresca (necesario para mostrar los datos recuperados en el spinner)
+                        adaptadorSpinner.notifyDataSetChanged();
+                        adaptador.notifyDataSetChanged();
+                        if(adaptadorSpinner.getCount()==0)
+                            botonAgregar.setEnabled(false);
+                        else
+                            botonAgregar.setEnabled(true);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    } catch (ExecutionException ex) {
+                        ex.printStackTrace();
+                    } catch (TimeoutException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+            }});
+
     }
 }
