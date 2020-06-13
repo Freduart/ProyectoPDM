@@ -2,12 +2,16 @@ package sv.ues.fia.eisi.proyectopdm;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.RoomOpenHelper;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import sv.ues.fia.eisi.proyectopdm.dao.AlumnoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AreaAdmDao;
@@ -60,7 +64,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class,
-    }, version = 3)
+    }, version = 4)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -103,8 +107,17 @@ public abstract class DataBase extends RoomDatabase {
     private static RoomDatabase.Callback roomCallback=new RoomDatabase.Callback(){
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new PoblarDBAsyncTask(instance).execute();
+            try {
+                super.onCreate(db);
+                db.execSQL("create trigger eliminar_detalle before delete on Evaluacion \n" +
+                        " begin \n" +
+                        " delete from DetalleEvaluacion where DetalleEvaluacion.idEvaluacionFK=old.idEvaluacion; \n" +
+                        " end");
+                new PoblarDBAsyncTask(instance).execute();
+            } catch (Exception e) {
+                Log.d("equisde", e.getMessage() + "\n");
+                e.fillInStackTrace();
+            }
         }
     };
 
@@ -207,9 +220,9 @@ public abstract class DataBase extends RoomDatabase {
             cargoDao.insertCargo(new Cargo(6, "Docente EISI"));
             cargoDao.insertCargo(new Cargo(7, "Directora"));
             cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. De Ingeniería de Alimentos"));
-            cargoDao.insertCargo(new Cargo(9, "Jefa de Dpto. de CC. Básicas de la Ingeniería Química"));
-            cargoDao.insertCargo(new Cargo(10, "Jefe de Dpto de Ciencias de la Ingeniería Química"));
-            cargoDao.insertCargo(new Cargo(11, "DOCENTE EIQA"));
+            cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. de CC. Básicas de la Ingeniería Química"));
+            cargoDao.insertCargo(new Cargo(8, "Jefe de Dpto de Ciencias de la Ingeniería Química"));
+            cargoDao.insertCargo(new Cargo(8, "DOCENTE EIQA"));
             docenteDao.insertDocente(new Docente("DOCEISI1", 1, "Rudy Wilfredo", "Chicas", "chicas@ues.edu.sv", "78923456"));
             docenteDao.insertDocente(new Docente("DOCEISI2", 2, "Luis", "Escobar Brizuela", "brizuela@ues.edu.sv", "74589012"));
             docenteDao.insertDocente(new Docente("DOCEISI3", 3, "Bladimir", "Díaz Campos", "diaz@ues.edu.sv", "63256113"));
@@ -231,9 +244,10 @@ public abstract class DataBase extends RoomDatabase {
             localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
             detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7.9f));
             detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"DR17010", 8f));
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("PR1", "LComp1", 1, "7/06/2020", true, 7f, 9f, "observacion 1"));
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("PR2", "D11", 2, "9/06/2020", true, 6f, 8f, "observacion 2"));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "observacion 1"));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "observacion 2"));
             encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion(1, "Pedro Eliseo Peñate"));
+            segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
             return null;
         }
     }

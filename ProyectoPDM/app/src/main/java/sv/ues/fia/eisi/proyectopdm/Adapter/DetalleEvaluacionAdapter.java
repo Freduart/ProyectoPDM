@@ -1,6 +1,5 @@
 package sv.ues.fia.eisi.proyectopdm.Adapter;
 
-import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,16 @@ import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
-import sv.ues.fia.eisi.proyectopdm.repository.AlumnoRepository;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvaluacionAdapter.DetalleEvaluacionHolder> {
     private List<DetalleEvaluacion> detalleEvaluaciones=new ArrayList<>();
-    private OnItemClickListener listener;
+    private OnItemLongClickListener listener;
     private AlumnoViewModel alumnoViewModel;
+    private EscuelaViewModel escuelaViewModel;
 
     //clase Holder
     class DetalleEvaluacionHolder extends RecyclerView.ViewHolder{
@@ -37,14 +38,15 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
             carreraAlumno=itemView.findViewById(R.id.disp_carrera_alumno_detalle);
 
             //settea evento de click CORTO
-            itemView.setOnClickListener(new View.OnClickListener(){
+            itemView.setOnLongClickListener(new View.OnLongClickListener(){
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View v) {
                     //obtener posicion
                     int posicion = getAdapterPosition();
                     //validar
                     if(listener != null && posicion != RecyclerView.NO_POSITION)
                         listener.onItemClick(detalleEvaluaciones.get(posicion));
+                    return true;
                 }
             });
 
@@ -52,11 +54,11 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
     }
 
     //listener para click corto
-    public interface OnItemClickListener{
+    public interface OnItemLongClickListener{
         void onItemClick(DetalleEvaluacion detalleEvaluacion);
     }
     //set listener click corto
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemLongClickListener(OnItemLongClickListener listener){
         this.listener = listener;
     }
 
@@ -77,10 +79,11 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
         DetalleEvaluacion detalleEvaluacionActual = detalleEvaluaciones.get(position);
         try {
             Alumno alumnoActual = alumnoViewModel.getAlumn(detalleEvaluacionActual.getCarnetAlumnoFK());
+            Escuela escuelaActual = escuelaViewModel.getEscuela(Integer.parseInt(alumnoActual.getCarrera()));
             //settea los datos que se mostraran en los elementos de los items de lista
             holder.nombreAlumno.setText(String.format("%s %s", alumnoActual.getNombre(), alumnoActual.getApellido()));
             holder.carnetAlumno.setText(detalleEvaluacionActual.getCarnetAlumnoFK());
-            holder.carreraAlumno.setText(alumnoActual.getCarrera());
+            holder.carreraAlumno.setText(escuelaActual.getCarrera());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -95,9 +98,10 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
         return detalleEvaluaciones.size();
     }
 
-    public void setDetalleEvaluaciones(List<DetalleEvaluacion>detalleEvaluaciones, AlumnoViewModel alumnoViewModel){
+    public void setDetalleEvaluaciones(List<DetalleEvaluacion>detalleEvaluaciones, AlumnoViewModel alumnoViewModel, EscuelaViewModel escuelaViewModel){
         this.detalleEvaluaciones=detalleEvaluaciones;
         this.alumnoViewModel=alumnoViewModel;
+        this.escuelaViewModel=escuelaViewModel;
         notifyDataSetChanged();
     }
 }

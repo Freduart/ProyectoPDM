@@ -28,8 +28,6 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 public class CargoActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_CARGO = "ID_CARGO_ACTUAL";
     private CargoViewModel cargoViewModel;
-    Cargo cargoAt;
-    String codigo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

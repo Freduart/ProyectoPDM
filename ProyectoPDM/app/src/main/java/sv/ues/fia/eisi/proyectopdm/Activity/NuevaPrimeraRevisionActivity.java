@@ -29,15 +29,13 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
-    private LocalViewModel localViewModel;
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
-    private EditText codPR;
-    private Spinner spinlocalFK;
+    public String LOCAL_PH_PR;
+    public String NOTA_PH_PR;
+    public String ESTADO_PH_PR;
     private Spinner spindetalleEFK;
     private DatePicker dpickfechaSoli;
-    private Spinner spinestado;
     private EditText notaAntes;
-    private EditText notaDespues;
     private EditText observaciones;
 
     @Override
@@ -45,48 +43,20 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nueva_primera_revision);
-            codPR = (EditText) findViewById(R.id.editarCodPR);
-            spinlocalFK = (Spinner) findViewById(R.id.editarLocalFK);
+
+            NOTA_PH_PR = getText(R.string.nota_place_holder_PR).toString();
+            ESTADO_PH_PR = getText(R.string.estado_placeholder_PR).toString();
+            LOCAL_PH_PR = getText(R.string.local_placeholder_PR).toString();
             spindetalleEFK = (Spinner) findViewById(R.id.editarDetalleEvaFK);
             dpickfechaSoli = (DatePicker) findViewById(R.id.editarFechaSolicitud);
-            spinestado = (Spinner) findViewById(R.id.editarEstadoPR);
             notaAntes = (EditText) findViewById(R.id.editarNotaAntesPR);
-            notaDespues = (EditText) findViewById(R.id.editarNotaDespuesPR);
             observaciones = (EditText) findViewById(R.id.editarObservacionesPR);
 
 
-            //Llenar Spinnerd
-            //Spinner Local
-            //lista para almacenar id y ubicacion de local
-            final ArrayList<String> localesNom = new ArrayList<>();
-            //adaptador a arreglos para spinner
-            final ArrayAdapter<String> adapterSpinnerLocal = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, localesNom);
-            //settea layout de dropdown del spinner
-            adapterSpinnerLocal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            //settea el adaptador creado en el spinner
-            spinlocalFK.setAdapter(adapterSpinnerLocal);
-            //Instancia ViewModel
-            localViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LocalViewModel.class);
-            //Obtener todas las pr en LiveData
-            localViewModel.getAllLocales().observe(this, new Observer<List<Local>>() {
-                @Override
-                public void onChanged(List<Local> locales) {
-                    try {
-                        for (Local l : locales){
-                            localesNom.add(l.getIdLocal() + " - " + l.getNombreLocal());
-                        }
-                        //Refresca
-                        adapterSpinnerLocal.notifyDataSetChanged();
-                    }catch (Exception e){
-                        Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() +  " - " + e.fillInStackTrace().toString(),Toast.LENGTH_LONG).show();
-                    }
-                }
-            }); //fin de llenado de spinner de local
 
             //Spinner de detalle
             final ArrayList<String> detallesNom = new ArrayList<>();
             final ArrayAdapter<String> adapterSpinnerDetalleE = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, detallesNom);
-            adapterSpinnerLocal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spindetalleEFK.setAdapter(adapterSpinnerDetalleE);
             detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
             detalleEvaluacionViewModel.getAllDetalles().observe(this, new Observer<List<DetalleEvaluacion>>() {
@@ -103,11 +73,6 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
                 }
             });//fin de llenado spinner detalle
 
-            //Llenar spinner de estado
-            final String[] arrayEstado = new String[]{"true", "false"};
-            final ArrayList<PrimeraRevision> estadoPR = new ArrayList<>();
-            spinestado.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, arrayEstado));
-            spinestado.setSelection(arrayEstado.toString().indexOf("false"));
         }catch (Exception e){
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -116,12 +81,6 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
     public void guardarPrimeraRevision(){
         try{
-            //Almacenar codigo
-            String codigo = codPR.getText().toString();
-            //Obtener valor de spinner de Local
-            String localAux1= spinlocalFK.getSelectedItem().toString();
-            String[] localAux2 = localAux1.split("-");
-            String local = localAux2[0].trim();
             //Obtener valor de spinner de Detalle de evaluación
             String detalleAux1 = spindetalleEFK.getSelectedItem().toString();
             String[] detalleAux2= detalleAux1.split("-");
@@ -132,20 +91,17 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             fecha.append(dpickfechaSoli.getDayOfMonth()).append("/").append(dpickfechaSoli.getMonth()).append("/").append(dpickfechaSoli.getYear());
             //Almacenar fecha de solicitud
             String fechaSolicitud = fecha.toString();
-            //Obtener valor de spinner de estado
-            String est = spinestado.getSelectedItem().toString();
             String notaAn = notaAntes.getText().toString();
-            String notaDes = notaDespues.getText().toString();
             String ob = observaciones.getText().toString();
-            if(codigo.trim().isEmpty()||notaAn.trim().isEmpty()||notaDes.isEmpty()||ob.isEmpty()){
+            if(notaAn.trim().isEmpty()||ob.isEmpty()){
                 Toast.makeText(this, "Por favor, llena todos los campos.", Toast.LENGTH_LONG).show();
                 return;
             }
-            PrimeraRevision pr = new PrimeraRevision(codigo, local, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(est), Double.parseDouble(notaAn), Double.parseDouble(notaDes), ob);
+            PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
             primeraRevisionViewModel.insertPrimeraRevision(pr);
 
-            Toast.makeText(NuevaPrimeraRevisionActivity.this, "Primera revisión: " + pr.getIdPrimerRevision() +" insertada con éxito.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NuevaPrimeraRevisionActivity.this, "Primera revisión insertada con éxito.", Toast.LENGTH_SHORT).show();
             finish();
         }catch (Exception e){
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();

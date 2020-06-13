@@ -12,23 +12,21 @@ import java.util.Date;
 @Entity(tableName = "SegundaRevision")
 public class SegundaRevision {
 
-    @PrimaryKey
-    @NonNull
-    private String idSegundaRevision;
+    @PrimaryKey(autoGenerate = true)
+    private int idSegundaRevision;
     @ForeignKey(
             entity = PrimeraRevision.class,
             parentColumns = "idPrimeraRevision",
             childColumns = "idPrimeraRevisionFK"
     )@NonNull
-    private String idPrimeraRevisionFK;
+    private int idPrimeraRevisionFK;
     private String fechaSegundaRev;
     private String horaSegundaRev;
     private double notaFinalSegundaRev;
     private String observacionesSegundaRev;
     private String fechaSolicitudSegRev;
 
-    public SegundaRevision(@NonNull String idSegundaRevision, @NonNull String idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, double notaFinalSegundaRev, String observacionesSegundaRev, String fechaSolicitudSegRev) {
-        this.idSegundaRevision = idSegundaRevision;
+    public SegundaRevision(@NonNull int idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, double notaFinalSegundaRev, String observacionesSegundaRev, String fechaSolicitudSegRev) {
         this.idPrimeraRevisionFK = idPrimeraRevisionFK;
         this.fechaSegundaRev = fechaSegundaRev;
         this.horaSegundaRev = horaSegundaRev;
@@ -37,8 +35,7 @@ public class SegundaRevision {
         this.fechaSolicitudSegRev = fechaSolicitudSegRev;
     }
     @Ignore
-    public SegundaRevision(@NonNull String idSegundaRevision, @NonNull String idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, String observacionesSegundaRev, String fechaSolicitudSegRev) {
-        this.idSegundaRevision = idSegundaRevision;
+    public SegundaRevision(@NonNull int idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, String observacionesSegundaRev, String fechaSolicitudSegRev) {
         this.idPrimeraRevisionFK = idPrimeraRevisionFK;
         this.fechaSegundaRev = fechaSegundaRev;
         this.horaSegundaRev = horaSegundaRev;
@@ -47,8 +44,7 @@ public class SegundaRevision {
     }
 
     @Ignore
-    public SegundaRevision(@NonNull String idSegundaRevision, @NonNull String idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, String fechaSolicitudSegRev) {
-        this.idSegundaRevision = idSegundaRevision;
+    public SegundaRevision(@NonNull int idPrimeraRevisionFK, String fechaSegundaRev, String horaSegundaRev, String fechaSolicitudSegRev) {
         this.idPrimeraRevisionFK = idPrimeraRevisionFK;
         this.fechaSegundaRev = fechaSegundaRev;
         this.horaSegundaRev = horaSegundaRev;
@@ -56,20 +52,20 @@ public class SegundaRevision {
     }
 
     @NonNull
-    public String getIdSegundaRevision() {
+    public int getIdSegundaRevision() {
         return idSegundaRevision;
     }
 
-    public void setIdSegundaRevision(@NonNull String idSegundaRevision) {
+    public void setIdSegundaRevision(@NonNull int idSegundaRevision) {
         this.idSegundaRevision = idSegundaRevision;
     }
 
     @NonNull
-    public String getIdPrimeraRevisionFK() {
+    public int getIdPrimeraRevisionFK() {
         return idPrimeraRevisionFK;
     }
 
-    public void setIdPrimeraRevisionFK(@NonNull String idPrimeraRevisionFK) {
+    public void setIdPrimeraRevisionFK(@NonNull int idPrimeraRevisionFK) {
         this.idPrimeraRevisionFK = idPrimeraRevisionFK;
     }
 

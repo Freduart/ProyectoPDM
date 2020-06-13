@@ -90,7 +90,7 @@ public class EditarCargoActivity extends AppCompatActivity {
                         //Refresca
                         adapterSpinnerEscuela.notifyDataSetChanged();
                     }catch (Exception e){
-
+                        Toast.makeText(EditarCargoActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -121,9 +121,6 @@ public class EditarCargoActivity extends AppCompatActivity {
                 Toast.makeText(this, "Por favor, llena todos los campos.",
                         Toast.LENGTH_SHORT).show();
             }
-
-
-            //Cargo auxcargo = new Cargo(Integer.parseInt(escuela), nombre);
 
             cargoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
                     .create(CargoViewModel.class);

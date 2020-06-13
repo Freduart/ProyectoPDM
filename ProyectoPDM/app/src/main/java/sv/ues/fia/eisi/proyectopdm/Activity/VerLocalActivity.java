@@ -46,7 +46,7 @@ public class VerLocalActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             String idLocal = "";
             if(extras != null){
-                idLocal = extras.getString("ID Local Actual");
+                idLocal = extras.getString(LocalActivity.IDENTIFICADOR_LOCAL);
             }
 
             //Extraer Local Actual

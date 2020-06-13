@@ -30,5 +30,5 @@ public interface PrimeraRevisionDao {
     LiveData<List<PrimeraRevision>> obtenerPrimerasRevisiones();
 
     @Query("select * from PrimeraRevision where idPrimerRevision == :primerarevisionid")
-    PrimeraRevision obtenerPrimeraRevision(String primerarevisionid);
+    PrimeraRevision obtenerPrimeraRevision(int primerarevisionid);
 }

@@ -26,30 +26,30 @@ public class PrimeraRevisionRepository {
     }
 
     public void insertarPrimeraRevision(PrimeraRevision primeraRevision){
-        new PrimeraRevisionRepository.InsertarPrimeraRevisionAsyncTask(primeraRevisionDao).execute(primeraRevision);
+        new InsertarPrimeraRevisionAsyncTask(primeraRevisionDao).execute(primeraRevision);
     }
 
     public void actualizarPrimeraRevision(PrimeraRevision primeraRevision){
-        new PrimeraRevisionRepository.ActualizarPrimeraRevisionAsyncTask(primeraRevisionDao).equals(primeraRevision);
+        new ActualizarPrimeraRevisionAsyncTask(primeraRevisionDao).execute(primeraRevision);
     }
 
     public void borrarPrimeraRevision(PrimeraRevision primeraRevision){
-        new PrimeraRevisionRepository.BorrarPrimeraRevisionAsyncTask(primeraRevisionDao).execute(primeraRevision);
+        new BorrarPrimeraRevisionAsyncTask(primeraRevisionDao).execute(primeraRevision);
     }
 
     public void borrarTodasPrimerasRevisiones(){
-        new PrimeraRevisionRepository.DeleteAllPrimeraRevisionesAsyncTask(primeraRevisionDao).execute();
+        new DeleteAllPrimeraRevisionesAsyncTask(primeraRevisionDao).execute();
     }
 
-    public PrimeraRevision obtenerPrimeraRevision(String string) throws InterruptedException, ExecutionException, TimeoutException {
-        return new PrimeraRevisionRepository.obtenerPrimeraRevisionAsyncTask(primeraRevisionDao).execute(string).get(12, TimeUnit.SECONDS);
+    public PrimeraRevision obtenerPrimeraRevision(Integer integer) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerPrimeraRevisionAsyncTask(primeraRevisionDao).execute(integer).get(12, TimeUnit.SECONDS);
     }
 
     public LiveData<List<PrimeraRevision>> getAllPrimerasRevisiones(){
         return allPrimerasRevisiones;
     }
 
-    private static class InsertarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
+    public static class InsertarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
         private PrimeraRevisionDao primeraRevisionDao;
 
         private InsertarPrimeraRevisionAsyncTask(PrimeraRevisionDao primeraRevisionDao){
@@ -62,7 +62,7 @@ public class PrimeraRevisionRepository {
         }
     }
 
-    private static class ActualizarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
+    public static class ActualizarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
         private PrimeraRevisionDao primeraRevisionDao;
 
         private ActualizarPrimeraRevisionAsyncTask(PrimeraRevisionDao primeraRevisionDao){
@@ -75,7 +75,7 @@ public class PrimeraRevisionRepository {
         }
     }
 
-    private static class BorrarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
+    public static class BorrarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
         private PrimeraRevisionDao primeraRevisionDao;
 
         private BorrarPrimeraRevisionAsyncTask(PrimeraRevisionDao primeraRevisionDao){
@@ -88,7 +88,7 @@ public class PrimeraRevisionRepository {
         }
     }
 
-    private static class  DeleteAllPrimeraRevisionesAsyncTask extends AsyncTask<Void, Void, Void>{
+    public static class  DeleteAllPrimeraRevisionesAsyncTask extends AsyncTask<Void, Void, Void>{
         private PrimeraRevisionDao primeraRevisionDao;
 
         private DeleteAllPrimeraRevisionesAsyncTask(PrimeraRevisionDao primeraRevisionDao){
@@ -102,7 +102,7 @@ public class PrimeraRevisionRepository {
         }
     }
 
-    private static class obtenerPrimeraRevisionAsyncTask extends AsyncTask <String, Void, PrimeraRevision>{
+    public static class obtenerPrimeraRevisionAsyncTask extends AsyncTask <Integer, Void, PrimeraRevision>{
         private PrimeraRevisionDao primeraRevisionDao;
 
         private obtenerPrimeraRevisionAsyncTask(PrimeraRevisionDao primeraRevisionDao){
@@ -110,7 +110,7 @@ public class PrimeraRevisionRepository {
         }
 
         @Override
-        protected PrimeraRevision doInBackground(String... primeraRevisiones) {
+        protected PrimeraRevision doInBackground(Integer... primeraRevisiones) {
             return primeraRevisionDao.obtenerPrimeraRevision(primeraRevisiones[0]);
         }
     }

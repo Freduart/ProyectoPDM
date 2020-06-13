@@ -196,7 +196,6 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     }
                 }
             });
-            //x.getCarnetDocente()+" - " + x.getNomDocente() + " " + x.getApellidoDocente()
             //--fin llenado spinner docentes
 
             //nomeacuerdoxdddddd

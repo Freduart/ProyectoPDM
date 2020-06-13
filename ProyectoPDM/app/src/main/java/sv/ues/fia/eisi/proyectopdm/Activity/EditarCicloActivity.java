@@ -20,6 +20,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
 public class EditarCicloActivity extends AppCompatActivity {
     private CicloViewModel cicloVM;
     private Ciclo cicloActual;
+
     private EditText editNombreCiclo;
     private DatePicker dpFechaInicio;
     private DatePicker dpFechaFin;
@@ -30,10 +31,8 @@ public class EditarCicloActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_editar_ciclo);
 
-            //Inicializa variable de Barra de Acción (Barra Superior)
-            ActionBar actionBar = getSupportActionBar();
             //Título personalizado para Activity
-            actionBar.setTitle("Editar Ciclo");
+            setTitle("Editar Ciclo");
 
             //Inicializa elementos del Layout en Activity
             editNombreCiclo = findViewById(R.id.edit_nombre_ciclo);
@@ -47,7 +46,7 @@ public class EditarCicloActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             int idCicloAct = 0;
             if(extras != null){
-                idCicloAct = extras.getInt("ID Ciclo Actual");
+                idCicloAct = extras.getInt(CicloActivity.IDENTIFICADOR_CICLO);
             }
 
             //Se asigna el objeto extraído del ViewModel usando el id
@@ -90,13 +89,15 @@ public class EditarCicloActivity extends AppCompatActivity {
                 idCiclo = extras.getInt("ID Ciclo Actual");
             }
 
-            //Se crea una instancia de Ciclo auxiliar para usar en el ViewModel
-            Ciclo aux = new Ciclo(fechaInicio, fechaFin, nomCiclo);
-            //Se asigna el id correspondiente
-            aux.setIdCiclo(idCiclo);
-
             //Inicializa el ViewModel
             cicloVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CicloViewModel.class);
+
+            //Se crea una instancia de Ciclo auxiliar para usar en el ViewModel
+            Ciclo aux = cicloVM.getCic(idCiclo);
+            aux.setNomCiclo(nomCiclo);
+            aux.setFechaDesde(fechaInicio);
+            aux.setFechaHasta(fechaFin);
+
             //Actualiza el ciclo
             cicloVM.updateCiclo(aux);
 
