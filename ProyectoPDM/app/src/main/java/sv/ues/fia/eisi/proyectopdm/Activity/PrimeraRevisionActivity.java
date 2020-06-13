@@ -29,7 +29,6 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_PR = "ID_PRIMERAREVISION_ACTUAL";
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
-    PrimeraRevision primeraRevisionAt;
 
 
     @Override
@@ -74,7 +73,7 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             adapter.setOnItemClickListener(new PrimeraRevisionAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(PrimeraRevision primeraRevision) {
-                    String id = primeraRevision.getIdPrimerRevision();
+                    int id = primeraRevision.getIdPrimerRevision();
                     Intent intent = new Intent(PrimeraRevisionActivity.this, VerPrimeraRevisionActivity.class);
                     intent.putExtra(IDENTIFICADOR_PR, id);
                     startActivity(intent);
@@ -100,14 +99,14 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
         ImageButton editar = (ImageButton) view.findViewById(R.id.imBEditar);
         ImageButton eliminar = (ImageButton) view.findViewById(R.id.imBEliminar);
         TextView tv = (TextView) view.findViewById(R.id.tituloAlert);
-        tv.setText(primeraRevision.getIdPrimerRevision());
+        tv.setText(String.valueOf(primeraRevision.getIdPrimerRevision()));
         builder.setView(view);
         alertDialog = builder.create();
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    String id = primeraRevision.getIdPrimerRevision();
+                    int id = primeraRevision.getIdPrimerRevision();
                     Intent intent = new Intent(PrimeraRevisionActivity.this, EditarPrimeraRevisionActivity.class);
                     intent.putExtra(IDENTIFICADOR_PR, id);
                     startActivity(intent);

@@ -122,9 +122,6 @@ public class EditarCargoActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
 
-
-            //Cargo auxcargo = new Cargo(Integer.parseInt(escuela), nombre);
-
             cargoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
                     .create(CargoViewModel.class);
             Cargo aux2 = cargoViewModel.getCargo(id);

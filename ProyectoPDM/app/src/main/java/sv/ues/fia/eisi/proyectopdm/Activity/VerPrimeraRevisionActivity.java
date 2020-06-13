@@ -66,9 +66,9 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
 
             //Obtiene intent de PrimeraRevisionActivity
             Bundle extras = getIntent().getExtras();
-            String idPR = "";
+            int idPR = 0;
             if(extras != null){
-                idPR = extras.getString(PrimeraRevisionActivity.IDENTIFICADOR_PR);
+                idPR = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PR);
             }
             //Obtiene pr actual
             primeraRevisionActual = primeraRevisionViewModel.getPrimeraRevision(idPR);
@@ -78,7 +78,7 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
             detalleEvaluacionActual = detalleEvaluacionViewModel.getDetalleEvaluacion(primeraRevisionActual.getIdDetalleEvFK());
 
             //settear valores de pr actual
-            codPR.setText(primeraRevisionActual.getIdPrimerRevision());
+            codPR.setText(String.valueOf(primeraRevisionActual.getIdPrimerRevision()));
             localFK.setText(localActual.getIdLocal()+ " - " + localActual.getUbicacion());
             detalleEFK.setText(detalleEvaluacionActual.getIdDetalleEv()+ " - " + detalleEvaluacionActual.getCarnetAlumnoFK());
             fechaSoli.setText(primeraRevisionActual.getFechaSolicitudPrimRev());

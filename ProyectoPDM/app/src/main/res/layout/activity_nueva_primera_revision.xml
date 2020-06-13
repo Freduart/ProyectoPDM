@@ -11,23 +11,6 @@
         android:layout_height="match_parent"
         android:stretchColumns="1"
         android:padding="16dp">
-        <TextView
-            android:id="@+id/codPimeraR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/CodigoPR"
-            app:layout_constraintTop_toBottomOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            />
-
-        <EditText
-            android:id="@+id/editarCodPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Codigo de pr"
-            app:layout_constraintTop_toBottomOf="@+id/codPrimeraR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
 
         <TextView
             android:id="@+id/detalleEvaFK"

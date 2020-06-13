@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -73,7 +74,12 @@ public class MenuActivity extends AppCompatActivity {
     //Redirect de PR
     public  void primerarevisionRedirect(View view){
         Intent intent = new Intent(this, PrimeraRevisionActivity.class);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(MenuActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }

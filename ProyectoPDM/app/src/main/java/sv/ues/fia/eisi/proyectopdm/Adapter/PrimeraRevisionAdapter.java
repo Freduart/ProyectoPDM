@@ -51,9 +51,7 @@ public class PrimeraRevisionAdapter extends RecyclerView.Adapter<PrimeraRevision
     public void onBindViewHolder(@NonNull PrimeraRevisionHolder holder, int position) {
         PrimeraRevision currentPR = prs.get(position);
 
-        //obtiene el id de la primera revision actual
-        String id = currentPR.getIdPrimerRevision();
-        holder.codPR.setText(currentPR.getIdPrimerRevision());
+        holder.codPR.setText(String.valueOf(currentPR.getIdPrimerRevision()));
         holder.idDetalleEvFK.setText(String.valueOf(currentPR.getIdDetalleEvFK()));
     }
 

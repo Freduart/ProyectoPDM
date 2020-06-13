@@ -40,7 +40,7 @@ public class PrimeraRevisionViewModel extends AndroidViewModel {
 
     public LiveData<List<PrimeraRevision>> getAllPrimerasRevisiones() { return allPrimerasRevisiones; }
 
-    public PrimeraRevision getPrimeraRevision(String id) throws InterruptedException, ExecutionException, TimeoutException {
+    public PrimeraRevision getPrimeraRevision(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return primeraRevisionRepository.obtenerPrimeraRevision(id);
     }
 }

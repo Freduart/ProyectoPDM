@@ -41,8 +41,8 @@ public class PrimeraRevisionRepository {
         new PrimeraRevisionRepository.DeleteAllPrimeraRevisionesAsyncTask(primeraRevisionDao).execute();
     }
 
-    public PrimeraRevision obtenerPrimeraRevision(String string) throws InterruptedException, ExecutionException, TimeoutException {
-        return new PrimeraRevisionRepository.obtenerPrimeraRevisionAsyncTask(primeraRevisionDao).execute(string).get(12, TimeUnit.SECONDS);
+    public PrimeraRevision obtenerPrimeraRevision(Integer integer) throws InterruptedException, ExecutionException, TimeoutException {
+        return new PrimeraRevisionRepository.obtenerPrimeraRevisionAsyncTask(primeraRevisionDao).execute(integer).get(12, TimeUnit.SECONDS);
     }
 
     public LiveData<List<PrimeraRevision>> getAllPrimerasRevisiones(){
@@ -102,7 +102,7 @@ public class PrimeraRevisionRepository {
         }
     }
 
-    private static class obtenerPrimeraRevisionAsyncTask extends AsyncTask <String, Void, PrimeraRevision>{
+    private static class obtenerPrimeraRevisionAsyncTask extends AsyncTask <Integer, Void, PrimeraRevision>{
         private PrimeraRevisionDao primeraRevisionDao;
 
         private obtenerPrimeraRevisionAsyncTask(PrimeraRevisionDao primeraRevisionDao){
@@ -110,7 +110,7 @@ public class PrimeraRevisionRepository {
         }
 
         @Override
-        protected PrimeraRevision doInBackground(String... primeraRevisiones) {
+        protected PrimeraRevision doInBackground(Integer... primeraRevisiones) {
             return primeraRevisionDao.obtenerPrimeraRevision(primeraRevisiones[0]);
         }
     }

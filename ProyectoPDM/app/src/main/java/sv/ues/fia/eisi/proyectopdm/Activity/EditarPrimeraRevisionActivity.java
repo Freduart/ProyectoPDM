@@ -66,9 +66,9 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
 
             //Obtiene intent de PrimeraRevisionActivity
             Bundle extras = getIntent().getExtras();
-            String idPR = " ";
+            int idPR = 0;
             if(extras != null){
-                idPR = extras.getString(PrimeraRevisionActivity.IDENTIFICADOR_PR);
+                idPR = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PR);
             }
             //Obtiene pr actual
             primeraRevisionActual = primeraRevisionViewModel.getPrimeraRevision(idPR);
@@ -155,7 +155,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
     private void actualizarPrimeraRevision(){
         try {
 
-            String id = primeraRevisionActual.getIdPrimerRevision();
+            int id = primeraRevisionActual.getIdPrimerRevision();
 
             //Almacenar valor de spinner local
             String locAux = spinlocalFK.getSelectedItem().toString();
@@ -180,7 +180,6 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
 
             PrimeraRevision p = primeraRevisionViewModel.getPrimeraRevision(id);
-            p.setIdPrimerRevision(primeraRevisionViewModel.getPrimeraRevision(id).toString());
             p.setIdLocalFK(locAux);
             p.setIdDetalleEvFK(Integer.parseInt(detalle));
             p.setFechaSolicitudPrimRev(fechaSolic);

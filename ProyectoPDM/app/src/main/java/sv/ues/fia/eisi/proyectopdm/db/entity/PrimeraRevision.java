@@ -9,9 +9,8 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "PrimeraRevision")
 public class PrimeraRevision {
 
-    @PrimaryKey
-    @NonNull
-    private String idPrimerRevision;
+    @PrimaryKey (autoGenerate = true)
+    private int idPrimerRevision;
     @ForeignKey(
             entity = Local.class,
             parentColumns = "idLocal",
@@ -29,8 +28,7 @@ public class PrimeraRevision {
     private double notasAntesPrimeraRev;
     private double notaDespuesPrimeraRev;
 
-    public PrimeraRevision(@NonNull String idPrimerRevision, @NonNull String idLocalFK, int idDetalleEvFK, String fechaSolicitudPrimRev, boolean estadoPrimeraRev, double notasAntesPrimeraRev, double notaDespuesPrimeraRev, String observacionesPrimeraRev) {
-        this.idPrimerRevision = idPrimerRevision;
+    public PrimeraRevision(@NonNull String idLocalFK, int idDetalleEvFK, String fechaSolicitudPrimRev, boolean estadoPrimeraRev, double notasAntesPrimeraRev, double notaDespuesPrimeraRev, String observacionesPrimeraRev) {
         this.idLocalFK = idLocalFK;
         this.idDetalleEvFK = idDetalleEvFK;
         this.fechaSolicitudPrimRev = fechaSolicitudPrimRev;
@@ -41,11 +39,11 @@ public class PrimeraRevision {
     }
 
     @NonNull
-    public String getIdPrimerRevision() {
+    public int getIdPrimerRevision() {
         return idPrimerRevision;
     }
 
-    public void setIdPrimerRevision(@NonNull String idPrimerRevision) {
+    public void setIdPrimerRevision(int idPrimerRevision) {
         this.idPrimerRevision = idPrimerRevision;
     }
 

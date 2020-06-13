@@ -29,9 +29,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
-    private LocalViewModel localViewModel;
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
-    private EditText codPR;
     public String LOCAL_PH_PR;
     public String NOTA_PH_PR;
     public String ESTADO_PH_PR;
@@ -49,7 +47,6 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             NOTA_PH_PR = getText(R.string.nota_place_holder_PR).toString();
             ESTADO_PH_PR = getText(R.string.estado_placeholder_PR).toString();
             LOCAL_PH_PR = getText(R.string.local_placeholder_PR).toString();
-            codPR = (EditText) findViewById(R.id.editarCodPR);
             spindetalleEFK = (Spinner) findViewById(R.id.editarDetalleEvaFK);
             dpickfechaSoli = (DatePicker) findViewById(R.id.editarFechaSolicitud);
             notaAntes = (EditText) findViewById(R.id.editarNotaAntesPR);
@@ -84,8 +81,6 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
     public void guardarPrimeraRevision(){
         try{
-            //Almacenar codigo
-            String codigo = codPR.getText().toString();
             //Obtener valor de spinner de Detalle de evaluación
             String detalleAux1 = spindetalleEFK.getSelectedItem().toString();
             String[] detalleAux2= detalleAux1.split("-");
@@ -98,15 +93,15 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             String fechaSolicitud = fecha.toString();
             String notaAn = notaAntes.getText().toString();
             String ob = observaciones.getText().toString();
-            if(codigo.trim().isEmpty()||notaAn.trim().isEmpty()||ob.isEmpty()){
+            if(notaAn.trim().isEmpty()||ob.isEmpty()){
                 Toast.makeText(this, "Por favor, llena todos los campos.", Toast.LENGTH_LONG).show();
                 return;
             }
-            PrimeraRevision pr = new PrimeraRevision(codigo, LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
+            PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
             primeraRevisionViewModel.insertPrimeraRevision(pr);
 
-            Toast.makeText(NuevaPrimeraRevisionActivity.this, "Primera revisión: " + pr.getIdPrimerRevision() +" insertada con éxito.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NuevaPrimeraRevisionActivity.this, "Primera revisión insertada con éxito.", Toast.LENGTH_SHORT).show();
             finish();
         }catch (Exception e){
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();

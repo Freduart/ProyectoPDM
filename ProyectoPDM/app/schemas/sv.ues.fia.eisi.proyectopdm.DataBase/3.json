@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "b968ab582105572c060d2ec8c17d86d1",
+    "identityHash": "3b537c60a1a80992bc872c8b720b2b6c",
     "entities": [
       {
         "tableName": "Alumno",
@@ -553,12 +553,12 @@
       },
       {
         "tableName": "PrimeraRevision",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPrimerRevision` TEXT NOT NULL, `idLocalFK` TEXT NOT NULL, `idDetalleEvFK` INTEGER NOT NULL, `fechaSolicitudPrimRev` TEXT, `estadoPrimeraRev` INTEGER NOT NULL, `notasAntesPrimeraRev` REAL NOT NULL, `notaDespuesPrimeraRev` REAL NOT NULL, `observacionesPrimeraRev` TEXT, PRIMARY KEY(`idPrimerRevision`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPrimerRevision` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idLocalFK` TEXT NOT NULL, `idDetalleEvFK` INTEGER NOT NULL, `fechaSolicitudPrimRev` TEXT, `estadoPrimeraRev` INTEGER NOT NULL, `notasAntesPrimeraRev` REAL NOT NULL, `notaDespuesPrimeraRev` REAL NOT NULL, `observacionesPrimeraRev` TEXT)",
         "fields": [
           {
             "fieldPath": "idPrimerRevision",
             "columnName": "idPrimerRevision",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -608,7 +608,7 @@
           "columnNames": [
             "idPrimerRevision"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -856,7 +856,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b968ab582105572c060d2ec8c17d86d1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b537c60a1a80992bc872c8b720b2b6c')"
     ]
   }
 }
