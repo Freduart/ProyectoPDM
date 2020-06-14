@@ -109,10 +109,22 @@ public abstract class DataBase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             try {
                 super.onCreate(db);
+                db.execSQL("create trigger eliminar_evaluacion before delete on Asignatura " +
+                        "begin " +
+                        "delete from Evaluacion where Evaluacion.codigoAsignaturaFK=old.codigoAsignatura; " +
+                        "end");
                 db.execSQL("create trigger eliminar_detalle before delete on Evaluacion \n" +
                         " begin \n" +
                         " delete from DetalleEvaluacion where DetalleEvaluacion.idEvaluacionFK=old.idEvaluacion; \n" +
                         " end");
+                db.execSQL("create trigger eliminar_pr before delete on DetalleEvaluacion " +
+                        "begin " +
+                        "delete from PrimeraRevision where PrimeraRevision.idDetalleEvFK=old.idDetalleEv; " +
+                        "end");
+                db.execSQL("create trigger eliminar_sr before delete on PrimeraRevision " +
+                        "begin " +
+                        "delete from SegundaRevision where SegundaRevision.idPrimeraRevisionFK=old.idPrimerRevision; " +
+                        "end");
                 new PoblarDBAsyncTask(instance).execute();
             } catch (Exception e) {
                 Log.d("equisde", e.getMessage() + "\n");
