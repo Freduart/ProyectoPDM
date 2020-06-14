@@ -27,29 +27,13 @@
             app:layout_constraintTop_toBottomOf="@+id/codPrimeraR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
-        <TextView
-            android:id="@+id/localPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/LocalPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvCodPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <TextView
-            android:id="@+id/tvLocalFK"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Local de prueba "
-            app:layout_constraintTop_toBottomOf="@+id/localPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+
         <TextView
             android:id="@+id/detalleEvaFK"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/DetallePR"
-            app:layout_constraintTop_toBottomOf="@+id/tvLocalFK"
+            app:layout_constraintTop_toBottomOf="@+id/tvCodPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
@@ -78,29 +62,13 @@
             app:layout_constraintTop_toBottomOf="@+id/fechaSolicitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
-        <TextView
-            android:id="@+id/estadoPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/estadoPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvFechaSolicitud"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <TextView
-            android:id="@+id/tvEstadoPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="true"
-            app:layout_constraintTop_toBottomOf="@+id/estadoPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+
         <TextView
             android:id="@+id/notaAntesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notaActualPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvEstadoPR"
+            app:layout_constraintTop_toBottomOf="@+id/tvFechaSolicitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
@@ -112,29 +80,13 @@
             app:layout_constraintTop_toBottomOf="@+id/notaAntesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
-        <TextView
-            android:id="@+id/notaDespuesPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/notaCorregida"
-            app:layout_constraintTop_toBottomOf="@+id/tvNotaAntesPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <TextView
-            android:id="@+id/tvNotaDespuesPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="8.0"
-            app:layout_constraintTop_toBottomOf="@+id/notaDespuesPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+
         <TextView
             android:id="@+id/observacionesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/observacionesPR"
-            app:layout_constraintTop_toBottomOf="@+id/tvNotaDespuesPR"
+            app:layout_constraintTop_toBottomOf="@+id/tvNotaAntesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
@@ -147,5 +99,59 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
 
+        <TextView
+            android:id="@+id/localPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/LocalPR"
+            app:layout_constraintTop_toBottomOf="@+id/tvObservacionesPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:paddingTop="20dp"
+            />
+        <TextView
+            android:id="@+id/tvLocalFK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Local de prueba "
+            app:layout_constraintTop_toBottomOf="@+id/localPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+
+        <TextView
+            android:id="@+id/notaDespuesPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notaCorregida"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocalFK"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tvNotaDespuesPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="8.0"
+            app:layout_constraintTop_toBottomOf="@+id/notaDespuesPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+
+        <TextView
+            android:id="@+id/estadoPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/estadoPR"
+            app:layout_constraintTop_toBottomOf="@+id/tvNotaDespuesPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:paddingTop="20dp"
+            />
+        <TextView
+            android:id="@+id/tvEstadoPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="true"
+            app:layout_constraintTop_toBottomOf="@+id/estadoPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
     </TableLayout>
 </ScrollView>

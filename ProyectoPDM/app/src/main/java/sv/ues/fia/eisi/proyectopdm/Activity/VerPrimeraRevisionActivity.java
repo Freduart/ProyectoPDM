@@ -9,14 +9,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.SegundaRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
@@ -35,6 +40,7 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
     private PrimeraRevisionViewModel primeraRevisionViewModel;
     private LocalViewModel localViewModel;
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
+    private SegundaRevisionViewModel segundaRevisionViewModel;
 
     private TextView codPR;
     private TextView localFK;
@@ -44,6 +50,11 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
     private TextView notaAntes;
     private TextView notaDespues;
     private TextView observaciones;
+
+    public String NOTA_PH_PR;
+    private TextView tvnotaD;
+    private TextView tvlocal;
+    private TextView tvestado;
 
 
     @Override
@@ -60,6 +71,12 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
             notaAntes = (TextView) findViewById(R.id.tvNotaAntesPR);
             notaDespues = (TextView) findViewById(R.id.tvNotaDespuesPR);
             observaciones = (TextView) findViewById(R.id.tvObservacionesPR);
+
+
+            NOTA_PH_PR = getText(R.string.nota_place_holder_PR).toString();
+            tvlocal = (TextView) findViewById(R.id.localPR);
+            tvnotaD = (TextView) findViewById(R.id.notaDespuesPR);
+            tvestado = (TextView) findViewById(R.id.estadoPR);
 
 
             //Instancias ViewModels
@@ -89,6 +106,25 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
             notaAntes.setText(String.valueOf(primeraRevisionActual.getNotasAntesPrimeraRev()));
             notaDespues.setText(String.valueOf(primeraRevisionActual.getNotaDespuesPrimeraRev()));
             observaciones.setText(primeraRevisionActual.getObservacionesPrimeraRev());
+
+
+            if(String.valueOf(primeraRevisionActual.getNotaDespuesPrimeraRev()).equals(NOTA_PH_PR)){
+                tvlocal.setVisibility(View.GONE);
+                localFK.setVisibility(View.GONE);
+                tvnotaD.setVisibility(View.GONE);
+                notaDespues.setVisibility(View.GONE);
+                tvestado.setVisibility(View.GONE);
+                estado.setVisibility(View.GONE);
+            }else if (!String.valueOf(primeraRevisionActual.getNotaDespuesPrimeraRev()).equals(NOTA_PH_PR)){
+                tvlocal.setVisibility(View.VISIBLE);
+                localFK.setVisibility(View.VISIBLE);
+                tvnotaD.setVisibility(View.VISIBLE);
+                notaDespues.setVisibility(View.VISIBLE);
+                tvestado.setVisibility(View.VISIBLE);
+                estado.setVisibility(View.VISIBLE);
+            }
+
+
             //Titulo appbar
             setTitle(R.string.detallePrimera);
         }catch (Exception e){
@@ -98,8 +134,29 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.segunda_rev_menu, menu);
+        primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+        segundaRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SegundaRevisionViewModel.class);
+        Bundle extras = getIntent().getExtras();
+        int idPrimeraR = 0;
+        if(extras != null){
+            idPrimeraR = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PR);
+        }
+        //Obtiene pr actual
+        try {
+            PrimeraRevision pRActual = primeraRevisionViewModel.getPrimeraRevision(idPrimeraR);
+            if(segundaRevisionViewModel.getSegundaRevision(pRActual.getIdPrimerRevision())!=null){
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.segunda_rev_menu, menu);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            Toast.makeText(VerPrimeraRevisionActivity.this, e.getMessage()+" - " + e.getCause(), Toast.LENGTH_LONG).show();
+        }
         return true;
     }
 
@@ -108,7 +165,6 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.segunda:
                 Intent intent = new Intent(VerPrimeraRevisionActivity.this, VerSegundaRevisionActivity.class);
-                intent.putExtra(OPERACION_SEGUNDA_REVISION, AÑADIR_SEGUNDA_REVISION);
                 intent.putExtra(IDENTIFICADOR_PRIMERA_REVISION, primeraRevisionActual.getIdPrimerRevision());
                 startActivity(intent);
             default:
