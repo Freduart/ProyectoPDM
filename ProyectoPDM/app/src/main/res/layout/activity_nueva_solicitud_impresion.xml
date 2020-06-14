@@ -49,7 +49,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textCarnetDocenteVer" />
+                app:layout_constraintTop_toBottomOf="@+id/textCarnetDocenteEditar" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -86,7 +86,7 @@
                 android:text="@string/textNImpresiones"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/text_impresiones_ver"
+                app:layout_constraintEnd_toStartOf="@+id/text_impresiones_editar"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
@@ -101,10 +101,10 @@
                 android:text="@string/textNAnexos"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/text_anexos_ver"
+                app:layout_constraintEnd_toStartOf="@+id/text_anexos_editar"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_impresiones_ver" />
+                app:layout_constraintTop_toBottomOf="@+id/text_impresiones_editar" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -119,10 +119,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_anexos_ver" />
+                app:layout_constraintTop_toBottomOf="@+id/text_anexos_editar" />
 
             <EditText
-                android:id="@+id/text_detalleImpresion_ver"
+                android:id="@+id/text_detalleImpresion_editar"
                 style="@android:style/Widget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_impresiones_ver"
+                android:id="@+id/text_impresiones_editar"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginStart="10dp"
@@ -165,7 +165,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_anexos_ver"
+                android:id="@+id/text_anexos_editar"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginStart="10dp"
@@ -212,7 +212,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_detalleImpresion_ver"
+                app:layout_constraintTop_toBottomOf="@+id/text_detalleImpresion_editar"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -250,10 +250,10 @@
                 android:textColor="@color/colorNegro"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textDocDirectorVer" />
+                app:layout_constraintTop_toBottomOf="@+id/textDocDirectorEditar" />
 
             <Spinner
-                android:id="@+id/textDocDirectorVer"
+                android:id="@+id/textDocDirectorEditar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -267,7 +267,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <Spinner
-                android:id="@+id/textEncImpresVer"
+                android:id="@+id/textEncImpresEditar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -293,7 +293,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:id="@+id/textCarnetDocenteVer"
+                android:id="@+id/textCarnetDocenteEditar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

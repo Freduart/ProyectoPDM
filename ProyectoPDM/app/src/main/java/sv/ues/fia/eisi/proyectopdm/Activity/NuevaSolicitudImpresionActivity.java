@@ -67,8 +67,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     Spinner docDirector,encImpres,carnetDoc;
     //Variables
     Uri documentUri;
-    int[] numImpresiones={}, hojasAnexas={};
-    String detallesImpresion, acumPath="",carnetDocente;
     ArrayList<String> listaDocumentos,listDocDirector,listEncImpres,listDocentes;
     ArrayAdapter<String> adapterDocDirector,adapterEncImpres,adapterCarnetDocente;
     DocenteViewModel docenteViewModel;
@@ -84,14 +82,14 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("NUEVA SOLICITUD");
         //Cajas de texto
-        text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion_ver);
-        text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones_ver);
-        text_anexos=(TextInputLayout)findViewById(R.id.text_anexos_ver);
+        text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion_editar);
+        text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones_editar);
+        text_anexos=(TextInputLayout)findViewById(R.id.text_anexos_editar);
         listaDocumentos=new ArrayList<>();
         //Spinners
-        docDirector=(Spinner)findViewById(R.id.textDocDirectorVer);
-        encImpres=(Spinner)findViewById(R.id.textEncImpresVer);
-        carnetDoc=(Spinner)findViewById(R.id.textCarnetDocenteVer);
+        docDirector=(Spinner)findViewById(R.id.textDocDirectorEditar);
+        encImpres=(Spinner)findViewById(R.id.textEncImpresEditar);
+        carnetDoc=(Spinner)findViewById(R.id.textCarnetDocenteEditar);
 
         //Boton flotante
         FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
@@ -209,7 +207,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                                         fechaHoy=simpleDateFormat.format(calendar.getTime());
                                         //Documentos
                                         for(int i=0;i<listaDocumentos.size();i++){
-                                            detalleImpresion2="Hojas Anexas Por Documento: "+splitHojasAnexas[i]+".\n"+detallesDeImpresion1;
+                                            detalleImpresion2="Hojas Anexas Por Documento: "+splitHojasAnexas[i]+"\n"+detallesDeImpresion1;
                                             solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
                                                     Integer.parseInt(splitImpresiones[i]),detalleImpresion2,"En Curso",
                                                     "Nueva",fechaHoy,listaDocumentos.get(i));

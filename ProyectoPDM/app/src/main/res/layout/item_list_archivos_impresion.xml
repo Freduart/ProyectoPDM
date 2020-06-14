@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/textNombreDocumento"
-        android:layout_width="260dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/textRuta"
-        android:layout_width="260dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"

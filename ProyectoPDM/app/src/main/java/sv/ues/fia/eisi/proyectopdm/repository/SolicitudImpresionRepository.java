@@ -44,7 +44,7 @@ public class SolicitudImpresionRepository {
         return allSolicitudesImpresion;
     }
 
-    public SolicitudImpresion obtenerSolicitudImpresion(int id) throws InterruptedException, ExecutionException, TimeoutException {
+    public SolicitudImpresion obtenerSolicitudImpresion(Integer id) throws InterruptedException, ExecutionException, TimeoutException {
         return new ObtenerSolicitudImpresionAsyncTask(solicitudImpresionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 

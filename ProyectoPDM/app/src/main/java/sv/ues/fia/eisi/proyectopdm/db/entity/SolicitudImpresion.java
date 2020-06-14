@@ -44,7 +44,7 @@ public class SolicitudImpresion {
     public SolicitudImpresion(@NonNull String carnetDocenteFK, int idEncargadoFK, @NonNull String docDirector, int numImpresiones, String detalleImpresion, String resultadoImpresion, String estadoSolicitud, String fechaSolicitud, String documento) {
         this.carnetDocenteFK = carnetDocenteFK;
         this.idEncargadoFK = idEncargadoFK;
-        DocDirector = docDirector;
+        this.DocDirector = docDirector;
         this.numImpresiones = numImpresiones;
         this.detalleImpresion = detalleImpresion;
         this.resultadoImpresion = resultadoImpresion;

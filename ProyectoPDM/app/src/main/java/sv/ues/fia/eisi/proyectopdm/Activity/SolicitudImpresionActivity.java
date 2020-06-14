@@ -37,8 +37,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
 public class SolicitudImpresionActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE = 11;
-    public static final int RESULT_CODE = 12;
+    public static final String IDENTIFICADOR_IMPRESION = "ID_IMPREISON";
     private SolicitudImpresionViewModel solicitudImpresionViewModel;
     private DocenteViewModel docenteViewModel;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
@@ -115,7 +114,11 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int idSolicitud=solicitudImpresion.getIdImpresion();
+                Intent intent=new Intent(SolicitudImpresionActivity.this,EditarSolicitudImpresionActivity.class);
+                intent.putExtra(IDENTIFICADOR_IMPRESION,idSolicitud);
+                startActivity(intent);
+                alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
@@ -136,12 +139,12 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
         LayoutInflater inflater=getLayoutInflater();
         View v = inflater.inflate(R.layout.ver_solicitud_impresion, null);
-        TextView carnetDocente = (TextView) v.findViewById(R.id.textCarnetDocenteVer);
-        TextView docDirector = (TextView) v.findViewById(R.id.textDocDirectorVer);
-        TextView encImpres = (TextView) v.findViewById(R.id.textEncImpresVer);
-        TextView textImpresiones = (TextView) v.findViewById(R.id.text_impresiones_ver);
-        TextView textAnexos = (TextView) v.findViewById(R.id.text_anexos_ver);
-        TextView textDetallesImpresion = (TextView) v.findViewById(R.id.text_detalleImpresion_ver);
+        TextView carnetDocente = (TextView) v.findViewById(R.id.textCarnetDocenteEditar);
+        TextView docDirector = (TextView) v.findViewById(R.id.textDocDirectorEditar);
+        TextView encImpres = (TextView) v.findViewById(R.id.textEncImpresEditar);
+        TextView textImpresiones = (TextView) v.findViewById(R.id.text_impresiones_editar);
+        TextView textAnexos = (TextView) v.findViewById(R.id.text_anexos_editar);
+        TextView textDetallesImpresion = (TextView) v.findViewById(R.id.text_detalleImpresion_editar);
         //RecyclerView
         RecyclerView recyclerArchivos = (RecyclerView) v.findViewById(R.id.recycler_archivos_ver);
         builder.setView(v);
