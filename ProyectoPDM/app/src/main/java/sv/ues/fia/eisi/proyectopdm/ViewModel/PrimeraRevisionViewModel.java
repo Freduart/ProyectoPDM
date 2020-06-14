@@ -43,4 +43,8 @@ public class PrimeraRevisionViewModel extends AndroidViewModel {
     public PrimeraRevision getPrimeraRevision(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return primeraRevisionRepository.obtenerPrimeraRevision(id);
     }
+
+    public List<PrimeraRevision> getRevisionPorDetalle(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return primeraRevisionRepository.obtenerRevisionPorDetalle(id);
+    }
 }

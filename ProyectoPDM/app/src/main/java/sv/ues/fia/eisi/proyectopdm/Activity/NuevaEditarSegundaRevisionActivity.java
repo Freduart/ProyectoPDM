@@ -22,7 +22,6 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 
 
 public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
-    public final String ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
 
     private int idPrimera;
 

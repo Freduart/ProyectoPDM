@@ -31,4 +31,7 @@ public interface PrimeraRevisionDao {
 
     @Query("select * from PrimeraRevision where idPrimerRevision == :primerarevisionid")
     PrimeraRevision obtenerPrimeraRevision(int primerarevisionid);
+
+    @Query("select * from PrimeraRevision where idDetalleEvFK == :id")
+    List<PrimeraRevision> obtenerRevisionPorDetalle(int id);
 }
