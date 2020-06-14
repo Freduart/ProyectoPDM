@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Activity.EditarPrimeraRevisionActivity">
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,28 +70,12 @@
             android:calendarViewShown="false"
             />
         <TextView
-            android:id="@+id/estadoPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/estadoPR"
-            app:layout_constraintTop_toBottomOf="@+id/editarFechaSolicitud"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:paddingTop="20dp"
-            />
-        <Spinner
-            android:id="@+id/editarEstadoPR"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="true"
-            app:layout_constraintTop_toBottomOf="@+id/estadoPR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
-        <TextView
             android:id="@+id/notaAntesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:text="@string/notaActualPR"
-            app:layout_constraintTop_toBottomOf="@+id/editarEstadoPR"
+            app:layout_constraintTop_toBottomOf="@+id/editarFechaSolicitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:paddingTop="20dp"
             />
@@ -109,6 +100,7 @@
             android:id="@+id/editarNotaDespuesPR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:text="8.0"
             app:layout_constraintTop_toBottomOf="@+id/notaDespuesPR"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -131,5 +123,25 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
 
+        <TextView
+            android:id="@+id/estadoPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/estadoPR"
+            app:layout_constraintTop_toBottomOf="@+id/editarObservacionesPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:paddingTop="20dp"
+            />
+
+        <Spinner
+            android:id="@+id/editarEstadoPR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="true"
+            app:layout_constraintTop_toBottomOf="@+id/estadoPR"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
     </TableLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

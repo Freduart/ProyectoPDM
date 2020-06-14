@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
     private TextView notaDespues;
     private TextView observaciones;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -58,6 +60,7 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
             notaAntes = (TextView) findViewById(R.id.tvNotaAntesPR);
             notaDespues = (TextView) findViewById(R.id.tvNotaDespuesPR);
             observaciones = (TextView) findViewById(R.id.tvObservacionesPR);
+
 
             //Instancias ViewModels
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);

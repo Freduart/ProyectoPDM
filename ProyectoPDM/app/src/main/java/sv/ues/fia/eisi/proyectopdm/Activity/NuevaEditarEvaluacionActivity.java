@@ -251,7 +251,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View view = inflater.inflate(R.layout.activity_nueva_evaluacion, null);
                 final int id = idEvaluacion;
-                //al hacer clic corto en un objeto del recycler
+                //al hacer clic en el boton
                 botonDetalleEval.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

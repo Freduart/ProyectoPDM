@@ -82,4 +82,22 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
+    public void cicloRedirect(View view){
+        Intent intent = new Intent(this, CicloActivity.class);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(MenuActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void localRedirect(View view){
+        Intent intent = new Intent(this, LocalActivity.class);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

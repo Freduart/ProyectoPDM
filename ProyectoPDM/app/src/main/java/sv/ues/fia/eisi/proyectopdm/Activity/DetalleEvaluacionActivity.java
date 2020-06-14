@@ -34,6 +34,8 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 
 public class DetalleEvaluacionActivity extends AppCompatActivity {
+    public static final String ID_DETALLE_EVAL = "ID_Actual";
+
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
     private AlumnoViewModel alumnoViewModel;
     private EscuelaViewModel escuelaViewModel;
@@ -50,11 +52,11 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_detalle_evaluacion);
             spinnerAlumnos = findViewById(R.id.spinner_alumnos_detalle);
+            botonAgregar = findViewById(R.id.agregar_alumno_detalle);
             //Obtener bundle de extras (Del intent)
             final Bundle extras = getIntent().getExtras();
             //obtener int con el nombre EvaluacionActivity.IDENTIFICADOR_EVALUACION
             idEvaluacion = extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION);
-            botonAgregar = findViewById(R.id.agregar_alumno_detalle);
 
             //--lista de evaluaciones
             //inicializa recycler view
@@ -85,9 +87,23 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                     adaptador.notifyDataSetChanged();
                 }
             });
-            adaptador.setOnItemLongClickListener(new DetalleEvaluacionAdapter.OnItemLongClickListener() {
+            //al hacer clic corto en un objeto del recycler
+            adaptador.setOnItemClickListener(new DetalleEvaluacionAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DetalleEvaluacion detalleEvaluacion) {
+                    //guardar id de evaluacion que se tocó
+                    int id = detalleEvaluacion.getIdDetalleEv();
+                    //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                    Intent intent = new Intent(DetalleEvaluacionActivity.this, DetalleNotasActivity.class);
+                    //se mete en un extra del intent, el id
+                    intent.putExtra(ID_DETALLE_EVAL, id);
+                    //inicia la activity
+                    startActivity(intent);
+                }
+            });
+            adaptador.setOnItemLongClickListener(new DetalleEvaluacionAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(DetalleEvaluacion detalleEvaluacion) {
                     createCustomDialog(detalleEvaluacion).show();
                 }
             });
@@ -127,8 +143,8 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                 try {
                     detalleEvaluacionViewModel.deleteDetalleEvaluacion(detalleEvaluacion);
 
-                    Toast.makeText(DetalleEvaluacionActivity.this, getText(R.string.inic_notif_eval) +
-                                    detalleEvaluacion.getCarnetAlumnoFK() +getText(R.string.accion_borrar_notif_eval),
+                    Toast.makeText(DetalleEvaluacionActivity.this, getText(R.string.inic_notif_detalle) +
+                                    detalleEvaluacion.getCarnetAlumnoFK() +getText(R.string.accion_borrar_notif_Detalle),
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                     actualizarScrollAlumnos();

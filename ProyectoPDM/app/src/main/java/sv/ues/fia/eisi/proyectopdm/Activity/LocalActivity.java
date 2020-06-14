@@ -28,7 +28,6 @@ public class LocalActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_LOCAL = "ID_LOCAL_ACTUAL";
 
     private LocalViewModel LocalVM;
-    Local localAt;
     String cod;
 
     @Override
@@ -40,7 +39,7 @@ public class LocalActivity extends AppCompatActivity {
         setTitle("Lista de Locales");
 
         //Para Agregar Local: Inicializa botón flotante de acción
-        FloatingActionButton botonNuevoLocal = findViewById(R.id.add_ciclo_button);
+        FloatingActionButton botonNuevoLocal = findViewById(R.id.add_local_button);
 
         //al hacer un clic corto
         botonNuevoLocal.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +113,6 @@ public class LocalActivity extends AppCompatActivity {
         ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditar);
         TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
         tv.setText(local.getIdLocal());
-        del.setVisibility(View.GONE);
         builder.setView(v);
         alertDialog=builder.create();
 

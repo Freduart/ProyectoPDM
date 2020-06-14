@@ -28,8 +28,7 @@ public class CicloActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_CICLO = "ID_CICLO_ACTUAL";
 
     private CicloViewModel CicloVM;
-    Ciclo cicloAt;
-    int cod;
+    private int cod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +112,7 @@ public class CicloActivity extends AppCompatActivity {
         ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminar);
         ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditar);
         TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
-        tv.setText(cod);
-        del.setVisibility(View.GONE);
+        tv.setText(String.valueOf(ciclo.getIdCiclo()));
         builder.setView(v);
         alertDialog = builder.create();
 
@@ -124,7 +122,7 @@ public class CicloActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     CicloVM.deleteCiclo(ciclo);
-                    Toast.makeText(CicloActivity.this, "Local" + " " + cicloAt.getIdCiclo() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CicloActivity.this, "Local" + " " + ciclo.getIdCiclo() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
@@ -137,7 +135,7 @@ public class CicloActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    int id = cicloAt.getIdCiclo();
+                    int id = ciclo.getIdCiclo();
                     Intent intent = new Intent(CicloActivity.this, EditarCicloActivity.class);
                     intent.putExtra(IDENTIFICADOR_CICLO, id);
                     startActivity(intent);

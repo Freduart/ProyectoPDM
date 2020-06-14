@@ -13,7 +13,7 @@
         android:padding="16dp">
 
         <EditText
-            android:id="@+id/edit_nombre_ciclo"
+            android:id="@+id/editN_nombre_ciclo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nomCiclo"
@@ -24,17 +24,17 @@
             />
 
         <TextView
-            android:id="@+id/fechaInicioCicloLabel"
+            android:id="@+id/fechaInicioCicloLabelN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fechaDesde"
-            app:layout_constraintTop_toBottomOf="@+id/edit_nombre_ciclo"
+            app:layout_constraintTop_toBottomOf="@+id/editN_nombre_ciclo"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingTop="20dp"
             />
         <DatePicker
-            android:id="@+id/edit_fechaInicio_ciclo"
-            app:layout_constraintTop_toBottomOf="@+id/fechaInicioCicloLabel"
+            android:id="@+id/editN_fechaInicio_ciclo"
+            app:layout_constraintTop_toBottomOf="@+id/fechaInicioCicloLabelN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -42,17 +42,17 @@
             android:calendarViewShown="false"
             />
         <TextView
-            android:id="@+id/fechaFinCicloLabel"
+            android:id="@+id/fechaFinCicloLabelN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fechaHasta"
-            app:layout_constraintTop_toBottomOf="@+id/edit_fechaInicio_ciclo"
+            app:layout_constraintTop_toBottomOf="@+id/editN_fechaInicio_ciclo"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingTop="20dp"
             />
         <DatePicker
-            android:id="@+id/edit_fechaFin_ciclo"
-            app:layout_constraintTop_toBottomOf="@+id/fechaFinCicloLabel"
+            android:id="@+id/editN_fechaFin_ciclo"
+            app:layout_constraintTop_toBottomOf="@+id/fechaFinCicloLabelN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"

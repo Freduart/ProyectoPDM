@@ -93,8 +93,8 @@ public class CicloAdapter extends RecyclerView.Adapter<CicloAdapter.CicloHolder>
             mostramos los valores en cada uno de los TextView y se ciclen con el LiveData
             se declara uno por cada item que querramos mostar en la cardview del recyclerView
         */
-        holder.idCiclo.setText(ciclo.getIdCiclo());
-        holder.nomCiclo.setText(ciclo.getNomCiclo());
+        holder.idCiclo.setText(String.valueOf(ciclo.getIdCiclo()));
+        holder.nomCiclo.setText(String.valueOf(ciclo.getNomCiclo()));
         holder.fechaDesde.setText(ciclo.getFechaDesde());
         holder.fechaHasta.setText(ciclo.getFechaHasta());
     }

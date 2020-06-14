@@ -30,6 +30,8 @@
         <activity android:name=".Activity.SolicitudExtraordinarioActivity" />
         <activity android:name=".Activity.NuevoLocalActivity" />
         <activity android:name=".Activity.NuevoCicloActivity" />
+        <activity android:name=".Activity.EditarCicloActivity" />
+        <activity android:name=".Activity.EditarLocalActivity" />
         <activity android:name=".Activity.VerCicloActivity" />
         <activity android:name=".Activity.VerLocalActivity" />
         <activity android:name=".Activity.CargoActivity" />
@@ -56,6 +58,7 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.VerEvaluacionActivity" />
         <activity android:name=".Activity.DetalleEvaluacionActivity" />
+        <activity android:name=".Activity.DetalleNotasActivity"></activity>
     </application>
 
 </manifest>

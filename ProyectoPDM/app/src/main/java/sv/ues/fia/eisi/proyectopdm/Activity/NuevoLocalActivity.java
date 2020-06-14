@@ -34,11 +34,11 @@ public class NuevoLocalActivity extends AppCompatActivity {
             setTitle("Nuevo Local");
 
             //Inicializa elementos del Layout en Activity
-            editIdLocal = findViewById(R.id.edit_id_Local);
-            editNomLocal = findViewById(R.id.edit_nombre_Local);
-            editUbLocal = findViewById(R.id.edit_ubicacion_Local);
-            editLatitud = findViewById(R.id.edit_latitud_Local);
-            editLongitud = findViewById(R.id.edit_longitud_Local);
+            editIdLocal = findViewById(R.id.editN_id_Local);
+            editNomLocal = findViewById(R.id.editN_nombre_Local);
+            editUbLocal = findViewById(R.id.editN_ubicacion_Local);
+            editLatitud = findViewById(R.id.editN_latitud_Local);
+            editLongitud = findViewById(R.id.editN_longitud_Local);
         }catch (Exception e){
             Toast.makeText(NuevoLocalActivity.this, e.getMessage()+ " " + e.getCause(), Toast.LENGTH_LONG).show();
         }

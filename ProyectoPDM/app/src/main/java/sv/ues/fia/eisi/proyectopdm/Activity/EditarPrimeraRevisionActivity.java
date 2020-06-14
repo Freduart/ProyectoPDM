@@ -5,19 +5,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
@@ -29,9 +36,12 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
 public class EditarPrimeraRevisionActivity extends AppCompatActivity {
 
+    public static  final int AÑADIR_SEGUNDA_REVISION = 1;
+    public static final int EDITAR_SEGUNDA_REVISION = 2;
+    public static final String OPERACION_SEGUNDA_REVISION = "Operacion_AE_sr";
+    public static final String IDENTIFICADOR_PRIMERA_REVISION = "ID_pr_Actual";
+
     private PrimeraRevision primeraRevisionActual;
-    private DetalleEvaluacion detalleEvaluacionActual;
-    private Local localActual;
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
     private LocalViewModel localViewModel;
@@ -179,17 +189,8 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             p.setObservacionesPrimeraRev(ob);
             //Actualizar
             primeraRevisionViewModel.updatePrimeraRevision(p);
-            Log.d("id", String.valueOf(p.getIdPrimerRevision()));
-            Log.d("idLocal", p.getIdLocalFK());
-            Log.d("idD", String.valueOf(p.getIdDetalleEvFK()));
-            Log.d("fecha", p.getFechaSolicitudPrimRev());
-            Log.d("Estado", String.valueOf(p.isEstadoPrimeraRev()));
-            Log.d("a", String.valueOf(p.getNotasAntesPrimeraRev()));
-            Log.d("d", String.valueOf(p.getNotaDespuesPrimeraRev()));
-            Log.d("o", p.getObservacionesPrimeraRev());
-            String idp = p.getIdLocalFK();
-            Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ idp + "actualizada con éxito", Toast.LENGTH_LONG);
-            finish();
+            String idp = String.valueOf(p.getIdPrimerRevision());
+            Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ idp + ", actualizada con éxito", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             Toast.makeText(EditarPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -207,6 +208,26 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.guardar:
                 actualizarPrimeraRevision();
+                int id = primeraRevisionActual.getIdPrimerRevision();
+                primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+                try {
+                    PrimeraRevision p = primeraRevisionViewModel.getPrimeraRevision(id);
+                    if(String.valueOf(p.isEstadoPrimeraRev())=="true"){
+                        finish();
+                    }else {
+                        Intent intent = new Intent(EditarPrimeraRevisionActivity.this, NuevaEditarSegundaRevisionActivity.class);
+                        intent.putExtra(OPERACION_SEGUNDA_REVISION, AÑADIR_SEGUNDA_REVISION);
+                        intent.putExtra(IDENTIFICADOR_PRIMERA_REVISION, primeraRevisionActual.getIdPrimerRevision());
+                        startActivity(intent);
+                        Toast.makeText(EditarPrimeraRevisionActivity.this, "Se agregará solicitud de segunda revisión", Toast.LENGTH_LONG).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

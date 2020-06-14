@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import sv.ues.fia.eisi.proyectopdm.R;
@@ -19,7 +20,7 @@ public class EditarLocalActivity extends AppCompatActivity {
     private LocalViewModel localVM;
     private Local localActual;
 
-    private EditText editIdLocal;
+    private TextView editIdLocal;
     private EditText editNomLocal;
     private EditText editUbLocal;
     private EditText editLatitud;
@@ -32,7 +33,7 @@ public class EditarLocalActivity extends AppCompatActivity {
             setContentView(R.layout.activity_editar_local);
 
             //Título personalizado para Activity
-            setTitle("Nuevo Local");
+            setTitle("Editar Local");
 
             //Inicializa elementos del Layout en Activity
             editIdLocal = findViewById(R.id.edit_id_Local);
@@ -48,7 +49,7 @@ public class EditarLocalActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             String idLoc = "";
             if(extras != null){
-                idLoc = idLoc + extras.getString(LocalActivity.IDENTIFICADOR_LOCAL);
+                idLoc = extras.getString(LocalActivity.IDENTIFICADOR_LOCAL);
             }
 
             //Se asigna el objeto extraído del ViewModel usando el id
