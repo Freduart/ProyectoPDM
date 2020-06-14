@@ -56,7 +56,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             int idSoliExtra = 0;
             if(extras != null){
-                idSoliExtra = extras.getInt("ID Solicitud Extraordinaria Actual");
+                idSoliExtra = extras.getInt(SolicitudExtraordinarioActivity.IDENTIFICADOR_SOLI_EXTRA);
             }
 
             //Se asignan objetos extraídos del ViewModel
@@ -66,7 +66,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
 
             //Se asignan los valores correspondientes en elementos del Layout
             idSoliExtraordinario.setText(String.valueOf(soliExtraActual.getIdSolicitud()));
-            idAlumno.setText(String.valueOf(alumnoActual.getCarnetAlumno()));
+            idAlumno.setText(alumnoActual.getCarnetAlumno());
             idEvaluacion.setText(String.valueOf(evaActual.getIdEvaluacion() + " - " + evaActual.getNomEvaluacion()));
             tipoSoli.setText(soliExtraActual.getTipoSolicitud());
             motivoSoli.setText(soliExtraActual.getMotivoSolicitud());

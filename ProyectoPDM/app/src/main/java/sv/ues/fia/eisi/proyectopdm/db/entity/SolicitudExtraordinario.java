@@ -99,7 +99,7 @@ public class SolicitudExtraordinario {
         return justificacion;
     }
 
-    public void setJustificacion(boolean justificacion) {
+    public void setJustificacion(boolean justificacion){
         this.justificacion = justificacion;
     }
 }

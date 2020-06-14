@@ -49,6 +49,10 @@ public class PrimeraRevisionRepository {
         return allPrimerasRevisiones;
     }
 
+    public List<PrimeraRevision> obtenerRevisionPorDetalle(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new PrimeraRevisionRepository.obtenerRevisionPorDetalleAsyncTask(primeraRevisionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
     public static class InsertarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
         private PrimeraRevisionDao primeraRevisionDao;
 
@@ -112,6 +116,18 @@ public class PrimeraRevisionRepository {
         @Override
         protected PrimeraRevision doInBackground(Integer... primeraRevisiones) {
             return primeraRevisionDao.obtenerPrimeraRevision(primeraRevisiones[0]);
+        }
+    }
+
+    private static class obtenerRevisionPorDetalleAsyncTask extends AsyncTask<Integer, Void, List<PrimeraRevision>>{
+        private PrimeraRevisionDao primeraRevisionDao;
+
+        private obtenerRevisionPorDetalleAsyncTask(PrimeraRevisionDao primeraRevisionDao){
+            this.primeraRevisionDao=primeraRevisionDao;
+        }
+        @Override
+        protected List<PrimeraRevision> doInBackground(Integer... ints) {
+            return primeraRevisionDao.obtenerRevisionPorDetalle(ints[0]);
         }
     }
 }

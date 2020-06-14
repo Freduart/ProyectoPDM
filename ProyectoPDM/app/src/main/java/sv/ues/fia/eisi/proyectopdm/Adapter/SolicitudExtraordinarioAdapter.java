@@ -14,10 +14,28 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
 
-public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<SolicitudExtraordinarioAdapter.SolicitudExtraordinarioHolder> implements View.OnClickListener{
+public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<SolicitudExtraordinarioAdapter.SolicitudExtraordinarioHolder>{
 
     private List<SolicitudExtraordinario> solicitudesExtra = new ArrayList<>();
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
+    private OnItemLongClickListener longListener;
+
+    //listener para click corto
+    public interface OnItemClickListener{
+        void onItemClick(SolicitudExtraordinario solicitudExtraordinario);
+    }
+    //set listener click corto
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener =listener;
+    }
+    //listener para click largo
+    public interface OnItemLongClickListener{
+        void onItemLongClick(SolicitudExtraordinario solicitudExtraordinario);
+    }
+    //set listener click largo
+    public void setOnLongClickListner(OnItemLongClickListener longListener){
+        this.longListener=longListener;
+    }
 
     class SolicitudExtraordinarioHolder extends RecyclerView.ViewHolder {
         private TextView idSolicitud;
@@ -37,6 +55,30 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
             motivoSolicitud = itemView.findViewById(R.id.seMotivo);
             fechaSolicitud = itemView.findViewById(R.id.seFecha);
             justificacion = itemView.findViewById(R.id.seJusti);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Obtener  posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(listener != null && posicion != RecyclerView.NO_POSITION)
+                        listener.onItemClick(solicitudesExtra.get(posicion));
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(longListener != null && posicion != RecyclerView.NO_POSITION) {
+                        longListener.onItemLongClick(solicitudesExtra.get(posicion));
+                        return true;
+                    } else
+                        return false;
+                }
+            });
         }
     }
 
@@ -44,7 +86,6 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
         @Override
         public SolicitudExtraordinarioHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.soli_extra_item, parent, false);
-            itemView.setOnClickListener(listener);
             return new SolicitudExtraordinarioHolder(itemView);
         }
 
@@ -78,15 +119,5 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
     //Para obtener un Ciclo en una posición específica
     public SolicitudExtraordinario getSoliExtraAt(int position) {
         return solicitudesExtra.get(position);
-    }
-
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
-    }
-    @Override
-    public void onClick(View v) {
-        if (listener != null) {
-            listener.onClick(v);
-        }
     }
 }

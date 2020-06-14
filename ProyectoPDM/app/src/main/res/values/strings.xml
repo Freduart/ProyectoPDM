@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ProyectoPDM</string>
     <!-- Strings para SolicitudExtraordinario -->
+    <string name="AppBarNameSoliExtra">Solicitud Extraordinaria</string>
     <string name="nuevaSoliExtraName">Solicitud de Evaluación Extraordinaria</string>
     <string name="idSolicitudExtraordinario">N° de Solicitud: </string>
     <string name="carnetAlumno">Carnet del Alumno: </string>

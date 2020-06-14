@@ -25,9 +25,11 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
 
 public class SolicitudExtraordinarioActivity extends AppCompatActivity {
+    public static final String IDENTIFICADOR_SOLI_EXTRA = "ID_SOLI_EXTRA_ACTUAL";
+
     private SolicitudExtraordinarioViewModel soliExtraVM;
     SolicitudExtraordinario soliExtraActual;
-    String cod;
+    int cod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +71,29 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(final List<SolicitudExtraordinario> solicitudExtraordinarios) {
                     adaptador.setSolicitudesExtra(solicitudExtraordinarios);
-                    adaptador.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            cod = String.valueOf(solicitudExtraordinarios.get(SoliExtraRecycler.getChildAdapterPosition(v)).getIdSolicitud());
-                            soliExtraActual = adaptador.getSoliExtraAt(SoliExtraRecycler.getChildAdapterPosition(v));
-                            createCustomDialog().show();
-                        }
-                    });
+                }
+            });
+
+            //Consultar Ciclo con click corto
+            adaptador.setOnItemClickListener(new SolicitudExtraordinarioAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(SolicitudExtraordinario solicitudExtraordinario) {
+                    cod = solicitudExtraordinario.getIdSolicitud();
+                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
+                    intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
+                    startActivity(intent);
+                }
+            });
+            //Click largo para mostrar alertdialog con opciones
+            adaptador.setOnLongClickListner(new SolicitudExtraordinarioAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(SolicitudExtraordinario solicitudExtraordinario) {
+                    try {
+                        cod = solicitudExtraordinario.getIdSolicitud();
+                        createCustomDialog(solicitudExtraordinario).show();
+                    }catch (Exception e){
+                        Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -86,34 +103,17 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
         }
     }
 
-    public AlertDialog createCustomDialog(){
+    public AlertDialog createCustomDialog(SolicitudExtraordinario solicitudExtraordinario){
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.dialog_opciones_soli_ext, null);
-        ImageButton ver = (ImageButton) v.findViewById(R.id.imBVerSoliExt);
-        ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminarSoliExt);
-        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditarSoliExt);
+        View v = inflater.inflate(R.layout.dialog_opciones, null);
+        ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminar);
+        ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditar);
         TextView tv = (TextView) v.findViewById(R.id.tvADSoliExt);
         tv.setText(cod);
         builder.setView(v);
         alertDialog = builder.create();
-
-        //Botón ver: Redirige a VerSolicitudExtraordinarioActivity
-        ver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    int id = soliExtraActual.getIdEvaluacion();
-                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
-                    intent.putExtra("ID Solicitud Extraordinaria Actual", id);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         //Botón del: Elimina la Solicitud Extraordinaria seleccionado
         del.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +121,7 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     soliExtraVM.delete(soliExtraActual);
-                    Toast.makeText(SolicitudExtraordinarioActivity.this, "Local" + " " + soliExtraActual.getIdSolicitud() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SolicitudExtraordinarioActivity.this, "Local" + " " + String.valueOf(soliExtraActual.getIdSolicitud()) + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
@@ -134,9 +134,9 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    int id = soliExtraActual.getIdEvaluacion();
+                    int id = solicitudExtraordinario.getIdEvaluacion();
                     Intent intent = new Intent(SolicitudExtraordinarioActivity.this, EditarSolicitudExtraordinarioActivity.class);
-                    intent.putExtra("ID Solicitud Extraordinaria Actual", id);
+                    intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, id);
                     startActivity(intent);
                     alertDialog.dismiss();
                 }catch (Exception e){
