@@ -12,16 +12,6 @@
         android:stretchColumns="1"
         android:padding="16dp">
 
-        <!--ID-->
-        <EditText
-            android:id="@+id/edit_id_segundarevision"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/id_segunda_revision"
-            android:inputType="text"
-            android:paddingTop="20dp"
-            />
-
         <!--Nota Final-->
         <EditText
             android:id="@+id/edit_notafinal_segundarevision"

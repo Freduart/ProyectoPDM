@@ -118,6 +118,25 @@ public class DetalleNotasActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        try {
+            List<PrimeraRevision> listRevision = primeraRevisionViewModel.getRevisionPorDetalle(idActual);
+            //si la lista no está vacía
+            if (!listRevision.isEmpty()) {
+                notaEstudiante.setText(String.format("%s", revisionRespectiva.getNotaDespuesPrimeraRev()));
+                SegundaRevision segundaRevision = segundaRevisionViewModel.getSegundaRevision(revisionRespectiva.getIdPrimerRevision());
+                if(segundaRevision != null){
+                    notaEstudiante.setText(String.format("%s", segundaRevision.getNotaFinalSegundaRev()));
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void guardarDetalle(){
         DetalleEvaluacion aux = new DetalleEvaluacion(detalleEvaluacion.getIdEvaluacionFK(),detalleEvaluacion.getCarnetAlumnoFK());
         Double notaAux = Double.parseDouble(notaEstudiante.getText().toString());
