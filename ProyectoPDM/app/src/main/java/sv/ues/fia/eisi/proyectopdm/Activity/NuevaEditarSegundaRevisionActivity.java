@@ -1,41 +1,27 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
 import sv.ues.fia.eisi.proyectopdm.R;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SegundaRevisionViewModel;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 
 
-public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
+public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
     public final String ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
 
     private int idPrimera;
@@ -75,10 +61,10 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
             SegundaRevision auxiliar;
             int idPrimeraRevision = 0, operacionEv = 0;
             if (extras != null) {
-                idPrimeraRevision = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
-                operacionEv = extras.getInt(PrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION);
+                idPrimeraRevision = extras.getInt(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
+                operacionEv = extras.getInt(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION);
                 //verificar extras de intent
-                if(operacionEv == PrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION){
+                if(operacionEv == EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION){
                     //obtener segundaRevision auxiliar
                     auxiliar = segundaRevisionViewModel.getSegundaRevision(idPrimeraRevision);
                     idPrimera = idPrimeraRevision;
@@ -102,7 +88,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
                     editNotaFinalSegundaRevision.setVisibility(View.VISIBLE);
                     editObservacionesSegundaRevision.setVisibility(View.VISIBLE);
                 }
-                else if (operacionEv == PrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION){
+                else if (operacionEv == EditarPrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION){
                     editNotaFinalSegundaRevision.setVisibility(View.GONE);
                     editObservacionesSegundaRevision.setVisibility(View.GONE);
                     setTitle(R.string.titulo_EA_nuevasegrev);
@@ -155,10 +141,10 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
             Bundle extras = getIntent().getExtras();
             int idPrimeraRevision = 0, operacionEv = 0;
             if (extras != null) {
-                idPrimeraRevision = extras.getInt(PrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
-                operacionEv = extras.getInt(PrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION);
+                idPrimeraRevision = extras.getInt(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION);
+                operacionEv = extras.getInt(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION);
                 //verificar extras de intent
-                if (operacionEv == PrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION) {
+                if (operacionEv == EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION) {
 
                     //---almacenar NOTA FINAL
                     String notaFinal = editNotaFinalSegundaRevision.getText().toString();
@@ -173,7 +159,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
                     segundaRevisionViewModel.updateSegundaRevision(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
                     Toast.makeText(NuevaEditarSegundaRevisionActivity.this, getText(R.string.inic_notif_segrev) + nombre + getText(R.string.accion_actualizar_notif_eval), Toast.LENGTH_LONG).show();
-                } else if (operacionEv == PrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION ) {
+                } else if (operacionEv == EditarPrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION ) {
                     //---almacenar OBSERVACIONES
                     String observaciones = editObservacionesSegundaRevision.getText().toString();
 
@@ -212,5 +198,5 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {/*
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }*/
+    }
 }

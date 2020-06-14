@@ -20,6 +20,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvaluacionAdapter.DetalleEvaluacionHolder> {
     private List<DetalleEvaluacion> detalleEvaluaciones=new ArrayList<>();
+    private OnItemClickListener shortListener;
     private OnItemLongClickListener listener;
     private AlumnoViewModel alumnoViewModel;
     private EscuelaViewModel escuelaViewModel;
@@ -38,6 +39,18 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
             carreraAlumno=itemView.findViewById(R.id.disp_carrera_alumno_detalle);
 
             //settea evento de click CORTO
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    //obtener posicion
+                    int posicion = getAdapterPosition();
+                    //validar
+                    if(shortListener != null && posicion != RecyclerView.NO_POSITION)
+                        shortListener.onItemClick(detalleEvaluaciones.get(posicion));
+                }
+            });
+
+            //settea evento de click LARGO
             itemView.setOnLongClickListener(new View.OnLongClickListener(){
                 @Override
                 public boolean onLongClick(View v) {
@@ -45,7 +58,7 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
                     int posicion = getAdapterPosition();
                     //validar
                     if(listener != null && posicion != RecyclerView.NO_POSITION)
-                        listener.onItemClick(detalleEvaluaciones.get(posicion));
+                        listener.onItemLongClick(detalleEvaluaciones.get(posicion));
                     return true;
                 }
             });
@@ -54,8 +67,17 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
     }
 
     //listener para click corto
-    public interface OnItemLongClickListener{
+    public interface OnItemClickListener{
         void onItemClick(DetalleEvaluacion detalleEvaluacion);
+    }
+    //set listener click corto
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.shortListener = listener;
+    }
+
+    //listener para click corto
+    public interface OnItemLongClickListener{
+        void onItemLongClick(DetalleEvaluacion detalleEvaluacion);
     }
     //set listener click corto
     public void setOnItemLongClickListener(OnItemLongClickListener listener){
