@@ -23,6 +23,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
@@ -52,7 +54,6 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
     private EditText notaAntes;
     private EditText notaDespues;
     private EditText observaciones;
-    private Button btnNuevaSR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,6 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             notaAntes = (EditText) findViewById(R.id.editarNotaAntesPR);
             notaDespues = (EditText) findViewById(R.id.editarNotaDespuesPR);
             observaciones = (EditText) findViewById(R.id.editarObservacionesPR);
-            btnNuevaSR =(Button) findViewById(R.id.btnAddSR);
 
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
             int idPR= 0;
@@ -145,21 +145,6 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             notaAntes.setText(String.valueOf(primeraRevisionActual.getNotasAntesPrimeraRev()));
             notaDespues.setText(String.valueOf(primeraRevisionActual.getNotaDespuesPrimeraRev()));
             observaciones.setText(primeraRevisionActual.getObservacionesPrimeraRev());
-            if(spinestado.getSelectedItem()=="true"){
-                btnNuevaSR.setVisibility(View.GONE);
-            }else {
-                btnNuevaSR.setVisibility(View.VISIBLE);
-            }
-            btnNuevaSR.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(EditarPrimeraRevisionActivity.this, NuevaEditarSegundaRevisionActivity.class);
-                    intent.putExtra(OPERACION_SEGUNDA_REVISION, AÑADIR_SEGUNDA_REVISION);
-                    intent.putExtra(IDENTIFICADOR_PRIMERA_REVISION, primeraRevisionActual.getIdPrimerRevision());
-                    startActivity(intent);
-                }
-            });
-
             //titulo appbar
             setTitle(R.string.EditarPrimera);
 
@@ -205,8 +190,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             //Actualizar
             primeraRevisionViewModel.updatePrimeraRevision(p);
             String idp = String.valueOf(p.getIdPrimerRevision());
-            Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ idp + ", actualizada con éxito", Toast.LENGTH_LONG).show();
-            finish();
+            Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ idp + ", actualizada con éxito", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             Toast.makeText(EditarPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -224,6 +208,26 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.guardar:
                 actualizarPrimeraRevision();
+                int id = primeraRevisionActual.getIdPrimerRevision();
+                primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+                try {
+                    PrimeraRevision p = primeraRevisionViewModel.getPrimeraRevision(id);
+                    if(String.valueOf(p.isEstadoPrimeraRev())=="true"){
+                        finish();
+                    }else {
+                        Intent intent = new Intent(EditarPrimeraRevisionActivity.this, NuevaEditarSegundaRevisionActivity.class);
+                        intent.putExtra(OPERACION_SEGUNDA_REVISION, AÑADIR_SEGUNDA_REVISION);
+                        intent.putExtra(IDENTIFICADOR_PRIMERA_REVISION, primeraRevisionActual.getIdPrimerRevision());
+                        startActivity(intent);
+                        Toast.makeText(EditarPrimeraRevisionActivity.this, "Se agregará solicitud de segunda revisión", Toast.LENGTH_LONG).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
