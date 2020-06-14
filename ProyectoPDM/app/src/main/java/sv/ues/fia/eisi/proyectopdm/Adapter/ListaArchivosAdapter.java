@@ -10,13 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import sv.ues.fia.eisi.proyectopdm.Activity.ItemClickListenerArchivos;
 import sv.ues.fia.eisi.proyectopdm.R;
 
 public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdapter.ViewHolderArchivos>{
 
     ArrayList<String> listaDocumentos;
-    ItemClickListenerArchivos itemClickListenerArchivos;
+    OnItemClickListener itemClickListener;
+
+    public interface OnItemClickListener{
+        void OnItemClick(int position,String documento);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
 
     public ListaArchivosAdapter(ArrayList<String> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
@@ -44,7 +51,9 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListenerArchivos.OnItemClick(position,ruta);
+                if(itemClickListener != null && position != RecyclerView.NO_POSITION){
+                    itemClickListener.OnItemClick(position,listaDocumentos.get(position));
+                }
             }
         });
     }
@@ -63,9 +72,5 @@ public class ListaArchivosAdapter extends RecyclerView.Adapter<ListaArchivosAdap
             nombreDocumento=(TextView)itemView.findViewById(R.id.textNombreDocumento);
             rutaDocumento=(TextView)itemView.findViewById(R.id.textRuta);
         }
-    }
-
-    public void setOnItemClickListener(ItemClickListenerArchivos itemClickListenerArchivos){
-        this.itemClickListenerArchivos = itemClickListenerArchivos;
     }
 }

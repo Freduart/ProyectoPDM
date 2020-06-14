@@ -11,11 +11,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.EditarPrimeraRevisionActivity"/>
         <activity android:name=".Activity.DocenteActivity"></activity>
-        <activity android:name=".Activity.EditarPrimeraRevisionActivity"></activity>
         <activity android:name=".Activity.EditarAsignaturaActivity" />
         <activity android:name=".Activity.NuevaPrimeraRevisionActivity" />
         <activity android:name=".Activity.VerPrimeraRevisionActivity" />
-        <activity android:name=".Activity.NuevaPrimeraRevisionActivity"/>
         <activity android:name=".Activity.PrimeraRevisionActivity" />
         <activity android:name=".Activity.VerAsignaturaActivity" />
         <activity android:name=".Activity.NuevaAsignaturaActivity" />

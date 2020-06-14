@@ -67,10 +67,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     Spinner docDirector,encImpres,carnetDoc;
     //Variables
     Uri documentUri;
-    //Uri del documento del recyclerDocumentos
-    Uri uriSeleccionado;
-    String nombreDocumento;
-    int index=0;
     int[] numImpresiones={}, hojasAnexas={};
     String detallesImpresion, acumPath="",carnetDocente;
     ArrayList<String> listaDocumentos,listDocDirector,listEncImpres,listDocentes;
@@ -88,19 +84,19 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("NUEVA SOLICITUD");
         //Cajas de texto
-        text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion);
-        text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones);
-        text_anexos=(TextInputLayout)findViewById(R.id.text_anexos);
+        text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion_ver);
+        text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones_ver);
+        text_anexos=(TextInputLayout)findViewById(R.id.text_anexos_ver);
         listaDocumentos=new ArrayList<>();
         //Spinners
-        docDirector=(Spinner)findViewById(R.id.spinnerDocDirector);
-        encImpres=(Spinner)findViewById(R.id.spinnerEncImpres);
-        carnetDoc=(Spinner)findViewById(R.id.spinnerCarnetDocente);
+        docDirector=(Spinner)findViewById(R.id.textDocDirectorVer);
+        encImpres=(Spinner)findViewById(R.id.textEncImpresVer);
+        carnetDoc=(Spinner)findViewById(R.id.textCarnetDocenteVer);
 
         //Boton flotante
         FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
         //RecyclerView
-        recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos);
+        recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos_ver);
         recyclerDocumentos.setLayoutManager(new LinearLayoutManager(this));
         listaArchivosAdapter=new ListaArchivosAdapter(listaDocumentos);
         recyclerDocumentos.setAdapter(listaArchivosAdapter);
@@ -249,13 +245,10 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                         Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                         listaDocumentos.add(path);
                         //Ponemos a la escucha cada item agregado
-                        listaArchivosAdapter.setOnItemClickListener(new ItemClickListenerArchivos() {
+                        listaArchivosAdapter.setOnItemClickListener(new ListaArchivosAdapter.OnItemClickListener() {
                             @Override
                             public void OnItemClick(int position, String documento) {
-                                uriSeleccionado=Uri.fromFile(new File(documento));
-                                nombreDocumento=getFileName(documento);
-                                index=position;
-                                createCustomDialog().show();
+                                createCustomDialog(position,documento).show();
                             }
                         });
                         listaArchivosAdapter.notifyDataSetChanged();
@@ -290,9 +283,11 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         }
     }
 
-    public AlertDialog createCustomDialog(){
+    public AlertDialog createCustomDialog(int position,String documento){
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Uri uriSeleccionado=Uri.fromFile(new File(documento));
+        String nombreDocumento=getFileName(documento);
         // Get the layout inflater
         LayoutInflater inflater = getLayoutInflater();
         // Inflar y establecer el layout para el dialogo
@@ -323,7 +318,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //Quitar
-                        listaDocumentos.remove(index);
+                        listaDocumentos.remove(position);
                         listaArchivosAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
