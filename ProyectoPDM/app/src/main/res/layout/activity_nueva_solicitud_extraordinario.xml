@@ -17,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow>
             <TextView
                 android:text="@string/carnetAlumno"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -29,8 +28,7 @@
                 android:hint="@string/hintCarnetAlumno"
                 tools:ignore="Autofill"
                 android:paddingBottom="20dp"/>
-        </TableRow>
-        <TableRow>
+
             <TextView
                 android:text="@string/idEvaluacion"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -42,8 +40,7 @@
                 android:hint="@string/hintIdEva"
                 tools:ignore="Autofill"
                 android:paddingBottom="20dp"/>
-        </TableRow>
-        <TableRow>
+
             <TextView
                 android:text="@string/tipoSolicitudExtra"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -54,8 +51,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="40dp"
                 />
-        </TableRow>
-        <TableRow>
+
             <TextView
                 android:text="@string/motivoSolicitudExtra"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -66,8 +62,7 @@
                 android:inputType="text"
                 tools:ignore="Autofill"
                 android:paddingBottom="20dp"/>
-        </TableRow>
-        <TableRow>
+
             <TextView
                 android:text="@string/fechaSolicitudExtra"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -78,8 +73,7 @@
                 android:hint="@string/hintFechaSoli"
                 tools:ignore="Autofill"
                 android:paddingBottom="20dp"/>
-        </TableRow>
-        <TableRow>
+
             <TextView
                 android:text="@string/justificacionSoliExtra"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -91,6 +85,5 @@
                 android:layout_gravity="center_horizontal"
                 tools:ignore="Autofill"
                 android:paddingBottom="20dp"/>
-        </TableRow>
     </TableLayout>
 </ScrollView>

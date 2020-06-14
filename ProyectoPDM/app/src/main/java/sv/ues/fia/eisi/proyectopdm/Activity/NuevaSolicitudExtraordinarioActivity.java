@@ -64,13 +64,7 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
                     for (TipoEvaluacion x : tiposEvaluaciones) {
-                        String cadena = "Ordinario";
-                        String cadValida = x.getTipoEvaluacion();
-                        if(cadValida.equals(cadena)){
-                            break;
-                        }else{
                             tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+" - " + x.getTipoEvaluacion());
-                        }
                     }
                     adaptadorSpinnerTipoEval.notifyDataSetChanged();
                 }

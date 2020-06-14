@@ -76,7 +76,7 @@ public class CicloActivity extends AppCompatActivity {
             });
 
 
-            //Consultar Local con click corto
+            //Consultar Ciclo con click corto
             adaptador.setOnItemClickListener(new CicloAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Ciclo ciclo) {

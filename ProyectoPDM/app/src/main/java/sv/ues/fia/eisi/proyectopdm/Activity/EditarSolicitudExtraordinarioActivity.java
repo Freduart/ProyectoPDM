@@ -97,7 +97,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             int idSoliExtra = 0;
             if(extras != null){
-                idSoliExtra = extras.getInt("ID Solicitud Extraordinaria Actual");
+                idSoliExtra = extras.getInt(SolicitudExtraordinarioActivity.IDENTIFICADOR_SOLI_EXTRA);
             }
 
             //Se asignan objetos extraídos del ViewModel
@@ -140,11 +140,24 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             String tipoEvaAux3 = tipoEvalAux2[0].trim();
             int tipoEva = Integer.parseInt(tipoEvaAux3);
 
-            //Se crea una instancia de la clase SolicitudExtraordinario para operar el VM
-            SolicitudExtraordinario soliAux = new SolicitudExtraordinario(carnetAlumno, idEval, tipoEva, motivo, fecha, justi);
+            //Se extrae el identificador de la solicitud a editar del Intent
+            Bundle extras = getIntent().getExtras();
+            int idSoliExtra = 0;
+            if(extras != null){
+                idSoliExtra = extras.getInt(SolicitudExtraordinarioActivity.IDENTIFICADOR_SOLI_EXTRA);
+            }
 
             //Se inicializa de nuevo el ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
+
+            //Se crea una instancia de la clase SolicitudExtraordinario para operar el VM
+            SolicitudExtraordinario soliAux = soliExtraVM.getSoliExtra(idSoliExtra);
+            soliAux.setCarnetAlumnoFK(carnetAlumno);
+            soliAux.setIdEvaluacion(idEval);
+            soliAux.setMotivoSolicitud(motivo);
+            soliAux.setFechaSolicitudExtr(fecha);
+            soliAux.setJustificacion(justi);
+
             //Se actualiza la Solicitud
             soliExtraVM.update(soliAux);
 

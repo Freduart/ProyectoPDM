@@ -100,4 +100,13 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
+    public void soliExtraRedirect(View view){
+        Intent intent = new Intent(this, SolicitudExtraordinarioActivity.class);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
