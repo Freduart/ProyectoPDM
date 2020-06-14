@@ -51,7 +51,11 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
     @Override
     public void onBindViewHolder(@NonNull ViewHolderSolicitudes holder, final int position) {
         holder.textTitulo.setText(listaSolicitudesImpresion.get(position).getCarnetDocenteFK());
-        holder.textDocumentos.setText(listaSolicitudesImpresion.get(position).getDocumento());
+        String docImpresion=listaSolicitudesImpresion.get(position).getDocumento();
+        //Obtenemos el nombre del documento...
+        String[] docSplit=docImpresion.split("/");
+        String nomDocumento=docSplit[docSplit.length-1];
+        holder.textDocumentos.setText(nomDocumento);
         holder.textEstado.setText(listaSolicitudesImpresion.get(position).getEstadoSolicitud());
         holder.textDetallesImpresion.setText(listaSolicitudesImpresion.get(position).getDetalleImpresion());
         String fechayhora=listaSolicitudesImpresion.get(position).getFechaSolicitud();
