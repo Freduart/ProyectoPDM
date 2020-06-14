@@ -13,7 +13,7 @@
         android:padding="16dp">
 
         <EditText
-            android:id="@+id/edit_id_Local"
+            android:id="@+id/editN_id_Local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/IDLocal"
@@ -23,42 +23,42 @@
             />
 
         <EditText
-            android:id="@+id/edit_nombre_Local"
+            android:id="@+id/editN_nombre_Local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nomLocal"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@id/edit_id_Local"
+            app:layout_constraintTop_toBottomOf="@id/editN_id_Local"
             tools:ignore="Autofill"
             />
 
         <EditText
-            android:id="@+id/edit_ubicacion_Local"
+            android:id="@+id/editN_ubicacion_Local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ubicacionLocal"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@id/edit_nombre_Local"
+            app:layout_constraintTop_toBottomOf="@id/editN_nombre_Local"
             tools:ignore="Autofill"
             />
 
         <EditText
-            android:id="@+id/edit_latitud_Local"
+            android:id="@+id/editN_latitud_Local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/latLocal"
             android:inputType="numberDecimal|numberSigned"
-            app:layout_constraintTop_toBottomOf="@id/edit_ubicacion_Local"
+            app:layout_constraintTop_toBottomOf="@id/editN_ubicacion_Local"
             tools:ignore="Autofill"
             />
 
         <EditText
-            android:id="@+id/edit_longitud_Local"
+            android:id="@+id/editN_longitud_Local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/lonLocal"
             android:inputType="numberSigned|numberDecimal"
-            app:layout_constraintTop_toBottomOf="@id/edit_latitud_Local"
+            app:layout_constraintTop_toBottomOf="@id/editN_latitud_Local"
             tools:ignore="Autofill"
             />
     </TableLayout>

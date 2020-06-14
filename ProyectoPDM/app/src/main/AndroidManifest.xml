@@ -29,6 +29,8 @@
         <activity android:name=".Activity.SolicitudExtraordinarioActivity" />
         <activity android:name=".Activity.NuevoLocalActivity" />
         <activity android:name=".Activity.NuevoCicloActivity" />
+        <activity android:name=".Activity.EditarCicloActivity" />
+        <activity android:name=".Activity.EditarLocalActivity" />
         <activity android:name=".Activity.VerCicloActivity" />
         <activity android:name=".Activity.VerLocalActivity" />
         <activity android:name=".Activity.CargoActivity" />

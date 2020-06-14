@@ -158,6 +158,7 @@
 
 
     <!-- Strings para Ciclo -->
+    <string name="AppBarNameCiclo">Ciclo</string>
     <string name="IDCiclo">Correlativo: </string>
     <string name="fechaDesde">Fecha de Inicio: </string>
     <string name="fechaHasta">Fecha de Finalización: </string>

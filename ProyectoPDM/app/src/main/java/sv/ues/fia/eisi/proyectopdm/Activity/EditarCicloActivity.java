@@ -53,7 +53,7 @@ public class EditarCicloActivity extends AppCompatActivity {
             cicloActual = cicloVM.getCic(idCicloAct);
 
             //Se asigna el valor correspondiente en el elemento del Layout
-            editNombreCiclo.setText(cicloActual.getNomCiclo());
+            editNombreCiclo.setText(String.valueOf(cicloActual.getNomCiclo()));
         }catch(Exception e){
             Toast.makeText(EditarCicloActivity.this, e.getMessage()+ " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -102,7 +102,7 @@ public class EditarCicloActivity extends AppCompatActivity {
             cicloVM.updateCiclo(aux);
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
-            Toast.makeText(EditarCicloActivity.this, "Actualizado con éxito: " + nomAux + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditarCicloActivity.this, "Actualizado con éxito: " + String.valueOf(nomAux) + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
 
             finish();
         }catch (Exception e){

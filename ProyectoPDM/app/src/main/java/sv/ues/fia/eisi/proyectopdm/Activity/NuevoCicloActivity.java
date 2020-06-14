@@ -34,9 +34,9 @@ public class NuevoCicloActivity extends AppCompatActivity {
             setTitle("Nuevo Ciclo");
 
             //Inicializa elementos del Layout en Activity
-            editNombreCiclo = findViewById(R.id.edit_nombre_ciclo);
-            dpFechaInicio = findViewById(R.id.edit_fechaInicio_ciclo);
-            dpFechaFin = findViewById(R.id.edit_fechaFin_ciclo);
+            editNombreCiclo = findViewById(R.id.editN_nombre_ciclo);
+            dpFechaInicio = findViewById(R.id.editN_fechaInicio_ciclo);
+            dpFechaFin = findViewById(R.id.editN_fechaFin_ciclo);
         }catch(Exception e){
             Toast.makeText(NuevoCicloActivity.this, e.getMessage()+ " " + e.getCause(), Toast.LENGTH_LONG).show();
         }

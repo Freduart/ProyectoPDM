@@ -13,7 +13,7 @@
         android:padding="16dp">
 
         <EditText
-            android:id="@+id/editN_nombre_ciclo"
+            android:id="@+id/edit_nombre_ciclo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nomCiclo"
@@ -33,7 +33,7 @@
             android:paddingTop="20dp"
             />
         <DatePicker
-            android:id="@+id/editN_fechaInicio_ciclo"
+            android:id="@+id/edit_fechaInicio_ciclo"
             app:layout_constraintTop_toBottomOf="@+id/fechaInicioCicloLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:paddingTop="20dp"
             />
         <DatePicker
-            android:id="@+id/editN_fechaFin_ciclo"
+            android:id="@+id/edit_fechaFin_ciclo"
             app:layout_constraintTop_toBottomOf="@+id/fechaFinCicloLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
