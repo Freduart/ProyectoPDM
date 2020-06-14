@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,11 +21,17 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
+import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaSolicitudesImpresionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 
@@ -32,7 +39,9 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 11;
     public static final int RESULT_CODE = 12;
-    SolicitudImpresionViewModel solicitudImpresionViewModel;
+    private SolicitudImpresionViewModel solicitudImpresionViewModel;
+    private DocenteViewModel docenteViewModel;
+    private EncargadoImpresionViewModel encargadoImpresionViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +73,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                     listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
                         @Override
                         public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
-                            //Ver el objeto seleccionado
+                            dialogVerSolicitud(solicitudImpresion).show();
                         }
                     });
                     listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
@@ -119,6 +128,76 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
+        return alertDialog;
+    }
+
+    public AlertDialog dialogVerSolicitud(SolicitudImpresion solicitudImpresion){
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        LayoutInflater inflater=getLayoutInflater();
+        View v = inflater.inflate(R.layout.ver_solicitud_impresion, null);
+        TextView carnetDocente = (TextView) v.findViewById(R.id.textCarnetDocenteVer);
+        TextView docDirector = (TextView) v.findViewById(R.id.textDocDirectorVer);
+        TextView encImpres = (TextView) v.findViewById(R.id.textEncImpresVer);
+        TextView textImpresiones = (TextView) v.findViewById(R.id.text_impresiones_ver);
+        TextView textAnexos = (TextView) v.findViewById(R.id.text_anexos_ver);
+        TextView textDetallesImpresion = (TextView) v.findViewById(R.id.text_detalleImpresion_ver);
+        //RecyclerView
+        RecyclerView recyclerArchivos = (RecyclerView) v.findViewById(R.id.recycler_archivos_ver);
+        builder.setView(v);
+        alertDialog = builder.create();
+        ArrayList<String> listaDocumentos = new ArrayList<>();
+        Uri uriSeleccionado=Uri.fromFile(new File(solicitudImpresion.getDocumento()));
+        listaDocumentos.add(solicitudImpresion.getDocumento());
+        recyclerArchivos.setLayoutManager(new LinearLayoutManager(this));
+        ListaArchivosAdapter listaArchivosAdapter = new ListaArchivosAdapter(listaDocumentos);
+        recyclerArchivos.setAdapter(listaArchivosAdapter);
+        listaArchivosAdapter.setOnItemClickListener(new ListaArchivosAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(int position, String documento) {
+                //Previsualizar
+                Intent intent = new Intent( Intent.ACTION_VIEW );
+                intent.setDataAndType(uriSeleccionado, "application/pdf");
+                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                startActivity(intent);
+                alertDialog.dismiss();
+            }
+        });
+        //Asignacion de parametros a vistas
+        //Obtenemos el nombre y apellido del docente con el carnetDocenteFK
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                .create(DocenteViewModel.class);
+        try {
+            String docenteDirector=docenteViewModel.getDocente(solicitudImpresion.getDocDirector()).getNomDocente()+" "+
+                    docenteViewModel.getDocente(solicitudImpresion.getDocDirector()).getApellidoDocente();
+            docDirector.setText(docenteDirector);
+            String docente=docenteViewModel.getDocente(solicitudImpresion.getCarnetDocenteFK()).getNomDocente()+" "+
+                    docenteViewModel.getDocente(solicitudImpresion.getCarnetDocenteFK()).getApellidoDocente();
+            carnetDocente.setText(docente);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        //Obtenemos el nombre del encargado de impresión con el idEncargado
+        encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                .create(EncargadoImpresionViewModel.class);
+        try {
+            String encargadoImpresion=encargadoImpresionViewModel.ObtenerEncargadoImpresion(solicitudImpresion.getIdEncargadoFK()).getNomEncargado();
+            encImpres.setText(encargadoImpresion);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        textImpresiones.setText(Integer.toString(solicitudImpresion.getNumImpresiones()));
+        String[] splitAnexos=solicitudImpresion.getDetalleImpresion().split("\n");
+        textAnexos.setText(splitAnexos[0]);
+        textDetallesImpresion.setText(splitAnexos[1]);
         return alertDialog;
     }
 }
