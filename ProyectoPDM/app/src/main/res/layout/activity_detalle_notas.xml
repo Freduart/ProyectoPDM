@@ -22,7 +22,7 @@
             android:id="@+id/titulo_nombre_detalleestudiante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="nombre placeholder estudiante cuatropalabras"
+            android:text="AA0000"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             />
         <TextView

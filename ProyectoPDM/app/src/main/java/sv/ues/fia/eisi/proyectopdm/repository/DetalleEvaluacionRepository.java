@@ -52,6 +52,10 @@ public class DetalleEvaluacionRepository {
         return allDetalleEvaluaciones;
     }
 
+    public DetalleEvaluacion obtenerDetalleAlumnoEvaluacion(ParametrosDetalles parametrosDetalles) throws InterruptedException, ExecutionException, TimeoutException {
+        return new DetalleEvaluacionRepository.obtenerDetalleAlumnoEvaluacionAsyncTask(detalleEvaluacionDao).execute(parametrosDetalles).get(12, TimeUnit.SECONDS);
+    }
+
     private static class InsertarDetalleEvaluacionAsyncTask extends AsyncTask<DetalleEvaluacion, Void, Void>{
         private DetalleEvaluacionDao detalleEvaluacionDao;
         private InsertarDetalleEvaluacionAsyncTask(DetalleEvaluacionDao detalleEvaluacionDao){
@@ -129,4 +133,26 @@ public class DetalleEvaluacionRepository {
         }
     }
 
+    private static class obtenerDetalleAlumnoEvaluacionAsyncTask extends AsyncTask<ParametrosDetalles, Void, DetalleEvaluacion>{
+        private DetalleEvaluacionDao detalleEvaluacionDao;
+
+        private obtenerDetalleAlumnoEvaluacionAsyncTask(DetalleEvaluacionDao detalleEvaluacionDao){
+            this.detalleEvaluacionDao=detalleEvaluacionDao;
+        }
+        @Override
+        protected DetalleEvaluacion doInBackground(ParametrosDetalles... parametrosDetalles) {
+            return detalleEvaluacionDao.obtenerDetalleEstudianteEvaluacion(parametrosDetalles[0].alum,parametrosDetalles[0].eval);
+        }
+    }
+    public static class ParametrosDetalles {
+        int eval;
+        String alum;
+
+        public ParametrosDetalles(int eval, String alum) {
+            this.eval = eval;
+            this.alum = alum;
+        }
+    }
+
 }
+

@@ -72,6 +72,8 @@
     <string name="alumno_label_detalle">Detalle de evaluación de \u0020</string>
     <string name="agregarPrimeraRevisionDet">Solicitar revisión</string>
     <string name="editarPrimeraRevisionDet">Editar Primera Revision</string>
+    <string name="display_nota_alumno_evaluacion">Nota del estudiante</string>
+    <string name="solicitar_revision_evaluacion">Solicitar Revision</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>

@@ -12,13 +12,36 @@
         android:stretchColumns="1"
         android:padding="16dp">
         <TextView
+            android:id="@+id/alumno_eval_nota_headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/display_nota_alumno_evaluacion"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+        <TextView
+            android:id="@+id/alumno_eval_nota_disp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="0.00"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            app:layout_constraintTop_toBottomOf="@+id/alumno_eval_nota_headline" />
+        <Button
+            android:id="@+id/boton_primera_revision_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="40dp"
+            android:text="@string/solicitar_revision_evaluacion"
+            />
+        <TextView
             android:id="@+id/nombre_ver_evaluacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/nombre_eval"
-            app:layout_constraintTop_toBottomOf="parent"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/alumno_eval_nota_disp" />
 
         <TextView
             android:id="@+id/disp_nombre_ver_evaluacion"

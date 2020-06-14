@@ -52,4 +52,8 @@ public class DetalleEvaluacionViewModel extends AndroidViewModel {
     public List<DetalleEvaluacion> getDetallePorAlumno(String id ) throws InterruptedException, ExecutionException, TimeoutException {
         return detalleEvaluacionRepository.obtenerDetallePorAlumno(id);
     }
+
+    public DetalleEvaluacion getDetalleAlumnoEvaluacion(DetalleEvaluacionRepository.ParametrosDetalles parametrosDetalles ) throws InterruptedException, ExecutionException, TimeoutException {
+        return detalleEvaluacionRepository.obtenerDetalleAlumnoEvaluacion(parametrosDetalles);
+    }
 }

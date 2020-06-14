@@ -85,7 +85,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
                     //se coloca la fecha en el dpick desde array
                     dpickFechaSegundaRevision.init(Integer.parseInt(fechaRevision[2]),Integer.parseInt(fechaRevision[1]),Integer.parseInt(fechaRevision[0]), null);
                     //se separa la hora de revision en un array
-                    String[] horaRevision = auxiliar.getFechaSegundaRev().split(":");
+                    String[] horaRevision = auxiliar.getHoraSegundaRev().split(":");
                     //se coloca la hora desde el array
                     tpickHoraSegundaRevision.setCurrentHour(Integer.parseInt(horaRevision[0]));
                     //se colocan los minutos
@@ -97,6 +97,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
                     editObservacionesSegundaRevision.setVisibility(View.VISIBLE);
                 }
                 else if (operacionEv == EditarPrimeraRevisionActivity.AÑADIR_SEGUNDA_REVISION){
+                    idPrimera = idPrimeraRevision;
                     //se desactivan los campos nota y observaciones
                     editNotaFinalSegundaRevision.setVisibility(View.GONE);
                     editObservacionesSegundaRevision.setVisibility(View.GONE);
