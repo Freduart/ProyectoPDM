@@ -64,7 +64,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class,
-    }, version = 4)
+    }, version = 5)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -109,9 +109,21 @@ public abstract class DataBase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             try {
                 super.onCreate(db);
-                db.execSQL("create trigger eliminar_evaluacion before delete on Asignatura " +
+                db.execSQL("create trigger eliminar_solicitudImpr before delete on Docente " +
+                        "begin " +
+                        "delete from SolicitudImpresion where SolicitudImpresion.carnetDocenteFK=old.carnetDocente; " +
+                        "end");
+                db.execSQL("create trigger eliminar_asignatura before delete on AreaAdm " +
+                        "begin " +
+                        "delete from Asignatura where Asignatura.idDepartamentoFK=old.idDeptarmento; " +
+                        "end");
+                db.execSQL("create trigger eliminar_evaluacion1 before delete on Asignatura " +
                         "begin " +
                         "delete from Evaluacion where Evaluacion.codigoAsignaturaFK=old.codigoAsignatura; " +
+                        "end");
+                db.execSQL("create trigger eliminar_evaluacion2 before delete on Docente " +
+                        "begin " +
+                        "delete from Evaluacion where Evaluacion.carnetDocenteFK=old.carnetDocente; " +
                         "end");
                 db.execSQL("create trigger eliminar_detalle before delete on Evaluacion \n" +
                         " begin \n" +
@@ -124,6 +136,10 @@ public abstract class DataBase extends RoomDatabase {
                 db.execSQL("create trigger eliminar_sr before delete on PrimeraRevision " +
                         "begin " +
                         "delete from SegundaRevision where SegundaRevision.idPrimeraRevisionFK=old.idPrimerRevision; " +
+                        "end");
+                db.execSQL("create trigger eliminar_alumno before delete on Alumno " +
+                        "begin " +
+                        "delete from DetalleEvaluacion where DetalleEvaluacion.carnetAlumnoFK=old.carnetAlumno; " +
                         "end");
                 new PoblarDBAsyncTask(instance).execute();
             } catch (Exception e) {
