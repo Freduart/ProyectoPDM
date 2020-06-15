@@ -128,6 +128,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
                             detallesIdNom.add(d.getIdDetalleEv() + " - " +d.getCarnetAlumnoFK());
                             if(d.getIdDetalleEv()== dete.getIdDetalleEv()){
                                 spindetalleEFK.setSelection(detallesIdNom.indexOf(d.getIdDetalleEv() + " - " + d.getCarnetAlumnoFK()));
+                                spindetalleEFK.setEnabled(false);
                             }
                         }
                         adaptadorSpinnerDetalle.notifyDataSetChanged();
@@ -139,13 +140,17 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             //Datepicker
             String[] fechaAuxiliar = primeraRevisionActual.getFechaSolicitudPrimRev().split("/");
             //se ingresa la fecha desde el array
-            dpickfechaSoli.init(Integer.parseInt(fechaAuxiliar[2]),Integer.parseInt(fechaAuxiliar[1]),Integer.parseInt(fechaAuxiliar[0]), null);
+            dpickfechaSoli.init(Integer.parseInt(fechaAuxiliar[2]),Integer.parseInt(fechaAuxiliar[1])-1,Integer.parseInt(fechaAuxiliar[0]), null);
+            dpickfechaSoli.setEnabled(false);
             //Spinner de estado
             ArrayAdapter<CharSequence> adapterSpinnerEstado = ArrayAdapter.createFromResource(this, R.array.estado_array, android.R.layout.simple_spinner_item);
             adapterSpinnerEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinestado.setAdapter(adapterSpinnerEstado);
-            //spinestado.setSelection();
-            notaAntes.setText(String.valueOf(primeraRevisionActual.getNotasAntesPrimeraRev()));
+
+            DetalleEvaluacion detalleEvActual;
+            detalleEvActual = detalleEvaluacionViewModel.getDetalleEvaluacion(primeraRevisionActual.getIdDetalleEvFK());
+
+            notaAntes.setText(String.valueOf(detalleEvActual.getNota()));
             notaDespues.setText(String.valueOf(primeraRevisionActual.getNotaDespuesPrimeraRev()));
             observaciones.setText(primeraRevisionActual.getObservacionesPrimeraRev());
             //titulo appbar
@@ -180,19 +185,26 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             if(notaA.trim().isEmpty()||notaD.trim().isEmpty()||ob.trim().isEmpty()){
                 Toast.makeText(this, "Por favor, llena todos los campos", Toast.LENGTH_LONG).show();
             }
-            primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
-            PrimeraRevision p = primeraRevisionViewModel.getPrimeraRevision(id);
-            //p = new PrimeraRevision(local, Integer.parseInt(detalle), fecha, Boolean.parseBoolean(est), Double.parseDouble(notaA), Double.parseDouble(notaD), ob);
-            p.setIdLocalFK(local);
-            p.setIdDetalleEvFK(Integer.parseInt(detalle));
-            p.setFechaSolicitudPrimRev(fecha);
-            p.setEstadoPrimeraRev(Boolean.parseBoolean(est));
-            p.setNotasAntesPrimeraRev(Double.parseDouble(notaA));
-            p.setNotaDespuesPrimeraRev(Double.parseDouble(notaD));
-            p.setObservacionesPrimeraRev(ob);
-            //Actualizar
-            primeraRevisionViewModel.updatePrimeraRevision(p);
-            String idp = String.valueOf(p.getIdPrimerRevision());
+            DetalleEvaluacion detalleEvaluacionActual;
+            detalleEvaluacionActual = detalleEvaluacionViewModel.getDetalleEvaluacion(primeraRevisionActual.getIdDetalleEvFK());
+
+            if(Double.parseDouble(notaD)<detalleEvaluacionActual.getNota()){
+                Toast.makeText(EditarPrimeraRevisionActivity.this, "Error, la nota final, no puede ser menor que la nota actual.", Toast.LENGTH_LONG).show();
+            }else{
+                primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+                PrimeraRevision p = primeraRevisionViewModel.getPrimeraRevision(id);
+                p.setIdLocalFK(local);
+                p.setIdDetalleEvFK(Integer.parseInt(detalle));
+                p.setFechaSolicitudPrimRev(fecha);
+                p.setEstadoPrimeraRev(Boolean.parseBoolean(est));
+                p.setNotasAntesPrimeraRev(Double.parseDouble(notaA));
+                p.setNotaDespuesPrimeraRev(Double.parseDouble(notaD));
+                p.setObservacionesPrimeraRev(ob);
+                //Actualizar
+                primeraRevisionViewModel.updatePrimeraRevision(p);
+                Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ p.getIdPrimerRevision() + ", actualizada con éxito", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         }catch (Exception e){
             Toast.makeText(EditarPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -231,9 +243,6 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
                         intent.putExtra(IDENTIFICADOR_PRIMERA_REVISION, pRActual.getIdPrimerRevision());
                         startActivity(intent);
                         Toast.makeText(EditarPrimeraRevisionActivity.this, "Se agregará solicitud de segunda revisión", Toast.LENGTH_LONG).show();
-                    }else if(String.valueOf(pRActual.isEstadoPrimeraRev())=="true"){
-                        Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ pRActual.getIdPrimerRevision() + ", actualizada con éxito", Toast.LENGTH_SHORT).show();
-                        finish();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

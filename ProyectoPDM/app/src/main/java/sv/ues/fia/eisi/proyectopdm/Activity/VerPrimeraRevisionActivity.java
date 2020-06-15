@@ -103,7 +103,9 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
             detalleEFK.setText(detalleEvaluacionActual.getIdDetalleEv()+ " - " + detalleEvaluacionActual.getCarnetAlumnoFK());
             fechaSoli.setText(primeraRevisionActual.getFechaSolicitudPrimRev());
             estado.setText(String.valueOf(primeraRevisionActual.isEstadoPrimeraRev()));
-            notaAntes.setText(String.valueOf(primeraRevisionActual.getNotasAntesPrimeraRev()));
+            DetalleEvaluacion detalleEvActual;
+            detalleEvActual = detalleEvaluacionViewModel.getDetalleEvaluacion(primeraRevisionActual.getIdDetalleEvFK());
+            notaAntes.setText(String.valueOf(detalleEvActual.getNota()));
             notaDespues.setText(String.valueOf(primeraRevisionActual.getNotaDespuesPrimeraRev()));
             observaciones.setText(primeraRevisionActual.getObservacionesPrimeraRev());
 

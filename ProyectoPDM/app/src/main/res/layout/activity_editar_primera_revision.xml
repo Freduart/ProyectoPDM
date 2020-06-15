@@ -83,7 +83,6 @@
                 android:id="@+id/editarNotaAntesPR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="7.0"
                 app:layout_constraintTop_toBottomOf="@+id/notaAntesPR"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 />
@@ -101,7 +100,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:text="8.0"
                 app:layout_constraintTop_toBottomOf="@+id/notaDespuesPR"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 />
@@ -118,7 +116,6 @@
                 android:id="@+id/editarObservacionesPR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="oajdfjksjfdklsdfkkjsdkfjksdkklskfkdksj"
                 app:layout_constraintTop_toBottomOf="@+id/observacionesPR"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 />
@@ -138,7 +135,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="true"
                 app:layout_constraintTop_toBottomOf="@+id/estadoPR"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 />
