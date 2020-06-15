@@ -35,7 +35,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -370,7 +369,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.dialog_opciones_documento, null);
         Button btnPrevisualizar = (Button)v.findViewById(R.id.btnPrevisualizar);
         Button btnQuitar = (Button)v.findViewById(R.id.btnQuitar);
-        TextView textView=(TextView)v.findViewById(R.id.textTitulo);
+        TextView textView=(TextView)v.findViewById(R.id.textNomEnc);
         textView.setText(nombreDocumento);
         builder.setView(v);
         alertDialog = builder.create();

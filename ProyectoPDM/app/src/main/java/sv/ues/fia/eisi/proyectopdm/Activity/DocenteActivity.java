@@ -123,7 +123,7 @@ public class DocenteActivity extends AppCompatActivity {
         TextView textNomDocente=(TextView)v.findViewById(R.id.textNomDocenteVer);
         TextView textApellidoDocente=(TextView)v.findViewById(R.id.textApellidoDocenteVer);
         TextView textCargoDocente=(TextView)v.findViewById(R.id.textCargosVer);
-        TextView textCorreoDocente=(TextView)v.findViewById(R.id.textCorreoDocenteVer);
+        TextView textCorreoDocente=(TextView)v.findViewById(R.id.textNomEncVer);
         TextView textTelefonoDocente=(TextView)v.findViewById(R.id.textTelefonoDocenteVer);
         builder.setView(v);
         alertDialog = builder.create();

@@ -64,7 +64,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class,
-    }, version = 5)
+    }, version = 6)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -277,7 +277,7 @@ public abstract class DataBase extends RoomDatabase {
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "observacion 1"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "observacion 2"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 3, "9/06/2020", true, 6f, 8f, "observacion 2"));
-            encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion(1, "Pedro Eliseo Peñate"));
+            encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate"));
             segundaRevisionDao.insertSegundaRevision(new SegundaRevision(1, "9/06/2020", "12:22:00",10,"", "8/06/2020"));
             segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
             return null;

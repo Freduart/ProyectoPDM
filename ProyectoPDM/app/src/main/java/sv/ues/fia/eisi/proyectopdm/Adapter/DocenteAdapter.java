@@ -91,9 +91,9 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
 
         public ViewHolderDocente(@NonNull View itemView) {
             super(itemView);
-            textTitulo=(TextView)itemView.findViewById(R.id.textTitulo);
-            textCargoDocente=(TextView)itemView.findViewById(R.id.textCargoDocente);
-            textCorreoDocente=(TextView)itemView.findViewById(R.id.textCorreoDocenteVer);
+            textTitulo=(TextView)itemView.findViewById(R.id.textNomEnc);
+            textCargoDocente=(TextView)itemView.findViewById(R.id.textIdEncImpres);
+            textCorreoDocente=(TextView)itemView.findViewById(R.id.textNomEncVer);
             textTelefonoDocente=(TextView)itemView.findViewById(R.id.textTelefonoDocenteVer);
             textCarnetDocente=(TextView)itemView.findViewById(R.id.textCarnetDocenteVer);
         }

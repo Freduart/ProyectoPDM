@@ -7,7 +7,7 @@
     android:background="#393838">
 
     <TextView
-        android:id="@+id/textTitulo"
+        android:id="@+id/textNomEnc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -31,7 +31,7 @@
         android:textColor="@color/colorNegro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitulo" />
+        app:layout_constraintTop_toBottomOf="@+id/textNomEnc" />
 
     <Button
         android:id="@+id/btnQuitar"

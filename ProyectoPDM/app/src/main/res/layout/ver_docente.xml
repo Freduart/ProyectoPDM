@@ -65,7 +65,7 @@
             android:textColor="@color/colorNegro"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCorreoDocenteVer" />
+            app:layout_constraintTop_toBottomOf="@+id/textNomEncVer" />
 
         <TextView
             android:id="@+id/textView18"
@@ -158,7 +158,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <TextView
-            android:id="@+id/textCorreoDocenteVer"
+            android:id="@+id/textNomEncVer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

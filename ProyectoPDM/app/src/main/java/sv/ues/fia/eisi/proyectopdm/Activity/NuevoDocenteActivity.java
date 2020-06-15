@@ -45,7 +45,7 @@ public class NuevoDocenteActivity extends AppCompatActivity {
         textCarnetDocente=(TextInputLayout)findViewById(R.id.textCarnetDocenteVer);
         textNomDocente=(TextInputLayout)findViewById(R.id.textNomDocenteVer);
         textApellidoDocente=(TextInputLayout)findViewById(R.id.textApellidoDocenteVer);
-        textCorreoDocente=(TextInputLayout)findViewById(R.id.textCorreoDocenteVer);
+        textCorreoDocente=(TextInputLayout)findViewById(R.id.textNomEncVer);
         textTelefonoDocente=(TextInputLayout)findViewById(R.id.textTelefonoDocenteVer);
         spinnerCargo=(Spinner)findViewById(R.id.textCargosVer);
 

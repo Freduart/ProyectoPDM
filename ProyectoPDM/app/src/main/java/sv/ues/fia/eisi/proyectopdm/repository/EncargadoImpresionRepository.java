@@ -44,7 +44,7 @@ public class EncargadoImpresionRepository {
         return allEncargadoImpresion;
     }
 
-    public EncargadoImpresion ObtenerEncargadoImpresion(int id) throws InterruptedException, ExecutionException, TimeoutException{
+    public EncargadoImpresion ObtenerEncargadoImpresion(Integer id) throws InterruptedException, ExecutionException, TimeoutException{
         return new ObtenerEncargadoImpresionAsyncTask(encargadoImpresionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
@@ -100,7 +100,7 @@ public class EncargadoImpresionRepository {
             return null;
         }
     }
-    private static class ObtenerEncargadoImpresionAsyncTask extends AsyncTask<Integer,Void,EncargadoImpresion>{
+    /*private static class ObtenerEncargadoImpresionAsyncTask extends AsyncTask<Integer,Void,EncargadoImpresion>{
         private EncargadoImpresionDao encargadoImpresionDao;
 
         public ObtenerEncargadoImpresionAsyncTask(EncargadoImpresionDao encargadoImpresionDao) {
@@ -110,6 +110,18 @@ public class EncargadoImpresionRepository {
         @Override
         protected EncargadoImpresion doInBackground(Integer... integers) {
             return encargadoImpresionDao.obtenerEncargadoImpresion(integers[0]);
+        }
+    }*/
+    private static class ObtenerEncargadoImpresionAsyncTask extends AsyncTask<Integer,Void,EncargadoImpresion>{
+        private EncargadoImpresionDao encargadoImpresionDao;
+
+        public ObtenerEncargadoImpresionAsyncTask(EncargadoImpresionDao encargadoImpresionDao) {
+            this.encargadoImpresionDao = encargadoImpresionDao;
+        }
+
+        @Override
+        protected EncargadoImpresion doInBackground(Integer... encargadoImpresions) {
+            return encargadoImpresionDao.obtenerEncargadoImpresion(encargadoImpresions[0]);
         }
     }
 

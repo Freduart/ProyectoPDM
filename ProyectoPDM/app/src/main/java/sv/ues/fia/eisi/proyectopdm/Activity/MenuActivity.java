@@ -118,4 +118,13 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
+    public void EncImpresRedirect(View view){
+        Intent intent=new Intent(this,EncargadoImpresionActivity.class);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

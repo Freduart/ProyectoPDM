@@ -96,10 +96,10 @@ public class ListaSolicitudesImpresionAdapter extends RecyclerView.Adapter<Lista
 
         public ViewHolderSolicitudes(@NonNull View itemView) {
             super(itemView);
-            textTitulo=(TextView)itemView.findViewById(R.id.textTitulo);
-            textDocumentos=(TextView)itemView.findViewById(R.id.textCargoDocente);
+            textTitulo=(TextView)itemView.findViewById(R.id.textNomEnc);
+            textDocumentos=(TextView)itemView.findViewById(R.id.textIdEncImpres);
             textEstado=(TextView)itemView.findViewById(R.id.textTelefonoDocenteVer);
-            textDetallesImpresion=(TextView)itemView.findViewById(R.id.textCorreoDocenteVer);
+            textDetallesImpresion=(TextView)itemView.findViewById(R.id.textNomEncVer);
             textFechaSolicitud=(TextView)itemView.findViewById(R.id.textFechaSolicitud);
             textHoraSolicitud=(TextView)itemView.findViewById(R.id.textHoraSolicitud);
         }

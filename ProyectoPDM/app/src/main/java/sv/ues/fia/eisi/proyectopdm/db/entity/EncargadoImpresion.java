@@ -9,14 +9,13 @@ import java.util.List;
 @Entity(tableName = "EncargadoImpresion")
 public class EncargadoImpresion {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int idEncargadoImpresion;
     private String nomEncargado;
 
 
-    public EncargadoImpresion(int idEncargadoImpresion, String nomEncargado) {
-        this.idEncargadoImpresion = idEncargadoImpresion;
+    public EncargadoImpresion( String nomEncargado) {
         this.nomEncargado = nomEncargado;
     }
 
