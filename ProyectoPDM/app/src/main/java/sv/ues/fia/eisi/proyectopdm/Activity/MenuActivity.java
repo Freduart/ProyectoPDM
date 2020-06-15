@@ -109,4 +109,13 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
+    public void docenteRedirect(View view){
+        Intent intent=new Intent(this,DocenteActivity.class);
+        try {
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

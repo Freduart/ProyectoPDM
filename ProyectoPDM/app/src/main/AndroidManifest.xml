@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EditarSolicitudImpresionActivity"></activity>
+        <activity android:name=".Activity.EditarDocenteActivity"></activity>
+        <activity android:name=".Activity.NuevoDocenteActivity" />
+        <activity android:name=".Activity.EditarSolicitudImpresionActivity" />
         <activity android:name=".Activity.EditarPrimeraRevisionActivity" />
         <activity android:name=".Activity.DocenteActivity" />
         <activity android:name=".Activity.EditarAsignaturaActivity" />

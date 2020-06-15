@@ -189,4 +189,18 @@
     <string name="btnEditable1">Prueba</string>
     <string name="btnEditable2">Prueba</string>
     <string name="btnEditable3">Prueba</string>
+
+    <!-- Strings para docente_item -->
+    <string name="AppBarNameDocente">Docente</string>
+    <string name="textCarnetDocente">CARNET</string>
+    <string name="textCargoDocente">CARGO</string>
+    <string name="textCorreoDocente">CORREO</string>
+    <string name="textTelefonoDocente">TELÉFONO</string>
+    <string name="textNomDocente">NOMBRE</string>
+    <string name="textApellidoDocente">APELLIDO</string>
+    <string name="hintCarnetDocente">Carnet Docente</string>
+    <string name="hintNomDocente">Nombre Docente</string>
+    <string name="hintApellidoDocente">Apellido Docente</string>
+    <string name="hintCorreoDocente">someone@example.com</string>
+    <string name="hintTelefonoDocente">+503 ### ###</string>
 </resources>
