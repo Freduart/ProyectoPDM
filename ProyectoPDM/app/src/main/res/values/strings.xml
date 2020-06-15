@@ -74,6 +74,12 @@
     <string name="editarPrimeraRevisionDet">Editar Primera Revision</string>
     <string name="display_nota_alumno_evaluacion">Nota del estudiante</string>
     <string name="solicitar_revision_evaluacion">Solicitar Revision</string>
+    <string name="confirmacion_nota">Se ha registrado la nota con éxito.</string>
+    <string name="leyenda_estadisticas">Notas de la evaluacion</string>
+    <string name="estad_eval">Estadística</string>
+    <string name="headline_grafico_eval">Gráfico de línea de notas</string>
+    <string name="labely_eval">Cantidad</string>
+    <string name="labelx_eval">Notas</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>

@@ -238,33 +238,28 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     }
                     dpickFechaEntregaEvaluacion.setVisibility(View.VISIBLE);
                     fechaEntregaEvaluacionLabel.setVisibility(View.VISIBLE);
+                    botonDetalleEval.setVisibility(View.VISIBLE);
+                    final int id = idEvaluacion;
+                    //al hacer clic en el boton
+                    botonDetalleEval.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                            Intent intent = new Intent(NuevaEditarEvaluacionActivity.this, DetalleEvaluacionActivity.class);
+                            //se mete en un extra del intent, el id
+                            intent.putExtra(EvaluacionActivity.IDENTIFICADOR_EVALUACION, id);
+                            //inicia la activity
+                            startActivity(intent);
+                        }
+                    });
                 }
                 else if (operacionEv == EvaluacionActivity.AÑADIR_EVALUACION && idEvaluacion == 0){
                     dpickFechaEntregaEvaluacion.setVisibility(View.GONE);
                     fechaEntregaEvaluacionLabel.setVisibility(View.GONE);
+                    botonDetalleEval.setVisibility(View.GONE);
                     setTitle(R.string.titulo_EA_nuevaEval);
                 }
             }
-
-            if(extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION) {
-                botonDetalleEval.setVisibility(View.VISIBLE);
-                LayoutInflater inflater = getLayoutInflater();
-                View view = inflater.inflate(R.layout.activity_nueva_evaluacion, null);
-                final int id = idEvaluacion;
-                //al hacer clic en el boton
-                botonDetalleEval.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
-                        Intent intent = new Intent(NuevaEditarEvaluacionActivity.this, DetalleEvaluacionActivity.class);
-                        //se mete en un extra del intent, el id
-                        intent.putExtra(EvaluacionActivity.IDENTIFICADOR_EVALUACION, id);
-                        //inicia la activity
-                        startActivity(intent);
-                    }
-                });
-            } else
-                botonDetalleEval.setVisibility(View.GONE);
 
         } catch (Exception e){
             Toast.makeText(NuevaEditarEvaluacionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -286,26 +281,14 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             //---obtener valor de spinner DOCENTE
             Docente docenteAux1 = (Docente) spinCarnetDocenteEvaluacion.getSelectedItem();
 
-            //---obtener valor de datepicker FECHA INICIO evaluacion
-            StringBuilder fechInBuilder = new StringBuilder(10);
-            //concatenar
-            fechInBuilder.append(dpickFechaInicioEvaluacion.getDayOfMonth()).append("/").append(dpickFechaInicioEvaluacion.getMonth()).append("/").append(dpickFechaInicioEvaluacion.getYear());
             //almacenar FECHA INICIO
-            String fechaInicio = fechInBuilder.toString();
+            String fechaInicio = String.format("%s/%s/%s",dpickFechaInicioEvaluacion.getDayOfMonth(),dpickFechaInicioEvaluacion.getMonth(),dpickFechaInicioEvaluacion.getYear());
 
-            //---obtener valor de datepicker FECHA FIN evaluacion
-            StringBuilder fechFinBuilder = new StringBuilder(10);
-            //concatenar
-            fechFinBuilder.append(dpickFechaFinEvaluacion.getDayOfMonth()).append("/").append(dpickFechaFinEvaluacion.getMonth()).append("/").append(dpickFechaFinEvaluacion.getYear());
             //almacenar FECHA FIN
-            String fechaFin = fechFinBuilder.toString();
+            String fechaFin = String.format("%s/%s/%s",dpickFechaFinEvaluacion.getDayOfMonth(),dpickFechaFinEvaluacion.getMonth(),dpickFechaFinEvaluacion.getYear());
 
-            //---obtener valor de datepicker FECHA FIN evaluacion
-            StringBuilder fechEntregaNotas = new StringBuilder(10);
-            //concatenar
-            fechEntregaNotas.append(dpickFechaEntregaEvaluacion.getDayOfMonth()).append("/").append(dpickFechaEntregaEvaluacion.getMonth()).append("/").append(dpickFechaEntregaEvaluacion.getYear());
             //almacenar FECHA FIN
-            String fechaEntrega = fechEntregaNotas.toString();
+            String fechaEntrega =String.format("%s/%s/%s", dpickFechaEntregaEvaluacion.getDayOfMonth(), dpickFechaEntregaEvaluacion.getMonth(), dpickFechaEntregaEvaluacion.getYear());
 
             //---almacenar DESCRIPCION
             String descripcion = editDescripcionEvaluacion.getText().toString();

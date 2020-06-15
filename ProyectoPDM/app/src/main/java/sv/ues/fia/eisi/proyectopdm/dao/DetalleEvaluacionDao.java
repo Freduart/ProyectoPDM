@@ -9,7 +9,9 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
 @Dao
 public interface DetalleEvaluacionDao {
@@ -36,4 +38,16 @@ public interface DetalleEvaluacionDao {
 
     @Query("select * from DetalleEvaluacion where carnetAlumnoFK == :carnetalumno and idEvaluacionFK == :idEval")
     DetalleEvaluacion obtenerDetalleEstudianteEvaluacion(String carnetalumno, int idEval);
+
+    @Query("select DetalleEvaluacion.* from Evaluacion " +
+            "inner join DetalleEvaluacion on Evaluacion.idEvaluacion=DetalleEvaluacion.idEvaluacionFK "+
+            "inner join Alumno on DetalleEvaluacion.carnetAlumnoFK=Alumno.carnetAlumno " +
+            "where Evaluacion.idEvaluacion=:idEval")
+    List<DetalleEvaluacion> obtenerNotasDeEvaluacion(final int idEval);
+
+    @Query("select Alumno.* from Evaluacion " +
+            "inner join DetalleEvaluacion on Evaluacion.idEvaluacion=DetalleEvaluacion.idEvaluacionFK "+
+            "inner join Alumno on DetalleEvaluacion.carnetAlumnoFK=Alumno.carnetAlumno " +
+            "where Evaluacion.idEvaluacion=:idEval")
+    List<Alumno> obtenerEstudiantesEnEvaluacion(final int idEval);
 }

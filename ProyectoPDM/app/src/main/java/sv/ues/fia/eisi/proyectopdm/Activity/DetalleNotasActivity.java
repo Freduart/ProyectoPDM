@@ -139,11 +139,16 @@ public class DetalleNotasActivity extends AppCompatActivity {
 
     private void guardarDetalle(){
         DetalleEvaluacion aux = new DetalleEvaluacion(detalleEvaluacion.getIdEvaluacionFK(),detalleEvaluacion.getCarnetAlumnoFK());
-        Double notaAux = Double.parseDouble(notaEstudiante.getText().toString());
+        String campoNota = notaEstudiante.getText().toString();
+        if(campoNota.trim().isEmpty()){
+            Toast.makeText(this,getText(R.string.error_form_incompleto_eval), Toast.LENGTH_LONG).show();
+            return;
+        }
+        Double notaAux = Double.parseDouble(campoNota);
         aux.setNota(notaAux);
         aux.setIdDetalleEv(detalleEvaluacion.getIdDetalleEv());
         detalleEvaluacionViewModel.updateDetalleEvaluacion(aux);
-        Toast.makeText(DetalleNotasActivity.this, getText(R.string.inic_notif_eval), Toast.LENGTH_LONG).show();
+        Toast.makeText(DetalleNotasActivity.this, getText(R.string.confirmacion_nota), Toast.LENGTH_LONG).show();
         finish();
     }
 }

@@ -30,6 +30,7 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
         private TextView nombreAlumno;
         private TextView carnetAlumno;
         private TextView carreraAlumno;
+        private TextView notaalumno;
 
         public DetalleEvaluacionHolder(@NonNull View itemView) {
             super(itemView);
@@ -37,7 +38,7 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
             nombreAlumno=itemView.findViewById(R.id.disp_nombre_alumno_detalle);
             carnetAlumno=itemView.findViewById(R.id.disp_carnet_alumno_detalle);
             carreraAlumno=itemView.findViewById(R.id.disp_carrera_alumno_detalle);
-
+            notaalumno=itemView.findViewById(R.id.disp_nota_detalle);
             //settea evento de click CORTO
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -106,6 +107,10 @@ public class DetalleEvaluacionAdapter extends RecyclerView.Adapter<DetalleEvalua
             holder.nombreAlumno.setText(String.format("%s %s", alumnoActual.getNombre(), alumnoActual.getApellido()));
             holder.carnetAlumno.setText(detalleEvaluacionActual.getCarnetAlumnoFK());
             holder.carreraAlumno.setText(escuelaActual.getCarrera());
+            if(detalleEvaluacionActual.getNota() == -1)
+                holder.notaalumno.setText("-");
+            else
+                holder.notaalumno.setText(String.format("%.2f", detalleEvaluacionActual.getNota()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.repository.DetalleEvaluacionRepository;
 
@@ -55,5 +56,13 @@ public class DetalleEvaluacionViewModel extends AndroidViewModel {
 
     public DetalleEvaluacion getDetalleAlumnoEvaluacion(DetalleEvaluacionRepository.ParametrosDetalles parametrosDetalles ) throws InterruptedException, ExecutionException, TimeoutException {
         return detalleEvaluacionRepository.obtenerDetalleAlumnoEvaluacion(parametrosDetalles);
+    }
+
+    public List<DetalleEvaluacion> getNotasEvaluacion(int id ) throws InterruptedException, ExecutionException, TimeoutException {
+        return detalleEvaluacionRepository.obtenerNotasEvaluacion(id);
+    }
+
+    public List<Alumno> getAlumnosEvaluacion(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return detalleEvaluacionRepository.obtenerAlumnosEnEvaluacion(id);
     }
 }

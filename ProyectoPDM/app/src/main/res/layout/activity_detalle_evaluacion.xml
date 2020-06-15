@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/recycler_detalle_view"
-            app:layout_constraintBottom_toTopOf="@+id/agregar_alumno_detalle"/>
+            app:layout_constraintBottom_toTopOf="@+id/agregar_alumno_detalle"
+            android:layout_marginTop="10dp"/>
 
         <Button
             android:id="@+id/agregar_alumno_detalle"

@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
@@ -93,9 +95,12 @@ public class EvaluacionAdapter extends RecyclerView.Adapter<EvaluacionAdapter.Ev
         //obtener id de la evaluacion actual
         int id = evaluacionActual.getIdEvaluacion();
         //settea los datos que se mostraran en los elementos de los items de lista
-        holder.nombreEvaluacion.setText(String.format("%d. %s", id, evaluacionActual.getNomEvaluacion()));
+        holder.nombreEvaluacion.setText(String.format(Locale.US, "%d. %s", id, evaluacionActual.getNomEvaluacion()));
         holder.descripcionEvaluacion.setText(evaluacionActual.getDescripcion());
-        holder.fechaFin.setText(evaluacionActual.getFechaFin());
+        String[] fechaFin = evaluacionActual.getFechaFin().split("/");
+        int mes = Integer.parseInt(fechaFin[1]) + 1;
+        String fechaFinSalida = String.format("%s/%s/%s", fechaFin[0],mes,fechaFin[2]);
+        holder.fechaFin.setText(fechaFinSalida);
     }
 
     @Override

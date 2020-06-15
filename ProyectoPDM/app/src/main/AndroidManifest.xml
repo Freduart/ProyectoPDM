@@ -62,6 +62,7 @@
         <activity android:name=".Activity.VerEvaluacionActivity" />
         <activity android:name=".Activity.DetalleEvaluacionActivity" />
         <activity android:name=".Activity.DetalleNotasActivity" />
+        <activity android:name=".Activity.EvaluacionGraficasActivity" />
     </application>
 
 </manifest>
