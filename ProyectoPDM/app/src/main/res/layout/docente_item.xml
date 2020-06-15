@@ -75,7 +75,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/textTelefonoDocente"
+                android:id="@+id/textTelefonoDocenteVer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -89,7 +89,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textCorreoDocente"
+                app:layout_constraintStart_toEndOf="@+id/textCorreoDocenteVer"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
             <TextView
@@ -129,7 +129,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textCargoDocente" />
 
             <TextView
-                android:id="@+id/textCorreoDocente"
+                android:id="@+id/textCorreoDocenteVer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -155,7 +155,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
             <TextView
-                android:id="@+id/textCarnetDocente"
+                android:id="@+id/textCarnetDocenteVer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"

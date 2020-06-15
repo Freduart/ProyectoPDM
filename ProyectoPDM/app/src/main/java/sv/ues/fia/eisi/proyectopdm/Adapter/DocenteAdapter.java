@@ -93,9 +93,9 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
             super(itemView);
             textTitulo=(TextView)itemView.findViewById(R.id.textTitulo);
             textCargoDocente=(TextView)itemView.findViewById(R.id.textCargoDocente);
-            textCorreoDocente=(TextView)itemView.findViewById(R.id.textCorreoDocente);
-            textTelefonoDocente=(TextView)itemView.findViewById(R.id.textTelefonoDocente);
-            textCarnetDocente=(TextView)itemView.findViewById(R.id.textCarnetDocente);
+            textCorreoDocente=(TextView)itemView.findViewById(R.id.textCorreoDocenteVer);
+            textTelefonoDocente=(TextView)itemView.findViewById(R.id.textTelefonoDocenteVer);
+            textCarnetDocente=(TextView)itemView.findViewById(R.id.textCarnetDocenteVer);
         }
     }
 }

@@ -74,7 +74,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/textTelefonoDocente"
+                android:id="@+id/textTelefonoDocenteVer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -106,7 +106,7 @@
                 android:layout_marginRight="5dp"
                 android:text="@string/textEstado"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/textTelefonoDocente"
+                app:layout_constraintEnd_toStartOf="@+id/textTelefonoDocenteVer"
                 app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
             <TextView
@@ -122,7 +122,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textCargoDocente" />
 
             <TextView
-                android:id="@+id/textCorreoDocente"
+                android:id="@+id/textCorreoDocenteVer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -167,7 +167,7 @@
                 android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textCorreoDocente" />
+                app:layout_constraintTop_toBottomOf="@+id/textCorreoDocenteVer" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

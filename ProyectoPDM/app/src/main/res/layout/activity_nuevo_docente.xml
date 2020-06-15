@@ -27,10 +27,10 @@
             android:textColor="@color/colorNegro"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCarnetDocente" />
+            app:layout_constraintTop_toBottomOf="@+id/textCarnetDocenteVer" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textNomDocente"
+            android:id="@+id/textNomDocenteVer"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="10dp"
@@ -61,10 +61,10 @@
             android:textColor="@color/colorNegro"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textNomDocente" />
+            app:layout_constraintTop_toBottomOf="@+id/textNomDocenteVer" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textApellidoDocente"
+            android:id="@+id/textApellidoDocenteVer"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="10dp"
@@ -95,10 +95,10 @@
             android:textColor="@color/colorNegro"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCargos" />
+            app:layout_constraintTop_toBottomOf="@+id/textCargosVer" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textCorreoDocente"
+            android:id="@+id/textCorreoDocenteVer"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="10dp"
@@ -129,10 +129,10 @@
             android:textColor="@color/colorNegro"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCorreoDocente" />
+            app:layout_constraintTop_toBottomOf="@+id/textCorreoDocenteVer" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textTelefonoDocente"
+            android:id="@+id/textTelefonoDocenteVer"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="10dp"
@@ -165,10 +165,10 @@
             android:textColor="@color/colorNegro"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textApellidoDocente" />
+            app:layout_constraintTop_toBottomOf="@+id/textApellidoDocenteVer" />
 
         <Spinner
-            android:id="@+id/spinnerCargos"
+            android:id="@+id/textCargosVer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -194,7 +194,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textCarnetDocente"
+            android:id="@+id/textCarnetDocenteVer"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginStart="10dp"

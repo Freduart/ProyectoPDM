@@ -1,6 +1,7 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,12 +38,16 @@ public class NuevoDocenteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_docente);
-        textCarnetDocente=(TextInputLayout)findViewById(R.id.textCarnetDocente);
-        textNomDocente=(TextInputLayout)findViewById(R.id.textNomDocente);
-        textApellidoDocente=(TextInputLayout)findViewById(R.id.textApellidoDocente);
-        textCorreoDocente=(TextInputLayout)findViewById(R.id.textCorreoDocente);
-        textTelefonoDocente=(TextInputLayout)findViewById(R.id.textTelefonoDocente);
-        spinnerCargo=(Spinner)findViewById(R.id.spinnerCargos);
+
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setTitle("NUEVO DOCENTE");
+
+        textCarnetDocente=(TextInputLayout)findViewById(R.id.textCarnetDocenteVer);
+        textNomDocente=(TextInputLayout)findViewById(R.id.textNomDocenteVer);
+        textApellidoDocente=(TextInputLayout)findViewById(R.id.textApellidoDocenteVer);
+        textCorreoDocente=(TextInputLayout)findViewById(R.id.textCorreoDocenteVer);
+        textTelefonoDocente=(TextInputLayout)findViewById(R.id.textTelefonoDocenteVer);
+        spinnerCargo=(Spinner)findViewById(R.id.textCargosVer);
 
         cargo=new ArrayList<>();
         cargoAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,cargo);
