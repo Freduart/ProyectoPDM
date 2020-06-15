@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +88,10 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             String detalle = detalleAux2[0].trim();
             //Obtener el valor del datepicker
             StringBuilder fecha = new StringBuilder(10);
+
+
             //concatenar
-            fecha.append(dpickfechaSoli.getDayOfMonth()).append("/").append(dpickfechaSoli.getMonth()).append("/").append(dpickfechaSoli.getYear());
+            fecha.append(dpickfechaSoli.getDayOfMonth()).append("/").append(dpickfechaSoli.getMonth()+1).append("/").append(dpickfechaSoli.getYear());
             //Almacenar fecha de solicitud
             String fechaSolicitud = fecha.toString();
             String notaAn = notaAntes.getText().toString();
