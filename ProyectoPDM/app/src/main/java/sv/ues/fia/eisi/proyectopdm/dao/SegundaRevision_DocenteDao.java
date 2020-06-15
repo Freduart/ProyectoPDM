@@ -1,8 +1,10 @@
 package sv.ues.fia.eisi.proyectopdm.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -22,17 +24,29 @@ el dato que seria carnetDocenteFK y se crea la variable en la insercion luego en
 public interface SegundaRevision_DocenteDao {
 
     @Insert
-    void insert(SegundaRevision_Docente segundaRevision_docente);
+    void insertSR_Docente(SegundaRevision_Docente segundaRevision_docente);
 
-    @Query("select * from SegundaRevision inner join SegundaRevision_Docente on " +
-            "SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK "+
-            "where SegundaRevision_Docente.carnetDocenteFK=:carnetDocenteFK")
-    List<Docente> getDocentes(final String carnetDocenteFK);
 
-    @Query("select * from Docente inner join SegundaRevision_Docente on "+
-            "Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
-            "where SegundaRevision_Docente.idSegundaRevisionFK=:idSegundaRevisionFK")
-    List<SegundaRevision> getSegundaRevisions(final String idSegundaRevisionFK);
+    @Update
+    void updateSR_Docente(SegundaRevision_Docente segundaRevision_docente);
+
+    @Delete
+    void deleteSR_Docente(SegundaRevision_Docente segundaRevision_docente);
+
+    @Query("delete from SegundaRevision_Docente")
+    void deleteAllSR_Docente();
+
+    @Query("select Docente.* from SegundaRevision " +
+            "inner join SegundaRevision_Docente on SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK "+
+            "inner join Docente on Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
+            "where SegundaRevision_Docente.idSegundaRevisionFK=:id")
+    List<Docente> getDocentes(final int id);
+
+    @Query("select SegundaRevision.* from Docente " +
+            "inner join SegundaRevision_Docente on Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
+            "inner join SegundaRevision on SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK "+
+            "where SegundaRevision_Docente.carnetDocenteFK=:id")
+    List<SegundaRevision> getSegundaRevisions(final String id);
 
     @Query("select * from SegundaRevision_Docente where idSegundaRevisionFK == :segundarevisionid and carnetDocenteFK == :docenteid")
     SegundaRevision_Docente obtenerSegRev_Docente(int segundarevisionid, String docenteid);

@@ -5,9 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.EvaluacionGraficasActivity">
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
+    <TextView
+        android:id="@+id/desc_notas_grafica"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/headline_grafico_eval"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:paddingTop="30dp"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"/>
+    <RelativeLayout
+        android:id="@+id/labelylayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="270"
+        app:layout_constraintTop_toBottomOf="@id/desc_notas_grafica"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tablelayoutchart"
+        app:layout_constraintRight_toLeftOf="@id/tablelayoutchart"
+        app:layout_constraintVertical_weight="2">
+        <TextView
+            android:id="@+id/labelY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/labely_eval"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/tablelayoutchart"
+        android:layout_height="500dp"
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toRightOf="@id/labelylayout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelylayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc_notas_grafica"
+        app:layout_constraintBottom_toTopOf="@id/labelX"
+        >
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/labelX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelx_eval"
+        app:layout_constraintTop_toBottomOf="@id/tablelayoutchart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

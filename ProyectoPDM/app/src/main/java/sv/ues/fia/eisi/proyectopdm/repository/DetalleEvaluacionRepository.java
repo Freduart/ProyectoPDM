@@ -12,6 +12,7 @@ import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.DetalleEvaluacionDao;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 
 public class DetalleEvaluacionRepository {
@@ -46,6 +47,14 @@ public class DetalleEvaluacionRepository {
 
     public List<DetalleEvaluacion> obtenerDetallePorAlumno(String string) throws InterruptedException, ExecutionException, TimeoutException {
         return new DetalleEvaluacionRepository.obtenerDetallePorAlumnoAsyncTask(detalleEvaluacionDao).execute(string).get(12, TimeUnit.SECONDS);
+    }
+
+    public List<DetalleEvaluacion> obtenerNotasEvaluacion(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new DetalleEvaluacionRepository.obtenerNotasEvaluacionAsyncTask(detalleEvaluacionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
+    public List<Alumno> obtenerAlumnosEnEvaluacion(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new DetalleEvaluacionRepository.obtenerEstudiantesEnEvaluacionAsyncTask(detalleEvaluacionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     public LiveData<List<DetalleEvaluacion>> getAllDetalleEvaluaciones(){
@@ -154,5 +163,30 @@ public class DetalleEvaluacionRepository {
         }
     }
 
+    private static class obtenerNotasEvaluacionAsyncTask extends AsyncTask<Integer, Void, List<DetalleEvaluacion>> {
+        private DetalleEvaluacionDao detalleEvaluacionDao;
+
+        private obtenerNotasEvaluacionAsyncTask(DetalleEvaluacionDao detalleEvaluacionDao) {
+            this.detalleEvaluacionDao = detalleEvaluacionDao;
+        }
+
+        @Override
+        protected List<DetalleEvaluacion> doInBackground(Integer... ints) {
+            return detalleEvaluacionDao.obtenerNotasDeEvaluacion(ints[0]);
+        }
+    }
+
+    private static class obtenerEstudiantesEnEvaluacionAsyncTask extends AsyncTask<Integer, Void, List<Alumno>> {
+        private DetalleEvaluacionDao detalleEvaluacionDao;
+
+        private obtenerEstudiantesEnEvaluacionAsyncTask(DetalleEvaluacionDao detalleEvaluacionDao) {
+            this.detalleEvaluacionDao = detalleEvaluacionDao;
+        }
+
+        @Override
+        protected List<Alumno> doInBackground(Integer... ints) {
+            return detalleEvaluacionDao.obtenerEstudiantesEnEvaluacion(ints[0]);
+        }
+    }
 }
 
