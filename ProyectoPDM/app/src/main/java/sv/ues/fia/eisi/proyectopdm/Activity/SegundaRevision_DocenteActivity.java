@@ -74,6 +74,13 @@ public class SegundaRevision_DocenteActivity extends AppCompatActivity {
                 adaptador.notifyDataSetChanged();
             }
         });
+
+        adaptador.setOnItemLongClickListener(new SegundaRevision_DocenteAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(SegundaRevision_Docente segundaRevision_docente) {
+                createCustomDialog(segundaRevision_docente).show();
+            }
+        });
         actualizarScrollDocentes();
         setTitle(R.string.agregar_docentes);
     }
@@ -96,8 +103,8 @@ public class SegundaRevision_DocenteActivity extends AppCompatActivity {
                 try {
                     segundaRevision_docenteViewModel.eliminarSegundaRevision_Docente(segundaRevision_docente);
 
-                    Toast.makeText(SegundaRevision_DocenteActivity.this, getText(R.string.inic_notif_detalle) +
-                                    segundaRevision_docente.getCarnetDocenteFK() +getText(R.string.accion_borrar_notif_Detalle),
+                    Toast.makeText(SegundaRevision_DocenteActivity.this, getText(R.string.eliminar_docentesmsg1) +
+                                    segundaRevision_docente.getCarnetDocenteFK() +getText(R.string.eliminar_docentesmsg2),
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                     actualizarScrollDocentes();

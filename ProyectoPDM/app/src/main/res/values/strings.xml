@@ -80,6 +80,7 @@
     <string name="headline_grafico_eval">Gráfico de línea de notas</string>
     <string name="labely_eval">Cantidad</string>
     <string name="labelx_eval">Notas</string>
+    <string name="mensaje_grafica_vacia">Sin evaluaciones</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>
@@ -106,6 +107,8 @@
     <string name="agregar_docente_arevision">Agregar docentes a revisión</string>
     <string name="docentes_en_revision">Docentes asignados:</string>
     <string name="agregar_docentes">Asignación de docentes</string>
+    <string name="eliminar_docentesmsg1">El docente \u0020</string>
+    <string name="eliminar_docentesmsg2">\u0020 ha sido eliminado.</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>

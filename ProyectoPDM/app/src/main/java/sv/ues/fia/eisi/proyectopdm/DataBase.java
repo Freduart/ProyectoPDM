@@ -138,6 +138,15 @@ public abstract class DataBase extends RoomDatabase {
                         "begin " +
                         "delete from SegundaRevision where SegundaRevision.idPrimeraRevisionFK=old.idPrimerRevision; " +
                         "end");
+                db.execSQL("create trigger eliminar_rev_doc1 before delete on Docente " +
+                        "begin " +
+                        "delete from SegundaRevision_Docente where SegundaRevision_Docente.carnetDocenteFK=old.carnetDocente; " +
+                        "end");
+
+                db.execSQL("create trigger eliminar_rev_doc2 before delete on SegundaRevision " +
+                        "begin " +
+                        "delete from SegundaRevision_Docente where SegundaRevision_Docente.idSegundaRevisionFK=old.idSegundaRevision; " +
+                        "end");
                 db.execSQL("create trigger eliminar_alumno before delete on Alumno " +
                         "begin " +
                         "delete from DetalleEvaluacion where DetalleEvaluacion.carnetAlumnoFK=old.carnetAlumno; " +

@@ -12,6 +12,8 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,6 +103,7 @@ public class EvaluacionGraficasActivity extends AppCompatActivity {
             dataSet.setValueTextColor(Color.BLACK);
             dataSet.setCircleColor(Color.rgb(211,47,47));
             dataSet.setLineWidth(2f);
+            dataSet.setValueFormatter(new FormatterPersonal());
             //Contenedor de todos los datos del grafico
             LineData lineData = new LineData(dataSet);
             //salida final del gráfico
@@ -114,9 +117,11 @@ public class EvaluacionGraficasActivity extends AppCompatActivity {
             chart.getAxisLeft().setAxisLineWidth(1.5f);
             chart.getAxisRight().setEnabled(false);
             chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-            chart.getXAxis().setGranularity(0.5f);
+            chart.getXAxis().setGranularity(1f);
             chart.getXAxis().setAxisMinimum(0);
+            chart.getXAxis().setAxisMaximum(notas.get(notas.size() - 1).getNota() + 1);
             chart.getXAxis().setAxisLineWidth(1.5f);
+            chart.setNoDataText(getText(R.string.mensaje_grafica_vacia).toString());
             //refrescar gráfico
             chart.invalidate();
             setTitle(getText(R.string.estad_eval));
