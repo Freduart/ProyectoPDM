@@ -87,6 +87,7 @@ public abstract class DataBase extends RoomDatabase {
     public abstract SegundaRevisionDao segundaRevisionDao();
     public abstract DetalleEvaluacionDao detalleEvaluacionDao();
     public abstract PrimeraRevisionDao primeraRevisionDao();
+    public abstract SegundaRevision_DocenteDao segundaRevision_docenteDao();
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
         es util para cuando todos los usuarios esten usando la misma instancia
@@ -169,6 +170,7 @@ public abstract class DataBase extends RoomDatabase {
         private SegundaRevisionDao segundaRevisionDao;
         private DetalleEvaluacionDao detalleEvaluacionDao;
         private PrimeraRevisionDao primeraRevisionDao;
+        private SegundaRevision_DocenteDao segundaRevision_docenteDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
@@ -188,6 +190,7 @@ public abstract class DataBase extends RoomDatabase {
             segundaRevisionDao=db.segundaRevisionDao();
             detalleEvaluacionDao = db.detalleEvaluacionDao();
             primeraRevisionDao = db.primeraRevisionDao();
+            segundaRevision_docenteDao = db.segundaRevision_docenteDao();
         }
 
         @Override

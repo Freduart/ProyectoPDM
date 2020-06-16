@@ -145,8 +145,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         try{
-                            DetalleEvaluacionRepository.ParametrosDetalles params = new DetalleEvaluacionRepository.ParametrosDetalles(evaluacionActual.getIdEvaluacion(),"CARNET");
-                            DetalleEvaluacion detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(params);
+                            DetalleEvaluacion detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(evaluacionActual.getIdEvaluacion(),"CARNET");
                             List<PrimeraRevision> primeraRevisions= primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
                             //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
                             Intent intent = new Intent(VerEvaluacionActivity.this, NuevaPrimeraRevisionActivity.class);

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "5f3e4bb40e18e76d590f50b3e071e02c",
+    "identityHash": "27e57ed0d9c974569c3cd7e2e6617df8",
     "entities": [
       {
         "tableName": "Alumno",
@@ -671,7 +671,7 @@
       },
       {
         "tableName": "SegundaRevision_Docente",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`carnetDocenteFK` TEXT NOT NULL, `idSegundaRevisionFK` TEXT NOT NULL, PRIMARY KEY(`carnetDocenteFK`, `idSegundaRevisionFK`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`carnetDocenteFK` TEXT NOT NULL, `idSegundaRevisionFK` INTEGER NOT NULL, PRIMARY KEY(`carnetDocenteFK`, `idSegundaRevisionFK`))",
         "fields": [
           {
             "fieldPath": "carnetDocenteFK",
@@ -682,7 +682,7 @@
           {
             "fieldPath": "idSegundaRevisionFK",
             "columnName": "idSegundaRevisionFK",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -856,7 +856,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5f3e4bb40e18e76d590f50b3e071e02c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '27e57ed0d9c974569c3cd7e2e6617df8')"
     ]
   }
 }

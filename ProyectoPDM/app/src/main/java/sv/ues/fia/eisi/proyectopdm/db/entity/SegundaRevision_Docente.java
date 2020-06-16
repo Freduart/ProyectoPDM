@@ -20,10 +20,10 @@ public class SegundaRevision_Docente {
             parentColumns = "idSegundaRevision",
             childColumns = "idSegundaRevisionFK"
     )@NonNull
-    private String idSegundaRevisionFK;
+    private int idSegundaRevisionFK;
 
 
-    public SegundaRevision_Docente(String carnetDocenteFK, String idSegundaRevisionFK) {
+    public SegundaRevision_Docente(String carnetDocenteFK, int idSegundaRevisionFK) {
         this.carnetDocenteFK = carnetDocenteFK;
         this.idSegundaRevisionFK = idSegundaRevisionFK;
     }
@@ -36,11 +36,11 @@ public class SegundaRevision_Docente {
         this.carnetDocenteFK = carnetDocenteFK;
     }
 
-    public String getIdSegundaRevisionFK() {
+    public int getIdSegundaRevisionFK() {
         return idSegundaRevisionFK;
     }
 
-    public void setIdSegundaRevisionFK(String idSegundaRevisionFK) {
+    public void setIdSegundaRevisionFK(int idSegundaRevisionFK) {
         this.idSegundaRevisionFK = idSegundaRevisionFK;
     }
 

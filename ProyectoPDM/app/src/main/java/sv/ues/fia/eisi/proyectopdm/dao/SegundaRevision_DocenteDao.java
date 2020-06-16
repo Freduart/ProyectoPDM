@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -8,6 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision_Docente;
@@ -36,6 +38,9 @@ public interface SegundaRevision_DocenteDao {
     @Query("delete from SegundaRevision_Docente")
     void deleteAllSR_Docente();
 
+    @Query("select * from SegundaRevision_Docente")
+    LiveData<List<SegundaRevision_Docente>> obtenerSegundaRevision_Docente_Todo();
+
     @Query("select Docente.* from SegundaRevision " +
             "inner join SegundaRevision_Docente on SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK "+
             "inner join Docente on Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
@@ -50,4 +55,21 @@ public interface SegundaRevision_DocenteDao {
 
     @Query("select * from SegundaRevision_Docente where idSegundaRevisionFK == :segundarevisionid and carnetDocenteFK == :docenteid")
     SegundaRevision_Docente obtenerSegRev_Docente(int segundarevisionid, String docenteid);
+
+    @Query("select Cargo.* from Docente " +
+            "inner join SegundaRevision_Docente on Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
+            "inner join SegundaRevision on SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK "+
+            "inner join Cargo on Cargo.idCargo=Docente.idCargoFK "+
+            "where SegundaRevision_Docente.carnetDocenteFK=:id")
+    List<Cargo> getCargosDeDocentesEnSR(final String id);
+
+    @Query("select SegundaRevision_Docente.* from SegundaRevision_Docente " +
+            "inner join SegundaRevision on SegundaRevision.idSegundaRevision=SegundaRevision_Docente.idSegundaRevisionFK " +
+            "where SegundaRevision.idSegundaRevision= :segundarevisionid")
+    LiveData<List<SegundaRevision_Docente>> obtenerSegundaRevision_DocenteConSR(int segundarevisionid);
+
+    @Query("select SegundaRevision_Docente.* from Docente " +
+            "inner join SegundaRevision_Docente on Docente.carnetDocente=SegundaRevision_Docente.carnetDocenteFK "+
+            "where Docente.carnetDocente=:id")
+    List<SegundaRevision_Docente> getSR_DconDoc(final String id);
 }

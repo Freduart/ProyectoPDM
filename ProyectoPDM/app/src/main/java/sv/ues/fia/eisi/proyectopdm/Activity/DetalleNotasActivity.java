@@ -87,14 +87,39 @@ public class DetalleNotasActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                notaEstudiante.setText(String.format("%s", revisionRespectiva.getNotaDespuesPrimeraRev()));
+                double notaDespues = revisionRespectiva.getNotaDespuesPrimeraRev();
+                notaEstudiante.setText(String.format("%s", notaDespues));
+                detalleEvaluacion = null;
+                detalleEvaluacion = detalleEvaluacionViewModel.getDetalleEvaluacion(idActual);
+                if(!Double.isNaN(notaDespues)){
+                    detalleEvaluacion.setNota(notaDespues);
+                    detalleEvaluacionViewModel.updateDetalleEvaluacion(detalleEvaluacion);
+                }
                 SegundaRevision segundaRevision = segundaRevisionViewModel.getSegundaRevision(revisionRespectiva.getIdPrimerRevision());
                 if(segundaRevision != null){
                     notaEstudiante.setText(String.format("%s", segundaRevision.getNotaFinalSegundaRev()));
+                    editarPrimeraRevision.setText(R.string.titulo_EA_editarsegrev);
+                    editarPrimeraRevision.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                            Intent intent = new Intent(DetalleNotasActivity.this, NuevaEditarSegundaRevisionActivity.class);
+                            //se mete en un extra del intent, el id
+                            intent.putExtra(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION, segundaRevision.getIdSegundaRevision());
+                            intent.putExtra(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION, EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION);
+                            //inicia la activity
+                            startActivity(intent);
+                        }
+                    });
+                    if(!Double.isNaN(segundaRevision.getNotaFinalSegundaRev())){
+                        detalleEvaluacion.setNota(segundaRevision.getNotaFinalSegundaRev());
+                        detalleEvaluacionViewModel.updateDetalleEvaluacion(detalleEvaluacion);
+                    }
                 }
             } else {
                 editarPrimeraRevision.setEnabled(false);
             }
+            setTitle(R.string.display_nota_alumno_evaluacion);
         } catch (Exception e){
             Toast.makeText(DetalleNotasActivity.this, getText(R.string.inic_notif_eval), Toast.LENGTH_LONG).show();
         }
@@ -127,9 +152,33 @@ public class DetalleNotasActivity extends AppCompatActivity {
             //si la lista no está vacía
             if (!listRevision.isEmpty()) {
                 notaEstudiante.setText(String.format("%s", revisionRespectiva.getNotaDespuesPrimeraRev()));
+                double notaDespues = revisionRespectiva.getNotaDespuesPrimeraRev();
+                detalleEvaluacion = null;
+                detalleEvaluacion = detalleEvaluacionViewModel.getDetalleEvaluacion(idActual);
+                if(!Double.isNaN(notaDespues)){
+                    detalleEvaluacion.setNota(notaDespues);
+                    detalleEvaluacionViewModel.updateDetalleEvaluacion(detalleEvaluacion);
+                }
                 SegundaRevision segundaRevision = segundaRevisionViewModel.getSegundaRevision(revisionRespectiva.getIdPrimerRevision());
                 if(segundaRevision != null){
                     notaEstudiante.setText(String.format("%s", segundaRevision.getNotaFinalSegundaRev()));
+                    editarPrimeraRevision.setText(R.string.titulo_EA_editarsegrev);
+                    editarPrimeraRevision.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                            Intent intent = new Intent(DetalleNotasActivity.this, NuevaEditarSegundaRevisionActivity.class);
+                            //se mete en un extra del intent, el id
+                            intent.putExtra(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION, segundaRevision.getIdSegundaRevision());
+                            intent.putExtra(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION, EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION);
+                            //inicia la activity
+                            startActivity(intent);
+                        }
+                    });
+                    if(!Double.isNaN(segundaRevision.getNotaFinalSegundaRev())){
+                        detalleEvaluacion.setNota(segundaRevision.getNotaFinalSegundaRev());
+                        detalleEvaluacionViewModel.updateDetalleEvaluacion(detalleEvaluacion);
+                    }
                 }
             }
         } catch (Exception e) {

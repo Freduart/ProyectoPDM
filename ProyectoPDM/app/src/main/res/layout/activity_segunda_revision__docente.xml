@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activity.SegundaRevision_DocenteActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorBlanco"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/headline_docente_segundarevision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="@string/docentes_en_revision"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_docentes_segundarev"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_docentes_segundarev"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/spinner_docentes_segundarev"
+            app:layout_constraintTop_toBottomOf="@+id/headline_docente_segundarevision"
+            tools:listitem="@layout/detalleevaluacion_item" />
+
+        <Spinner
+            android:id="@+id/spinner_docentes_segundarev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_docentes_segundarev"
+            app:layout_constraintBottom_toTopOf="@+id/agregar_docente_segundarev"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/agregar_docente_segundarev"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/añadir_estudiante_evaluacion"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_docentes_segundarev"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="ejecutarAñadirRelacion"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

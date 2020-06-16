@@ -12,6 +12,15 @@
         android:stretchColumns="1"
         android:padding="16dp">
 
+        <Button
+            android:id="@+id/agregar_docentes_revision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/agregar_docente_arevision"
+            android:layout_marginVertical="20dp"
+            app:layout_constraintTop_toBottomOf="parent"
+            />
+
         <!--Nota Final-->
         <EditText
             android:id="@+id/edit_notafinal_segundarevision"

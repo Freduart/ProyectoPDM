@@ -103,6 +103,9 @@
     <string name="antesmeridiano">\u0020 AM</string>
     <string name="posmeridiano">\u0020 PM</string>
     <string name="titulo_ver_segundarevision">Detalle de segunda revisión</string>
+    <string name="agregar_docente_arevision">Agregar docentes a revisión</string>
+    <string name="docentes_en_revision">Docentes asignados:</string>
+    <string name="agregar_docentes">Asignación de docentes</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>
