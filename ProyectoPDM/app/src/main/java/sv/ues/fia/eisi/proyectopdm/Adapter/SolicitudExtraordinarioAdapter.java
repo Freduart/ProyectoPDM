@@ -97,10 +97,10 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
             mostramos los valores en cada uno de los TextView y se ciclen con el LiveData
             se declara uno por cada item que querramos mostar en la cardview del recyclerView
             */
-            holder.idSolicitud.setText(currentSoliExtra.getIdSolicitud());
+            holder.idSolicitud.setText(String.valueOf(currentSoliExtra.getIdSolicitud()));
             holder.carnetAlumno.setText(currentSoliExtra.getCarnetAlumnoFK());
-            holder.idEvaluacion.setText(currentSoliExtra.getIdEvaluacion());
-            holder.tipoSolicitud.setText(currentSoliExtra.getTipoSolicitud());
+            holder.idEvaluacion.setText(String.valueOf(currentSoliExtra.getIdEvaluacion()));
+            holder.tipoSolicitud.setText(String.valueOf(currentSoliExtra.getTipoSolicitud()));
             holder.motivoSolicitud.setText(currentSoliExtra.getMotivoSolicitud());
             holder.fechaSolicitud.setText(currentSoliExtra.getFechaSolicitudExtr());
             holder.justificacion.setText(String.valueOf(currentSoliExtra.isJustificacion()));

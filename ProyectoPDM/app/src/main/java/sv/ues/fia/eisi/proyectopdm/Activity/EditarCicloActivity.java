@@ -61,32 +61,28 @@ public class EditarCicloActivity extends AppCompatActivity {
 
     private void guardarCambiosCiclo(){
         try {
-            //Inicializa variable auxiliar para extraer nombreCiclo
-            String nomAux = editNombreCiclo.getText().toString();
             //Se convierte la variable auxiliar a int
-            int nomCiclo = Integer.parseInt(nomAux);
+            int nomCiclo = Integer.parseInt(editNombreCiclo.getText().toString());
 
             //Inicializa el constructor de String para Fecha de Inicio
             StringBuilder fechaIniBuilder = new StringBuilder(10);
             //Concatena los valores de fecha de inicio
-            fechaIniBuilder.append(dpFechaInicio.getDayOfMonth()).append("/").append(dpFechaInicio.getMonth()).append("/").append(dpFechaInicio.getYear());
+            fechaIniBuilder.append(dpFechaInicio.getDayOfMonth()).append("-").append(dpFechaInicio.getMonth()).append("-").append(dpFechaInicio.getYear());
             //Asigna la cadena de texto desde el constructor de String
             String fechaInicio = fechaIniBuilder.toString();
 
             //Inicializa el constructor de String para Fecha de Finalización
             StringBuilder fechaFinBuilder = new StringBuilder(10);
             //Concatena los valores de fecha de finalización
-            fechaIniBuilder.append(dpFechaFin.getDayOfMonth()).append("/").append(dpFechaFin.getMonth()).append("/").append(dpFechaFin.getYear());
+            fechaFinBuilder.append(dpFechaFin.getDayOfMonth()).append("-").append(dpFechaFin.getMonth()).append("-").append(dpFechaFin.getYear());
             //Asigna la cadena de texto desde el constructor de String
-            String fechaFin = fechaIniBuilder.toString();
+            String fechaFin = fechaFinBuilder.toString();
 
-            //Se extrae el idCiclo del Intent
+            //Se extrae el identificador del ciclo a editar del Intent
             Bundle extras = getIntent().getExtras();
-            //Se designa variable auxiliar para id
             int idCiclo = 0;
             if(extras != null){
-                //Se asigna el valor del id (en Intent) en la variable Auxiliar
-                idCiclo = extras.getInt("ID Ciclo Actual");
+                idCiclo = extras.getInt(CicloActivity.IDENTIFICADOR_CICLO);
             }
 
             //Inicializa el ViewModel
@@ -102,7 +98,7 @@ public class EditarCicloActivity extends AppCompatActivity {
             cicloVM.updateCiclo(aux);
 
             //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
-            Toast.makeText(EditarCicloActivity.this, "Actualizado con éxito: " + String.valueOf(nomAux) + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditarCicloActivity.this, "Actualizado con éxito: " + String.valueOf(nomCiclo) + "-"+ fechaInicio + "-" + fechaFin, Toast.LENGTH_SHORT).show();
 
             finish();
         }catch (Exception e){

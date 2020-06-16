@@ -11,18 +11,22 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
+import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
     private SolicitudExtraordinario soliExtraActual;
     private Alumno alumnoActual;
     private Evaluacion evaActual;
+    private TipoEvaluacion tipoEvaActual;
 
     private SolicitudExtraordinarioViewModel soliExtraVM;
     private AlumnoViewModel alumnoVM;
     private EvaluacionViewModel evalVM;
+    private TipoEvaluacionViewModel tipoEvaVM;
 
     private TextView idSoliExtraordinario;
     private TextView idAlumno;
@@ -51,6 +55,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
             alumnoVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
             evalVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+            tipoEvaVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
 
             //Se extrae el id de la solicitud a través del Intent
             Bundle extras = getIntent().getExtras();
@@ -63,12 +68,13 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             soliExtraActual = soliExtraVM.getSoliExtra(idSoliExtra);
             evaActual = evalVM.getEval(soliExtraActual.getIdEvaluacion());
             alumnoActual = alumnoVM.getAlumn(soliExtraActual.getCarnetAlumnoFK());
+            tipoEvaActual = tipoEvaVM.getTipoEvaluacion(soliExtraActual.getTipoSolicitud());
 
             //Se asignan los valores correspondientes en elementos del Layout
             idSoliExtraordinario.setText(String.valueOf(soliExtraActual.getIdSolicitud()));
             idAlumno.setText(alumnoActual.getCarnetAlumno());
-            idEvaluacion.setText(String.valueOf(evaActual.getIdEvaluacion() + " - " + evaActual.getNomEvaluacion()));
-            tipoSoli.setText(soliExtraActual.getTipoSolicitud());
+            idEvaluacion.setText(evaActual.getIdEvaluacion() + " - " + evaActual.getNomEvaluacion());
+            tipoSoli.setText(tipoEvaActual.getIdTipoEvaluacion() + " - " + tipoEvaActual.getTipoEvaluacion());
             motivoSoli.setText(soliExtraActual.getMotivoSolicitud());
             fechaSoli.setText(soliExtraActual.getFechaSolicitudExtr());
             justiSoli.setText(String.valueOf(soliExtraActual.isJustificacion()));

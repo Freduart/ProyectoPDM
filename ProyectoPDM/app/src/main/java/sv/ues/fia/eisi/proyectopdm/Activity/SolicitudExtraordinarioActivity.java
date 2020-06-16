@@ -110,8 +110,8 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.dialog_opciones, null);
         ImageButton del = (ImageButton) v.findViewById(R.id.imBEliminar);
         ImageButton edit = (ImageButton) v.findViewById(R.id.imBEditar);
-        TextView tv = (TextView) v.findViewById(R.id.tvADSoliExt);
-        tv.setText(cod);
+        TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
+        tv.setText(String.valueOf(cod));
         builder.setView(v);
         alertDialog = builder.create();
 
@@ -134,9 +134,8 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    int id = solicitudExtraordinario.getIdEvaluacion();
                     Intent intent = new Intent(SolicitudExtraordinarioActivity.this, EditarSolicitudExtraordinarioActivity.class);
-                    intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, id);
+                    intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
                     startActivity(intent);
                     alertDialog.dismiss();
                 }catch (Exception e){

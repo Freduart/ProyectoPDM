@@ -33,7 +33,6 @@ public class SolicitudExtraordinario {
     )
     private int tipoSolicitud;
     private String motivoSolicitud;
-
     private String fechaSolicitudExtr;
     private boolean justificacion;
 

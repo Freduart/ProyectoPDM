@@ -90,14 +90,26 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             String tipoEvaAux3 = tipoEvalAux2[0].trim();
             int tipoEva = Integer.parseInt(tipoEvaAux3);
 
-            SolicitudExtraordinario soliAux = new SolicitudExtraordinario(carnetAlumno, idEval, tipoEva, motivo, fecha, justi);
+            //Se verifica que no se seleccione Ordinario, por ser una Solicitud Extraordinaria
+            if(tipoEva == 1){
+                //Si se selecciona Ordinario, devuelve a la Activity anterior.
+                Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, "No puede seleccionar tipo Ordinario. Seleccione el tipo de evaluación extraordinaria que desea realizar", Toast.LENGTH_LONG).show();
 
-            soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
-            soliExtraVM.insert(soliAux);
+                finish();
+            } else {
+                //Se crea un objeto para ingresar el registro al VM
+                SolicitudExtraordinario soliAux = new SolicitudExtraordinario(carnetAlumno, idEval, tipoEva, motivo, fecha, justi);
 
-            Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, "Solicitud Insertada con éxito", Toast.LENGTH_SHORT).show();
+                //Se inicializa de nuevo el ViewModel
+                soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
+                //Se inserta la Solicitud
+                soliExtraVM.insert(soliAux);
 
-            finish();
+                //Mensaje de éxito. De existir un error, aparecerá un mensaje de error y la causa atrapada por el catch
+                Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, "Solicitud Insertada con éxito", Toast.LENGTH_SHORT).show();
+
+                finish();
+            }
         } catch(Exception e){
             Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, e.getMessage() + " " +
                     e.getCause(), Toast.LENGTH_SHORT).show();

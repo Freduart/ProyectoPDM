@@ -122,7 +122,7 @@ public class CicloActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     CicloVM.deleteCiclo(ciclo);
-                    Toast.makeText(CicloActivity.this, "Local" + " " + ciclo.getIdCiclo() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CicloActivity.this, "Ciclo" + " " + ciclo.getIdCiclo() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(CicloActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();

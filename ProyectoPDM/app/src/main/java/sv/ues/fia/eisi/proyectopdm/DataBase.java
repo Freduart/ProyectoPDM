@@ -292,6 +292,7 @@ public abstract class DataBase extends RoomDatabase {
             encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate"));
             segundaRevisionDao.insertSegundaRevision(new SegundaRevision(1, "9/06/2020", "12:22:00",10,"", "8/06/2020"));
             segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
+            solicitudExtraordinarioDao.insertSolicitudExtraordinario(new SolicitudExtraordinario("PP15001", 1, 3, "Enfermedad", "16-06-2020", true));
             return null;
         }
     }

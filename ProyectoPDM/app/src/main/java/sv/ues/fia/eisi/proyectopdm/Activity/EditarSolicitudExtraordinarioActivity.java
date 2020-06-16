@@ -75,13 +75,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
                     for (TipoEvaluacion x : tiposEvaluaciones) {
-                        String cadena = "Ordinario";
-                        String cadValida = x.getTipoEvaluacion();
-                        if(cadValida.equals(cadena)){
-                            break;
-                        }else{
                             tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+" - " + x.getTipoEvaluacion());
-                        }
                     }
                     adaptadorSpinnerTipoEval.notifyDataSetChanged();
                 }
@@ -147,24 +141,34 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 idSoliExtra = extras.getInt(SolicitudExtraordinarioActivity.IDENTIFICADOR_SOLI_EXTRA);
             }
 
-            //Se inicializa de nuevo el ViewModel
-            soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
+            //Se verifica que no se seleccione Ordinario, por ser una Solicitud Extraordinaria
+            if(tipoEva == 1){
+                //Si se selecciona Ordinaria, retorna a la Activity anterior.
+                Toast.makeText(EditarSolicitudExtraordinarioActivity.this, "No puede seleccionar tipo Ordinario. Seleccione el tipo de evaluación extraordinaria que desea realizar", Toast.LENGTH_LONG).show();
 
-            //Se crea una instancia de la clase SolicitudExtraordinario para operar el VM
-            SolicitudExtraordinario soliAux = soliExtraVM.getSoliExtra(idSoliExtra);
-            soliAux.setCarnetAlumnoFK(carnetAlumno);
-            soliAux.setIdEvaluacion(idEval);
-            soliAux.setMotivoSolicitud(motivo);
-            soliAux.setFechaSolicitudExtr(fecha);
-            soliAux.setJustificacion(justi);
+                finish();
+            } else {
+                //Se inicializa de nuevo el ViewModel
+                soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
 
-            //Se actualiza la Solicitud
-            soliExtraVM.update(soliAux);
+                //Se crea una instancia de la clase SolicitudExtraordinario para operar el VM
+                SolicitudExtraordinario soliAux = soliExtraVM.getSoliExtra(idSoliExtra);
+                //Se ingresan los campos
+                soliAux.setCarnetAlumnoFK(carnetAlumno);
+                soliAux.setIdEvaluacion(idEval);
+                soliAux.setTipoSolicitud(tipoEva);
+                soliAux.setMotivoSolicitud(motivo);
+                soliAux.setFechaSolicitudExtr(fecha);
+                soliAux.setJustificacion(justi);
 
-            //Mensaje de éxito de la operación. En caso de error, es atrapado y se muestra en el Toast del segmento de catch
-            Toast.makeText(EditarSolicitudExtraordinarioActivity.this, "Solicitud Actualizada con éxito", Toast.LENGTH_SHORT).show();
+                //Se actualiza la Solicitud
+                soliExtraVM.update(soliAux);
 
-            finish();
+                //Mensaje de éxito de la operación. En caso de error, es atrapado y se muestra en el Toast del segmento de catch
+                Toast.makeText(EditarSolicitudExtraordinarioActivity.this, "Solicitud Actualizada con éxito", Toast.LENGTH_SHORT).show();
+
+                finish();
+            }
         } catch(Exception e){
             Toast.makeText(EditarSolicitudExtraordinarioActivity.this, e.getMessage() + " " +
                     e.getCause(), Toast.LENGTH_SHORT).show();
