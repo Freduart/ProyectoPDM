@@ -148,6 +148,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Strings para Alumno -->
+    <string name="tituloParaAlumno">Alumno</string>
     <string name="carnet_alumno">Carnet:</string>
     <string name="carnet_alumno_list">CarnetResult</string>
     <string name="nombre_alumno">Nombre: </string>
@@ -160,6 +161,7 @@
     <string name="correo_alumno_list">CorreoResult</string>
 
     <!-- Strings para Agregar Alumno -->
+    <string name="titulo_Add_Alumn">Añadir alumno</string>
     <string name="carnet_addhint_Alumno">DUE</string>
     <string name="nombre_addhint_Alumno">Nombre</string>
     <string name="apellidos_addhint_Alumno">Apellidos</string>

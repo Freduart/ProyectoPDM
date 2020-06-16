@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -17,20 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.AlumnoAdapter;
-import sv.ues.fia.eisi.proyectopdm.Adapter.EscuelaAdapter;
-import sv.ues.fia.eisi.proyectopdm.Adapter.EvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
-import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
 /*
 Funcionalidad de Alumno enlace con sus pantallas correspondientes
@@ -44,7 +34,7 @@ public class AlumnoActivity extends AppCompatActivity {
     public static final String OPERACION_ALUMNO = "Operacion_AE_Alumno";
     public static final String IDENTIFICADOR_ALUMNO = "ID_Alumno_Actual";
 
-    public void addAlumno (View view){
+    public void addAlumno(View view) {
         try {
             Intent intent = new Intent(this, AgregarAlumnoActivity.class);
             startActivity(intent);
@@ -59,41 +49,41 @@ public class AlumnoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alumno);
 
-        RecyclerView AlumnoRV=findViewById(R.id.recycler_alum_view);
+        RecyclerView AlumnoRV = findViewById(R.id.recycler_alum_view);
         AlumnoRV.setLayoutManager(new LinearLayoutManager(this));
         AlumnoRV.setHasFixedSize(true);
 
-        final AlumnoAdapter adapter=new AlumnoAdapter();
+        final AlumnoAdapter adapter = new AlumnoAdapter();
         AlumnoRV.setAdapter(adapter);
 
-        alumnoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
+        alumnoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
         alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
-                    @Override
-                    public void onChanged(List<Alumno> alumnos) {
-                        adapter.setAlumnos(alumnos);
-                    }
+            @Override
+            public void onChanged(List<Alumno> alumnos) {
+                adapter.setAlumnos(alumnos);
+            }
         });
 
 
         //Consultar alumno
         //Funcionalidad al hacer click sobre el objeto de la lista
-        try{
+        try {
             adapter.setOnItemClickListener(new AlumnoAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Alumno alumno) {
 
                     //Opciones a mostrar
                     //Guardamos el id del item seleccionado para la nueva pantalla
-                    String carnet=alumno.getCarnetAlumno();
+                    String carnet = alumno.getCarnetAlumno();
                     //Inicializamos la pantalla con los datos del alumno seleccionado
-                    Intent intent=new Intent(AlumnoActivity.this,verAlumnoActivity.class);
+                    Intent intent = new Intent(AlumnoActivity.this, verAlumnoActivity.class);
                     //Lo enlazamos con un putExtra para que no haya perdida de informacion
-                    intent.putExtra(IDENTIFICADOR_ALUMNO,carnet);
+                    intent.putExtra(IDENTIFICADOR_ALUMNO, carnet);
                     startActivity(intent);
                 }
             });
-        }catch (Exception e){
-            Toast.makeText(this, "ERROR AL VISUALIZAR DATOS "+e, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "ERROR AL VISUALIZAR DATOS " + e, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -101,7 +91,7 @@ public class AlumnoActivity extends AppCompatActivity {
         adapter.setOnLongClickListener(new AlumnoAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(Alumno alumno) {
-                String id=alumno.getCarnetAlumno();
+                String id = alumno.getCarnetAlumno();
                 createCustomDialog(alumno).show();
             }
         });
@@ -113,10 +103,10 @@ public class AlumnoActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         //Opciones a mostrar
-        View view = inflater.inflate(R.layout.dialog_opciones_cargo, null);
-        ImageButton editar = view.findViewById(R.id.imBEditarCargo);
-        ImageButton eliminar = view.findViewById(R.id.imBEliminarCargo);
-        TextView textViewv = view.findViewById(R.id.tvADCargo);     //Enlazar el carnet con el textView que mostrara el carnet
+        View view = inflater.inflate(R.layout.dialog_opciones, null);
+        ImageButton editar = view.findViewById(R.id.imBEditar);
+        ImageButton eliminar = view.findViewById(R.id.imBEliminar);
+        TextView textViewv = view.findViewById(R.id.tituloAlert);     //Enlazar el carnet con el textView que mostrara el carnet
         textViewv.setText(alumno.getCarnetAlumno());
         builder.setView(view);
         alertDialog = builder.create();
@@ -134,7 +124,7 @@ public class AlumnoActivity extends AppCompatActivity {
                     intent.putExtra(OPERACION_ALUMNO, EDITAR_ALUMNO);
                     startActivity(intent);
                 } catch (Exception e) {
-                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR EDITAR "+e, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR EDITAR " + e, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -150,7 +140,7 @@ public class AlumnoActivity extends AppCompatActivity {
                     alertDialog.dismiss();
 
                 } catch (Exception e) {
-                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR BORRAR "+e , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR BORRAR " + e, Toast.LENGTH_SHORT).show();
                 }
             }
         });

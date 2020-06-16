@@ -46,7 +46,6 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_agregar_alumno);
 
-
             //Enlaces con el layout
             et_carnet=(EditText)findViewById(R.id.et_Carnet);
             et_nombre=(EditText)findViewById(R.id.et_Nombre);
