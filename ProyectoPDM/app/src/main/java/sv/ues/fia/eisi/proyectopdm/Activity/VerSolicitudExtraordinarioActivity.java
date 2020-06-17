@@ -77,7 +77,10 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             tipoSoli.setText(tipoEvaActual.getIdTipoEvaluacion() + " - " + tipoEvaActual.getTipoEvaluacion());
             motivoSoli.setText(soliExtraActual.getMotivoSolicitud());
             fechaSoli.setText(soliExtraActual.getFechaSolicitudExtr());
-            justiSoli.setText(String.valueOf(soliExtraActual.isJustificacion()));
+            if(soliExtraActual.isJustificacion()==true)
+                justiSoli.setText("Justificado");
+            else
+                justiSoli.setText("No justificado");
 
             //Titulo personalizado para Activity
             setTitle("Detalle de Solicitud Extraordinaria");

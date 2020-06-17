@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
+import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<SolicitudExtraordinarioAdapter.SolicitudExtraordinarioHolder>{
 
@@ -40,8 +42,8 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
     class SolicitudExtraordinarioHolder extends RecyclerView.ViewHolder {
         private TextView idSolicitud;
         private TextView carnetAlumno;
-        private TextView idEvaluacion;
-        private TextView tipoSolicitud;
+        //private TextView idEvaluacion;
+        //private TextView tipoSolicitud;
         private TextView motivoSolicitud;
         private TextView fechaSolicitud;
         private TextView justificacion;
@@ -50,11 +52,12 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
             super(itemView);
             idSolicitud = itemView.findViewById(R.id.idSoliExtra);
             carnetAlumno = itemView.findViewById(R.id.seCarnetAlumno);
-            idEvaluacion = itemView.findViewById(R.id.seIdEva);
-            tipoSolicitud = itemView.findViewById(R.id.seTipoSoli);
+
+            //idEvaluacion = itemView.findViewById(R.id.seIdEva);     //A modificar
+            //tipoSolicitud = itemView.findViewById(R.id.seTipoSoli); //Modificar
             motivoSolicitud = itemView.findViewById(R.id.seMotivo);
             fechaSolicitud = itemView.findViewById(R.id.seFecha);
-            justificacion = itemView.findViewById(R.id.seJusti);
+            justificacion = itemView.findViewById(R.id.seJusti);    //Modificar
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,6 +95,8 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
         @Override
         public void onBindViewHolder(@NonNull SolicitudExtraordinarioHolder holder, int position) {
             SolicitudExtraordinario currentSoliExtra = solicitudesExtra.get(position);
+            //TipoEvaluacion currentTipoEva=tipoExtra.get(position);
+            //Evaluacion currentEvaluacion=evaluacionExtra.get(position);
             /*
             Con el objeto holder recibimos objetos de tipo String y
             mostramos los valores en cada uno de los TextView y se ciclen con el LiveData
@@ -99,11 +104,14 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
             */
             holder.idSolicitud.setText(String.valueOf(currentSoliExtra.getIdSolicitud()));
             holder.carnetAlumno.setText(currentSoliExtra.getCarnetAlumnoFK());
-            holder.idEvaluacion.setText(String.valueOf(currentSoliExtra.getIdEvaluacion()));
-            holder.tipoSolicitud.setText(String.valueOf(currentSoliExtra.getTipoSolicitud()));
+            //holder.idEvaluacion.setText(String.valueOf(currentSoliExtra.getIdEvaluacion()));
+            //holder.tipoSolicitud.setText(String.valueOf(currentSoliExtra.getTipoSolicitud()));
             holder.motivoSolicitud.setText(currentSoliExtra.getMotivoSolicitud());
             holder.fechaSolicitud.setText(currentSoliExtra.getFechaSolicitudExtr());
-            holder.justificacion.setText(String.valueOf(currentSoliExtra.isJustificacion()));
+            if(currentSoliExtra.isJustificacion()==true)
+                holder.justificacion.setText("Justificado");
+            else
+                holder.justificacion.setText("No justificado");
         }
 
     @Override
