@@ -27,6 +27,7 @@ public class PrimeraRevision {
     private boolean estadoPrimeraRev;
     private double notasAntesPrimeraRev;
     private double notaDespuesPrimeraRev;
+    private String observacionesPrimeraRev;
 
     public PrimeraRevision(@NonNull String idLocalFK, int idDetalleEvFK, String fechaSolicitudPrimRev, boolean estadoPrimeraRev, double notasAntesPrimeraRev, double notaDespuesPrimeraRev, String observacionesPrimeraRev) {
         this.idLocalFK = idLocalFK;
@@ -103,8 +104,4 @@ public class PrimeraRevision {
     public void setObservacionesPrimeraRev(String observacionesPrimeraRev) {
         this.observacionesPrimeraRev = observacionesPrimeraRev;
     }
-
-    private String observacionesPrimeraRev;
-
-
 }
