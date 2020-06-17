@@ -31,7 +31,7 @@
             android:id="@+id/recycler_soliExtra_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/ciclo_item"/>
+            tools:listitem="@layout/soli_extra_item"/>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_soliExtra_button"

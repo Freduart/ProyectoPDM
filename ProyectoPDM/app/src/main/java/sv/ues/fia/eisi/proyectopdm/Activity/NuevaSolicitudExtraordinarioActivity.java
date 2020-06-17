@@ -94,8 +94,6 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             if(tipoEva == 1){
                 //Si se selecciona Ordinario, devuelve a la Activity anterior.
                 Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, "No puede seleccionar tipo Ordinario. Seleccione el tipo de evaluación extraordinaria que desea realizar", Toast.LENGTH_LONG).show();
-
-                finish();
             } else {
                 //Se crea un objeto para ingresar el registro al VM
                 SolicitudExtraordinario soliAux = new SolicitudExtraordinario(carnetAlumno, idEval, tipoEva, motivo, fecha, justi);

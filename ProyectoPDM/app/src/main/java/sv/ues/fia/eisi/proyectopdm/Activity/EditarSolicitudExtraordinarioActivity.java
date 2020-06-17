@@ -75,7 +75,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
                     for (TipoEvaluacion x : tiposEvaluaciones) {
-                            tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+" - " + x.getTipoEvaluacion());
+                        tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+ " - "+x.getTipoEvaluacion());
                     }
                     adaptadorSpinnerTipoEval.notifyDataSetChanged();
                 }
@@ -145,8 +145,6 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             if(tipoEva == 1){
                 //Si se selecciona Ordinaria, retorna a la Activity anterior.
                 Toast.makeText(EditarSolicitudExtraordinarioActivity.this, "No puede seleccionar tipo Ordinario. Seleccione el tipo de evaluación extraordinaria que desea realizar", Toast.LENGTH_LONG).show();
-
-                finish();
             } else {
                 //Se inicializa de nuevo el ViewModel
                 soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
