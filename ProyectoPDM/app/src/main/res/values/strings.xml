@@ -227,4 +227,6 @@
     <string name="textIdEnc">ID</string>
     <string name="textNomEnc">NOMBRE</string>
     <string name="hintNomEnc">Nombre Encargado Impresión</string>
+
+    <string name="textCerrarSesion">CERRAR SESIÓN</string>
 </resources>

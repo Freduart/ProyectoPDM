@@ -1,15 +1,26 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
+
+import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.USERNAME;
+import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.USER_PASSWORD;
 
 /*
 menu principal de la aplicaicon en este tendra acceso el usuario asginado mas adelante
@@ -17,7 +28,6 @@ menu principal de la aplicaicon en este tendra acceso el usuario asginado mas ad
 
 public class MenuActivity extends AppCompatActivity {
     ImageView imageView1, imageView2, imageView3, imageView4;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +39,29 @@ public class MenuActivity extends AppCompatActivity {
         imageView4=(ImageView)findViewById(R.id.btn4);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater=getMenuInflater();
+        menuInflater.inflate(R.menu.menu_activity_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.usuario:
+                customAlertDialog().show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     /*
-    Redireccion segun boton cada boton tendra un redireccionamiento diferente es conveniente hacerlo en
-    un solo metodo pero tambien puede ser practico hacerlo en diferentes metodos, el siguiente metodo sera de redireccionamiento
-    a la lista de alumnos
-    */
+            Redireccion segun boton cada boton tendra un redireccionamiento diferente es conveniente hacerlo en
+            un solo metodo pero tambien puede ser practico hacerlo en diferentes metodos, el siguiente metodo sera de redireccionamiento
+            a la lista de alumnos
+            */
     //Redirect de btnAlumno_menu
     public void alumnoRedirect(View view){
         Intent intent=new Intent(this, AlumnoActivity.class);
@@ -127,4 +155,31 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
+    public AlertDialog customAlertDialog(){
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        LayoutInflater inflater=getLayoutInflater();
+        View v = inflater.inflate(R.layout.opciones_usuario, null);
+        Button btnCerrar=(Button)v.findViewById(R.id.btnCerrarSesion);
+        builder.setView(v);
+        alertDialog = builder.create();
+
+        btnCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceSingleton.getInstance().writePreference(USERNAME,"");
+                PreferenceSingleton.getInstance().writePreference(USER_PASSWORD,"");
+                Intent intent=new Intent(MenuActivity.this,LoginActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Hasta Pronto!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+        return alertDialog;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

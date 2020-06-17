@@ -50,10 +50,14 @@ public class LoginActivity extends AppCompatActivity {
 
         usuarioViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(UsuarioViewModel.class);
 
-        sharedPreferences=getSharedPreferences("CredencialesUsuario",LoginActivity.MODE_PRIVATE);
-        sharedPreferences=getPreferences(LoginActivity.MODE_PRIVATE);
-        String usuario=sharedPreferences.getString(USERNAME,"");
-        String password=sharedPreferences.getString(USER_PASSWORD,"");
+        PreferenceSingleton.getInstance().Initialize(getApplicationContext());
+
+        //sharedPreferences=getSharedPreferences("CredencialesUsuario",LoginActivity.MODE_PRIVATE);
+        //sharedPreferences=getPreferences(LoginActivity.MODE_PRIVATE);
+        String usuario=PreferenceSingleton.getInstance().readPreference(USERNAME);
+        String password=PreferenceSingleton.getInstance().readPreference(USER_PASSWORD);
+        //String usuario=sharedPreferences.getString(USERNAME,"");
+        //String password=sharedPreferences.getString(USER_PASSWORD,"");
         if(!usuario.equals("") && !password.equals("")){
             final String[] credenciales = {usuario, password};
             try {
@@ -72,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra(USER_ROL, usuarioIngresado.getRol());
                 startActivity(intent);
                 Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
+                finish();
             } else {
                 Toast.makeText(this, "Usuario o contraseña incorectos.", Toast.LENGTH_SHORT).show();
             }
@@ -95,13 +100,16 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra(USER_ROL, usuarioIngresado.getRol());
                                         startActivity(intent);
 
-                                        SharedPreferences sharedPreferences=getPreferences(LoginActivity.MODE_PRIVATE);
+                                        /*SharedPreferences sharedPreferences=getPreferences(LoginActivity.MODE_PRIVATE);
                                         SharedPreferences.Editor editor=sharedPreferences.edit();
                                         editor.putString(USERNAME,usuario);
                                         editor.putString(USER_PASSWORD,password);
-                                        editor.commit();
+                                        editor.commit();*/
+                                        PreferenceSingleton.getInstance().writePreference(USERNAME,usuario);
+                                        PreferenceSingleton.getInstance().writePreference(USER_PASSWORD,password);
 
                                         Toast.makeText(v.getContext(), "Bienvenido!", Toast.LENGTH_SHORT).show();
+                                        finish();
                                     } else {
                                         Toast.makeText(v.getContext(), "Usuario o contraseña incorectos.", Toast.LENGTH_SHORT).show();
                                     }
@@ -116,5 +124,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
