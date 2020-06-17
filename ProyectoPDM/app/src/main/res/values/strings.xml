@@ -18,6 +18,8 @@
     <string name="hintMotivoSoli">Razón de la Solicitud</string>
     <string name="hintFechaSoli">Fecha</string>
 
+    <string-array name="idUsuario">1</string-array>
+
     <!-- Strings para Login -->
     <string name="Email">Correo</string>
     <string name="Password">Contraseña</string>

@@ -20,15 +20,22 @@ public class Docente {
             childColumns = "idCargoFK"
     )
     private int idCargoFK;
+    @ForeignKey(
+            entity =  Usuario.class,
+            parentColumns =  "idUsuario",
+            childColumns = "idUsuarioFk"
+    )@NonNull
+    private int idUsuarioFk;
     private String nomDocente;
     private String apellidoDocente;
     private String correoDocente;
     private String telefonoDocente;
 
 
-    public Docente(@NonNull String carnetDocente, int idCargoFK, String nomDocente, String apellidoDocente, String correoDocente, String telefonoDocente) {
+    public Docente(@NonNull String carnetDocente, int idCargoFK, int idUsuarioFk, String nomDocente, String apellidoDocente, String correoDocente, String telefonoDocente) {
         this.carnetDocente = carnetDocente;
         this.idCargoFK = idCargoFK;
+        this.idUsuarioFk = idUsuarioFk;
         this.nomDocente = nomDocente;
         this.apellidoDocente = apellidoDocente;
         this.correoDocente = correoDocente;
@@ -50,6 +57,15 @@ public class Docente {
 
     public void setIdCargoFK(int idCargoFK) {
         this.idCargoFK = idCargoFK;
+    }
+
+    @NonNull
+    public int getIdUsuarioFk() {
+        return idUsuarioFk;
+    }
+
+    public void setIdUsuarioFk(@NonNull int idUsuarioFk) {
+        this.idUsuarioFk = idUsuarioFk;
     }
 
     public String getNomDocente() {

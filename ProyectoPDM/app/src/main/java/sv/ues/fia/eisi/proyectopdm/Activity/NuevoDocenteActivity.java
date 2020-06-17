@@ -112,7 +112,7 @@ public class NuevoDocenteActivity extends AppCompatActivity {
                 String correoDocente=textCorreoDocente.getEditText().getText().toString();
                 String telefonoDocente=textTelefonoDocente.getEditText().getText().toString();
 
-                Docente docente=new Docente(carnetDocente,idCargo,nomDocente,apellidoDocente,correoDocente,telefonoDocente);
+                Docente docente=new Docente(carnetDocente,idCargo, 1, nomDocente,apellidoDocente,correoDocente,telefonoDocente);
                 docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
                 docenteViewModel.insertDocente(docente);
                 Toast.makeText(NuevoDocenteActivity.this, "Guardado Exitosamente", Toast.LENGTH_SHORT).show();

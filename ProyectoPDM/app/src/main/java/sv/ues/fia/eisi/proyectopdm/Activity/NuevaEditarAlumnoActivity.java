@@ -123,6 +123,7 @@ public class NuevaEditarAlumnoActivity extends AppCompatActivity {
             alumno.setNombre(nombre);
             alumno.setApellido(apellidos);
             alumno.setCorreo(correo);
+            alumno.setIdUsuarioFk(1);
             //alumno.setCarrera(String.valueOf(carreraSelect));
 
             //Actualizamos el alumno

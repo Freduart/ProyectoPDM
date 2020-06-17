@@ -21,6 +21,7 @@ public class NuevoEncargadoImpresionActivity extends AppCompatActivity {
 
     TextInputLayout textNomenc;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
+    String idU;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class NuevoEncargadoImpresionActivity extends AppCompatActivity {
         actionBar.setTitle("NUEVO ENCARGADO");
 
         textNomenc=(TextInputLayout)findViewById(R.id.textNomEncNuevo);
+
     }
 
     @Override
@@ -55,7 +57,7 @@ public class NuevoEncargadoImpresionActivity extends AppCompatActivity {
             textNomenc.setError("Ingrese El Nombre Del Nuevo Encargado.");
         }else{
             String nomEnc=textNomenc.getEditText().getText().toString();
-            EncargadoImpresion encargadoImpresion=new EncargadoImpresion(nomEnc);
+            EncargadoImpresion encargadoImpresion=new EncargadoImpresion(nomEnc, 1);
             try {
                 encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
                 encargadoImpresionViewModel.insert(encargadoImpresion);

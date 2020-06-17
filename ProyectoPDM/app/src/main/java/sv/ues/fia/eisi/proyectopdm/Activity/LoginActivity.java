@@ -37,12 +37,13 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USERNAME = "USER_NAME";
     public static final String USER_ROL = "USER_ROL";
 
-    UsuarioViewModel usuarioViewModel;
+
+
     EditText usernom, passuser;
     UsuarioDao usuarioDao;
     Button login;
     LiveData<List<Usuario>> todoslosusuarios;
-
+    UsuarioViewModel usuarioViewModel;
     UsuarioRepository usuarioRepository;
 
     @Override
@@ -55,14 +56,13 @@ public class LoginActivity extends AppCompatActivity {
         passuser = (EditText) findViewById(R.id.etPassword);
         login = (Button) findViewById(R.id.btnLogin);
 
-        ArrayList<String> usersNomPass = new ArrayList<>();
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     final String usuario = usernom.getText().toString().trim();
                     final String password = passuser.getText().toString().trim();
+
 
                     Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                     startActivity(intent);

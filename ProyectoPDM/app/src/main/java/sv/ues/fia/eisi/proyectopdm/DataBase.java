@@ -66,7 +66,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class, Usuario.class,
-    }, version = 6)
+    }, version = 7)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -214,9 +214,12 @@ public abstract class DataBase extends RoomDatabase {
             usuarioDao.insertUser(new Usuario("ElmerCarballo", "elmerC", 2));
             usuarioDao.insertUser(new Usuario("FredyM", "fredyM", 3));
             usuarioDao.insertUser(new Usuario("RubPer", "rubper", 3));
+            usuarioDao.insertUser(new Usuario("Arely", "arely1", 3));
+            usuarioDao.insertUser(new Usuario("Efrain", "efrain", 3));
+            usuarioDao.insertUser(new Usuario("Jairo", "jairo", 3));
+            usuarioDao.insertUser(new Usuario("Julio", "julio", 3));
             usuarioDao.insertUser(new Usuario("TaniaTorres", "ttorres", 1));
             usuarioDao.insertUser(new Usuario("Gamero", "gamero", 2));
-            usuarioDao.insertUser(new Usuario("Corcio", "corcio", 3));
             usuarioDao.insertUser(new Usuario("Eliseo", "eliseo", 4));
             usuarioDao.insertUser(new Usuario("Admin", "admin123", 5));
             escuelaDao.insert(new Escuela("Escuela de Ingeniería de Sistemas Informáticos","Ingenieria de Sistemas Informaticos"));
@@ -241,12 +244,12 @@ public abstract class DataBase extends RoomDatabase {
             asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
             asignaturaDao.insertAsignatura(new Asignatura("FQR215", 6, "Fisicoquímica II"));
             asignaturaDao.insertAsignatura(new Asignatura("OPU215", 7, "Operaciones Unitarias II"));
-            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com"));
-            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com"));
-            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","prueba@gmail.com"));
+            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",4));
+            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 6));
+            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com", 5));
+            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com", 7));
+            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 8));
+            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","prueba@gmail.com", 9));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "TAD115", 2, 1, 2));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
             inscripcionDao.insertInscripcion(new Inscripcion("MG17030","PDM115", 2, 1, 2));
@@ -278,20 +281,20 @@ public abstract class DataBase extends RoomDatabase {
             cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. de CC. Básicas de la Ingeniería Química"));
             cargoDao.insertCargo(new Cargo(8, "Jefe de Dpto de Ciencias de la Ingeniería Química"));
             cargoDao.insertCargo(new Cargo(8, "DOCENTE EIQA"));
-            docenteDao.insertDocente(new Docente("DOCEISI1", 1, "Rudy Wilfredo", "Chicas", "chicas@ues.edu.sv", "78923456"));
-            docenteDao.insertDocente(new Docente("DOCEISI2", 2, "Luis", "Escobar Brizuela", "brizuela@ues.edu.sv", "74589012"));
-            docenteDao.insertDocente(new Docente("DOCEISI3", 3, "Bladimir", "Díaz Campos", "diaz@ues.edu.sv", "63256113"));
-            docenteDao.insertDocente(new Docente("DOCEISI4", 4, "Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "68793456"));
-            docenteDao.insertDocente(new Docente("DOCEISI5", 5, "Carmeline", "Góchez de Peñate", "gochez@ues.edu.sv", "78945701"));
-            docenteDao.insertDocente(new Docente("DOCEISI6", 6, "Cesar Augusto", "González", "gonzalez@ues.edu.sv", "68923457"));
-            docenteDao.insertDocente(new Docente("DOCEISI7", 6, "Jorge Enrique", "Iraheta Tobías", "iraheta@ues.edu.sv", "63145679"));
-            docenteDao.insertDocente(new Docente("DOCISI8", 6, "José Mauricio", "Bonilla", "bonilla@ues.edu.sv", "68947800"));
-            docenteDao.insertDocente(new Docente("DOCEISI9", 6, "Edgar William", "Castellanos Sanchez", "castellanos@ues.edu.sv", "75674678"));
-            docenteDao.insertDocente(new Docente("DOCEIQA1", 7, "Tania", "Torres Rivera", "torres@ues.edu.sv", "64589879"));
-            docenteDao.insertDocente(new Docente("DOCEIQA2", 8, "Ana Isabel", "Pereira de Ruíz", "pereira@ues.edu.sv", "76564578"));
-            docenteDao.insertDocente(new Docente("DOCEIQA3", 9, "Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "65789034"));
-            docenteDao.insertDocente(new Docente("DOCEIQA4", 10, "Miguel Francisco", "Arévalo Martínez", "arevalo@ues.edu.sv", "67365333"));
-            docenteDao.insertDocente(new Docente("DOCEIQA5", 11, "Delmy del Carmen", "Rico Peña", "rico@ues.edu.sv", "67887790"));
+            docenteDao.insertDocente(new Docente("DOCEISI1", 1, 1, "Rudy Wilfredo", "Chicas", "chicas@ues.edu.sv", "78923456"));
+            docenteDao.insertDocente(new Docente("DOCEISI2", 2,2, "Luis", "Escobar Brizuela", "brizuela@ues.edu.sv", "74589012"));
+            docenteDao.insertDocente(new Docente("DOCEISI3", 3, 3,"Bladimir", "Díaz Campos", "diaz@ues.edu.sv", "63256113"));
+            docenteDao.insertDocente(new Docente("DOCEISI4", 4, 10,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "68793456"));
+            docenteDao.insertDocente(new Docente("DOCEISI5", 5, 11,"Carmeline", "Góchez de Peñate", "gochez@ues.edu.sv", "78945701"));
+            docenteDao.insertDocente(new Docente("DOCEISI6", 6, 11,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "68923457"));
+            docenteDao.insertDocente(new Docente("DOCEISI7", 6, 10,"Jorge Enrique", "Iraheta Tobías", "iraheta@ues.edu.sv", "63145679"));
+            docenteDao.insertDocente(new Docente("DOCISI8", 6, 3,"José Mauricio", "Bonilla", "bonilla@ues.edu.sv", "68947800"));
+            docenteDao.insertDocente(new Docente("DOCEISI9", 6, 2,"Edgar William", "Castellanos Sanchez", "castellanos@ues.edu.sv", "75674678"));
+            docenteDao.insertDocente(new Docente("DOCEIQA1", 7, 1,"Tania", "Torres Rivera", "torres@ues.edu.sv", "64589879"));
+            docenteDao.insertDocente(new Docente("DOCEIQA2", 8, 1,"Ana Isabel", "Pereira de Ruíz", "pereira@ues.edu.sv", "76564578"));
+            docenteDao.insertDocente(new Docente("DOCEIQA3", 9, 1,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "65789034"));
+            docenteDao.insertDocente(new Docente("DOCEIQA4", 10, 2,"Miguel Francisco", "Arévalo Martínez", "arevalo@ues.edu.sv", "67365333"));
+            docenteDao.insertDocente(new Docente("DOCEIQA5", 11, 10,"Delmy del Carmen", "Rico Peña", "rico@ues.edu.sv", "67887790"));
             localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
             localDao.insertarLocal(new Local("LComp4", "Laboratorio 2", "Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
             localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
@@ -304,7 +307,7 @@ public abstract class DataBase extends RoomDatabase {
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "observacion 1"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "observacion 2"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 3, "9/06/2020", true, 6f, 8f, "observacion 2"));
-            encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate"));
+            encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 12));
             segundaRevisionDao.insertSegundaRevision(new SegundaRevision(1, "9/06/2020", "12:22:00",10,"", "8/06/2020"));
             segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
             solicitudExtraordinarioDao.insertSolicitudExtraordinario(new SolicitudExtraordinario("PP15001", 1, 3, "Enfermedad", "16-06-2020", true));

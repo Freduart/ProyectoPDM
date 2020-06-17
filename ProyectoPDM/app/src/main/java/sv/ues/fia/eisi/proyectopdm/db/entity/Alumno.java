@@ -21,14 +21,21 @@ public class Alumno {
     private String apellido;
     private String carrera;
     private String correo;
+    @ForeignKey(
+            entity = Usuario.class,
+            parentColumns = "idUsuario",
+            childColumns = "idUsuarioFk"
+    )@NonNull
+    private int idUsuarioFk;
 
 
-    public Alumno(@NonNull String carnetAlumno, String nombre, String apellido, String carrera, String correo) {
+    public Alumno(@NonNull String carnetAlumno, String nombre, String apellido, String carrera, String correo, int idUsuarioFk) {
         this.carnetAlumno = carnetAlumno;
         this.nombre = nombre;
         this.apellido = apellido;
         this.carrera = carrera;
         this.correo=correo;
+        this.idUsuarioFk = idUsuarioFk;
     }
 
     @NonNull
@@ -70,6 +77,15 @@ public class Alumno {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    @NonNull
+    public int getIdUsuarioFk() {
+        return idUsuarioFk;
+    }
+
+    public void setIdUsuarioFk(@NonNull int idUsuarioFk) {
+        this.idUsuarioFk = idUsuarioFk;
     }
 
     @NonNull

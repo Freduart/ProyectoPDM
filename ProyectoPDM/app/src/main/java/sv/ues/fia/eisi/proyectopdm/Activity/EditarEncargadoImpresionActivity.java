@@ -77,7 +77,7 @@ public class EditarEncargadoImpresionActivity extends AppCompatActivity {
             textNomenc.setError("Ingrese El Nombre Del Nuevo Encargado.");
         }else{
             String nomEnc=textNomenc.getEditText().getText().toString();
-            EncargadoImpresion encargadoImpresion=new EncargadoImpresion(nomEnc);
+            EncargadoImpresion encargadoImpresion=new EncargadoImpresion(nomEnc, 1);
             encargadoImpresion.setIdEncargadoImpresion(encargadoImpresionActual.getIdEncargadoImpresion());
             try {
                 encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
