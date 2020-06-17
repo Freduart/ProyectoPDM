@@ -2,6 +2,7 @@ package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,25 +11,33 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.UsuarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.dao.UsuarioDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
 
 /*
 Login sin restriccion de acceso... De momento
  */
 
 public class LoginActivity extends AppCompatActivity {
-    EditText email, pass;
+    UsuarioViewModel usuarioViewModel;
+    Usuario usuarioIngresado;
+    EditText usernom, passuser;
+    UsuarioDao usuarioDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ActionBar actionBar= getSupportActionBar();
         actionBar.hide();
-        email = (EditText) findViewById(R.id.etEmail);
-        pass = (EditText) findViewById(R.id.etPassword);
+        usernom = (EditText) findViewById(R.id.etEmail);
+        passuser = (EditText) findViewById(R.id.etPassword);
     }
     public void Login(View view){
+
+
         Intent intent = new Intent(this, MenuActivity.class);
         try {
             startActivity(intent);

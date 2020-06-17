@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "27e57ed0d9c974569c3cd7e2e6617df8",
+    "identityHash": "4f62b21a7cc2ccb236282541992b316c",
     "entities": [
       {
         "tableName": "Alumno",
@@ -851,12 +851,50 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Usuario",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idUsuario` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombreUsuario` TEXT, `clave` TEXT, `rol` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idUsuario",
+            "columnName": "idUsuario",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombreUsuario",
+            "columnName": "nombreUsuario",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clave",
+            "columnName": "clave",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rol",
+            "columnName": "rol",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idUsuario"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '27e57ed0d9c974569c3cd7e2e6617df8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f62b21a7cc2ccb236282541992b316c')"
     ]
   }
 }

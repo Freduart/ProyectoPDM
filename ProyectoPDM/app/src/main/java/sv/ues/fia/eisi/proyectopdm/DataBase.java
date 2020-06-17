@@ -31,6 +31,7 @@ import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SolicitudExtraordinarioDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SolicitudImpresionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.TipoEvaluacionDao;
+import sv.ues.fia.eisi.proyectopdm.dao.UsuarioDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
@@ -51,6 +52,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision_Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
 
 
 /*
@@ -63,7 +65,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
         Ciclo.class, CicloAsignatura.class, DetalleEvaluacion.class, Docente.class,
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
-        SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class,
+        SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class, Usuario.class,
     }, version = 6)
 public abstract class DataBase extends RoomDatabase {
 
@@ -88,6 +90,7 @@ public abstract class DataBase extends RoomDatabase {
     public abstract DetalleEvaluacionDao detalleEvaluacionDao();
     public abstract PrimeraRevisionDao primeraRevisionDao();
     public abstract SegundaRevision_DocenteDao segundaRevision_docenteDao();
+    public abstract UsuarioDao usuarioDao();
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
         es util para cuando todos los usuarios esten usando la misma instancia
@@ -180,6 +183,7 @@ public abstract class DataBase extends RoomDatabase {
         private DetalleEvaluacionDao detalleEvaluacionDao;
         private PrimeraRevisionDao primeraRevisionDao;
         private SegundaRevision_DocenteDao segundaRevision_docenteDao;
+        private UsuarioDao usuarioDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
@@ -200,10 +204,21 @@ public abstract class DataBase extends RoomDatabase {
             detalleEvaluacionDao = db.detalleEvaluacionDao();
             primeraRevisionDao = db.primeraRevisionDao();
             segundaRevision_docenteDao = db.segundaRevision_docenteDao();
+            usuarioDao = db.usuarioDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
+            usuarioDao.insertUser(new Usuario("RudyChicas", "rudyChicas", 1));
+            usuarioDao.insertUser(new Usuario("AugustoGonzalez", "augustoG", 2));
+            usuarioDao.insertUser(new Usuario("ElmerCarballo", "elmerC", 2));
+            usuarioDao.insertUser(new Usuario("FredyM", "fredyM", 3));
+            usuarioDao.insertUser(new Usuario("RubPer", "rubper", 3));
+            usuarioDao.insertUser(new Usuario("TaniaTorres", "ttorres", 1));
+            usuarioDao.insertUser(new Usuario("Gamero", "gamero", 2));
+            usuarioDao.insertUser(new Usuario("Corcio", "corcio", 3));
+            usuarioDao.insertUser(new Usuario("Eliseo", "eliseo", 4));
+            usuarioDao.insertUser(new Usuario("Admin", "admin123", 5));
             escuelaDao.insert(new Escuela("Escuela de Ingeniería de Sistemas Informáticos","Ingenieria de Sistemas Informaticos"));
             escuelaDao.insert(new Escuela("Escuela de Ingeniería Industrial","Ingenieria Industrial"));
             escuelaDao.insert(new Escuela("Escuela de Ingeniería Eléctrica","Ingenieria Electrica"));
