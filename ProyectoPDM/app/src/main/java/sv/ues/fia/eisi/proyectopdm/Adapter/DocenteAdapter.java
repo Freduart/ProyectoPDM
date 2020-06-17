@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 
 public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHolderDocente> {
@@ -19,6 +22,7 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
     private List<Docente> listDocentes=new ArrayList<>();
     private OnItemClickListener onItemClickListener;
     private OnItemLongCLickListener onItemLongCLickListener;
+    private CargoViewModel cargoViewModel;
 
     public interface OnItemClickListener{
         void OnItemClick(int position,Docente docente);
@@ -31,6 +35,10 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
     public void setListDocentes(List<Docente> listDocentes) {
         this.listDocentes = listDocentes;
         notifyDataSetChanged();
+    }
+
+    public void setCargoViewModel(CargoViewModel cargoViewModel) {
+        this.cargoViewModel = cargoViewModel;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -53,7 +61,16 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
         Docente docente=listDocentes.get(position);
         String nomDocente=docente.getNomDocente()+" "+docente.getApellidoDocente();
         holder.textTitulo.setText(nomDocente);
-        holder.textCargoDocente.setText(Integer.toString(docente.getIdCargoFK()));
+        try {
+            String cargoDocente=cargoViewModel.getCargo(docente.getIdCargoFK()).getNomCargo();
+            holder.textCargoDocente.setText(cargoDocente);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
         holder.textCorreoDocente.setText(docente.getCorreoDocente());
         holder.textCarnetDocente.setText(docente.getCarnetDocente());
         holder.textTelefonoDocente.setText(docente.getTelefonoDocente());

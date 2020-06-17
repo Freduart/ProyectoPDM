@@ -41,6 +41,8 @@ public class DocenteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_docente);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("DOCENTES");
+        cargoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CargoViewModel.class);
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
         añadirDocente=(FloatingActionButton)findViewById(R.id.nuevoDocente);
 
         final RecyclerView recyclerDocentes=(RecyclerView)findViewById(R.id.recycler_lista_docentes);
@@ -57,11 +59,11 @@ public class DocenteActivity extends AppCompatActivity {
         });
 
         try {
-            docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
             docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
                 @Override
                 public void onChanged(List<Docente> docentes) {
                     docenteAdapter.setListDocentes(docentes);
+                    docenteAdapter.setCargoViewModel(cargoViewModel);
                     docenteAdapter.setOnItemClickListener(new DocenteAdapter.OnItemClickListener() {
                         @Override
                         public void OnItemClick(int position, Docente docente) {
