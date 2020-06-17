@@ -183,7 +183,7 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e){
-            Toast.makeText(NuevaEditarSegundaRevisionActivity.this, e.getMessage() + " /// " + " /// " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(NuevaEditarSegundaRevisionActivity.this, getText(R.string.errormsg).toString(), Toast.LENGTH_LONG).show();
         }
     }
 

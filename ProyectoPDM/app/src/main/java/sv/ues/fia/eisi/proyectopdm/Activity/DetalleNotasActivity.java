@@ -1,6 +1,7 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -36,6 +37,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
     private TextView nombreEstudiante;
     private EditText notaEstudiante;
     private Button editarPrimeraRevision;
+    private TextView mensajeRevisionExistente;
 
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
     private PrimeraRevisionViewModel primeraRevisionViewModel;
@@ -48,6 +50,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
         nombreEstudiante = findViewById(R.id.titulo_nombre_detalleestudiante);
         notaEstudiante = findViewById(R.id.nota_editar_detalle);
         editarPrimeraRevision = findViewById(R.id.boton_primera_revision_detalle);
+        mensajeRevisionExistente = findViewById(R.id.mensaje_revision_existente);
         detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
         primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
         segundaRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SegundaRevisionViewModel.class);
@@ -68,12 +71,69 @@ public class DetalleNotasActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        mensajeRevisionExistente.setVisibility(View.GONE);
+        actualizarBotonesRevision();
         //obtener Primera Revision
+        setTitle(R.string.display_nota_alumno_evaluacion);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflador = getMenuInflater();
+        inflador.inflate(R.menu.editar_detalle_evaluacion, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.guardar_detalleeval:
+                guardarDetalle();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        actualizarBotonesRevision();
+    }
+
+    private void guardarDetalle(){
+        DetalleEvaluacion aux = new DetalleEvaluacion(detalleEvaluacion.getIdEvaluacionFK(),detalleEvaluacion.getCarnetAlumnoFK());
+        String campoNota = notaEstudiante.getText().toString();
+        if(campoNota.trim().isEmpty()){
+            Toast.makeText(this,getText(R.string.error_form_incompleto_eval), Toast.LENGTH_LONG).show();
+            return;
+        }
+        Double notaAux = Double.parseDouble(campoNota);
+        aux.setNota(notaAux);
+        aux.setIdDetalleEv(detalleEvaluacion.getIdDetalleEv());
+        detalleEvaluacionViewModel.updateDetalleEvaluacion(aux);
+        Toast.makeText(DetalleNotasActivity.this, getText(R.string.confirmacion_nota), Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 113 && resultCode == RESULT_OK) {
+            actualizarBotonesRevision();
+        }
+    }
+
+    private void actualizarBotonesRevision(){
         try {
+            notaEstudiante.setEnabled(true);
             List<PrimeraRevision> listRevision = primeraRevisionViewModel.getRevisionPorDetalle(idActual);
             //si la lista no está vacía
             if(!listRevision.isEmpty()){
                 editarPrimeraRevision.setEnabled(true);
+                notaEstudiante.setEnabled(false);
+                mensajeRevisionExistente.setVisibility(View.VISIBLE);
                 revisionRespectiva = listRevision.get(0);
                 //al hacer clic corto en un objeto del recycler
                 editarPrimeraRevision.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +144,11 @@ public class DetalleNotasActivity extends AppCompatActivity {
                         //se mete en un extra del intent, el id
                         intent.putExtra(PrimeraRevisionActivity.IDENTIFICADOR_PR, listRevision.get(0).getIdPrimerRevision());
                         //inicia la activity
-                        startActivity(intent);
+                        startActivityForResult(intent,113);
                     }
                 });
                 double notaDespues = revisionRespectiva.getNotaDespuesPrimeraRev();
                 notaEstudiante.setText(String.format("%s", notaDespues));
-                detalleEvaluacion = null;
                 detalleEvaluacion = detalleEvaluacionViewModel.getDetalleEvaluacion(idActual);
                 if(!Double.isNaN(notaDespues)){
                     detalleEvaluacion.setNota(notaDespues);
@@ -119,85 +178,9 @@ public class DetalleNotasActivity extends AppCompatActivity {
             } else {
                 editarPrimeraRevision.setEnabled(false);
             }
-            setTitle(R.string.display_nota_alumno_evaluacion);
         } catch (Exception e){
             Toast.makeText(DetalleNotasActivity.this, getText(R.string.inic_notif_eval), Toast.LENGTH_LONG).show();
         }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflador = getMenuInflater();
-        inflador.inflate(R.menu.editar_detalle_evaluacion, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.guardar_detalleeval:
-                guardarDetalle();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        try {
-            List<PrimeraRevision> listRevision = primeraRevisionViewModel.getRevisionPorDetalle(idActual);
-            //si la lista no está vacía
-            if (!listRevision.isEmpty()) {
-                notaEstudiante.setText(String.format("%s", revisionRespectiva.getNotaDespuesPrimeraRev()));
-                double notaDespues = revisionRespectiva.getNotaDespuesPrimeraRev();
-                detalleEvaluacion = null;
-                detalleEvaluacion = detalleEvaluacionViewModel.getDetalleEvaluacion(idActual);
-                if(!Double.isNaN(notaDespues)){
-                    detalleEvaluacion.setNota(notaDespues);
-                    detalleEvaluacionViewModel.updateDetalleEvaluacion(detalleEvaluacion);
-                }
-                SegundaRevision segundaRevision = segundaRevisionViewModel.getSegundaRevision(revisionRespectiva.getIdPrimerRevision());
-                if(segundaRevision != null){
-                    notaEstudiante.setText(String.format("%s", segundaRevision.getNotaFinalSegundaRev()));
-                    editarPrimeraRevision.setText(R.string.titulo_EA_editarsegrev);
-                    editarPrimeraRevision.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
-                            Intent intent = new Intent(DetalleNotasActivity.this, NuevaEditarSegundaRevisionActivity.class);
-                            //se mete en un extra del intent, el id
-                            intent.putExtra(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION, segundaRevision.getIdSegundaRevision());
-                            intent.putExtra(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION, EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION);
-                            //inicia la activity
-                            startActivity(intent);
-                        }
-                    });
-                    if(!Double.isNaN(segundaRevision.getNotaFinalSegundaRev())){
-                        detalleEvaluacion.setNota(segundaRevision.getNotaFinalSegundaRev());
-                        detalleEvaluacionViewModel.updateDetalleEvaluacion(detalleEvaluacion);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void guardarDetalle(){
-        DetalleEvaluacion aux = new DetalleEvaluacion(detalleEvaluacion.getIdEvaluacionFK(),detalleEvaluacion.getCarnetAlumnoFK());
-        String campoNota = notaEstudiante.getText().toString();
-        if(campoNota.trim().isEmpty()){
-            Toast.makeText(this,getText(R.string.error_form_incompleto_eval), Toast.LENGTH_LONG).show();
-            return;
-        }
-        Double notaAux = Double.parseDouble(campoNota);
-        aux.setNota(notaAux);
-        aux.setIdDetalleEv(detalleEvaluacion.getIdDetalleEv());
-        detalleEvaluacionViewModel.updateDetalleEvaluacion(aux);
-        Toast.makeText(DetalleNotasActivity.this, getText(R.string.confirmacion_nota), Toast.LENGTH_LONG).show();
-        finish();
     }
 }

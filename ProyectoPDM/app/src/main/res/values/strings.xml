@@ -109,6 +109,8 @@
     <string name="agregar_docentes">Asignación de docentes</string>
     <string name="eliminar_docentesmsg1">El docente \u0020</string>
     <string name="eliminar_docentesmsg2">\u0020 ha sido eliminado.</string>
+    <string name="errormsg">Ha ocurrido un error ¿Llenó todos los campos?</string>
+    <string name="adv_msg_rev">Ya existe una revisión para esta nota, si deseas modificar la nota hazlo desde la revisión.</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>

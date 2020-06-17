@@ -52,5 +52,13 @@
             android:layout_marginVertical="40dp"
             android:text="@string/editarPrimeraRevisionDet"
             />
+        <TextView
+            android:id="@+id/mensaje_revision_existente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/adv_msg_rev"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
     </TableLayout>
 </ScrollView>

@@ -203,6 +203,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
                 //Actualizar
                 primeraRevisionViewModel.updatePrimeraRevision(p);
                 Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ p.getIdPrimerRevision() + ", actualizada con éxito", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
                 finish();
             }
         }catch (Exception e){
