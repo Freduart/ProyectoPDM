@@ -39,6 +39,10 @@ public class UsuarioRepository {
         return new obtenerUsuarioAsyncTask(usuarioDao).execute(integer).get(12, TimeUnit.SECONDS);
     }
 
+    public Usuario obtenerUserPass(String[] credenciales)throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerUserPassAsyncTask(usuarioDao).execute(credenciales).get(12, TimeUnit.SECONDS);
+    }
+
 
     public static class InsertarUsuarioAsyncTask extends AsyncTask<Usuario, Void, Void>{
         private UsuarioDao usuarioDao;
@@ -86,6 +90,15 @@ public class UsuarioRepository {
             @Override
         protected Usuario doInBackground(Integer... users) {
             return usuarioDao.obtenerUsuario(users[0]);
+        }
+    }
+
+    private static class obtenerUserPassAsyncTask extends AsyncTask<String, Void, Usuario>{
+        private UsuarioDao usuarioDao;
+        private obtenerUserPassAsyncTask(UsuarioDao usuarioDao){this.usuarioDao = usuarioDao;}
+        @Override
+        protected Usuario doInBackground(String... strings) {
+            return usuarioDao.getUser(strings[0], strings[1]);
         }
     }
 }

@@ -54,7 +54,7 @@
             tools:ignore="Autofill" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnLogin"
             android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"

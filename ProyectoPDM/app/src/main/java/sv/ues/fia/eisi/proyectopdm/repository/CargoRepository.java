@@ -114,4 +114,5 @@ public class CargoRepository {
             return cargoDao.obtenerCargo(cargos[0]);
         }
     }
+
 }

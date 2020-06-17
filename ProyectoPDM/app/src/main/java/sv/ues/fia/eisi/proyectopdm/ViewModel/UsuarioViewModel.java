@@ -38,4 +38,8 @@ public class UsuarioViewModel extends AndroidViewModel {
     public Usuario obtenerUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return usuarioRepository.obtenerUsuario(id);
     }
+
+    public Usuario obtenerCredenciales(String[] credenciales) throws InterruptedException, ExecutionException, TimeoutException {
+        return usuarioRepository.obtenerUserPass(credenciales);
+    }
 }
