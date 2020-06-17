@@ -111,7 +111,9 @@ public class NuevoDocenteActivity extends AppCompatActivity {
                 int idCargo=Integer.parseInt(splitCargo[0]);
                 String correoDocente=textCorreoDocente.getEditText().getText().toString();
                 String telefonoDocente=textTelefonoDocente.getEditText().getText().toString();
-                Docente docente=new Docente(carnetDocente,idCargo, 1, nomDocente,apellidoDocente,correoDocente,telefonoDocente);
+
+                //Constructor para crear docentes y nalces con los viewModel
+                Docente docente=new Docente(carnetDocente,idCargo, 2, nomDocente,apellidoDocente,correoDocente,telefonoDocente);
                 docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
                 docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
                     @Override
