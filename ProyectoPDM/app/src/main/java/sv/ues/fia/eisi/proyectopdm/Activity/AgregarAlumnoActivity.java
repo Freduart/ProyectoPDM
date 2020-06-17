@@ -104,18 +104,28 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
 
             //Instancia VMAlumno
             alumnoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
-
-            //Insercion
-            alumnoViewModel.insert(alumno);
-            Toast.makeText(this, "¡Guardado con exito!", Toast.LENGTH_SHORT).show();
-            finish();
-
-
+            alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
+                @Override
+                public void onChanged(List<Alumno> alumnos) {
+                    try {
+                        Alumno alumnoAInsertar = alumnoViewModel.getAlumn(alumno.getCarnetAlumno());
+                        if(alumnoAInsertar!=null){
+                            Toast.makeText(AgregarAlumnoActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                        }else {
+                            //Insercion
+                            alumnoViewModel.insert(alumno);
+                            Toast.makeText(AgregarAlumnoActivity.this, "¡Guardado con exito!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(AgregarAlumnoActivity.this, e.getMessage() + " - "+e.getCause(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }catch (Exception e){
             Toast.makeText(this, "Ocurrio un error al guardar", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     //Para agregar el icono de guardado en el layout
     @Override

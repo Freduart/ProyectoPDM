@@ -3,6 +3,7 @@ package sv.ues.fia.eisi.proyectopdm.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
@@ -68,13 +71,25 @@ public class NuevoLocalActivity extends AppCompatActivity {
 
             //Inicializa el ViewModel
             localVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LocalViewModel.class);
-            //Inserta el Local
-            localVM.insert(aux);
-
-            //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
-            Toast.makeText(NuevoLocalActivity.this, "Insertado con éxito: " + idLocal + "-"+ nomLocal + "-" + ubLocal, Toast.LENGTH_SHORT).show();
-
-            finish();
+            localVM.getAllLocales().observe(this, new Observer<List<Local>>() {
+                @Override
+                public void onChanged(List<Local> locals) {
+                    try {
+                        Local localAinsertar = localVM.getLoc(aux.getIdLocal());
+                        if(localAinsertar!=null){
+                            Toast.makeText(NuevoLocalActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                        }else {
+                            //Inserta el Local
+                            localVM.insert(aux);
+                            //Mensaje de éxito, si hay algún error se muestra el mensaje de error en el catch
+                            Toast.makeText(NuevoLocalActivity.this, "Insertado con éxito: " + idLocal + "-"+ nomLocal + "-" + ubLocal, Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(NuevoLocalActivity.this, e.getMessage() + " - "+e.getCause(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }catch (Exception e){
             Toast.makeText(NuevoLocalActivity.this, e.getMessage() + " - " + e.fillInStackTrace().toString(), Toast.LENGTH_LONG).show();
         }

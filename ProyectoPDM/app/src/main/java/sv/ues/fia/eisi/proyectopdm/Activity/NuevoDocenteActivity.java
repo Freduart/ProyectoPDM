@@ -111,11 +111,25 @@ public class NuevoDocenteActivity extends AppCompatActivity {
                 int idCargo=Integer.parseInt(splitCargo[0]);
                 String correoDocente=textCorreoDocente.getEditText().getText().toString();
                 String telefonoDocente=textTelefonoDocente.getEditText().getText().toString();
-
                 Docente docente=new Docente(carnetDocente,idCargo, 1, nomDocente,apellidoDocente,correoDocente,telefonoDocente);
                 docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
-                docenteViewModel.insertDocente(docente);
-                Toast.makeText(NuevoDocenteActivity.this, "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
+                docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
+                    @Override
+                    public void onChanged(List<Docente> docentes) {
+                        try {
+                            Docente docenteAInsertar = docenteViewModel.getDocente(docente.getCarnetDocente());
+                            if(docenteAInsertar!=null){
+                                Toast.makeText(NuevoDocenteActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                            }else {
+                                docenteViewModel.insertDocente(docente);
+                                Toast.makeText(NuevoDocenteActivity.this, "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }catch (Exception e){
+                            Toast.makeText(NuevoDocenteActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }catch (Exception e){
                 Toast.makeText(NuevoDocenteActivity.this, "Error: "+e, Toast.LENGTH_SHORT).show();
             }

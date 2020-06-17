@@ -126,12 +126,25 @@ public class NuevaEditarAlumnoActivity extends AppCompatActivity {
             alumno.setIdUsuarioFk(1);
             //alumno.setCarrera(String.valueOf(carreraSelect));
 
-            //Actualizamos el alumno
-            alumnoViewModel.update(alumno);
-
-            //Mensaje de confirmacion
-            Toast.makeText(NuevaEditarAlumnoActivity.this, "El alummno: " + carnet + " a sido actualizado correctamente", Toast.LENGTH_LONG).show();
-            finish();
+            alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
+                @Override
+                public void onChanged(List<Alumno> alumnos) {
+                    try {
+                        Alumno alumnoAActualizar = alumnoViewModel.getAlumn(alumno.getCarnetAlumno());
+                        if(alumnoAActualizar!=null){
+                            Toast.makeText(NuevaEditarAlumnoActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                        }else {
+                            //Actualizamos el alumno
+                            alumnoViewModel.update(alumno);
+                            //Mensaje de confirmacion
+                            Toast.makeText(NuevaEditarAlumnoActivity.this, "El alummno: " + carnet + " a sido actualizado correctamente", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(NuevaEditarAlumnoActivity.this, e.getMessage() + " - "+e.getCause(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         } catch (Exception e) {
             Toast.makeText(this, "Ocurrio un error al guardar " +e, Toast.LENGTH_SHORT).show();
         }

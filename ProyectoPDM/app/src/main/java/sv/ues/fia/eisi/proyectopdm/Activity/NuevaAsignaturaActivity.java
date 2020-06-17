@@ -92,13 +92,24 @@ public class NuevaAsignaturaActivity extends AppCompatActivity {
             Asignatura auxasignatura = new Asignatura(codigo, Integer.parseInt(escuela), nombre);
 
             asignaturaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
-            //insrtar
-            asignaturaViewModel.insert(auxasignatura);
-
-            Toast.makeText(NuevaAsignaturaActivity.this, "Asignatura " + auxasignatura.getCodigoAsignatura() + " insertada con éxito.", Toast.LENGTH_SHORT).show();
-
-            finish();
-
+            asignaturaViewModel.getAllAsignaturas().observe(this, new Observer<List<Asignatura>>() {
+                @Override
+                public void onChanged(List<Asignatura> asignaturas) {
+                    try {
+                        Asignatura asignaturaAInsertar= asignaturaViewModel.obtenerAsignatura(auxasignatura.getCodigoAsignatura());
+                        if(asignaturaAInsertar!=null){
+                            Toast.makeText(NuevaAsignaturaActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                        }else {
+                            //insrtar
+                            asignaturaViewModel.insert(auxasignatura);
+                            Toast.makeText(NuevaAsignaturaActivity.this, "Asignatura " + auxasignatura.getCodigoAsignatura() + " insertada con éxito.", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }catch (Exception e){
+                        Toast.makeText(NuevaAsignaturaActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }catch (Exception e){
             Toast.makeText(NuevaAsignaturaActivity.this, e.getMessage() + " " +
                     e.getCause(), Toast.LENGTH_SHORT).show();
