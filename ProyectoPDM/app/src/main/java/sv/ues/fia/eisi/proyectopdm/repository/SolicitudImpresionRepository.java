@@ -48,6 +48,10 @@ public class SolicitudImpresionRepository {
         return new ObtenerSolicitudImpresionAsyncTask(solicitudImpresionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
+    public LiveData<List<SolicitudImpresion>> obtenerSolicitudPorEstado(String estado) throws InterruptedException, ExecutionException, TimeoutException {
+        return new ObtenerSolicitudesPorEstadoAsyncTask(solicitudImpresionDao).execute(estado).get(12, TimeUnit.SECONDS);
+    }
+
     private static class InsertarSolicitudImpresionAsyncTask extends AsyncTask<SolicitudImpresion,Void,Void>{
         private SolicitudImpresionDao solicitudImpresionDao;
 
@@ -114,6 +118,19 @@ public class SolicitudImpresionRepository {
         @Override
         protected SolicitudImpresion doInBackground(Integer... SolicitudImpresions) {
             return solicitudImpresionDao.obtenerSolicitudImpresion(SolicitudImpresions[0]);
+        }
+    }
+
+    private static class ObtenerSolicitudesPorEstadoAsyncTask extends AsyncTask<String,Void,LiveData<List<SolicitudImpresion>>>{
+        private SolicitudImpresionDao solicitudImpresionDao;
+
+        public ObtenerSolicitudesPorEstadoAsyncTask(SolicitudImpresionDao solicitudImpresionDao) {
+            this.solicitudImpresionDao = solicitudImpresionDao;
+        }
+
+        @Override
+        protected LiveData<List<SolicitudImpresion>> doInBackground(String... strings) {
+            return solicitudImpresionDao.obtenerSolicitudesPorEstado(strings[0]);
         }
     }
 }

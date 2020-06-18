@@ -44,7 +44,7 @@ public class NuevoEncargadoImpresionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.agregar:
+            case R.id.guardar:
                 guardarEncImpres();
                 return true;
             default:

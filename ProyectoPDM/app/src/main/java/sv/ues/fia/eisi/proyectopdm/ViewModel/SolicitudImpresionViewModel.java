@@ -47,4 +47,8 @@ public class SolicitudImpresionViewModel extends AndroidViewModel {
     public SolicitudImpresion obtenerSolicitudImpresion(int id) throws InterruptedException, ExecutionException, TimeoutException{
         return solicitudImpresionRepository.obtenerSolicitudImpresion(id);
     }
+
+    public LiveData<List<SolicitudImpresion>> obtenerSolicitudPorEstado(String estado) throws InterruptedException, ExecutionException, TimeoutException{
+        return solicitudImpresionRepository.obtenerSolicitudPorEstado(estado);
+    }
 }

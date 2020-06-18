@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/textIdEncImpres"
-                android:layout_width="280dp"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
@@ -82,6 +82,7 @@
                 android:layout_marginRight="10dp"
                 android:text="TextView"
                 android:textColor="@color/colorNegro"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textNomEnc" />
 

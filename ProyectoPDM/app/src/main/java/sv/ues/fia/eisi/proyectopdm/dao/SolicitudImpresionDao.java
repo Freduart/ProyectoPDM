@@ -32,4 +32,7 @@ public interface SolicitudImpresionDao {
 
     @Query("select * from SolicitudImpresion where idImpresion == :idSolicitudImpresion")
     SolicitudImpresion obtenerSolicitudImpresion(int idSolicitudImpresion);
+
+    @Query("select * from SolicitudImpresion where estadoSolicitud == :estadoSolicitudImpresion")
+    LiveData<List<SolicitudImpresion>> obtenerSolicitudesPorEstado(String estadoSolicitudImpresion);
 }

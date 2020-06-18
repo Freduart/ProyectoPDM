@@ -158,13 +158,10 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         enviarSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nImpresiones=text_impresiones.getEditText().getText().toString();
                 if(listaDocumentos.size()==0){
                     Snackbar.make(v, "Debe Añadir Un Documento...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }else if((text_impresiones.getEditText().getText().toString().trim().isEmpty())){
                     text_impresiones.setError("Ingrese N° Impreisones");
-                }else if(nImpresiones.contains("*")||nImpresiones.contains("#")||nImpresiones.contains("(")||nImpresiones.contains(")")||nImpresiones.contains("/")||nImpresiones.contains("N")||nImpresiones.contains(";")||nImpresiones.contains("+")||nImpresiones.contains("-")||nImpresiones.contains(".")){
-                    text_impresiones.setError("Ingrese Los Datos Correctamente.");
                 }else{
                     //Carnet Docente
                     String carnetDocente1=carnetDoc.getSelectedItem().toString();
@@ -178,51 +175,35 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     String encargado=encImpres.getSelectedItem().toString();
                     String encargado2[]=encargado.split("-");
                     String encargadoID=encargado2[0];
-                    //N° Impresiones
-                    nImpresiones=nImpresiones.replace(" ","");
-                    String[] splitImpresiones,splitHojasAnexas;
-                    splitImpresiones=nImpresiones.split(",");
+                    //Impresiones
+                    String nImpresiones=text_impresiones.getEditText().getText().toString();
                     //Variables
-                    String nHojasAnexas="0",detallesDeImpresion1,detalleImpresion2,fechaHoy;
-                    if(splitImpresiones.length!=listaDocumentos.size()){
-                        text_impresiones.setError("Ingrese Los Datos Correctamente.");
-                    }else{
-                        try {
-                            //Hojas Anexas
-                            if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
-                                nHojasAnexas=text_anexos.getEditText().getText().toString();
-                                if(nHojasAnexas.contains("*")||nHojasAnexas.contains("#")||nHojasAnexas.contains("(")||nHojasAnexas.contains(")")||nHojasAnexas.contains("/")||nHojasAnexas.contains("N")||nHojasAnexas.contains(";")||nHojasAnexas.contains("+")||nHojasAnexas.contains("-")||nHojasAnexas.contains(".")){
-                                    text_anexos.setError("Ingrese Los Datos Correctamente.");
-                                }else{
-                                    nHojasAnexas=nHojasAnexas.replace(" ","");
-                                    splitHojasAnexas=nHojasAnexas.split(",");
-                                    if(splitHojasAnexas.length!=listaDocumentos.size()){
-                                        text_anexos.setError("Ingrese Los Datos Correctamente.");
-                                    }else{
-                                        //Detalles de Impresión
-                                        detallesDeImpresion1=text_detalleImpresiones.getText().toString();
-                                        //Fecha del sistema
-                                        Calendar calendar=Calendar.getInstance();
-                                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                        fechaHoy=simpleDateFormat.format(calendar.getTime());
-                                        //Documentos
-                                        for(int i=0;i<listaDocumentos.size();i++){
-                                            detalleImpresion2="Hojas Anexas Por Documento: "+splitHojasAnexas[i]+"\n"+detallesDeImpresion1;
-                                            solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
-                                                    Integer.parseInt(splitImpresiones[i]),detalleImpresion2,"En Curso",
-                                                    "Nueva",fechaHoy,listaDocumentos.get(i));
-                                            solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
-                                                    .create(SolicitudImpresionViewModel.class);
-                                            solicitudImpresionViewModel.insert(solicitudImpresion);
-                                        }
-                                        Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    }
-                                }
-                            }
-                        }catch (Exception e){
-                            Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
+                    String nHojasAnexas,detallesDeImpresion1,detalleImpresion2,fechaHoy;
+                    try {
+                        //Hojas Anexas
+                        if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
+                            nHojasAnexas="0";
+                        }else{
+                            nHojasAnexas=text_anexos.getEditText().getText().toString();
                         }
+                        //Detalles de Impresión
+                        detallesDeImpresion1=text_detalleImpresiones.getText().toString();
+                        //Fecha del sistema
+                        Calendar calendar=Calendar.getInstance();
+                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        fechaHoy=simpleDateFormat.format(calendar.getTime());
+                        //Documentos
+                        detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
+                        solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
+                                Integer.parseInt(nImpresiones),detalleImpresion2,"En Curso",
+                                "NUEVA",fechaHoy,listaDocumentos.get(0));
+                        solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                                .create(SolicitudImpresionViewModel.class);
+                        solicitudImpresionViewModel.insert(solicitudImpresion);
+                        Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }catch (Exception e){
+                        Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -270,10 +251,12 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.añadirDocumento:
                 //Intent para seleccionar un documento...
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
-                intent.setDataAndType(uri, "application/pdf");
-                startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
+                if(listaDocumentos.size()<1){
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
+                    intent.setDataAndType(uri, "application/pdf");
+                    startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
+                }
             case R.id.ajustesServer:
                 //ajustes del servidor
             default:

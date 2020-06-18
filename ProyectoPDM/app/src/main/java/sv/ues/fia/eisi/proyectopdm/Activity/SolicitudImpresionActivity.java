@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +35,9 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.UsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
 
 public class SolicitudImpresionActivity extends AppCompatActivity {
 
@@ -41,6 +45,8 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
     private SolicitudImpresionViewModel solicitudImpresionViewModel;
     private DocenteViewModel docenteViewModel;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
+    private UsuarioViewModel usuarioViewModel;
+    private Usuario usuarioIngresado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +60,29 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         //AdapterSolicitudesimpresion
         final ListaSolicitudesImpresionAdapter listaSolicitudesImpresionAdapter=new ListaSolicitudesImpresionAdapter();
         recyclerSolicitudImpresiones.setAdapter(listaSolicitudesImpresionAdapter);
+        //Obtenemos los datos del usuario
+        String usuario=PreferenceSingleton.getInstance().readPreference(LoginActivity.USERNAME);
+        String password=PreferenceSingleton.getInstance().readPreference(LoginActivity.USER_PASSWORD);
+        String[] credenciales={usuario,password};
+        usuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(UsuarioViewModel.class);
+        try {
+            usuarioIngresado=usuarioViewModel.obtenerCredenciales(credenciales);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                .create(DocenteViewModel.class);
 
         FloatingActionButton nuevaSolicitud=(FloatingActionButton)findViewById(R.id.nuevaSolicitudImpresion);
+        //Para cualquier otro usuario que no sea docente, se deshabilita la opcion de agregar solicitudes de impresion
+        if(usuarioIngresado.getRol()!=2){
+            nuevaSolicitud.setVisibility(View.INVISIBLE);
+        }
         nuevaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,42 +92,63 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         });
         try{
             solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
-            solicitudImpresionViewModel.getAllSolicitudesImpresion().observe(this, new Observer<List<SolicitudImpresion>>() {
-                @Override
-                public void onChanged(final List<SolicitudImpresion> solicitudImpresions) {
-                    listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
-                    listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
-                        @Override
-                        public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
-                            dialogVerSolicitud(solicitudImpresion).show();
-                        }
-                    });
-                    listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
-                        @Override
-                        public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
-                            //Opciones de AlertDialog
-                            createCustomAlertDialog(position,solicitudImpresion).show();
-                        }
-                    });
-                    listaSolicitudesImpresionAdapter.notifyDataSetChanged();
-                }
-            });
+            //Para un usuario tipo encargado impresion mostramos solo las solicitudes aprobadas...
+            if(usuarioIngresado.getRol()==4){
+                solicitudImpresionViewModel.obtenerSolicitudPorEstado("APROBADA/\nEN CURSO").observe(this, new Observer<List<SolicitudImpresion>>() {
+                    @Override
+                    public void onChanged(List<SolicitudImpresion> solicitudImpresions) {
+                        listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
+                        listaSolicitudesImpresionAdapter.setDocenteViewModel(docenteViewModel);
+                        listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
+                            @Override
+                            public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
+                                dialogVerSolicitud(solicitudImpresion).show();
+                            }
+                        });
+                        listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
+                            @Override
+                            public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
+                                procesarSolicitudImpresionAlertDialog(solicitudImpresion).show();
+                            }
+                        });
+                    }
+                });
+            }else{
+                //De lo contrario se veran todas las solicitudes de cualquier tipo para docentes...
+                solicitudImpresionViewModel.getAllSolicitudesImpresion().observe(this, new Observer<List<SolicitudImpresion>>() {
+                    @Override
+                    public void onChanged(final List<SolicitudImpresion> solicitudImpresions) {
+                        listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
+                        listaSolicitudesImpresionAdapter.setDocenteViewModel(docenteViewModel);
+                        listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
+                            @Override
+                            public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
+                                dialogVerSolicitud(solicitudImpresion).show();
+                            }
+                        });
+                        listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
+                            @Override
+                            public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
+                                //Opciones de AlertDialog
+                                //Si el usuario es un director, le asignamos los botones para aprobar/reprobar la solicitud
+                                //En lugar de editar y eliminar
+                                if(usuarioIngresado.getRol()==1){
+                                    createCustomAlertDialog2(solicitudImpresion).show();
+                                }else{
+                                    createCustomAlertDialog(solicitudImpresion).show();
+                                }
+                            }
+                        });
+                        listaSolicitudesImpresionAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
         }catch (Exception e){
             Toast.makeText(this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        return super.onOptionsItemSelected(item);
-    }
-
-    public AlertDialog createCustomAlertDialog(int position, SolicitudImpresion solicitudImpresion){
+    //AlertDialog para docentes..
+    public AlertDialog createCustomAlertDialog(SolicitudImpresion solicitudImpresion){
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
         LayoutInflater inflater=getLayoutInflater();
@@ -108,7 +156,21 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         ImageButton eliminar = (ImageButton) v.findViewById(R.id.imBEliminar);
         ImageButton editar = (ImageButton)v.findViewById(R.id.imBEditar);
         TextView tv = (TextView) v.findViewById(R.id.tituloAlert);
-        tv.setText(solicitudImpresion.getCarnetDocenteFK());
+
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
+                .create(DocenteViewModel.class);
+        try {
+            String titulo=solicitudImpresion.getCarnetDocenteFK()+"-"+
+                    docenteViewModel.getDocente(solicitudImpresion.getCarnetDocenteFK()).getNomDocente()+" "+
+                    docenteViewModel.getDocente(solicitudImpresion.getCarnetDocenteFK()).getApellidoDocente();
+            tv.setText(titulo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
         builder.setView(v);
         alertDialog = builder.create();
         editar.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +195,36 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         });
         return alertDialog;
     }
-
+    //AlertDialog para el director..
+    public AlertDialog createCustomAlertDialog2(SolicitudImpresion solicitudImpresion){
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        LayoutInflater inflater=getLayoutInflater();
+        View v = inflater.inflate(R.layout.dialog_opciones_director, null);
+        Button btnAprobar=(Button)v.findViewById(R.id.btnAprobar);
+        Button btnReprobar=(Button)v.findViewById(R.id.btnReprobar);
+        builder.setView(v);
+        alertDialog = builder.create();
+        solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
+        btnAprobar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                solicitudImpresion.setEstadoSolicitud("APROBADA/\nEN CURSO");
+                solicitudImpresionViewModel.update(solicitudImpresion);
+                alertDialog.dismiss();
+            }
+        });
+        btnReprobar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                solicitudImpresion.setEstadoSolicitud("REPROBADA");
+                solicitudImpresionViewModel.update(solicitudImpresion);
+                alertDialog.dismiss();
+            }
+        });
+        return alertDialog;
+    }
+    //AlertDialog para ver las solicitud de impresion seleccionada
     public AlertDialog dialogVerSolicitud(SolicitudImpresion solicitudImpresion){
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -201,6 +292,28 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         String[] splitAnexos=solicitudImpresion.getDetalleImpresion().split("\n");
         textAnexos.setText(splitAnexos[0]);
         textDetallesImpresion.setText(splitAnexos[1]);
+        return alertDialog;
+    }
+    //AlertDialog para encargado de impresion
+    public AlertDialog procesarSolicitudImpresionAlertDialog(SolicitudImpresion solicitudImpresion){
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        LayoutInflater inflater=getLayoutInflater();
+        View v = inflater.inflate(R.layout.opciones_usuario, null);
+        Button btnProcesar=(Button)v.findViewById(R.id.btnCerrarSesion);
+        btnProcesar.setText("PROCESAR SOLICITUD");
+        builder.setView(v);
+        alertDialog = builder.create();
+        solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
+        btnProcesar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(SolicitudImpresionActivity.this,ProcesarSolicitudImpresionActivity.class);
+                intent.putExtra(IDENTIFICADOR_IMPRESION,solicitudImpresion.getIdImpresion());
+                startActivity(intent);
+                alertDialog.dismiss();
+            }
+        });
         return alertDialog;
     }
 }

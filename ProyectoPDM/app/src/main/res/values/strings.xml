@@ -229,4 +229,12 @@
     <string name="hintNomEnc">Nombre Encargado Impresión</string>
 
     <string name="textCerrarSesion">CERRAR SESIÓN</string>
+
+    <string name="textAprobar">APROBAR</string>
+    <string name="textReprobar">REPROBAR</string>
+
+    <!-- Strings para procesarSolicitud -->
+    <string name="radioSolicitudExitosa">Solicitud Terminada Exitosamente.</string>
+    <string name="radioSolicitudFallida">Solicitud Fallida.</string>
+    <string name="textResultadoImpresion">OBSERVACIONES DE IMPRESIÓN</string>
 </resources>

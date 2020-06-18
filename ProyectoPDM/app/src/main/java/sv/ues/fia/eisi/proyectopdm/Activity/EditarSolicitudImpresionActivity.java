@@ -35,6 +35,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -282,13 +283,10 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     }
 
     public void actualizarSolicitudImpresion(){
-        String nImpresiones=text_impresiones.getEditText().getText().toString();
         if(listaDocumentos.size()==0){
-            Toast.makeText(getApplicationContext(), "Debe Añadir Un Documento...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Debe añadir un documento...", Toast.LENGTH_SHORT).show();
         }else if((text_impresiones.getEditText().getText().toString().trim().isEmpty())){
             text_impresiones.setError("Ingrese N° Impreisones");
-        }else if(nImpresiones.contains("*")||nImpresiones.contains("#")||nImpresiones.contains("(")||nImpresiones.contains(")")||nImpresiones.contains("/")||nImpresiones.contains("N")||nImpresiones.contains(";")||nImpresiones.contains("+")||nImpresiones.contains("-")||nImpresiones.contains(".")){
-            text_impresiones.setError("Ingrese Los Datos Correctamente.");
         }else{
             //Carnet Docente
             String carnetDocente1=carnetDoc.getSelectedItem().toString();
@@ -302,57 +300,41 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
             String encargado=encImpres.getSelectedItem().toString();
             String encargado2[]=encargado.split("-");
             String encargadoID=encargado2[0];
-            //N° Impresiones
-            nImpresiones=nImpresiones.replace(" ","");
-            String[] splitImpresiones,splitHojasAnexas;
-            splitImpresiones=nImpresiones.split(",");
+            //Impresiones
+            String nImpresiones=text_impresiones.getEditText().getText().toString();
             //Variables
-            String nHojasAnexas="0",detallesDeImpresion1,detalleImpresion2,fechaHoy;
-            if(splitImpresiones.length!=listaDocumentos.size()){
-                text_impresiones.setError("Ingrese Los Datos Correctamente.");
-            }else{
-                try {
-                    //Hojas Anexas
-                    if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
-                        nHojasAnexas=text_anexos.getEditText().getText().toString();
-                        if(nHojasAnexas.contains("*")||nHojasAnexas.contains("#")||nHojasAnexas.contains("(")||nHojasAnexas.contains(")")||nHojasAnexas.contains("/")||nHojasAnexas.contains("N")||nHojasAnexas.contains(";")||nHojasAnexas.contains("+")||nHojasAnexas.contains("-")||nHojasAnexas.contains(".")){
-                            text_anexos.setError("Ingrese Los Datos Correctamente.");
-                        }else{
-                            nHojasAnexas=nHojasAnexas.replace(" ","");
-                            splitHojasAnexas=nHojasAnexas.split(",");
-                            if(splitHojasAnexas.length!=listaDocumentos.size()){
-                                text_anexos.setError("Ingrese Los Datos Correctamente.");
-                            }else{
-                                //Detalles de Impresión
-                                detallesDeImpresion1=text_detalleImpresiones.getText().toString();
-                                //Fecha del sistema
-                                Calendar calendar=Calendar.getInstance();
-                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                fechaHoy=simpleDateFormat.format(calendar.getTime());
-                                //Documentos
-                                for(int i=0;i<listaDocumentos.size();i++){
-                                    detalleImpresion2="Hojas Anexas Por Documento: "+splitHojasAnexas[i]+"\n"+detallesDeImpresion1;
-                                    solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
-                                    solicitudImpresion=solicitudImpresionViewModel.obtenerSolicitudImpresion(solicitudImpresionActual.getIdImpresion());
-                                    solicitudImpresion.setCarnetDocenteFK(carnetDocente);
-                                    solicitudImpresion.setIdEncargadoFK(Integer.parseInt(encargadoID));
-                                    solicitudImpresion.setDocDirector(carnetDocDirector);
-                                    solicitudImpresion.setNumImpresiones(Integer.parseInt(splitImpresiones[i]));
-                                    solicitudImpresion.setDetalleImpresion(detalleImpresion2);
-                                    solicitudImpresion.setEstadoSolicitud("Modificada");
-                                    solicitudImpresion.setResultadoImpresion("En Curso");
-                                    solicitudImpresion.setFechaSolicitud(fechaHoy);
-                                    solicitudImpresion.setDocumento(listaDocumentos.get(i));
-                                    solicitudImpresionViewModel.update(solicitudImpresion);
-                                }
-                                Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }
-                    }
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
+            String nHojasAnexas,detallesDeImpresion1,detalleImpresion2,fechaHoy;
+            try {
+                //Hojas Anexas
+                if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
+                    nHojasAnexas="0";
+                }else{
+                    nHojasAnexas=text_anexos.getEditText().getText().toString();
                 }
+                //Detalles de Impresión
+                detallesDeImpresion1=text_detalleImpresiones.getText().toString();
+                //Fecha del sistema
+                Calendar calendar=Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                fechaHoy=simpleDateFormat.format(calendar.getTime());
+                //Documentos
+                detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
+                solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
+                solicitudImpresion=solicitudImpresionViewModel.obtenerSolicitudImpresion(solicitudImpresionActual.getIdImpresion());
+                solicitudImpresion.setCarnetDocenteFK(carnetDocente);
+                solicitudImpresion.setIdEncargadoFK(Integer.parseInt(encargadoID));
+                solicitudImpresion.setDocDirector(carnetDocDirector);
+                solicitudImpresion.setNumImpresiones(Integer.parseInt(nImpresiones));
+                solicitudImpresion.setDetalleImpresion(detalleImpresion2);
+                solicitudImpresion.setEstadoSolicitud("MODIFICADO");
+                solicitudImpresion.setResultadoImpresion("En Curso");
+                solicitudImpresion.setFechaSolicitud(fechaHoy);
+                solicitudImpresion.setDocumento(listaDocumentos.get(0));
+                solicitudImpresionViewModel.update(solicitudImpresion);
+                Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
+                finish();
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
             }
         }
     }
