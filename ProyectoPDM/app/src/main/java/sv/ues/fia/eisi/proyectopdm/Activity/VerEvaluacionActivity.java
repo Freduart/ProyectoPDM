@@ -142,16 +142,24 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             if(currentUserAlumno){
                 EvaluacionViewModel evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
                 DetalleEvaluacion detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(evaluacionActual.getIdEvaluacion(),evaluacionViewModel.getAlumnConUsuario(id_usuario).getCarnetAlumno());
+                PrimeraRevisionViewModel primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
                 headlineNotaAlumno.setVisibility(View.VISIBLE);
                 notaAlumnoDisplay.setVisibility(View.VISIBLE);
                 solicitarRevisionBtn.setVisibility(View.VISIBLE);
                 if(detalleEvaluacion==null){
                     solicitarRevisionBtn.setEnabled(false);
                     noseharealizado.setVisibility(View.VISIBLE);
+
                 }
                 else{
                     solicitarRevisionBtn.setEnabled(true);
                     noseharealizado.setVisibility(View.GONE);
+                    if(primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv())!=null)
+                    {
+                        solicitarRevisionBtn.setEnabled(false);
+                        noseharealizado.setVisibility(View.VISIBLE);
+                        noseharealizado.setText(getText(R.string.sehasolicitado).toString());
+                    }
                 }
                 alumnosDeEvaluacion.setVisibility(View.GONE);
                 solicitarRevisionBtn.setOnClickListener(new View.OnClickListener() {

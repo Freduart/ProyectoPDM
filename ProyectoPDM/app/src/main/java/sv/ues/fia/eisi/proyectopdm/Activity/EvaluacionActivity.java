@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -10,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -205,6 +209,31 @@ public class EvaluacionActivity extends AppCompatActivity {
             }
         });
         return alertDialog;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflador = getMenuInflater();
+        inflador.inflate(R.menu.evaluacion_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nueva_solicitud_extraord:
+                //crea intent (de la clase en parámetro)
+                Intent intent = new Intent(this, NuevaSolicitudExtraordinarioActivity.class);
+                //coloca datos en extras de intent (identificadorDeExtra,valor)
+                intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                //inicia actividad
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 
