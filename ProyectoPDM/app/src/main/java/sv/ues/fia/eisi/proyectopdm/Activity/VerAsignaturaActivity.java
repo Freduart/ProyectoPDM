@@ -57,7 +57,7 @@ public class VerAsignaturaActivity extends AppCompatActivity {
             idAreaAdmAsignatura.setText(String.valueOf(areaAdmActual.getIdDeptarmento() + " - " + areaAdmActual.getNomDepartamento()));
 
             //título appBar
-            setTitle("Detalle de asignatura");
+            setTitle(R.string.DetalleAsignatura);
 
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.getCause(),Toast.LENGTH_LONG).show();

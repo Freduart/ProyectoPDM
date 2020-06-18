@@ -97,7 +97,7 @@ public class EditarCargoActivity extends AppCompatActivity {
 
             nomCargo.setText(cargoActual.getNomCargo());
 
-            setTitle("Editar cargo");
+            setTitle(R.string.EditarCargo);
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.getCause(),Toast.LENGTH_LONG).show();
         }
@@ -118,7 +118,7 @@ public class EditarCargoActivity extends AppCompatActivity {
             String nombre = nomCargo.getText().toString();
 
             if(nombre.trim().isEmpty()){
-                Toast.makeText(this, "Por favor, llena todos los campos.",
+                Toast.makeText(this, R.string.error_form_incompleto_eval,
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -131,8 +131,7 @@ public class EditarCargoActivity extends AppCompatActivity {
             cargoViewModel.update(aux2);
 
 
-            Toast.makeText(EditarCargoActivity.this, "Cargo " + aux2.getIdCargo()+
-                    " actualizado con éxito", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditarCargoActivity.this, R.string.cargoactualizado, Toast.LENGTH_LONG).show();
 
             finish();
 

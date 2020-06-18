@@ -96,6 +96,8 @@ public class AsignaturaActivity extends AppCompatActivity {
                             createCustomDialog(asignatura).show();
                         }
                     });
+
+                    setTitle(R.string.AppBarNameAsignaturas);
         }catch (Exception e){
             Toast.makeText(AsignaturaActivity.this, "Error en el ViewModel",
                     Toast.LENGTH_SHORT).show();
@@ -136,8 +138,7 @@ public class AsignaturaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     asignaturaViewModel.delete(asignatura);
-                    Toast.makeText(AsignaturaActivity.this, "Asignatura" + " " +
-                                    asignatura.getCodigoAsignatura() + " ha sido borrada exitosamente",
+                    Toast.makeText(AsignaturaActivity.this, R.string.asignaturaeliminada,
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){

@@ -67,7 +67,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/CD"
-                                android:src="@drawable/materias" />
+                                android:src="@drawable/alumno" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:src="@drawable/solicitud" />
+                                android:src="@drawable/evaluacion" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:src="@drawable/solicitud" />
+                                android:src="@drawable/cargo" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -198,7 +198,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:src="@drawable/solicitud" />
+                                android:src="@drawable/areas" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -242,8 +242,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/CD"
-                                android:src="@drawable/solicitud"
-                                app:srcCompat="@drawable/solicitud_impresion" />
+                                android:src="@drawable/impresion"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -331,7 +330,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/CD"
-                                android:src="@drawable/materias" />
+                                android:src="@drawable/revision" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -375,7 +374,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/CD"
-                                android:src="@drawable/materias" />
+                                android:src="@drawable/ciclo" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -419,7 +418,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/CD"
-                                android:src="@drawable/materias" />
+                                android:src="@drawable/local" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -506,7 +505,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:src="@drawable/solicitud" />
+                                android:src="@drawable/docente" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -549,7 +548,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
-                                android:src="@drawable/solicitud" />
+                                android:src="@drawable/ei" />
 
                             <TextView
                                 android:layout_width="wrap_content"

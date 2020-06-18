@@ -85,7 +85,6 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
                     createCustomDialog(primeraRevision).show();
                 }
             });
-
         }catch (Exception e){
             Toast.makeText(PrimeraRevisionActivity.this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
         }
@@ -121,8 +120,7 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     primeraRevisionViewModel.deletePrimeraRevision(primeraRevision);
-                    Toast.makeText(PrimeraRevisionActivity.this, "Primera revision "+
-                            primeraRevision.getIdPrimerRevision() + " ha sido borrada exitosamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PrimeraRevisionActivity.this, R.string.preliminada, Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
                     Toast.makeText(PrimeraRevisionActivity.this, e.getMessage() + " " +
