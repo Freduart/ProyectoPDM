@@ -65,13 +65,23 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             if (usuarioIngresado != null) {
-                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-                intent.putExtra(ID_USUARIO, usuarioIngresado.getIdUsuario());
-                intent.putExtra(USERNAME, usuarioIngresado.getNombreUsuario());
-                intent.putExtra(USER_ROL, usuarioIngresado.getRol());
-                startActivity(intent);
-                Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
-                finish();
+               // if(usuarioIngresado.getRol()!=4){
+                    Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                    intent.putExtra(ID_USUARIO, usuarioIngresado.getIdUsuario());
+                    intent.putExtra(USERNAME, usuarioIngresado.getNombreUsuario());
+                    intent.putExtra(USER_ROL, usuarioIngresado.getRol());
+                    startActivity(intent);
+                    Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
+                    finish();
+                /*} else {
+                    Intent intent = new Intent(LoginActivity.this, SolicitudImpresionActivity.class);
+                    intent.putExtra(ID_USUARIO, usuarioIngresado.getIdUsuario());
+                    intent.putExtra(USERNAME, usuarioIngresado.getNombreUsuario());
+                    intent.putExtra(USER_ROL, usuarioIngresado.getRol());
+                    startActivity(intent);
+                    Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }*/
             } else {
                 Toast.makeText(this, "Usuario o contraseña incorectos.", Toast.LENGTH_SHORT).show();
             }
@@ -89,11 +99,19 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     usuarioIngresado = usuarioViewModel.obtenerCredenciales(credenciales);
                                     if (usuarioIngresado != null) {
-                                        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-                                        intent.putExtra(ID_USUARIO, usuarioIngresado.getIdUsuario());
-                                        intent.putExtra(USERNAME, usuarioIngresado.getNombreUsuario());
-                                        intent.putExtra(USER_ROL, usuarioIngresado.getRol());
-                                        startActivity(intent);
+                                        //if(usuarioIngresado.getRol()!=4){
+                                            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                                            intent.putExtra(ID_USUARIO, usuarioIngresado.getIdUsuario());
+                                            intent.putExtra(USERNAME, usuarioIngresado.getNombreUsuario());
+                                            intent.putExtra(USER_ROL, usuarioIngresado.getRol());
+                                            startActivity(intent);
+                                        /*} else {
+                                            Intent intent = new Intent(LoginActivity.this, SolicitudImpresionActivity.class);
+                                            intent.putExtra(ID_USUARIO, usuarioIngresado.getIdUsuario());
+                                            intent.putExtra(USERNAME, usuarioIngresado.getNombreUsuario());
+                                            intent.putExtra(USER_ROL, usuarioIngresado.getRol());
+                                            startActivity(intent);
+                                        }*/
 
                                         PreferenceSingleton.getInstance().writePreference(USERNAME,usuario);
                                         PreferenceSingleton.getInstance().writePreference(USER_PASSWORD,password);

@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="50dp"
-        android:weightSum="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,7 +28,7 @@
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
-                <GridLayout
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="8"
@@ -38,7 +36,7 @@
                     android:columnCount="2"
                     android:columnOrderPreserved="false"
                     android:padding="14dp"
-                    android:rowCount="2">
+                    android:rowCount="6">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardMateria"
@@ -566,7 +564,7 @@
 
                     </androidx.cardview.widget.CardView>
 
-                </GridLayout>
+                </TableLayout>
 
             </LinearLayout>
         </ScrollView>

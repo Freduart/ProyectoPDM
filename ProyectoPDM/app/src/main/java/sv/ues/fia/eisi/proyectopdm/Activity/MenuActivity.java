@@ -10,11 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
@@ -27,16 +29,114 @@ menu principal de la aplicaicon en este tendra acceso el usuario asginado mas ad
  */
 
 public class MenuActivity extends AppCompatActivity {
-    ImageView imageView1, imageView2, imageView3, imageView4;
+    //ImageView imageView1, imageView2, imageView3, imageView4;
+    private int id_usuario;
+    private int rol_usuario;
+    private CardView alumno, evaluacion,cargos,areaadm, solicitudimpresion, asignaturas, primerasrevisiones,ciclo, local, extraordinaria, docente, encargado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        imageView1=(ImageView)findViewById(R.id.btnMateria);
-        imageView2=(ImageView)findViewById(R.id.btnsolicitud);
-        imageView3=(ImageView)findViewById(R.id.btn3);
-        imageView4=(ImageView)findViewById(R.id.btn4);
+
+        alumno=findViewById(R.id.cardMateria);
+        evaluacion=findViewById(R.id.cardEvaluacion);
+        cargos=findViewById(R.id.cardViewCargo);
+        areaadm=findViewById(R.id.card4);
+        solicitudimpresion=findViewById(R.id.cardSolicitudesImpresion);
+        asignaturas=findViewById(R.id.cardAsignatura);
+        primerasrevisiones=findViewById(R.id.cardPrimeraRevision);
+        ciclo=findViewById(R.id.cardCiclo);
+        local=findViewById(R.id.cardLocal);
+        extraordinaria=findViewById(R.id.cardSolicitudExtraordinario);
+        docente=findViewById(R.id.cardDocente);
+        encargado=findViewById(R.id.cardEncImpres);
+        //crear un bundle para recibir los extra del intent
+        final Bundle extras = getIntent().getExtras();
+        //verifica que los extra no estén vacíos
+        if(extras != null){
+            //recibe id del usuario desde el extra
+            id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+            //recibe rol del usuario desde el extra
+            rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+            switch(rol_usuario){
+                //en caso de que el rol sea director
+                case 1:
+                    alumno.setVisibility(View.GONE); //ocultar acceso a alumno
+                    evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
+                    cargos.setVisibility(View.GONE); //ocultar acceso a cargos
+                    areaadm.setVisibility(View.VISIBLE); //ocultar acceso a areaadm
+                    solicitudimpresion.setVisibility(View.VISIBLE); //permitir acceso a sol impr
+                    asignaturas.setVisibility(View.VISIBLE); //ocultar acceso a asignaturas
+                    primerasrevisiones.setVisibility(View.VISIBLE); //permitir acceso a pr
+                    ciclo.setVisibility(View.GONE); // ocultar acceso a ciclo
+                    local.setVisibility(View.GONE); //ocultar acceso a local
+                    extraordinaria.setVisibility(View.VISIBLE); //permitir acceso a sol extr.
+                    docente.setVisibility(View.GONE); //ocultar acceso a docentes
+                    encargado.setVisibility(View.GONE); //ocultar acceso a encargados impresion
+                    break;
+                    //caso en que el rol sea docente
+                case 2:
+                    alumno.setVisibility(View.GONE); //ocultar acceso a alumno
+                    evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
+                    cargos.setVisibility(View.GONE); //ocultar acceso a cargos
+                    areaadm.setVisibility(View.GONE); //ocultar acceso a areaadm
+                    solicitudimpresion.setVisibility(View.VISIBLE); //permitir acceso a sol impr
+                    asignaturas.setVisibility(View.GONE); //ocultar acceso a asignaturas
+                    primerasrevisiones.setVisibility(View.VISIBLE); //permitir acceso a pr
+                    ciclo.setVisibility(View.GONE); // ocultar acceso a ciclo
+                    local.setVisibility(View.GONE); //ocultar acceso a local
+                    extraordinaria.setVisibility(View.VISIBLE); //permitir acceso a sol extr.
+                    docente.setVisibility(View.GONE); //ocultar acceso a docentes
+                    encargado.setVisibility(View.GONE); //ocultar acceso a encargados impresion
+                    break;
+                    //en caso de el usuario sea alumno
+                case 3:
+                    alumno.setVisibility(View.GONE); //permitir acceso a alumno
+                    evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
+                    cargos.setVisibility(View.GONE); //ocultar acceso a cargos
+                    areaadm.setVisibility(View.GONE); //ocultar acceso a areaadm
+                    solicitudimpresion.setVisibility(View.GONE);
+                    asignaturas.setVisibility(View.GONE);
+                    primerasrevisiones.setVisibility(View.GONE);
+                    ciclo.setVisibility(View.GONE);
+                    local.setVisibility(View.GONE);
+                    extraordinaria.setVisibility(View.VISIBLE);
+                    docente.setVisibility(View.GONE);
+                    encargado.setVisibility(View.GONE);
+                    break;
+                    //en caso de que el usuario sea encargado de impresion
+                case 4:
+                    alumno.setVisibility(View.GONE); //ocultar acceso a alumno
+                    evaluacion.setVisibility(View.GONE); //permitir acceso a evaluacion
+                    cargos.setVisibility(View.GONE); //ocultar acceso a cargos
+                    areaadm.setVisibility(View.GONE); //ocultar acceso a areaadm
+                    solicitudimpresion.setVisibility(View.VISIBLE); //permitir acceso a sol impr
+                    asignaturas.setVisibility(View.GONE); //ocultar acceso a asignaturas
+                    primerasrevisiones.setVisibility(View.GONE); //permitir acceso a pr
+                    ciclo.setVisibility(View.GONE); // ocultar acceso a ciclo
+                    local.setVisibility(View.GONE); //ocultar acceso a local
+                    extraordinaria.setVisibility(View.GONE); //permitir acceso a sol extr.
+                    docente.setVisibility(View.GONE); //ocultar acceso a docentes
+                    encargado.setVisibility(View.GONE); //ocultar acceso a encargados impresion
+                    break;
+                    //en caso de que el usuario sea el administrador
+                case 5:
+                    alumno.setVisibility(View.VISIBLE); //permitir acceso a alumno
+                    evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
+                    cargos.setVisibility(View.VISIBLE); //ocultar acceso a cargos
+                    areaadm.setVisibility(View.VISIBLE); //ocultar acceso a areaadm
+                    solicitudimpresion.setVisibility(View.VISIBLE);
+                    asignaturas.setVisibility(View.VISIBLE);
+                    primerasrevisiones.setVisibility(View.VISIBLE);
+                    ciclo.setVisibility(View.VISIBLE);
+                    local.setVisibility(View.VISIBLE);
+                    extraordinaria.setVisibility(View.VISIBLE);
+                    docente.setVisibility(View.VISIBLE);
+                    encargado.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -64,95 +164,58 @@ public class MenuActivity extends AppCompatActivity {
             */
     //Redirect de btnAlumno_menu
     public void alumnoRedirect(View view){
-        Intent intent=new Intent(this, AlumnoActivity.class);
-        startActivity(intent);
+        cambiarActividad(AlumnoActivity.class);
     }
 
     //Redirect de btnEditable1
     public void evaluacionRedirect(View view){
-        Intent intent=new Intent(this, EvaluacionActivity.class);
-        startActivity(intent);
+        cambiarActividad(EvaluacionActivity.class);
     }
 
     //Redirect de btnCargo_menu
     public void cargoRedirect(View view){
-        Intent intent = new Intent(this, CargoActivity.class);
-        startActivity(intent);
+        cambiarActividad(CargoActivity.class);
     }
 
     //Redirect de btnEditable3
     public void areaAdmRedirect(View view){
-        Intent intent = new Intent(this, AreaAdmActivity.class);
-        startActivity(intent);
+        cambiarActividad(AreaAdmActivity.class);
 
     }
 
     //Redirect de SolicitudImpresion
     public void solicitudImpresionRedirect(View view){
-        Intent intent = new Intent(this, SolicitudImpresionActivity.class);
-        startActivity(intent);
+        cambiarActividad(SolicitudImpresionActivity.class);
     }
 
     //Redirect de Asignaturas
     public void asignaturaRedirect(View view){
-        Intent intent = new Intent(this, AsignaturaActivity.class);
-        startActivity(intent);
+        cambiarActividad(AsignaturaActivity.class);
     }
 
     //Redirect de PR
     public  void primerarevisionRedirect(View view){
-        Intent intent = new Intent(this, PrimeraRevisionActivity.class);
-        try {
-            startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(MenuActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
-        }
-
+        cambiarActividad(PrimeraRevisionActivity.class);
     }
 
     public void cicloRedirect(View view){
-        Intent intent = new Intent(this, CicloActivity.class);
-        try {
-            startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(MenuActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
-        }
+        cambiarActividad(CicloActivity.class);
     }
 
     public void localRedirect(View view){
-        Intent intent = new Intent(this, LocalActivity.class);
-        try {
-            startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
-        }
+        cambiarActividad(LocalActivity.class);
     }
 
     public void soliExtraRedirect(View view){
-        Intent intent = new Intent(this, SolicitudExtraordinarioActivity.class);
-        try {
-            startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
-        }
+        cambiarActividad(SolicitudExtraordinarioActivity.class);
     }
 
     public void docenteRedirect(View view){
-        Intent intent=new Intent(this,DocenteActivity.class);
-        try {
-            startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
-        }
+        cambiarActividad(DocenteActivity.class);
     }
 
     public void EncImpresRedirect(View view){
-        Intent intent=new Intent(this,EncargadoImpresionActivity.class);
-        try {
-            startActivity(intent);
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
-        }
+        cambiarActividad(EncargadoImpresionActivity.class);
     }
 
     public AlertDialog customAlertDialog(){
@@ -160,7 +223,7 @@ public class MenuActivity extends AppCompatActivity {
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
         LayoutInflater inflater=getLayoutInflater();
         View v = inflater.inflate(R.layout.opciones_usuario, null);
-        Button btnCerrar=(Button)v.findViewById(R.id.btnCerrarSesion);
+        Button btnCerrar=v.findViewById(R.id.btnCerrarSesion);
         builder.setView(v);
         alertDialog = builder.create();
 
@@ -176,6 +239,22 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
         return alertDialog;
+    }
+
+    //método de cambio de actividad
+    private void cambiarActividad(Class clase){
+        //validacion
+        try {
+            //crea intent (de la clase en parámetro)
+            Intent intent = new Intent(this, clase);
+            //coloca datos en extras de intent (identificadorDeExtra,valor)
+            intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+            intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+            //inicia actividad
+            startActivity(intent);
+        }catch (Exception e){
+            Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
