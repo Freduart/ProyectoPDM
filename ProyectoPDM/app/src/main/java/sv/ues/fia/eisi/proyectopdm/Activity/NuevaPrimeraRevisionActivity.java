@@ -2,6 +2,7 @@ package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,9 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
@@ -31,6 +34,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
+    private List<DetalleEvaluacion> detalleEvaluacionPorAlumno;
     public String LOCAL_PH_PR;
     public String NOTA_PH_PR;
     public String ESTADO_PH_PR;
@@ -44,7 +48,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_nueva_primera_revision);
-
+            final Bundle extraidAlUser = getIntent().getExtras();
             NOTA_PH_PR = getText(R.string.nota_place_holder_PR).toString();
             ESTADO_PH_PR = getText(R.string.estado_placeholder_PR).toString();
             LOCAL_PH_PR = getText(R.string.local_placeholder_PR).toString();
@@ -55,24 +59,32 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
 
 
-            //Spinner de detalle
+            //Spinner de detalle por alumno loggueado
             final ArrayList<String> detallesNom = new ArrayList<>();
             final ArrayAdapter<String> adapterSpinnerDetalleE = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, detallesNom);
             spindetalleEFK.setAdapter(adapterSpinnerDetalleE);
             detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
-            detalleEvaluacionViewModel.getAllDetalles().observe(this, new Observer<List<DetalleEvaluacion>>() {
+            int idAlUser = 0;
+            if(extraidAlUser != null){
+                idAlUser = extraidAlUser.getInt(LoginActivity.ID_USUARIO);
+            }
+            detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
+            detalleEvaluacionViewModel.getDetallesPorUsuario(idAlUser).observe(this, new Observer<List<DetalleEvaluacion>>() {
                 @Override
-                public void onChanged(List<DetalleEvaluacion> detalleEvaluaciones) {
+                public void onChanged(List<DetalleEvaluacion> detalleEvaluacions) {
                     try {
-                       for (DetalleEvaluacion d : detalleEvaluaciones){
-                           detallesNom.add(d.getIdEvaluacionFK()+ " - " + d.getCarnetAlumnoFK());
-                       }
-                       adapterSpinnerDetalleE.notifyDataSetChanged();
+                        for (DetalleEvaluacion d : detalleEvaluacions){
+                            detalleEvaluacionPorAlumno = detalleEvaluacionViewModel.getDetallePorAlumno(d.getCarnetAlumnoFK());
+                            if(!detalleEvaluacionPorAlumno.isEmpty()){
+                                detallesNom.add(d.getIdEvaluacionFK()+ " - " + d.getCarnetAlumnoFK());
+                            }
+                            adapterSpinnerDetalleE.notifyDataSetChanged();
+                        }
                     }catch (Exception e){
-                        Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() +  " - " + e.fillInStackTrace().toString(),Toast.LENGTH_LONG).show();
+
                     }
                 }
-            });//fin de llenado spinner detalle
+            });//fin de llenado spinner detalle por alumno*/
 
         }catch (Exception e){
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();

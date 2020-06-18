@@ -268,11 +268,11 @@ public abstract class DataBase extends RoomDatabase {
             alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 12));
             alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","corcio@gmail.com", 13));
             //Inscripción
-            inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "TAD115", 2, 1, 2));
+            inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "DSI115", 2, 1, 2));
             inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
             inscripcionDao.insertInscripcion(new Inscripcion("MG17030","PDM115", 2, 1, 2));
             inscripcionDao.insertInscripcion(new Inscripcion("MG17030", "MIP115", 1, 1, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "SGG115", 1,2, 1));
+            inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "DSI115", 1,2, 1));
             inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "TAD115", 1, 1, 1));
             inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "DSI115", 2, 1, 1));
             inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "TAD115", 2, 1, 1));
@@ -286,12 +286,12 @@ public abstract class DataBase extends RoomDatabase {
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Repetido"));
             tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Diferido"));
             //Evaluación
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"DSI115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"DSI115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
+            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
             //Cargo
             cargoDao.insertCargo(new Cargo(1, "Director de la EISI"));
             cargoDao.insertCargo(new Cargo(2, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
@@ -307,8 +307,8 @@ public abstract class DataBase extends RoomDatabase {
             //Docente
             docenteDao.insertDocente(new Docente("DOCEISI1", 1, 1, "Rudy Wilfredo", "Chicas", "chicas@ues.edu.sv", "78923456"));
             docenteDao.insertDocente(new Docente("DOCEIQA1", 7, 2,"Tania", "Torres Rivera", "torres@ues.edu.sv", "64589879"));
-            docenteDao.insertDocente(new Docente("DOCEISI3", 6, 4,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "68923457"));
-            docenteDao.insertDocente(new Docente("DOCEISI2", 4, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "68793456"));
+            docenteDao.insertDocente(new Docente("DOCEISI2", 6, 4,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "68923457"));
+            docenteDao.insertDocente(new Docente("DOCEISI3", 4, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "68793456"));
             docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "65789034"));
             //Local
             localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
@@ -319,8 +319,9 @@ public abstract class DataBase extends RoomDatabase {
             //Detalle de evaluación
             detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7.9f));
             detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"DR17010", 8f));
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(3,"DR17010", 8f));
+            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(3,"PP15001", 8f));
             detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(4,"DR17010", 8f));
+            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(5, "BC14026", 7.5f));
             //Primera revisión
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "Ejercicio 1"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
