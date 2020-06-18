@@ -28,7 +28,6 @@ public interface SegundaRevision_DocenteDao {
     @Insert
     void insertSR_Docente(SegundaRevision_Docente segundaRevision_docente);
 
-
     @Update
     void updateSR_Docente(SegundaRevision_Docente segundaRevision_docente);
 
