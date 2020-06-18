@@ -154,7 +154,8 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                 else{
                     solicitarRevisionBtn.setEnabled(true);
                     noseharealizado.setVisibility(View.GONE);
-                    if(primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv())!=null)
+                    List<PrimeraRevision> primeraRevisionList = primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
+                    if(!primeraRevisionList.isEmpty())
                     {
                         solicitarRevisionBtn.setEnabled(false);
                         noseharealizado.setVisibility(View.VISIBLE);

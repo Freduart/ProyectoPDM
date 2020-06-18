@@ -89,13 +89,15 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
 
             if (extras != null){
                 id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
             }
-
-            //obtiene docente auxiliar
-            Docente docAux = evaluacionViewModel.getDocenteConUsuario(id_usuario);
-            //obtiene escuela del docente
-            Escuela escAux = evaluacionViewModel.getEscuelaDeDocente(docAux.getCarnetDocente());
-
+            Escuela escAux = null;
+            if(rol_usuario==1 || rol_usuario==2) {
+                //obtiene docente auxiliar
+                Docente docAux = evaluacionViewModel.getDocenteConUsuario(id_usuario);
+                //obtiene escuela del docente
+                 escAux = evaluacionViewModel.getEscuelaDeDocente(docAux.getCarnetDocente());
+            }
             //LLENAR SPINNERS
             //Spinner asignatura
             //listas para alamacenar nombre e id de asignatura
@@ -107,36 +109,69 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             //settea el adaptador creado en el spinner
             spinCodigoAsignaturaEvaluacion.setAdapter(adaptadorSpinnerAsignatura);
             //obtener todas las asignaturas en livedata
-            evaluacionViewModel.obtenerAsignaturasPorEscuela(escAux.getIdEscuela()).observe(this, new Observer<List<Asignatura>>() {
-                @Override
-                public void onChanged(@Nullable List<Asignatura> asignaturas) {
-                    try {
-                        if(extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION){
-                            Evaluacion ev = evaluacionViewModel.getEval(extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION));
-                            Asignatura as = asignaturaVME.obtenerAsignatura(ev.getCodigoAsignaturaFK());
-                            //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
-                            for (Asignatura x : asignaturas) {
-                                asignaturasNom.add(x);
-                                if(x.getCodigoAsignatura().equals(as.getCodigoAsignatura()))
-                                    spinCodigoAsignaturaEvaluacion.setSelection(asignaturasNom.indexOf(x));
+            if(rol_usuario==1 || rol_usuario==2){
+                evaluacionViewModel.obtenerAsignaturasPorEscuela(escAux.getIdEscuela()).observe(this, new Observer<List<Asignatura>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Asignatura> asignaturas) {
+                        try {
+                            if(extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION){
+                                Evaluacion ev = evaluacionViewModel.getEval(extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION));
+                                Asignatura as = asignaturaVME.obtenerAsignatura(ev.getCodigoAsignaturaFK());
+                                //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
+                                for (Asignatura x : asignaturas) {
+                                    asignaturasNom.add(x);
+                                    if(x.getCodigoAsignatura().equals(as.getCodigoAsignatura()))
+                                        spinCodigoAsignaturaEvaluacion.setSelection(asignaturasNom.indexOf(x));
+                                }
+                                //refresca (necesario para mostrar los datos recuperados en el spinner)
+                                adaptadorSpinnerAsignatura.notifyDataSetChanged();
+                            } else {
+                                for (Asignatura x : asignaturas)
+                                    asignaturasNom.add(x);
+                                adaptadorSpinnerAsignatura.notifyDataSetChanged();
                             }
-                            //refresca (necesario para mostrar los datos recuperados en el spinner)
-                            adaptadorSpinnerAsignatura.notifyDataSetChanged();
-                        } else {
-                            for (Asignatura x : asignaturas)
-                                asignaturasNom.add(x);
-                            adaptadorSpinnerAsignatura.notifyDataSetChanged();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (TimeoutException e) {
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (TimeoutException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
-            //--fin llenado spinner asignatura
+                });
+                //--fin llenado spinner asignatura
+            } else if(rol_usuario==5){
+                asignaturaVME.getAllAsignaturas().observe(this, new Observer<List<Asignatura>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Asignatura> asignaturas) {
+                        try {
+                            if(extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION){
+                                Evaluacion ev = evaluacionViewModel.getEval(extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION));
+                                Asignatura as = asignaturaVME.obtenerAsignatura(ev.getCodigoAsignaturaFK());
+                                //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
+                                for (Asignatura x : asignaturas) {
+                                    asignaturasNom.add(x);
+                                    if(x.getCodigoAsignatura().equals(as.getCodigoAsignatura()))
+                                        spinCodigoAsignaturaEvaluacion.setSelection(asignaturasNom.indexOf(x));
+                                }
+                                //refresca (necesario para mostrar los datos recuperados en el spinner)
+                                adaptadorSpinnerAsignatura.notifyDataSetChanged();
+                            } else {
+                                for (Asignatura x : asignaturas)
+                                    asignaturasNom.add(x);
+                                adaptadorSpinnerAsignatura.notifyDataSetChanged();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (TimeoutException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                //--fin llenado spinner asignatura
+            }
 
             //Spinner Tipo evaluacion
             final ArrayList<TipoEvaluacion> tipoEvaluacionesNom = new ArrayList<>();
@@ -179,37 +214,67 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             final ArrayAdapter<Docente> adaptadorSpinnerDocentes = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,docentesNom);
             adaptadorSpinnerDocentes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinCarnetDocenteEvaluacion.setAdapter(adaptadorSpinnerDocentes);
-            evaluacionViewModel.obtenerDocentesPorEscuela(escAux.getIdEscuela()).observe(this, new Observer<List<Docente>>() {
-                @Override
-                public void onChanged(@Nullable List<Docente> docentes) {
-                    try {
-                        if(extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION){
-                            Evaluacion ev = evaluacionViewModel.getEval(extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION));
-                            Docente doc = docenteVME.getDocente(ev.getCarnetDocenteFK());
-                            //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
-                            for (Docente x : docentes) {
-                                docentesNom.add(x);
-                                if(x.getCarnetDocente().equals(doc.getCarnetDocente()))
-                                    spinCarnetDocenteEvaluacion.setSelection(docentesNom.indexOf(x));
+            if(rol_usuario==1 || rol_usuario==2) {
+                evaluacionViewModel.obtenerDocentesPorEscuela(escAux.getIdEscuela()).observe(this, new Observer<List<Docente>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Docente> docentes) {
+                        try {
+                            if (extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION) {
+                                Evaluacion ev = evaluacionViewModel.getEval(extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION));
+                                Docente doc = docenteVME.getDocente(ev.getCarnetDocenteFK());
+                                //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
+                                for (Docente x : docentes) {
+                                    docentesNom.add(x);
+                                    if (x.getCarnetDocente().equals(doc.getCarnetDocente()))
+                                        spinCarnetDocenteEvaluacion.setSelection(docentesNom.indexOf(x));
+                                }
+                                //refresca (necesario para mostrar los datos recuperados en el spinner)
+                                adaptadorSpinnerDocentes.notifyDataSetChanged();
+                            } else {
+                                for (Docente x : docentes)
+                                    docentesNom.add(x);
+                                adaptadorSpinnerDocentes.notifyDataSetChanged();
                             }
-                            //refresca (necesario para mostrar los datos recuperados en el spinner)
-                            adaptadorSpinnerDocentes.notifyDataSetChanged();
-                        } else {
-                            for (Docente x : docentes)
-                                docentesNom.add(x);
-                            adaptadorSpinnerDocentes.notifyDataSetChanged();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (TimeoutException e) {
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (TimeoutException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
-            //--fin llenado spinner docentes
-
+                });
+                //--fin llenado spinner docentes
+            } else if(rol_usuario==5){
+                docenteVME.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Docente> docentes) {
+                        try {
+                            if (extras.getInt(EvaluacionActivity.OPERACION_EVALUACION) == EvaluacionActivity.EDITAR_EVALUACION) {
+                                Evaluacion ev = evaluacionViewModel.getEval(extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION));
+                                Docente doc = docenteVME.getDocente(ev.getCarnetDocenteFK());
+                                //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
+                                for (Docente x : docentes) {
+                                    docentesNom.add(x);
+                                    if (x.getCarnetDocente().equals(doc.getCarnetDocente()))
+                                        spinCarnetDocenteEvaluacion.setSelection(docentesNom.indexOf(x));
+                                }
+                                //refresca (necesario para mostrar los datos recuperados en el spinner)
+                                adaptadorSpinnerDocentes.notifyDataSetChanged();
+                            } else {
+                                for (Docente x : docentes)
+                                    docentesNom.add(x);
+                                adaptadorSpinnerDocentes.notifyDataSetChanged();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (TimeoutException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });            }
             //nomeacuerdoxdddddd
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
