@@ -183,13 +183,13 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             String ob = observaciones.getText().toString();
 
             if(notaA.trim().isEmpty()||notaD.trim().isEmpty()||ob.trim().isEmpty()){
-                Toast.makeText(this, "Por favor, llena todos los campos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error_form_incompleto_eval, Toast.LENGTH_LONG).show();
             }
             DetalleEvaluacion detalleEvaluacionActual;
             detalleEvaluacionActual = detalleEvaluacionViewModel.getDetalleEvaluacion(primeraRevisionActual.getIdDetalleEvFK());
 
             if(Double.parseDouble(notaD)<detalleEvaluacionActual.getNota()){
-                Toast.makeText(EditarPrimeraRevisionActivity.this, "Error, la nota final, no puede ser menor que la nota actual.", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditarPrimeraRevisionActivity.this, R.string.errodenota, Toast.LENGTH_LONG).show();
             }else{
                 primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
                 PrimeraRevision p = primeraRevisionViewModel.getPrimeraRevision(id);
@@ -202,7 +202,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
                 p.setObservacionesPrimeraRev(ob);
                 //Actualizar
                 primeraRevisionViewModel.updatePrimeraRevision(p);
-                Toast.makeText(EditarPrimeraRevisionActivity.this, "Primera revisión: "+ p.getIdPrimerRevision() + ", actualizada con éxito", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarPrimeraRevisionActivity.this, R.string.practualizada, Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish();
             }

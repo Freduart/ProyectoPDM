@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">ProyectoPDM</string>
+
+    <string name="registroduplicado">Error, registro duplicado.</string>
+    <string name="bienvenido">Bienvenido!</string>
+    <string name="hastapronto">Hasta pronto.</string>
+    <string name="credsincorrectas">Error: las credenciales ingresadas, son incorrectas.</string>
+
+
     <!-- Strings para SolicitudExtraordinario -->
     <string name="AppBarNameSoliExtra">Solicitud Extraordinaria</string>
     <string name="nuevaSoliExtraName">Solicitud de Evaluación Extraordinaria</string>
@@ -124,6 +131,9 @@
     <string name="AppBarAddCargo">Agregar cargo</string>
     <string name="DetalleCargo">Detalle de cargo</string>
     <string name="EditarCargo">Editar cargo</string>
+    <string name="cargoinsertado">Cargo insertado con éxito.</string>
+    <string name="cargoactualizado">Cargo actualizado con éxito.</string>
+    <string name="cargoeliminado">Cargo eliminado con éxito.</string>
 
     <!-- Strings para Asignatura -->
     <string name="AppBarAddAsignatura">Agregar asignatura</string>
@@ -133,6 +143,9 @@
     <string name="AppBarNameAsignaturas">Asignaturas</string>
     <string name="DetalleAsignatura">Detalle de asignatura</string>
     <string name="EditarAsignatura">Editar asignatura</string>
+    <string name="asignaturainsertada">Asignatura insertada con éxito.</string>
+    <string name="asignaturaeliminada">Asignatura eliminada con éxito.</string>
+    <string name="asignaturaactualizada">Asignatura actualizada con éxito.</string>
 
     <!-- Strings para Primera Revisión -->
     <string name="AppBarNamePrimerRevision">Primera revisión</string>
@@ -155,6 +168,10 @@
         <item>true</item>
         <item>false</item>
     </string-array>
+    <string name="prinsertada">Solicitud de primera revisión, insertada con éxito.</string>
+    <string name="practualizada">Solicitud de primera revisión, actualizada con éxito.</string>
+    <string name="preliminada">Solicitud de primera revisión, eliminada con éxito.</string>
+    <string name="errodenota">Error. La nota final no puede ser menor que la nota actual.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

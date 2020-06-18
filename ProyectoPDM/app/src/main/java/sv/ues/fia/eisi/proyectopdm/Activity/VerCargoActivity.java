@@ -56,7 +56,7 @@ public class VerCargoActivity extends AppCompatActivity {
 
             //titulo appbar
 
-            setTitle("Detalle de cargo");
+            setTitle(R.string.DetalleCargo);
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.fillInStackTrace().toString(),Toast.LENGTH_LONG).show();
             Toast.makeText(getApplicationContext(),

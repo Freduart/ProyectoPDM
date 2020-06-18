@@ -85,6 +85,7 @@ public class EditarAsignaturaActivity extends AppCompatActivity {
                     }
                 }
             });
+            setTitle(R.string.EditarAsignatura);
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.getCause(),Toast.LENGTH_LONG).show();
         }
@@ -103,7 +104,7 @@ public class EditarAsignaturaActivity extends AppCompatActivity {
             String nombre = editNomAsignatura.getText().toString();
 
             if(nombre.trim().isEmpty()){
-                Toast.makeText(this, "Por favor, ingresa el nombre de asignatura.",
+                Toast.makeText(this, R.string.error_form_incompleto_eval,
                         Toast.LENGTH_SHORT).show();
             }
             asignaturaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
@@ -111,7 +112,7 @@ public class EditarAsignaturaActivity extends AppCompatActivity {
             a.setNomasignatura(nombre);
             a.setIdDepartamentoFK(Integer.parseInt(area));
             asignaturaViewModel.update(a);
-            Toast.makeText(EditarAsignaturaActivity.this, "Asignatura "+a.getCodigoAsignatura() + " actualizada con éxito.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditarAsignaturaActivity.this, R.string.asignaturaactualizada, Toast.LENGTH_SHORT).show();
             finish();
         }catch (Exception e){
             Toast.makeText(EditarAsignaturaActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();

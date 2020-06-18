@@ -93,6 +93,8 @@ public class CargoActivity extends AppCompatActivity {
                 }
             });
 
+            setTitle(R.string.AppBarNameCargos);
+
         }catch (Exception e){
             Toast.makeText(CargoActivity.this, "Error en el ViewModel",
                     Toast.LENGTH_SHORT).show();
@@ -130,8 +132,7 @@ public class CargoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     cargoViewModel.delete(cargo);
-                    Toast.makeText(CargoActivity.this, "Cargo" + " "+
-                                    cargo.getIdCargo() +" ha sido borrado exitosamente",
+                    Toast.makeText(CargoActivity.this, R.string.cargoeliminado,
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }catch (Exception e){
