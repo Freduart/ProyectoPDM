@@ -33,6 +33,7 @@
                 android:id="@+id/divider3"
                 android:layout_width="409dp"
                 android:layout_height="1dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
             <TextView
                 android:id="@+id/textNomEnc"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"

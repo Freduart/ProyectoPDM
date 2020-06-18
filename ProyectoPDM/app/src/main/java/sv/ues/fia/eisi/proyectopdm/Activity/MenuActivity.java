@@ -1,7 +1,10 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
@@ -33,6 +37,7 @@ public class MenuActivity extends AppCompatActivity {
     private int id_usuario;
     private int rol_usuario;
     private CardView alumno, evaluacion,cargos,areaadm, solicitudimpresion, asignaturas, primerasrevisiones,ciclo, local, extraordinaria, docente, encargado;
+    static final int READ_STORAGE_PERMISSION=2,WRITE_STORAGE_PERMISSION=3,INTERNET=4,NETWORK_STATE=5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,9 @@ public class MenuActivity extends AppCompatActivity {
         extraordinaria=findViewById(R.id.cardSolicitudExtraordinario);
         docente=findViewById(R.id.cardDocente);
         encargado=findViewById(R.id.cardEncImpres);
+
+        solicitarPermisos();
+
         //crear un bundle para recibir los extra del intent
         final Bundle extras = getIntent().getExtras();
         //verifica que los extra no estén vacíos
@@ -254,6 +262,56 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         }catch (Exception e){
             Toast.makeText(MenuActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+    //Metodos para solicitar permisos de lectura, escritura y accceso a internet
+    private void solicitarPermisos(){
+        int readStorage= ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int writeStorage= ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int internet= ActivityCompat.checkSelfPermission(this,Manifest.permission.INTERNET);
+        int networkState= ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_NETWORK_STATE);
+        if(readStorage!= PackageManager.PERMISSION_GRANTED && writeStorage!=PackageManager.PERMISSION_GRANTED &&
+                internet!= PackageManager.PERMISSION_GRANTED && networkState!=PackageManager.PERMISSION_GRANTED){
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},READ_STORAGE_PERMISSION);
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_STORAGE_PERMISSION);
+                requestPermissions(new String[]{Manifest.permission.INTERNET},INTERNET);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE},NETWORK_STATE);
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case READ_STORAGE_PERMISSION: {
+                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                    solicitudimpresion.setVisibility(View.VISIBLE);
+                } else {
+                    solicitudimpresion.setVisibility(View.GONE);
+                }
+                return;
+            }
+            case WRITE_STORAGE_PERMISSION:{
+                if (grantResults.length>0 && grantResults[1]==PackageManager.PERMISSION_GRANTED){
+                    solicitudimpresion.setVisibility(View.VISIBLE);
+                }else{
+                    solicitudimpresion.setVisibility(View.GONE);
+                }
+            }
+            case INTERNET:{
+                if(grantResults.length>0 && grantResults[2]==PackageManager.PERMISSION_GRANTED){
+                    solicitudimpresion.setVisibility(View.VISIBLE);
+                }else{
+                    solicitudimpresion.setVisibility(View.GONE);
+                }
+            }
+            case NETWORK_STATE:{
+                if(grantResults.length>0 && grantResults[3]==PackageManager.PERMISSION_GRANTED){
+                    solicitudimpresion.setVisibility(View.VISIBLE);
+                }else{
+                    solicitudimpresion.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
