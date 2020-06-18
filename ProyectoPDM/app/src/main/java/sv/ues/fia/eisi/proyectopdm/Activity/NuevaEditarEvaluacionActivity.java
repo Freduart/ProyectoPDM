@@ -35,11 +35,13 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 
 public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
+    private int id_usuario, rol_usuario;
     public String ENTREGA_NOTAS_PLACEHOLDER;
     private EditText editNombreEvaluacion;
     private Spinner spinTipoEvaluacion;
@@ -79,6 +81,20 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             dpickFechaEntregaEvaluacion = findViewById(R.id.edit_fechaEntregaNotas);
             fechaEntregaEvaluacionLabel = findViewById(R.id.fechaEntregaNotas);
             botonDetalleEval = findViewById(R.id.agregar_detalle_evaluacion);
+            //instancia asignatura view model
+            docenteVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+            asignaturaVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
+            tipoEvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
+            evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+
+            if (extras != null){
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+            }
+
+            //obtiene docente auxiliar
+            Docente docAux = evaluacionViewModel.getDocenteConUsuario(id_usuario);
+            //obtiene escuela del docente
+            Escuela escAux = evaluacionViewModel.getEscuelaDeDocente(docAux.getCarnetDocente());
 
             //LLENAR SPINNERS
             //Spinner asignatura
@@ -90,10 +106,8 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             adaptadorSpinnerAsignatura.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //settea el adaptador creado en el spinner
             spinCodigoAsignaturaEvaluacion.setAdapter(adaptadorSpinnerAsignatura);
-            //instancia asignatura view model
-            asignaturaVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
             //obtener todas las asignaturas en livedata
-            asignaturaVME.getAllAsignaturas().observe(this, new Observer<List<Asignatura>>() {
+            evaluacionViewModel.obtenerAsignaturasPorEscuela(escAux.getIdEscuela()).observe(this, new Observer<List<Asignatura>>() {
                 @Override
                 public void onChanged(@Nullable List<Asignatura> asignaturas) {
                     try {
@@ -129,7 +143,6 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             final ArrayAdapter<TipoEvaluacion> adaptadorSpinnerTipoEval = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,tipoEvaluacionesNom);
             adaptadorSpinnerTipoEval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinTipoEvaluacion.setAdapter(adaptadorSpinnerTipoEval);
-            tipoEvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
             tipoEvaluacionVM.getTodosTiposEvaluaciones().observe(this, new Observer<List<TipoEvaluacion>>() {
                 @Override
                 public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
@@ -166,8 +179,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             final ArrayAdapter<Docente> adaptadorSpinnerDocentes = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,docentesNom);
             adaptadorSpinnerDocentes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinCarnetDocenteEvaluacion.setAdapter(adaptadorSpinnerDocentes);
-            docenteVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
-            docenteVME.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
+            evaluacionViewModel.obtenerDocentesPorEscuela(escAux.getIdEscuela()).observe(this, new Observer<List<Docente>>() {
                 @Override
                 public void onChanged(@Nullable List<Docente> docentes) {
                     try {
@@ -202,8 +214,6 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
             //PARA EDITAR
-            //instancia View Model de evaluacion
-            evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
             Evaluacion auxiliar;
             int idEvaluacion = 0, operacionEv = 0;
             if (extras != null) {

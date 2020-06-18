@@ -30,6 +30,12 @@ public interface DetalleEvaluacionDao {
     @Query("select * from DetalleEvaluacion")
     LiveData<List<DetalleEvaluacion>> obtenerDetallesEvaluaciones();
 
+    @Query("select DetalleEvaluacion.* from DetalleEvaluacion " +
+            "inner join Alumno on DetalleEvaluacion.carnetAlumnoFK=Alumno.carnetAlumno " +
+            "inner join Usuario on Alumno.idUsuarioFk=Usuario.idUsuario " +
+            "where Usuario.idUsuario=:id")
+    LiveData<List<DetalleEvaluacion>> obtenerDetallesEvaluacionesSegunUsuario(int id);
+
     @Query("select * from DetalleEvaluacion where idDetalleEv == :detalleevaluacionid")
     DetalleEvaluacion obtenerDetalleEvaluacion(int detalleevaluacionid);
 

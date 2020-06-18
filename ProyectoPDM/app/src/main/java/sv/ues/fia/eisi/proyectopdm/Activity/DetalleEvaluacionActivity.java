@@ -30,6 +30,7 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 
@@ -158,49 +159,54 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
     }
 
     public void actualizarScrollAlumnos(){
-        //Spinner alumnos
-        final ArrayList<Alumno> alumnosLista = new ArrayList<>();
-        adaptadorSpinner = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,alumnosLista);
-        adaptadorSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAlumnos.setAdapter(adaptadorSpinner);
-        alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
-            @Override
-            public void onChanged(@Nullable List<Alumno> alumnos) {
-                alumnosLista.clear();
-                boolean flagExcl;
-                for (Alumno x : alumnos) {
-                    try {
-                        List<DetalleEvaluacion> detalleAux = detalleEvaluacionViewModel.getDetallePorAlumno(x.getCarnetAlumno());
-                        flagExcl = false;
-                        if(!detalleAux.isEmpty())
-                            for(DetalleEvaluacion det : detalleAux) {
-                                if (det.getIdEvaluacionFK() != idEvaluacion && !alumnosLista.contains(x) && flagExcl == false){
-                                    alumnosLista.add(x);
-                                    flagExcl = true;
+        try {
+            //Spinner alumnos
+            final ArrayList<Alumno> alumnosLista = new ArrayList<>();
+            adaptadorSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, alumnosLista);
+            adaptadorSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerAlumnos.setAdapter(adaptadorSpinner);
+            EvaluacionViewModel evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+            evaluacionViewModel.getAlumnosDesdeAsignatura(evaluacionViewModel.getAsignaturaEvaluacion(idEvaluacion).getCodigoAsignatura()).observe(this, new Observer<List<Alumno>>() {
+                @Override
+                public void onChanged(@Nullable List<Alumno> alumnos) {
+                    alumnosLista.clear();
+                    boolean flagExcl;
+                    for (Alumno x : alumnos) {
+                        try {
+                            List<DetalleEvaluacion> detalleAux = detalleEvaluacionViewModel.getDetallePorAlumno(x.getCarnetAlumno());
+                            flagExcl = false;
+                            if (!detalleAux.isEmpty())
+                                for (DetalleEvaluacion det : detalleAux) {
+                                    if (det.getIdEvaluacionFK() != idEvaluacion && !alumnosLista.contains(x) && flagExcl == false) {
+                                        alumnosLista.add(x);
+                                        flagExcl = true;
+                                    } else if (det.getIdEvaluacionFK() == idEvaluacion) {
+                                        alumnosLista.remove(x);
+                                        flagExcl = true;
+                                    }
                                 }
-                                else if (det.getIdEvaluacionFK() == idEvaluacion){
-                                    alumnosLista.remove(x);
-                                    flagExcl = true;
-                                }
-                            } else
-                            alumnosLista.add(x);
-                        //refresca (necesario para mostrar los datos recuperados en el spinner)
-                        adaptadorSpinner.notifyDataSetChanged();
-                        adaptador.notifyDataSetChanged();
-                        if(adaptadorSpinner.getCount()==0)
-                            botonAgregar.setEnabled(false);
-                        else
-                            botonAgregar.setEnabled(true);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    } catch (ExecutionException ex) {
-                        ex.printStackTrace();
-                    } catch (TimeoutException ex) {
-                        ex.printStackTrace();
+                            else
+                                alumnosLista.add(x);
+                            //refresca (necesario para mostrar los datos recuperados en el spinner)
+                            adaptadorSpinner.notifyDataSetChanged();
+                            adaptador.notifyDataSetChanged();
+                            if (adaptadorSpinner.getCount() == 0)
+                                botonAgregar.setEnabled(false);
+                            else
+                                botonAgregar.setEnabled(true);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        } catch (ExecutionException ex) {
+                            ex.printStackTrace();
+                        } catch (TimeoutException ex) {
+                            ex.printStackTrace();
+                        }
                     }
+
                 }
-
-            }});
-
+            });
+        } catch (Exception e){
+            e.fillInStackTrace();
+        }
     }
 }

@@ -55,6 +55,10 @@ public class AreaAdmRepository {
         return todasAreasAdm;
     }
 
+    //obtener areas de docente
+    public LiveData<List<AreaAdm>> obtenerAreasAdmDoc(String id) {
+        return areaAdmDao.obtenerAreasDesdeDocente(id);
+    }
 
 
     //Async de insertar

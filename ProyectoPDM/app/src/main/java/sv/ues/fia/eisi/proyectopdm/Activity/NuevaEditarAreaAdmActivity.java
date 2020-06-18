@@ -29,6 +29,7 @@ import java.util.concurrent.TimeoutException;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
@@ -38,6 +39,8 @@ public class NuevaEditarAreaAdmActivity extends AppCompatActivity {
     private Spinner spinEscuela;
     private EscuelaViewModel escuelaVM;
     private AreaAdmViewModel areaAdmViewModel;
+    private EvaluacionViewModel evaluacionViewModel;
+    private int id_usuario, rol_usuario;
 
 
     @Override
@@ -48,6 +51,12 @@ public class NuevaEditarAreaAdmActivity extends AppCompatActivity {
             //obtener extras del intent
             final Bundle extras = getIntent().getExtras();
 
+            if(extras != null){
+                //recibe id del usuario desde el extra
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                //recibe rol del usuario desde el extra
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+            }
             //inicialización de elementos del layout
             editNombreAreaAdm = findViewById(R.id.edit_nombre_area);
             spinEscuela = findViewById(R.id.edit_escuela_area);
@@ -64,38 +73,43 @@ public class NuevaEditarAreaAdmActivity extends AppCompatActivity {
             spinEscuela.setAdapter(adaptadorSpinnerEscuela);
             //instancia asignatura view model
             escuelaVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EscuelaViewModel.class);
-            //obtener todas las asignaturas en livedata
-            escuelaVM.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
-                @Override
-                public void onChanged(@Nullable List<Escuela> escuelas) {
-                    try {
-                        if(extras.getInt(AreaAdmActivity.OPERACION_AREA) == AreaAdmActivity.EDITAR_AREA){
-                            AreaAdm ev = areaAdmViewModel.getAreaAdm(extras.getInt(AreaAdmActivity.IDENTIFICADOR_AREA));
-                            Escuela as = escuelaVM.getEscuela(ev.getIdEscuelaFK());
-                            //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
-                            for (Escuela x : escuelas) {
-                                escuelasNom.add(x);
-                                if(x.getIdEscuela() == as.getIdEscuela())
-                                    spinEscuela.setSelection(escuelasNom.indexOf(x));
+            switch(rol_usuario) {
+                case 1:
+                case 2:
+                    evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+                    escuelasNom.add(evaluacionViewModel.getEscuelaDeDocente(evaluacionViewModel.getDocenteConUsuario(id_usuario).getCarnetDocente()));
+                    break;
+                case 5:
+                    default:
+                //obtener todas las asignaturas en livedata
+                escuelaVM.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Escuela> escuelas) {
+                        try {
+                            if (extras.getInt(AreaAdmActivity.OPERACION_AREA) == AreaAdmActivity.EDITAR_AREA) {
+                                AreaAdm ev = areaAdmViewModel.getAreaAdm(extras.getInt(AreaAdmActivity.IDENTIFICADOR_AREA));
+                                Escuela as = escuelaVM.getEscuela(ev.getIdEscuelaFK());
+                                //añade los elementos del livedata a las listas para alamcenar nombre e id de asignatura
+                                for (Escuela x : escuelas) {
+                                    escuelasNom.add(x);
+                                    if (x.getIdEscuela() == as.getIdEscuela())
+                                        spinEscuela.setSelection(escuelasNom.indexOf(x));
+                                }
+                                //refresca (necesario para mostrar los datos recuperados en el spinner)
+                                adaptadorSpinnerEscuela.notifyDataSetChanged();
+                            } else {
+                                for (Escuela x : escuelas)
+                                    escuelasNom.add(x);
+                                adaptadorSpinnerEscuela.notifyDataSetChanged();
                             }
-                            //refresca (necesario para mostrar los datos recuperados en el spinner)
-                            adaptadorSpinnerEscuela.notifyDataSetChanged();
-                        } else {
-                            for (Escuela x : escuelas)
-                                escuelasNom.add(x);
-                            adaptadorSpinnerEscuela.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (TimeoutException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
-            //--fin llenado spinner asignatura
-
+                });
+                break;
+                //--fin llenado spinner asignatura
+            }
             //nomeacuerdoxdddddd
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 

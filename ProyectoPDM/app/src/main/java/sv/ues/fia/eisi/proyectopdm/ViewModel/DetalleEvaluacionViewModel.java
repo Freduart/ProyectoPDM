@@ -46,6 +46,8 @@ public class DetalleEvaluacionViewModel extends AndroidViewModel {
 
     public LiveData<List<DetalleEvaluacion>> getAllDetalles(){ return allDetalles; }
 
+    public LiveData<List<DetalleEvaluacion>> getDetallesPorUsuario(int id){ return detalleEvaluacionRepository.getDetallesPorUsuario(id); }
+
     public DetalleEvaluacion getDetalleEvaluacion(int id ) throws InterruptedException, ExecutionException, TimeoutException {
         return detalleEvaluacionRepository.obtenerDetalleEvaluacion(id);
     }

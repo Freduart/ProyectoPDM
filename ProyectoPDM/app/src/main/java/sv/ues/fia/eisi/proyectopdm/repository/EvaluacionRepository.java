@@ -11,8 +11,10 @@ import java.util.concurrent.TimeoutException;
 import sv.ues.fia.eisi.proyectopdm.Adapter.EvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
@@ -57,6 +59,19 @@ public class EvaluacionRepository {
         return todasEvaluaciones;
     }
 
+    public LiveData<List<Evaluacion>> getEvaluacionesEstudiante(String carnet) {
+        return evaluacionDao.obtenerEvaluacionesDeEstudiante(carnet);
+    }
+
+    public LiveData<List<Evaluacion>> getEvaluacionesDocente(String carnet) {
+        return evaluacionDao.obtenerEvaluacionesDeDocente(carnet);
+    }
+
+    //obtener asignatura usando el id de escuela
+    public LiveData<List<Asignatura>> obtenerAsignaturasPorEscuela(int id){
+        return evaluacionDao.obtenerAsignaturaPorEscuela(id);
+    }
+
     //obtener docentes asíncrono
     public Docente obtenerDocentes(Integer id) throws InterruptedException, ExecutionException, TimeoutException {
         return new obtenerDocenteAsyncTask(evaluacionDao).execute(id).get(12, TimeUnit.SECONDS);
@@ -70,6 +85,30 @@ public class EvaluacionRepository {
     //obtener asignatura asíncrono
     public Asignatura obtenerAsignatura(Integer id) throws InterruptedException, ExecutionException, TimeoutException {
         return new obtenerAsignaturaAsyncTask(evaluacionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
+    public LiveData<List<Alumno>> getAlumnosDesdeAsignatura(String codigo) {return evaluacionDao.obtenerAlumnosDesdeAsignatura(codigo); }
+
+    //obtener docente asíncrono con id de usuario
+    public Docente obtenerDocenteConUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        //se puede ajustar el timeout para cancelar la recuperación del dato, el primer parametro indica la cantidad, el segundo la unidad
+        return new obtenerDocenteConUsuarioAsyncTask(evaluacionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
+    //obtener escuela de docente seleccionado
+    public Escuela obtenerEscuelaDeDocente(String id) throws InterruptedException, ExecutionException, TimeoutException {
+        //se puede ajustar el timeout para cancelar la recuperación del dato, el primer parametro indica la cantidad, el segundo la unidad
+        return new obtenerEscuelaDeDocenteAsyncTask(evaluacionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
+    //obtener docentes usando id de escuela
+    public LiveData<List<Docente>> obtenerDocentesDeEscuela(int id) {
+        return evaluacionDao.obtenerDocentePorEscuela(id);
+    }
+
+    //obtener alumno async
+    public Alumno obtenerAlumnoConUsuario(int string)throws InterruptedException, ExecutionException, TimeoutException{
+        return new obtenerAlumnoConUsuarioAsyncTask(evaluacionDao).execute(string).get(12, TimeUnit.SECONDS);
     }
 
     //Async de insertar
@@ -186,4 +225,47 @@ public class EvaluacionRepository {
         protected Docente doInBackground(Integer... carnets) {
             return evaluacionDao.getDocente(carnets[0]);
         }
-    }}
+    }
+
+    //async obtener alumno
+    private static class obtenerAlumnoConUsuarioAsyncTask extends AsyncTask<Integer, Void, Alumno>{
+        private EvaluacionDao alumnoDao;
+        private obtenerAlumnoConUsuarioAsyncTask(EvaluacionDao alumnoDao){
+            this.alumnoDao=alumnoDao;
+        }
+
+        @Override
+        protected Alumno doInBackground(Integer... id) {
+            return alumnoDao.obtenerAlumnoConUsuario(id[0]);
+        }
+    }
+
+    //async obtener docente usando el id de usuario
+    private static class obtenerDocenteConUsuarioAsyncTask extends AsyncTask<Integer, Void, Docente>{
+        private EvaluacionDao docenteDao;
+
+        private obtenerDocenteConUsuarioAsyncTask(EvaluacionDao docenteDao){
+            this.docenteDao=docenteDao;
+        }
+
+        @Override
+        protected Docente doInBackground(Integer... id) {
+            return docenteDao.obtenerDocenteConUsuario(id[0]);
+        }
+    }
+
+
+    //async obtener escuela usando el id de docente
+    private static class obtenerEscuelaDeDocenteAsyncTask extends AsyncTask<String, Void, Escuela>{
+        private EvaluacionDao docenteDao;
+
+        private obtenerEscuelaDeDocenteAsyncTask(EvaluacionDao docenteDao){
+            this.docenteDao=docenteDao;
+        }
+
+        @Override
+        protected Escuela doInBackground(String... id) {
+            return docenteDao.obtenerEscuelaDeDocente(id[0]);
+        }
+    }
+}

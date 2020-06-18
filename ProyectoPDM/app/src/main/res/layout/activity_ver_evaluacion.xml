@@ -44,6 +44,13 @@
             android:text="@string/solicitar_revision_evaluacion"
             />
         <TextView
+            android:id="@+id/text_no_se_ha_realizado_eval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nombre_eval"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintTop_toBottomOf="@+id/alumno_eval_nota_disp" />
+        <TextView
             android:id="@+id/nombre_ver_evaluacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

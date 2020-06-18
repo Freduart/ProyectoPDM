@@ -61,6 +61,10 @@ public class DetalleEvaluacionRepository {
         return allDetalleEvaluaciones;
     }
 
+    public LiveData<List<DetalleEvaluacion>> getDetallesPorUsuario(int id){
+        return detalleEvaluacionDao.obtenerDetallesEvaluacionesSegunUsuario(id);
+    }
+
     public DetalleEvaluacion obtenerDetalleAlumnoEvaluacion(ParametrosDetalles parametrosDetalles) throws InterruptedException, ExecutionException, TimeoutException {
         return new DetalleEvaluacionRepository.obtenerDetalleAlumnoEvaluacionAsyncTask(detalleEvaluacionDao).execute(parametrosDetalles).get(12, TimeUnit.SECONDS);
     }

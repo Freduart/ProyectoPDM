@@ -16,19 +16,15 @@ import android.widget.Toast;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
-import sv.ues.fia.eisi.proyectopdm.repository.DetalleEvaluacionRepository;
 
 public class VerEvaluacionActivity extends AppCompatActivity {
     public static final String ID_EVAL = "sv.ues.fia.eisi.proyectopdm.Activity.EXTRA_ID";
@@ -38,6 +34,8 @@ public class VerEvaluacionActivity extends AppCompatActivity {
     private Asignatura asignaturaActual;
     private Docente docenteActual;
 
+    private int id_usuario, rol_usuario;
+
     private boolean currentUserAlumno = false;
     private TextView headlineNotaAlumno;
     private TextView notaAlumnoDisplay;
@@ -45,9 +43,6 @@ public class VerEvaluacionActivity extends AppCompatActivity {
     private Button alumnosDeEvaluacion;
 
     private EvaluacionViewModel evaluacionViewModel;
-    private AsignaturaViewModel asignaturaViewModel;
-    private TipoEvaluacionViewModel tipoEvaluacionViewModel;
-    private DocenteViewModel docenteViewModel;
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
     private PrimeraRevisionViewModel primeraRevisionViewModel;
 
@@ -60,6 +55,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
     private TextView dispFechaFinEvaluacion;
     private TextView dispFechaEntregaEvaluacion;
     private TextView dispParticipantesEvaluacion;
+    private TextView noseharealizado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +76,8 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             notaAlumnoDisplay = findViewById(R.id.alumno_eval_nota_disp);
             solicitarRevisionBtn = findViewById(R.id.boton_primera_revision_detalle);
             alumnosDeEvaluacion = findViewById(R.id.agregar_alumnos_evaluacion);
+            noseharealizado = findViewById(R.id.text_no_se_ha_realizado_eval);
+            noseharealizado.setVisibility(View.GONE);
             //inicializar viewmodels
             evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
             //docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
@@ -90,9 +88,14 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             //obtener intent de activity
             Bundle extras = getIntent().getExtras();
             int idEvaluacion = 0;
-                if (extras != null) {
-                    idEvaluacion = extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION);
-                }
+            if (extras != null) {
+                idEvaluacion = extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION);
+                //recibe id del usuario desde el extra
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                //recibe rol del usuario desde el extra
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+                currentUserAlumno= rol_usuario == 3;
+            }
             //obtener evaluación actual por medio de EXTRA_ID de intent
             evaluacionActual = evaluacionViewModel.getEval(idEvaluacion);
             //obtener objetos relacionados
@@ -137,24 +140,35 @@ public class VerEvaluacionActivity extends AppCompatActivity {
 
             //si es alumno, mostrar nota y solicitud de revisión
             if(currentUserAlumno){
+                EvaluacionViewModel evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+                DetalleEvaluacion detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(evaluacionActual.getIdEvaluacion(),evaluacionViewModel.getAlumnConUsuario(id_usuario).getCarnetAlumno());
                 headlineNotaAlumno.setVisibility(View.VISIBLE);
                 notaAlumnoDisplay.setVisibility(View.VISIBLE);
                 solicitarRevisionBtn.setVisibility(View.VISIBLE);
+                if(detalleEvaluacion==null){
+                    solicitarRevisionBtn.setEnabled(false);
+                    noseharealizado.setVisibility(View.VISIBLE);
+                }
+                else{
+                    solicitarRevisionBtn.setEnabled(true);
+                    noseharealizado.setVisibility(View.GONE);
+                }
                 alumnosDeEvaluacion.setVisibility(View.GONE);
                 solicitarRevisionBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try{
-                            DetalleEvaluacion detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(evaluacionActual.getIdEvaluacion(),"CARNET");
-                            List<PrimeraRevision> primeraRevisions= primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
+                            //List<PrimeraRevision> primeraRevisions= primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
                             //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
                             Intent intent = new Intent(VerEvaluacionActivity.this, NuevaPrimeraRevisionActivity.class);
                             //se mete en un extra del intent, el id
-                            intent.putExtra(PrimeraRevisionActivity.IDENTIFICADOR_PR, primeraRevisions.get(0).getIdPrimerRevision());
+                            //intent.putExtra(PrimeraRevisionActivity.IDENTIFICADOR_PR, primeraRevisions.get(0).getIdPrimerRevision());
+                            intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                            intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                             //inicia la activity
                             startActivity(intent);
                         } catch (Exception e){
-                            e.fillInStackTrace();
+                            Toast.makeText(VerEvaluacionActivity.super.getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
                 });

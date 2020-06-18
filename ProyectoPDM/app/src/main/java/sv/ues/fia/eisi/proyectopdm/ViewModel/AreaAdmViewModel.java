@@ -45,6 +45,10 @@ public class AreaAdmViewModel extends AndroidViewModel{
         return todasEval;
     }
 
+    public LiveData<List<AreaAdm>> getAreaAdmDocentes(String id) {
+        return repo.obtenerAreasAdmDoc(id);
+    }
+
     public AreaAdm getAreaAdm(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return repo.obtenerArea(id);
     }

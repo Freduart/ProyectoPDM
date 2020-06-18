@@ -22,6 +22,7 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.Adapter.AreaAdmAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 
 public class AreaAdmActivity extends AppCompatActivity {
@@ -32,12 +33,20 @@ public class AreaAdmActivity extends AppCompatActivity {
 
     private AreaAdmViewModel AreaAdmVM;
     private String identificador;
+    private int id_usuario, rol_usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_area_adm);
+            Bundle extras = getIntent().getExtras();
+            if(extras != null){
+                //recibe id del usuario desde el extra
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                //recibe rol del usuario desde el extra
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+            }
             //--nueva areaAdm
             //inicializa boton flotante de acción
             FloatingActionButton botonNuevaAreaAdm = findViewById(R.id.add_areaa_button);
@@ -49,6 +58,8 @@ public class AreaAdmActivity extends AppCompatActivity {
                     Intent intent = new Intent(AreaAdmActivity.this, NuevaEditarAreaAdmActivity.class);
                     //añadir extra que definirá si añade o edita
                     intent.putExtra(OPERACION_AREA, AÑADIR_AREA);
+                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                     //iniciar activity
                     startActivity(intent);
                 }
@@ -68,14 +79,28 @@ public class AreaAdmActivity extends AppCompatActivity {
             //inicializa viewmodel de areaAdm
             AreaAdmVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
             //obtiene todas las areaAdmes en un livedata
-            AreaAdmVM.getAreaAdmAll().observe(this, new Observer<List<AreaAdm>>() {
-                @Override
-                public void onChanged(List<AreaAdm> areaAdms) {
-                    //mete las areaAdmes en el adaptador
-                    adaptador.setAreaAdmes(areaAdms);
-                }
-            });
-
+            switch(rol_usuario) {
+                case 1:
+                case 2:
+                    EvaluacionViewModel evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+                    AreaAdmVM.getAreaAdmDocentes(evaluacionViewModel.getDocenteConUsuario(id_usuario).getCarnetDocente()).observe(this, new Observer<List<AreaAdm>>() {
+                        @Override
+                        public void onChanged(List<AreaAdm> areaAdms) {
+                            //mete las areaAdmes en el adaptador
+                            adaptador.setAreaAdmes(areaAdms);
+                        }
+                    });
+                    break;
+                default:
+                    AreaAdmVM.getAreaAdmAll().observe(this, new Observer<List<AreaAdm>>() {
+                        @Override
+                        public void onChanged(List<AreaAdm> areaAdms) {
+                            //mete las areaAdmes en el adaptador
+                            adaptador.setAreaAdmes(areaAdms);
+                        }
+                    });
+                    break;
+            }
             //--consultar areaAdm
             //al hacer clic corto en un objeto del recycler
             adaptador.setOnItemClickListener(new AreaAdmAdapter.OnItemClickListener() {
@@ -132,6 +157,8 @@ public class AreaAdmActivity extends AppCompatActivity {
                     //se mete en un extra del intent, el id
                     intent.putExtra(IDENTIFICADOR_AREA, id);
                     intent.putExtra(OPERACION_AREA, EDITAR_AREA);
+                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                     //inicia la activity
                     startActivity(intent);
                 }catch (Exception e){

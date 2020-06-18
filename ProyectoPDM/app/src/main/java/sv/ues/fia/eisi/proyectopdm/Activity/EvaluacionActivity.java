@@ -21,6 +21,8 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.EvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
@@ -32,12 +34,24 @@ public class EvaluacionActivity extends AppCompatActivity {
 
     private EvaluacionViewModel EvaluacionVM;
     private String identificador;
+    private int id_usuario, rol_usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_evaluacion);
+            //obtiene id de usuario y su rol
+            //crear un bundle para recibir los extra del intent
+            final Bundle extras = getIntent().getExtras();
+            //verifica que los extra no estén vacíos
+            if(extras != null){
+                //recibe id del usuario desde el extra
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                //recibe rol del usuario desde el extra
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+            }
+
             //--nueva evaluacion
             //inicializa boton flotante de acción
             FloatingActionButton botonNuevaEvaluacion = findViewById(R.id.add_eval_button);
@@ -49,6 +63,8 @@ public class EvaluacionActivity extends AppCompatActivity {
                     Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
                     //añadir extra que definirá si añade o edita
                     intent.putExtra(OPERACION_EVALUACION, AÑADIR_EVALUACION);
+                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                     //iniciar activity
                     startActivity(intent);
                 }
@@ -67,14 +83,44 @@ public class EvaluacionActivity extends AppCompatActivity {
             EvalRecycler.setAdapter(adaptador);
             //inicializa viewmodel de evaluacion
             EvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
-            //obtiene todas las evaluaciones en un livedata
-            EvaluacionVM.getEvalAll().observe(this, new Observer<List<Evaluacion>>() {
-                @Override
-                public void onChanged(List<Evaluacion> evaluacions) {
-                    //mete las evaluaciones en el adaptador
-                    adaptador.setEvaluaciones(evaluacions);
-                }
-            });
+
+            switch(rol_usuario){
+                case 1:
+                case 2:
+                    DocenteViewModel docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+                    //obtiene todas las evaluaciones en un livedata
+                    EvaluacionVM.obtenerEvaluacionesDocente(EvaluacionVM.getDocenteConUsuario(id_usuario).getCarnetDocente()).observe(this, new Observer<List<Evaluacion>>() {
+                        @Override
+                        public void onChanged(List<Evaluacion> evaluacions) {
+                            //mete las evaluaciones en el adaptador
+                            adaptador.setEvaluaciones(evaluacions);
+                        }
+                    });
+                    break;
+                //obtiene todas las evaluaciones en un livedata
+                case 3:
+                    botonNuevaEvaluacion.setVisibility(View.GONE);
+                    AlumnoViewModel alumnoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
+                    //obtiene todas las evaluaciones en un livedata
+                    EvaluacionVM.obtenerEvaluacionesAlumno(EvaluacionVM.getAlumnConUsuario(id_usuario).getCarnetAlumno()).observe(this, new Observer<List<Evaluacion>>() {
+                        @Override
+                        public void onChanged(List<Evaluacion> evaluacions) {
+                            //mete las evaluaciones en el adaptador
+                            adaptador.setEvaluaciones(evaluacions);
+                        }
+                    });
+                    break;
+                default:
+                    //obtiene todas las evaluaciones en un livedata
+                    EvaluacionVM.getEvalAll().observe(this, new Observer<List<Evaluacion>>() {
+                        @Override
+                        public void onChanged(List<Evaluacion> evaluacions) {
+                            //mete las evaluaciones en el adaptador
+                            adaptador.setEvaluaciones(evaluacions);
+                        }
+                    });
+                    break;
+            }
 
             //--consultar evaluacion
             //al hacer clic corto en un objeto del recycler
@@ -87,20 +133,24 @@ public class EvaluacionActivity extends AppCompatActivity {
                     Intent intent = new Intent(EvaluacionActivity.this, VerEvaluacionActivity.class);
                     //se mete en un extra del intent, el id
                     intent.putExtra(IDENTIFICADOR_EVALUACION, id);
+                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                     //inicia la activity
                     startActivity(intent);
                 }
             });
 
-            //--eliminar evaluacion
-            adaptador.setOnLongClickListener(new EvaluacionAdapter.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(Evaluacion evaluacion) {
-                    //guardar id de evaluacion que se tocó
-                    int id = evaluacion.getIdEvaluacion();
-                    createCustomDialog(evaluacion).show();
-                }
-            });
+            //si no es estudiante
+            if(rol_usuario!=3)
+                //--eliminar evaluacion
+                adaptador.setOnLongClickListener(new EvaluacionAdapter.OnItemLongClickListener() {
+                    @Override
+                    public void onItemLongClick(Evaluacion evaluacion) {
+                        //guardar id de evaluacion que se tocó
+                        int id = evaluacion.getIdEvaluacion();
+                        createCustomDialog(evaluacion).show();
+                    }
+                });
 
             //título de la pantalla
             setTitle(R.string.evaluacion);
