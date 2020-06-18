@@ -102,6 +102,7 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
             //Objeto auxiliar creado por los datos ingresados
             Alumno alumno=new Alumno(carnet,nombre,apellidos,carrera,correo, 1);
 
+            //Codigo Arely linea 107
             //Instancia VMAlumno
             alumnoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
             alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
@@ -121,6 +122,7 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
                         Toast.makeText(AgregarAlumnoActivity.this, e.getMessage() + " - "+e.getCause(), Toast.LENGTH_LONG).show();
                     }
                 }
+                //Fin del codigo de Arely
             });
         }catch (Exception e){
             Toast.makeText(this, "Ocurrio un error al guardar", Toast.LENGTH_SHORT).show();

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.AgregarAlumnoActivity">
+    <!-- Pantalla para agregar un nuevo alumno -->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/et_Carnet_editar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:hint="@string/carnet_addhint_Alumno"
+            android:padding="8dp"
+            android:textSize="24sp"/>
+
+        <EditText
+            android:id="@+id/et_Nombre_editar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:padding="8dp"
+            android:textSize="24sp"
+            android:hint="@string/nombre_addhint_Alumno"/>
+
+
+        <EditText
+            android:id="@+id/et_Apellidos_editar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:hint="@string/apellidos_addhint_Alumno"/>
+
+        <EditText
+            android:id="@+id/et_Correo_editar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:hint="@string/correo_addhint_Alumno"/>
+
+        <TextView
+            android:id="@+id/blanco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:textSize="1dp"/>
+
+
+        <TextView
+            android:id="@+id/tw_Carrera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/carrera_addhint_Alumno"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:textSize="24sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <Spinner
+            android:id="@+id/spn_Carrera_editar"
+            app:layout_constraintTop_toBottomOf="@+id/tw_Carrera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"/>
+
+    </TableLayout>
+
+</ScrollView>

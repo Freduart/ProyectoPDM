@@ -36,7 +36,7 @@ Metodo para editar alumno en base al carnet del estudiante y mostrando los datos
  */
 public class NuevaEditarAlumnoActivity extends AppCompatActivity {
     //Enlace con los items del layout
-    private EditText et_carnet;
+    private TextView et_carnet;
     private EditText et_nombre;
     private EditText et_apellidos;
     private EditText et_correo;
@@ -49,14 +49,14 @@ public class NuevaEditarAlumnoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_agregar_alumno);
+            setContentView(R.layout.activity_editar_alumno);
 
             //Enlace de los componentes de pantalla con los del activity
-            et_carnet = (EditText) findViewById(R.id.et_Carnet);
-            et_nombre = (EditText) findViewById(R.id.et_Nombre);
-            et_apellidos = (EditText) findViewById(R.id.et_Apellidos);
-            et_correo=(EditText) findViewById(R.id.et_Correo);
-            spn_Carrera = (Spinner) findViewById(R.id.spn_Carrera);
+            et_carnet = (TextView) findViewById(R.id.et_Carnet_editar);
+            et_nombre = (EditText) findViewById(R.id.et_Nombre_editar);
+            et_apellidos = (EditText) findViewById(R.id.et_Apellidos_editar);
+            et_correo=(EditText) findViewById(R.id.et_Correo_editar);
+            spn_Carrera = (Spinner) findViewById(R.id.spn_Carrera_editar);
             et_carnet.setEnabled(true);
 
             final ArrayList<String>carrerasNom=new ArrayList<>();
@@ -123,9 +123,15 @@ public class NuevaEditarAlumnoActivity extends AppCompatActivity {
             alumno.setNombre(nombre);
             alumno.setApellido(apellidos);
             alumno.setCorreo(correo);
-            alumno.setIdUsuarioFk(1);
+            alumno.setIdUsuarioFk(3);
             //alumno.setCarrera(String.valueOf(carreraSelect));
 
+            alumnoViewModel.update(alumno);
+
+            Toast.makeText(this, "El alummno: " + carnet + " a sido actualizado correctamente", Toast.LENGTH_SHORT).show();
+            finish();
+
+            /*Codigo Arely
             alumnoViewModel.getAllAlumnos().observe(this, new Observer<List<Alumno>>() {
                 @Override
                 public void onChanged(List<Alumno> alumnos) {
@@ -145,6 +151,7 @@ public class NuevaEditarAlumnoActivity extends AppCompatActivity {
                     }
                 }
             });
+            //Fin del codigo de Arely*/
         } catch (Exception e) {
             Toast.makeText(this, "Ocurrio un error al guardar " +e, Toast.LENGTH_SHORT).show();
         }
