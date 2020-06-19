@@ -78,7 +78,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             evaluacionPr = primeraRevisionViewModel.obtenerEvaPR(idEvaPr);
 
             detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
-            detalleEvaluacionViewModel.getDetallesPorUsuario(idAlUser).observe(this, new Observer<List<DetalleEvaluacion>>() {
+            detalleEvaluacionViewModel.getDetallePorUsuarioYEvaluacion(idAlUser, idEvaPr).observe(this, new Observer<List<DetalleEvaluacion>>() {
                 @Override
                 public void onChanged(List<DetalleEvaluacion> detalleEvaluacions) {
                     try {
@@ -93,7 +93,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
 
                     }
                 }
-            });//fin de llenado spinner detalle por alumno*/
+            });//fin de llenado spinner detalle por alumno
 
         } catch (Exception e) {
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
