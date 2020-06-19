@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
+import sv.ues.fia.eisi.proyectopdm.dao.AlumnoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.InscripcionDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
@@ -161,6 +162,19 @@ public class InscripcionRepository {
         }
     }
 
+    private static class ObtenerCarnetAlumnoAsyncTask extends AsyncTask<String, Void, Inscripcion>{
+        private InscripcionDao inscripcionDao;
+
+        public ObtenerCarnetAlumnoAsyncTask(InscripcionDao inscripcionDao) {
+            this.inscripcionDao = inscripcionDao;
+        }
+
+        @Override
+        protected Inscripcion doInBackground(String... strings) {
+            return inscripcionDao.obtenerCarnet(strings[0]);
+        }
+    }
+
     //Metodos asincronos
     public void insertarInscripcion(Inscripcion inscripcion){
         new InsetarInscripcionAsyncTask(inscripcionDao).execute(inscripcion);
@@ -201,5 +215,9 @@ public class InscripcionRepository {
 
     public List<Inscripcion> obtenerRealcionesUsandoAlumno(String carnet) throws Exception{
         return new ObenterRelacionesConAlumnoAsyncTask(inscripcionDao).execute(carnet).get(12,TimeUnit.SECONDS);
+    }
+
+    public Inscripcion obtenerCarnet(String carnet) throws Exception{
+        return new ObtenerCarnetAlumnoAsyncTask(inscripcionDao).execute(carnet).get(12,TimeUnit.SECONDS);
     }
 }

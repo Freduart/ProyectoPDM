@@ -75,4 +75,11 @@ public interface InscripcionDao {
             "where Alumno.carrera=:id")
     List<Inscripcion> getInscripcionCONAlumno(final String id);
 
+    //Query para traer el carnet del alumno
+    @Query("select Inscripcion.* from Inscripcion "+
+            "inner join Alumno on Alumno.carnetAlumno=Inscripcion.carnetAlumnoFK "+
+            "inner join Usuario on Usuario.idUsuario=Alumno.idUsuarioFk "+
+            "where Inscripcion.carnetAlumnoFK=:id")
+    Inscripcion obtenerCarnet(String id);
+
 }

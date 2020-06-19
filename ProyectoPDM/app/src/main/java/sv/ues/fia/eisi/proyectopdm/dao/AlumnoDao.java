@@ -41,4 +41,7 @@ public interface AlumnoDao {
 
     @Query("select * from Alumno where carnetAlumno == :alumnoid")
     Alumno obtenerAlumno(String alumnoid);
+
+    @Query("Select * from Alumno")
+    List<Alumno> getAlumnosAsync();
 }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
@@ -37,6 +38,11 @@ public class Alumno {
         this.correo=correo;
         this.idUsuarioFk = idUsuarioFk;
     }
+
+    @Ignore
+    public Alumno() {
+    }
+
 
     @NonNull
     public String getCarnetAlumno() {

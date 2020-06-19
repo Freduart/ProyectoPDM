@@ -23,17 +23,23 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.InscripcionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Inscripcion;
 
 public class InscripcionActivity extends AppCompatActivity {
+
+    public static final String ID_SR_D = "ID_Actual";
+    public int COD_REQ_SR_D = 11;
+
     //A utilizar
-    private TextView carnet;
+    private EditText carnet;
     private Spinner spn_Asignaturas;
     //private EditText glab;
     private EditText glab;
     private EditText gteo;
     private EditText gdisc;
+    private Inscripcion carnetActual;
 
     //ViewModels a utilizar
     private InscripcionViewModel inscripcionViewModel;
@@ -46,11 +52,14 @@ public class InscripcionActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_inscripcion);
 
+            final Bundle extra=getIntent().getExtras();
+
+
             //Modificar el titulo del layout
             setTitle(R.string.AppBarNameInscripcion);
 
             //Enlaces con el layout
-            carnet=(TextView)findViewById(R.id.et_Carnet);
+            carnet=(EditText) findViewById(R.id.et_Carnet);
             spn_Asignaturas=(Spinner)findViewById(R.id.spn_Asignatura);
             glab=(EditText) findViewById(R.id.glabnumber);
             gteo=(EditText) findViewById(R.id.gteonumber);
@@ -78,11 +87,6 @@ public class InscripcionActivity extends AppCompatActivity {
                 }
             });
 
-            Bundle extra=getIntent().getExtras();
-            String carnet="";
-            if(extra!=null){
-                carnet=extra.getString(AlumnoActivity.IDENTIFICADOR_ALUMNO);
-            }
         }catch (Exception e){
             Toast.makeText(this, "Ocurrio un error!\n" +e, Toast.LENGTH_SHORT).show();
         }
@@ -100,19 +104,19 @@ public class InscripcionActivity extends AppCompatActivity {
             String[]materiaSelect2=materiaSelect.split("-");
             String asignatura=materiaSelect2[0].trim();
 
-            if(asignatura.trim().isEmpty()||String.valueOf(glabActual).isEmpty()||String.valueOf(gdiscActual).isEmpty()||String.valueOf(gteoActual).isEmpty()){
+            if(carnetActual.isEmpty()||String.valueOf(glabActual).isEmpty()||String.valueOf(gdiscActual).isEmpty()||String.valueOf(gteoActual).isEmpty()){
                 Toast.makeText(this, "Por favor seleccionar una asignatura", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Inscripcion inscripcion=new Inscripcion(carnetActual,asignatura,glabActual,gdiscActual,gteoActual);
+            Inscripcion inscripcion=new Inscripcion(carnetActual,asignatura,glabActual,gteoActual,gdiscActual);
 
             inscripcionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(InscripcionViewModel.class);
             inscripcionViewModel.obtenerTodasRelacionesInscripcion().observe(this, new Observer<List<Inscripcion>>() {
                 @Override
                 public void onChanged(List<Inscripcion> inscripcions) {
                     try{
-                        Inscripcion inscripcionACrear=inscripcionViewModel.obtenerInscripcion(inscripcion.getCarnetAlumnoFK(),inscripcion.getCodigoAsignaturaFK());
+                        Inscripcion inscripcionACrear=inscripcionViewModel.obtenerInscripcion(inscripcion.getCodigoAsignaturaFK(),inscripcion.getCarnetAlumnoFK());
                         if(inscripcionACrear!=null){
                             Toast.makeText(InscripcionActivity.this, "Error, inscripcion ya realizada", Toast.LENGTH_SHORT).show();
                         }else{
@@ -135,16 +139,15 @@ public class InscripcionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater=getMenuInflater();
-        menuInflater.inflate(R.menu.agregar_alumno_menu,menu);
+        menuInflater.inflate(R.menu.agregar_inscripcion,menu);
         return true;
     }
 
     //Funcion de boton guardado en la barra de tareas
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.guardar_alumno:
+            case R.id.guardar_inscripcion:
                 guardarInscripcion();
                 return true;
             default:

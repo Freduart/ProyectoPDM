@@ -24,7 +24,6 @@ public class InscripcionViewModel extends AndroidViewModel {
         allInscriptions=repository.obtenerTodasRelacionesInscripcion();
     }
 
-
     public void insertarInscripcion(Inscripcion inscripcion){
         repository.insertarInscripcion(inscripcion);
     }
@@ -63,5 +62,9 @@ public class InscripcionViewModel extends AndroidViewModel {
 
     public List<Inscripcion> obtenerRelacionesUsandoAlumno(String carnet) throws Exception{
         return repository.obtenerRealcionesUsandoAlumno(carnet);
+    }
+
+    public Inscripcion obtenerCarnet(String carnet)throws Exception{
+        return repository.obtenerCarnet(carnet);
     }
 }

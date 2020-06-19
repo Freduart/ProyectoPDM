@@ -17,12 +17,12 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp">
 
-        <TextView
+        <EditText
             android:id="@+id/et_Carnet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
-            android:text="@string/Inscripcion_carnet"
+            android:hint="@string/Inscripcion_carnet"
             android:padding="8dp"
             android:gravity="center"
             android:textSize="24sp"/>

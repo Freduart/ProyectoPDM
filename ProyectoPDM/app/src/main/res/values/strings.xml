@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProyectoPDM</string>
+    <string name="app_name">Procesos Administrativos</string>
 
     <string name="registroduplicado">Error, registro duplicado.</string>
     <string name="bienvenido">Bienvenido!</string>
