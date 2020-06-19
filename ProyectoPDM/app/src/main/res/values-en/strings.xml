@@ -219,4 +219,5 @@
     <string name="textGTeo_Inscripcion">Theory Group</string>
     <string name="textGDisc_Inscripcion">Debate Group</string>
     <string name="enrevision">Grade is being reviewed right now.</string>
+    <string name="textResultadosImpresion">PRINT RESULTS</string>
 </resources>

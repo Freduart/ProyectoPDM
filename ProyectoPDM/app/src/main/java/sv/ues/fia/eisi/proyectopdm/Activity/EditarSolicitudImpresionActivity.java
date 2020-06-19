@@ -282,7 +282,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                             public void run() {
                                 runOnUiThread(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Subiendo Archivo.....", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Subiendo Nuevo Archivo.....", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 uploadFile(listaDocumentos.get(0));
@@ -590,7 +590,8 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     }
 
     public int uploadFile(String sourceFileUri) {
-        String fileName = (getFileName(sourceFileUri).replace(" ","_")).replaceAll("[^a-zA-Z0-9]", "");
+        String fileName1 = (getFileName(sourceFileUri).replace(" ","_"));
+        String fileName=removeEspecial(fileName1);
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
@@ -716,5 +717,18 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String removeEspecial(String input) {
+        // Cadena de caracteres original a sustituir.
+        String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+        // Cadena de caracteres ASCII que reemplazarán los originales.
+        String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+        String output = input;
+        for (int i=0; i<original.length(); i++) {
+            // Reemplazamos los caracteres especiales.
+            output = output.replace(original.charAt(i), ascii.charAt(i));
+        }//for i
+        return output;
     }
 }

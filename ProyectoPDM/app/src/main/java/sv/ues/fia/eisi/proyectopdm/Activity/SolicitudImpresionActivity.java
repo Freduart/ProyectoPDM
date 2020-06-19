@@ -282,6 +282,14 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         TextView textImpresiones = (TextView) v.findViewById(R.id.text_impresiones_editar);
         TextView textAnexos = (TextView) v.findViewById(R.id.text_anexos_editar);
         TextView textDetallesImpresion = (TextView) v.findViewById(R.id.text_detalleImpresion_editar);
+        TextView textObservaciones = (TextView) v.findViewById(R.id.textObservaciones);
+        TextView textResultados = (TextView) v.findViewById(R.id.textResultadosImpresion);
+        if(solicitudImpresion.getResultadoImpresion().equals("")){
+            textResultados.setVisibility(View.GONE);
+            textObservaciones.setVisibility(View.GONE);
+        }else{
+            textObservaciones.setText(solicitudImpresion.getResultadoImpresion());
+        }
         //RecyclerView
         RecyclerView recyclerArchivos = (RecyclerView) v.findViewById(R.id.recycler_archivos_ver);
         builder.setView(v);

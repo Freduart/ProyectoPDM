@@ -92,6 +92,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
 
     ProgressDialog dialog = null;
     public static final String upLoadServerUri="http://dr17010pdm115.000webhostapp.com/procesar.php";
+    public static final String insertServerUri="https://eisi.fia.ues.edu.sv/eisi02/DR17010/InsertSolicitudImpresion.php?";
     int serverResponseCode = 0, id_usuario;
     boolean result;
 
@@ -267,9 +268,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 }
             case R.id.ajustesServer:
                 //ajustes del servidor
-                //new CheckInternetAsyncTask(getApplicationContext()).execute();
-                String path=Environment.getExternalStorageDirectory()+"/";
-                Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+                new CheckInternetAsyncTask(getApplicationContext()).execute();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -497,7 +496,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
 
     public int uploadFile(String sourceFileUri) {
         String fileName1 = getFileName(sourceFileUri).replace(" ","_");
-        String fileName = fileName1.replaceAll("[^a-zA-Z0-9]", "");
+        String fileName = removeEspecial(fileName1);
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
@@ -681,7 +680,9 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             fechaHoy=simpleDateFormat.format(calendar.getTime());
             //Documentos
-            String rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+(getFileName(listaDocumentos.get(0)).replace(" ","_")).replaceAll("[^a-zA-Z0-9]", "");
+            String archivo1=getFileName(listaDocumentos.get(0)).replace(" ","_");
+            String archivo=removeEspecial(archivo1);
+            String rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+archivo;
             detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
             solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
                     Integer.parseInt(nImpresiones),detalleImpresion2,"",
@@ -695,5 +696,46 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
             result=false;
         }
+    }
+
+    public void insertSolicitudImpresionServer(SolicitudImpresion solicitudImpresion){
+        HttpURLConnection connection;
+        String urlParams=insertServerUri+"idImpresion="+solicitudImpresion.getIdImpresion()+
+                "&carnetDocente="+solicitudImpresion.getCarnetDocenteFK()+
+                "&idEncargado="+solicitudImpresion.getIdEncargadoFK()+
+                "&docDirector="+solicitudImpresion.getDocDirector()+
+                "&numImpresiones="+solicitudImpresion.getNumImpresiones()+
+                "&detalleImpresion="+solicitudImpresion.getDetalleImpresion()+
+                "&resultadoImpresion="+solicitudImpresion.getResultadoImpresion()+
+                "&estadoSolicitud="+solicitudImpresion.getEstadoSolicitud()+
+                "&fechaSolicitudImp="+solicitudImpresion.getFechaSolicitud()+
+                "&documento="+solicitudImpresion.getDocumento();
+        try {
+            URL url=new URL(urlParams);
+            connection=(HttpURLConnection)url.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("GET");
+            String result=connection.getResponseMessage();
+            connection.disconnect();
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String removeEspecial(String input) {
+        // Cadena de caracteres original a sustituir.
+        String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+        // Cadena de caracteres ASCII que reemplazarán los originales.
+        String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+        String output = input;
+        for (int i=0; i<original.length(); i++) {
+            // Reemplazamos los caracteres especiales.
+            output = output.replace(original.charAt(i), ascii.charAt(i));
+        }//for i
+        return output;
     }
 }

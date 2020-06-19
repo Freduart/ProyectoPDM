@@ -53,12 +53,6 @@ public class ProcesarSolicitudImpresionActivity extends AppCompatActivity {
         radioSolicitudExitosa = (RadioButton) findViewById(R.id.radioSolicitudExitosa);
         radioSolicitudFallida = (RadioButton) findViewById(R.id.radioSolicitudFallida);
         textObservaciones = (EditText)findViewById(R.id.textObservacionesImpresion);
-
-        if(radioSolicitudExitosa.isChecked()){
-            textObservaciones.setEnabled(false);
-        }else{
-            textObservaciones.setEnabled(true);
-        }
     }
 
     @Override
@@ -82,6 +76,7 @@ public class ProcesarSolicitudImpresionActivity extends AppCompatActivity {
     public void procesarSolicitud(){
         if(radioSolicitudExitosa.isChecked()){
             solicitudImpresion.setEstadoSolicitud("TERMINADA");
+            solicitudImpresion.setResultadoImpresion(textObservaciones.getText().toString());
             solicitudImpresionViewModel.update(solicitudImpresion);
             Toast.makeText(this, "Guardado Exitósamente", Toast.LENGTH_SHORT).show();
             finish();

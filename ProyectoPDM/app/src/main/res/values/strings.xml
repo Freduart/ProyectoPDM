@@ -51,6 +51,7 @@
     <string name="textDocDirector">Docente Director: </string>
     <string name="textEncImpres">Encargado Impresión: </string>
     <string name="textEstado">ESTADO: </string>
+    <string name="textResultadosImpresion">RESULTADOS DE IMPRESIÓN</string>
 
 
     <!-- Strings para Evaluacion -->
