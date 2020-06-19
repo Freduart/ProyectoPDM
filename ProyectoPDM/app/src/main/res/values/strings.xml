@@ -93,6 +93,7 @@
     <string name="labely_eval">Cantidad</string>
     <string name="labelx_eval">Notas</string>
     <string name="mensaje_grafica_vacia">Sin evaluaciones</string>
+    <string name="sinentreganota">La entrega de nota no se ha realizado aún.</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>
@@ -125,6 +126,7 @@
     <string name="adv_msg_rev">Ya existe una revisión para esta nota, si deseas modificar la nota hazlo desde la revisión.</string>
     <string name="noseharealizado">No se ha realizado la publicación oficial de esta nota.</string>
     <string name="sehasolicitado">Se ha solicitado revisión de esta nota.</string>
+    <string name="enrevision">La nota se encuentra actualmente en revisión.</string>
 
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>

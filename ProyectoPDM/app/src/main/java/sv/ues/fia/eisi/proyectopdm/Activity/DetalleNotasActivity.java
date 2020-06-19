@@ -164,7 +164,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
                             //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
                             Intent intent = new Intent(DetalleNotasActivity.this, NuevaEditarSegundaRevisionActivity.class);
                             //se mete en un extra del intent, el id
-                            intent.putExtra(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION, segundaRevision.getIdSegundaRevision());
+                            intent.putExtra(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION, segundaRevision.getIdPrimeraRevisionFK());
                             intent.putExtra(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION, EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION);
                             //inicia la activity
                             startActivity(intent);
