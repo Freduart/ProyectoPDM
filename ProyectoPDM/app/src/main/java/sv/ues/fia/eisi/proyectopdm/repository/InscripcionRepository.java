@@ -23,9 +23,10 @@ public class InscripcionRepository {
     private InscripcionDao inscripcionDao;
     private LiveData<List<Inscripcion>> allInscripciones;
 
-    public InscripcionRepository(InscripcionDao inscripcionDao, LiveData<List<Inscripcion>> allInscripciones) {
-        this.inscripcionDao = inscripcionDao;
-        this.allInscripciones = allInscripciones;
+    public InscripcionRepository(Application application) {
+        DataBase base = DataBase.getInstance(application);
+        inscripcionDao=base.inscripcionDao();
+        allInscripciones=inscripcionDao.obtenerInscripciones();
     }
 
     //Parametros

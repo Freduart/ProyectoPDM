@@ -249,6 +249,10 @@
     <string name="textNomEnc">NOMBRE</string>
     <string name="hintNomEnc">Nombre Encargado Impresión</string>
 
+    <!-- Strings para inscripcion -->
+    <string name="AppBarNameInscripcion">Inscripcion</string>
+    <string name="Inscripcion_carnet">carnet</string>
+
     <string name="textCerrarSesion">CERRAR SESIÓN</string>
 
     <string name="textAprobar">APROBAR</string>
