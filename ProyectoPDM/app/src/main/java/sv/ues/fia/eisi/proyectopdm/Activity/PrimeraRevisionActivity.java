@@ -77,21 +77,23 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
 
         try {
         primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
-
-       /*     primeraRevisionViewModel.getAllPrimerasRevisiones().observe(this, new Observer<List<PrimeraRevision>>() {
+        if(rolUser==5){
+            primeraRevisionViewModel.getAllPrimerasRevisiones().observe(this, new Observer<List<PrimeraRevision>>() {
                 @Override
                 public void onChanged(List<PrimeraRevision> primeraRevisiones) {
                     adapter.setPrs(primeraRevisiones);
                 }
-            });*/
+            });
+        }else if(rolUser == 1) {
             DocenteViewModel docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
             primeraRevisionViewModel.obtenerPRDocente(primeraRevisionViewModel.obtenerDocUsuario(idUser).getCarnetDocente()).observe(this, new Observer<List<PrimeraRevision>>() {
                 @Override
                 public void onChanged(List<PrimeraRevision> primeraRevisions) {
-                            adapter.setPrs(primeraRevisions);
+                    adapter.setPrs(primeraRevisions);
                 }
             });
 
+        }
             //Consultar primera revision
             adapter.setOnItemClickListener(new PrimeraRevisionAdapter.OnItemClickListener() {
                 @Override
