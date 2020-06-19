@@ -268,4 +268,23 @@ public class EvaluacionRepository {
             return docenteDao.obtenerEscuelaDeDocente(id[0]);
         }
     }
+
+    //async obtener escuela usando el id de docente
+    private static class obtenerEvaluacionNoLiveDataAsyncTask extends AsyncTask<Void, Void, List<Evaluacion>>{
+        private EvaluacionDao docenteDao;
+
+        private obtenerEvaluacionNoLiveDataAsyncTask(EvaluacionDao docenteDao){
+            this.docenteDao=docenteDao;
+        }
+
+        @Override
+        protected List<Evaluacion> doInBackground(Void... voids) {
+            return docenteDao.obtenerEvaluacionesAsync();
+        }
+    }
+    //obtener escuela de docente seleccionado
+    public List<Evaluacion> obtenerEvaluacionNoLiveData() throws InterruptedException, ExecutionException, TimeoutException {
+        //se puede ajustar el timeout para cancelar la recuperación del dato, el primer parametro indica la cantidad, el segundo la unidad
+        return new obtenerEvaluacionNoLiveDataAsyncTask(evaluacionDao).execute().get(12, TimeUnit.SECONDS);
+    }
 }

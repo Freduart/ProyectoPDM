@@ -28,6 +28,7 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
+import sv.ues.fia.eisi.proyectopdm.Ws.ControladorEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
 public class EvaluacionActivity extends AppCompatActivity {
@@ -40,11 +41,17 @@ public class EvaluacionActivity extends AppCompatActivity {
     private String identificador;
     private int id_usuario, rol_usuario;
 
+    private String url_retrieve = "https://eisi.fia.ues.edu.sv/eisi02/PP15001/ws_evaluacion_retrieve.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_evaluacion);
+
+            //inicializa viewmodel de evaluacion
+            EvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+
             //obtiene id de usuario y su rol
             //crear un bundle para recibir los extra del intent
             final Bundle extras = getIntent().getExtras();
@@ -74,6 +81,7 @@ public class EvaluacionActivity extends AppCompatActivity {
                 }
             });
 
+
             //--lista de evaluaciones
             //inicializa recycler view
             RecyclerView EvalRecycler = findViewById(R.id.recycler_eval_view);
@@ -85,13 +93,28 @@ public class EvaluacionActivity extends AppCompatActivity {
             final EvaluacionAdapter adaptador = new EvaluacionAdapter();
             //linkea adaptador en el recycler
             EvalRecycler.setAdapter(adaptador);
-            //inicializa viewmodel de evaluacion
-            EvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+
+            //----Para actualización con el server
+            //instanciar controlador
+            ControladorEvaluacion controladorEvaluacion = new ControladorEvaluacion();
+            //obtener todas las evaluaciones locales
+            List<Evaluacion> evaluacionesActuales = EvaluacionVM.obtenerEvaluacionesTodasAsync();
+            //obtener todas las evaluaciones en servidor
+            List<Evaluacion> evaluacionesSincronizadas = controladorEvaluacion.obtenerEvaluacionesGet(url_retrieve,this);
+            //recorrer las evaluaciones locales
+            for(Evaluacion eActualLocal : evaluacionesActuales)
+                //recorrer las evaluaciones en servidor
+                for(Evaluacion eActualSinc : evaluacionesSincronizadas)
+                    //si hay coincidencia
+                    if(eActualLocal.getIdEvaluacion() == eActualSinc.getIdEvaluacion()){
+                        //actualizar el record local con los datos del servidor
+                        EvaluacionVM.updateEval(eActualSinc);
+                        eActualLocal=eActualSinc;
+                    }
 
             switch(rol_usuario){
                 case 1:
                 case 2:
-                    DocenteViewModel docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
                     //obtiene todas las evaluaciones en un livedata
                     EvaluacionVM.obtenerEvaluacionesDocente(EvaluacionVM.getDocenteConUsuario(id_usuario).getCarnetDocente()).observe(this, new Observer<List<Evaluacion>>() {
                         @Override
@@ -104,7 +127,6 @@ public class EvaluacionActivity extends AppCompatActivity {
                 //obtiene todas las evaluaciones en un livedata
                 case 3:
                     botonNuevaEvaluacion.setVisibility(View.GONE);
-                    AlumnoViewModel alumnoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
                     //obtiene todas las evaluaciones en un livedata
                     EvaluacionVM.obtenerEvaluacionesAlumno(EvaluacionVM.getAlumnConUsuario(id_usuario).getCarnetAlumno()).observe(this, new Observer<List<Evaluacion>>() {
                         @Override
@@ -146,7 +168,7 @@ public class EvaluacionActivity extends AppCompatActivity {
 
             //si no es estudiante
             if(rol_usuario!=3)
-                //--eliminar evaluacion
+                //--menu edición - eliminar evaluacion
                 adaptador.setOnLongClickListener(new EvaluacionAdapter.OnItemLongClickListener() {
                     @Override
                     public void onItemLongClick(Evaluacion evaluacion) {

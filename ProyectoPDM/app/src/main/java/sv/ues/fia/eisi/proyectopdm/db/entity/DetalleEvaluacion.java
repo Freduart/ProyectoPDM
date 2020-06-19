@@ -42,6 +42,10 @@ public class DetalleEvaluacion {
         this.carnetAlumnoFK = carnetAlumnoFK;
     }
 
+    @Ignore
+    public DetalleEvaluacion() {
+    }
+
     public int getIdDetalleEv() {
         return idDetalleEv;
     }

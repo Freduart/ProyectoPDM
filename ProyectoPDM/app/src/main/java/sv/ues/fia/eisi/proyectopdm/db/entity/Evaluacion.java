@@ -2,6 +2,7 @@ package sv.ues.fia.eisi.proyectopdm.db.entity;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.List;
@@ -47,6 +48,11 @@ public class Evaluacion {
         this.descripcion = descripcion;
         this.fechaEntregaNotas = fechaEntregaNotas;
         this.numParticipantes=numParticipantes;
+    }
+
+    @Ignore
+    public Evaluacion() {
+
     }
 
     public int getIdEvaluacion() {
