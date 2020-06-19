@@ -267,7 +267,9 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 }
             case R.id.ajustesServer:
                 //ajustes del servidor
-                new CheckInternetAsyncTask(getApplicationContext()).execute();
+                //new CheckInternetAsyncTask(getApplicationContext()).execute();
+                String path=Environment.getExternalStorageDirectory()+"/";
+                Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -297,13 +299,12 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         //Previsualizar
                         String[] mimeTypes =
-                                {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                {"application/pdf","application/msword", // .doc & .docx
                                         "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                                        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
-                                        "application/pdf"};
+                                        "application/vnd.ms-excel"};
                         Intent intent = new Intent( Intent.ACTION_VIEW );
                         intent.setData(uriSeleccionado);
-                        intent.setType("*/*");
+                        intent.setType("application/*");
                         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity(intent);

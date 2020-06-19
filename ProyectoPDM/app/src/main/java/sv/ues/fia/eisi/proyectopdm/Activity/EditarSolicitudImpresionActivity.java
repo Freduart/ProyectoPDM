@@ -44,6 +44,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -89,8 +90,9 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     ProgressDialog dialog = null;
     public static final String upLoadServerUri="http://dr17010pdm115.000webhostapp.com/procesar.php";
     int serverResponseCode = 0;
-    private String rutaArchivoServer="";
+    private String archivoEliminado;
     boolean result;
+    private String urlDeleteArchivo="http://dr17010pdm115.000webhostapp.com/deleteArchivo.php?archivo=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,23 +263,36 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.guardar:
                 if(documentoModificado){
-                    dialog = ProgressDialog.show(EditarSolicitudImpresionActivity.this, "", "Subiendo Archivo...", true);
-                    new Thread(new Runnable() {
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    Toast.makeText(EditarSolicitudImpresionActivity.this, "Subiendo Archivo.....", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            uploadFile(listaDocumentos.get(0));
-                            if(result){
-                                actualizarSolicitudImpresion();
-                                if(result){
-                                    finish();
-                                }
+                    if(listaDocumentos.size()!=0){
+                        String url=urlDeleteArchivo+getFileName(archivoEliminado);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(EditarSolicitudImpresionActivity.this,"Eliminando Archivo Antiguo Del Servidor...",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                eliminarArchivoDelServer(url);
                             }
-                        }
-                    }).start();
+                        }).start();
+                        dialog = ProgressDialog.show(EditarSolicitudImpresionActivity.this, "", "Subiendo Nuevo Archivo...", true);
+                        new Thread(new Runnable() {
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Subiendo Archivo.....", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                uploadFile(listaDocumentos.get(0));
+                                actualizarSolicitudImpresion();
+                                finish();
+                            }
+                        }).start();
+                    }else{
+                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Debe Añadir Un Documento...", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     actualizarSolicitudImpresion();
                     finish();
@@ -342,6 +357,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
             solicitudImpresion.setResultadoImpresion("");
             solicitudImpresion.setFechaSolicitud(fechaHoy);
             if(documentoModificado){
+                String rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+getFileName(listaDocumentos.get(0));
                 solicitudImpresion.setDocumento(rutaArchivoServer);
             }
             solicitudImpresionViewModel.update(solicitudImpresion);
@@ -375,13 +391,12 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         //Previsualizar
                         String[] mimeTypes =
-                                {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                {"application/pdf","application/msword", // .doc & .docx
                                         "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                                        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
-                                        "application/pdf"};
+                                        "application/vnd.ms-excel"};
                         Intent intent = new Intent( Intent.ACTION_VIEW );
                         intent.setData(uriSeleccionado);
-                        intent.setType("*/*");
+                        intent.setType("application/*");
                         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity(intent);
@@ -394,6 +409,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //Quitar
+                        archivoEliminado=listaDocumentos.get(position);
                         listaDocumentos.remove(position);
                         listaArchivosAdapter.notifyDataSetChanged();
                         documentoModificado=true;
@@ -651,7 +667,6 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                         public void run() {
                             String msg = "File Upload Completed.\n\n" + sourceFileUri;
                             Toast.makeText(EditarSolicitudImpresionActivity.this, "File Upload Complete.", Toast.LENGTH_SHORT).show();
-                            rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+fileName;
                             result=true;
                         }
                     });
@@ -684,5 +699,22 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
             dialog.dismiss();
             return serverResponseCode;
         } // End else block
+    }
+    private void eliminarArchivoDelServer(String url){
+        HttpURLConnection connection;
+        try {
+            URL url1=new URL(url);
+            connection=(HttpURLConnection)url1.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("GET");
+            String result=connection.getResponseMessage();
+            connection.disconnect();
+            Toast.makeText(EditarSolicitudImpresionActivity.this,result,Toast.LENGTH_LONG).show();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

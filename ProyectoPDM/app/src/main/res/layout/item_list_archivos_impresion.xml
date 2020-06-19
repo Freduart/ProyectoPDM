@@ -49,7 +49,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/iconopdf" />
+        app:srcCompat="@drawable/pdf" />
 
     <View
         android:id="@+id/divider4"

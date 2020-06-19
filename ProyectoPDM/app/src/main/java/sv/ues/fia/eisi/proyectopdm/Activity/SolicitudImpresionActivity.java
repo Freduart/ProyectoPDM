@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,10 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -52,6 +57,8 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
     private Usuario usuarioIngresado;
     private Docente docente;
     private int id_usuario,rol_usuario;
+    private String urlDeleteArchivo="http://dr17010pdm115.000webhostapp.com/deleteArchivo.php?archivo=";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -212,6 +219,19 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String url=urlDeleteArchivo+getFileName(solicitudImpresion.getDocumento());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SolicitudImpresionActivity.this,"Eliminando Archivo Del Servidor...",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        eliminarArchivoDelServer(url);
+                    }
+                }).start();
                 solicitudImpresionViewModel.delete(solicitudImpresion);
                 Toast.makeText(SolicitudImpresionActivity.this, "Solicitud #"+
                         solicitudImpresion.getIdImpresion()+" de "+solicitudImpresion.getCarnetDocenteFK()+
@@ -272,15 +292,27 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         ListaArchivosAdapter listaArchivosAdapter = new ListaArchivosAdapter(listaDocumentos);
         recyclerArchivos.setAdapter(listaArchivosAdapter);
         listaArchivosAdapter.setOnItemClickListener(new ListaArchivosAdapter.OnItemClickListener() {
+            @SuppressLint("IntentReset")
             @Override
             public void OnItemClick(int position, String documento) {
                 String ruta=descargarArchivo(documento);
-                Uri uri=Uri.fromFile(new File(ruta));
-                //Previsualizar
-                Intent intent = new Intent( Intent.ACTION_VIEW );
-                intent.setDataAndType(uri,"Application/pdf");
-                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                startActivity(intent);
+                File miFile=new File(ruta);
+                if(miFile.exists()){
+                    Uri uri=Uri.fromFile(miFile);
+                    //Previsualizar
+                    String[] mimeTypes =
+                            {"application/pdf","application/msword", // .doc & .docx
+                                    "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                    "application/vnd.ms-excel"};
+                    Intent intent = new Intent( Intent.ACTION_VIEW );
+                    intent.setData(uri);
+                    intent.setType("application/*");
+                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                    intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(SolicitudImpresionActivity.this, "El Archivo No Existe...", Toast.LENGTH_SHORT).show();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -362,7 +394,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         }
         //Verificamos si el documento ya existe...
         String path=Environment.getExternalStorageDirectory()+"/"+DIRECTORIO_DOCUMENTOS+"/"+getFileName(urlDocumento);
-        File file2=new File(path);
+        File file2=new File(Environment.getExternalStorageDirectory()+"/"+DIRECTORIO_DOCUMENTOS,getFileName(urlDocumento));
         if(!file2.exists()){
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlDocumento));
             request.setDescription("Descargando Documento Del Servidor.");
@@ -379,5 +411,23 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             Toast.makeText(this, "Guardado En: "+path, Toast.LENGTH_SHORT).show();
         }
         return path;
+    }
+
+    private void eliminarArchivoDelServer(String url){
+        HttpURLConnection connection;
+        try {
+            URL url1=new URL(url);
+            connection=(HttpURLConnection)url1.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("GET");
+            String result=connection.getResponseMessage();
+            connection.disconnect();
+            Toast.makeText(SolicitudImpresionActivity.this,result,Toast.LENGTH_LONG).show();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
