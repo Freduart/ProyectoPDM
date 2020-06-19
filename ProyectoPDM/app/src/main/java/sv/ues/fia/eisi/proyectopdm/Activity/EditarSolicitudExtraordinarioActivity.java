@@ -38,7 +38,6 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
 
     private SolicitudExtraordinarioViewModel soliExtraVM;
     private AlumnoViewModel alumnoVM;
-    private EvaluacionViewModel evalVM;
     private TipoEvaluacionViewModel tipoEvaVM;
 
     private EditText idAlumno;
@@ -47,6 +46,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
     private EditText motivoSoli;
     private EditText fechaSoli;
     private CheckBox justiSoli;
+    private CheckBox estadoSoli;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             motivoSoli = (EditText) findViewById(R.id.editMotivoSoliExtra);
             fechaSoli = (EditText) findViewById(R.id.editFechaSoliExtra);
             justiSoli = (CheckBox) findViewById(R.id.JustiSoliExtra);
+            estadoSoli = (CheckBox) findViewById(R.id.EstadoSoliExtra);
 
             //Spinner Tipo evaluacion
             final ArrayList<String> tipoEvaluacionesNom = new ArrayList<>();
@@ -81,11 +82,9 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 }
             });
 
-            //Inicializa los ViewModel
+            //Inicializa el ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
             alumnoVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AlumnoViewModel.class);
-            evalVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
-            tipoEvaVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
 
             //Se extrae el identificador de la solicitud a editar del Intent
             Bundle extras = getIntent().getExtras();
@@ -96,9 +95,9 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
 
             //Se asignan objetos extraídos del ViewModel
             soliExtraActual = soliExtraVM.getSoliExtra(idSoliExtra);
-            evaActual = evalVM.getEval(soliExtraActual.getIdEvaluacion());
-            alumnoActual = alumnoVM.getAlumn(soliExtraActual.getCarnetAlumnoFK());
-            tipoEvaActual = tipoEvaVM.getTipoEvaluacion(soliExtraActual.getIdEvaluacion());
+            evaActual = soliExtraVM.getEvaluacion(idSoliExtra);
+            alumnoActual = soliExtraVM.getAlumno(idSoliExtra);
+            tipoEvaActual = soliExtraVM.getTipoEval(idSoliExtra);
 
             //Se asignan los valores correspondientes en elementos del Layout
             idAlumno.setText(alumnoActual.getCarnetAlumno());
@@ -126,6 +125,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             String motivo = motivoSoli.getText().toString();
             String fecha = fechaSoli.getText().toString();
             boolean justi = justiSoli.isChecked();
+            boolean estado = estadoSoli.isChecked();
 
             //---obtener valor de spinner TIPO EVALUACION
             String tipoEvalAux1 = tipoSoli.getSelectedItem().toString();
@@ -158,6 +158,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 soliAux.setMotivoSolicitud(motivo);
                 soliAux.setFechaSolicitudExtr(fecha);
                 soliAux.setJustificacion(justi);
+                soliAux.setEstadoSolicitud(estado);
 
                 //Se actualiza la Solicitud
                 soliExtraVM.update(soliAux);

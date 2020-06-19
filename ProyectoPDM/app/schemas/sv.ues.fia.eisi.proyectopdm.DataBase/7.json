@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "1d2bb7e9232f1506bfaddc1b9c748b6b",
+    "identityHash": "d6e704bf1c63d8739182d2db84496b76",
     "entities": [
       {
         "tableName": "Alumno",
@@ -716,7 +716,7 @@
       },
       {
         "tableName": "SolicitudExtraordinario",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idSolicitud` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `carnetAlumnoFK` TEXT NOT NULL, `idEvaluacion` INTEGER NOT NULL, `tipoSolicitud` INTEGER NOT NULL, `motivoSolicitud` TEXT, `fechaSolicitudExtr` TEXT, `justificacion` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idSolicitud` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `carnetAlumnoFK` TEXT NOT NULL, `idEvaluacion` INTEGER NOT NULL, `tipoSolicitud` INTEGER NOT NULL, `motivoSolicitud` TEXT, `fechaSolicitudExtr` TEXT, `justificacion` INTEGER NOT NULL, `estadoSolicitud` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "idSolicitud",
@@ -757,6 +757,12 @@
           {
             "fieldPath": "justificacion",
             "columnName": "justificacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estadoSolicitud",
+            "columnName": "estadoSolicitud",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -912,7 +918,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d2bb7e9232f1506bfaddc1b9c748b6b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd6e704bf1c63d8739182d2db84496b76')"
     ]
   }
 }

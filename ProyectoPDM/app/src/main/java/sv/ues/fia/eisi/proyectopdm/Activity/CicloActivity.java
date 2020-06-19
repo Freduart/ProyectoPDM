@@ -29,11 +29,20 @@ public class CicloActivity extends AppCompatActivity {
 
     private CicloViewModel CicloVM;
     private int cod;
+    private int id_usuario, rol_usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciclo);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            //recibe id del usuario desde el extra
+            id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+            //recibe rol del usuario desde el extra
+            rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+        }
 
         //Título personalizado para Activity
         setTitle("Ciclos Académicos");
@@ -46,6 +55,8 @@ public class CicloActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //intent hacia nuevo ciclo activity
                 Intent intent = new Intent(CicloActivity.this, NuevoCicloActivity.class);
+                intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                 //iniciar activity
                 startActivity(intent);
             }
@@ -66,38 +77,44 @@ public class CicloActivity extends AppCompatActivity {
         try {
             //Inicializando ViewModel
             CicloVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CicloViewModel.class);
-            //Obtiene Lista de ciclos en un LiveData
-            CicloVM.getAllCiclos().observe(this, new Observer<List<Ciclo>>() {
-                @Override
-                public void onChanged(final List<Ciclo> ciclos) {
-                    //Asigan ciclos extraídos al adaptador
-                    adaptador.setCiclos(ciclos);
-                }
-            });
+
+            switch(rol_usuario){
+                case 5:
+                default:
+                    //Obtiene Lista de ciclos en un LiveData
+                    CicloVM.getAllCiclos().observe(this, new Observer<List<Ciclo>>() {
+                        @Override
+                        public void onChanged(final List<Ciclo> ciclos) {
+                            //Asigan ciclos extraídos al adaptador
+                            adaptador.setCiclos(ciclos);
+                        }
+                    });
 
 
-            //Consultar Ciclo con click corto
-            adaptador.setOnItemClickListener(new CicloAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Ciclo ciclo) {
-                    cod = ciclo.getIdCiclo();
-                    Intent intent = new Intent(CicloActivity.this, VerCicloActivity.class);
-                    intent.putExtra(IDENTIFICADOR_CICLO, cod);
-                    startActivity(intent);
-                }
-            });
-            //Click largo para mostrar alertdialog con opciones
-            adaptador.setOnLongClickListner(new CicloAdapter.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(Ciclo ciclo) {
-                    try {
-                        cod = ciclo.getIdCiclo();
-                        createCustomDialog(ciclo).show();
-                    }catch (Exception e){
-                        Toast.makeText(CicloActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+                    //Consultar Ciclo con click corto
+                    adaptador.setOnItemClickListener(new CicloAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Ciclo ciclo) {
+                            cod = ciclo.getIdCiclo();
+                            Intent intent = new Intent(CicloActivity.this, VerCicloActivity.class);
+                            intent.putExtra(IDENTIFICADOR_CICLO, cod);
+                            startActivity(intent);
+                        }
+                    });
+                    //Click largo para mostrar alertdialog con opciones
+                    adaptador.setOnLongClickListner(new CicloAdapter.OnItemLongClickListener() {
+                        @Override
+                        public void onItemLongClick(Ciclo ciclo) {
+                            try {
+                                cod = ciclo.getIdCiclo();
+                                createCustomDialog(ciclo).show();
+                            }catch (Exception e){
+                                Toast.makeText(CicloActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                break;
+            }
         }catch (Exception e){
             Toast.makeText(CicloActivity.this, "Error en el ViewModel",
                     Toast.LENGTH_SHORT).show();

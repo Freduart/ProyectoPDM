@@ -30,72 +30,149 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
     private SolicitudExtraordinarioViewModel soliExtraVM;
     SolicitudExtraordinario soliExtraActual;
     int cod;
+    private int id_usuario, rol_usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solicitud_extraordinario);
-
-        //Título personalizado para Activity
-        setTitle("Solicitudes de Evaluación Extraordinaria");
-
-        //Para Agregar Solicitud Extraordinaria: Inicializa botón flotante de acción
-        FloatingActionButton botonNuevaSoliExtra = findViewById(R.id.add_soliExtra_button);
-        //al hacer un clic corto
-        botonNuevaSoliExtra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //intent hacia NuevaSoliExtraActivity
-                Intent intent = new Intent(SolicitudExtraordinarioActivity.this, NuevaSolicitudExtraordinarioActivity.class);
-                //iniciar activity
-                startActivity(intent);
-            }
-        });
-
-        //Inicializando RecyclerView
-        final RecyclerView SoliExtraRecycler = findViewById(R.id.recycler_soliExtra_view);
-        //Asignando Layout
-        SoliExtraRecycler.setLayoutManager(new LinearLayoutManager(this));
-        //Asignando Tamaño al RecyclerView
-        SoliExtraRecycler.setHasFixedSize(true);
-
-        //Inicializando Adaptador para RecyclerView
-        final SolicitudExtraordinarioAdapter adaptador = new SolicitudExtraordinarioAdapter();
-        //Asignando Adaptador
-        SoliExtraRecycler.setAdapter(adaptador);
-
         try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_solicitud_extraordinario);
+
+            //Título personalizado para Activity
+            setTitle("Solicitudes de Evaluación Extraordinaria");
+
+            final Bundle extras = getIntent().getExtras();
+            //verifica que los extra no estén vacíos
+            if(extras != null){
+                //recibe id del usuario desde el extra
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                //recibe rol del usuario desde el extra
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+            }
+
+            //Para Agregar Solicitud Extraordinaria: Inicializa botón flotante de acción
+            FloatingActionButton botonNuevaSoliExtra = findViewById(R.id.add_soliExtra_button);
+
+            //Inicializando RecyclerView
+            final RecyclerView SoliExtraRecycler = findViewById(R.id.recycler_soliExtra_view);
+            //Asignando Layout
+            SoliExtraRecycler.setLayoutManager(new LinearLayoutManager(this));
+            //Asignando Tamaño al RecyclerView
+            SoliExtraRecycler.setHasFixedSize(true);
+
+            //Inicializando Adaptador para RecyclerView
+            final SolicitudExtraordinarioAdapter adaptador = new SolicitudExtraordinarioAdapter();
+            //Asignando Adaptador
+            SoliExtraRecycler.setAdapter(adaptador);
             //Inicializando ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
-            soliExtraVM.getAllSolicitudesExtraordinario().observe(this, new Observer<List<SolicitudExtraordinario>>() {
-                @Override
-                public void onChanged(final List<SolicitudExtraordinario> solicitudExtraordinarios) {
-                    adaptador.setSolicitudesExtra(solicitudExtraordinarios);
-                }
-            });
 
-            //Consultar Ciclo con click corto
-            adaptador.setOnItemClickListener(new SolicitudExtraordinarioAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(SolicitudExtraordinario solicitudExtraordinario) {
-                    cod = solicitudExtraordinario.getIdSolicitud();
-                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
-                    intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
-                    startActivity(intent);
-                }
-            });
-            //Click largo para mostrar alertdialog con opciones
-            adaptador.setOnLongClickListner(new SolicitudExtraordinarioAdapter.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(SolicitudExtraordinario solicitudExtraordinario) {
-                    try {
-                        cod = solicitudExtraordinario.getIdSolicitud();
-                        createCustomDialog(solicitudExtraordinario).show();
-                    }catch (Exception e){
-                        Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+            switch (rol_usuario){
+                case 1:
+                case 2:
+                    botonNuevaSoliExtra.setVisibility(View.GONE);
+
+                    soliExtraVM.obtenerSolicitudesDocente(soliExtraVM.getDocenteConUsuario(id_usuario).getCarnetDocente()).observe(this, new Observer<List<SolicitudExtraordinario>>() {
+                        @Override
+                        public void onChanged(final List<SolicitudExtraordinario> solicitudExtraordinarios) {
+                            adaptador.setSolicitudesExtra(solicitudExtraordinarios);
+                        }
+                    });
+
+                    //Consultar Ciclo con click corto
+                    adaptador.setOnItemClickListener(new SolicitudExtraordinarioAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(SolicitudExtraordinario solicitudExtraordinario) {
+                            cod = solicitudExtraordinario.getIdSolicitud();
+                            Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
+                            intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
+                            intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                            intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                            startActivity(intent);
+                        }
+                    });
+                    //Click largo para mostrar alertdialog con opciones
+                    adaptador.setOnLongClickListner(new SolicitudExtraordinarioAdapter.OnItemLongClickListener() {
+                        @Override
+                        public void onItemLongClick(SolicitudExtraordinario solicitudExtraordinario) {
+                            try {
+                                cod = solicitudExtraordinario.getIdSolicitud();
+                                createCustomDialog(solicitudExtraordinario).show();
+                            }catch (Exception e){
+                                Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                break;
+
+                case 3:
+                    //al hacer un clic corto
+                    botonNuevaSoliExtra.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //intent hacia NuevaSoliExtraActivity
+                            Intent intent = new Intent(SolicitudExtraordinarioActivity.this, NuevaSolicitudExtraordinarioActivity.class);
+                            //iniciar activity
+                            startActivity(intent);
+                        }
+                    });
+
+                    soliExtraVM.obtenerSolicitudesAlumno(soliExtraVM.getAlumnConUsuario(id_usuario).getCarnetAlumno()).observe(this, new Observer<List<SolicitudExtraordinario>>() {
+                        @Override
+                        public void onChanged(final List<SolicitudExtraordinario> solicitudExtraordinarios) {
+                            adaptador.setSolicitudesExtra(solicitudExtraordinarios);
+                        }
+                    });
+
+                    //Consultar Ciclo con click corto
+                    adaptador.setOnItemClickListener(new SolicitudExtraordinarioAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(SolicitudExtraordinario solicitudExtraordinario) {
+                            cod = solicitudExtraordinario.getIdSolicitud();
+                            Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
+                            intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
+                            intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                            intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                            startActivity(intent);
+                        }
+                    });
+                break;
+
+                case 5:
+                default:
+                    botonNuevaSoliExtra.setVisibility(View.GONE);
+
+                    soliExtraVM.getAllSolicitudesExtraordinario().observe(this, new Observer<List<SolicitudExtraordinario>>() {
+                        @Override
+                        public void onChanged(final List<SolicitudExtraordinario> solicitudExtraordinarios) {
+                            adaptador.setSolicitudesExtra(solicitudExtraordinarios);
+                        }
+                    });
+
+                    //Consultar Ciclo con click corto
+                    adaptador.setOnItemClickListener(new SolicitudExtraordinarioAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(SolicitudExtraordinario solicitudExtraordinario) {
+                            cod = solicitudExtraordinario.getIdSolicitud();
+                            Intent intent = new Intent(SolicitudExtraordinarioActivity.this, VerSolicitudExtraordinarioActivity.class);
+                            intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
+                            startActivity(intent);
+                        }
+                    });
+                    //Click largo para mostrar alertdialog con opciones
+                    adaptador.setOnLongClickListner(new SolicitudExtraordinarioAdapter.OnItemLongClickListener() {
+                        @Override
+                        public void onItemLongClick(SolicitudExtraordinario solicitudExtraordinario) {
+                            try {
+                                cod = solicitudExtraordinario.getIdSolicitud();
+                                createCustomDialog(solicitudExtraordinario).show();
+                            }catch (Exception e){
+                                Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                break;
+            }
 
         }catch (Exception e){
             Toast.makeText(SolicitudExtraordinarioActivity.this, "Error en el ViewModel",

@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
+import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.repository.SolicitudExtraordinarioRepository;
 
 public class SolicitudExtraordinarioViewModel extends AndroidViewModel {
@@ -46,5 +50,33 @@ public class SolicitudExtraordinarioViewModel extends AndroidViewModel {
 
     public SolicitudExtraordinario getSoliExtra(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return solicitudExtraordinarioRepository.getSoliExtra(id);
+    }
+
+    public Evaluacion getEvaluacion(int id) throws InterruptedException, ExecutionException, TimeoutException{
+        return solicitudExtraordinarioRepository.getEvaluacion(id);
+    }
+
+    public TipoEvaluacion getTipoEval(int id) throws InterruptedException, ExecutionException, TimeoutException{
+        return solicitudExtraordinarioRepository.getTipoEvaluacion(id);
+    }
+
+    public Alumno getAlumno(int id) throws InterruptedException, ExecutionException, TimeoutException{
+        return solicitudExtraordinarioRepository.getAlumno(id);
+    }
+
+    public LiveData<List<SolicitudExtraordinario>> obtenerSolicitudesDocente(String carnet) {
+        return solicitudExtraordinarioRepository.getSolicitudesDocente(carnet);
+    }
+
+    public LiveData<List<SolicitudExtraordinario>> obtenerSolicitudesAlumno(String carnet) {
+        return solicitudExtraordinarioRepository.getSolicitudesEstudiante(carnet);
+    }
+
+    public Alumno getAlumnConUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return solicitudExtraordinarioRepository.obtenerAlumnoConUsuario(id);
+    }
+
+    public Docente getDocenteConUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return solicitudExtraordinarioRepository.obtenerDocenteConUsuario(id);
     }
 }

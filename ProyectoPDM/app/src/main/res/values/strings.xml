@@ -17,7 +17,9 @@
     <string name="motivoSolicitudExtra">Motivo: </string>
     <string name="fechaSolicitudExtra">Fecha de Solicitud: </string>
     <string name="justificacionSoliExtra">Justificación: </string>
+    <string name="estadoSoliExtra">Estado: </string>
     <string name="textoJustiSoliExtra">Marque si se presenta Justificación</string>
+    <string name="textoEstadoSoliExtra">Marque para aceptar la Solicitud</string>
     <string name="hintIdSoli">Correlativo</string>
     <string name="hintCarnetAlumno">DUE</string>
     <string name="hintIdEva">Código de Evaluación</string>

@@ -35,6 +35,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
     private TextView motivoSoli;
     private TextView fechaSoli;
     private TextView justiSoli;
+    private TextView estadoSoli;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
             motivoSoli = (TextView) findViewById(R.id.vSoliExtra_disp_motivo);
             fechaSoli = (TextView) findViewById(R.id.vSoliExtra_disp_fecha);
             justiSoli = (TextView) findViewById(R.id.vSoliExtra_disp_justi);
+            estadoSoli = (TextView) findViewById(R.id.vSoliExtra_disp_estado);
 
             //Se inicializan los ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
@@ -81,6 +83,11 @@ public class VerSolicitudExtraordinarioActivity extends AppCompatActivity {
                 justiSoli.setText("Justificado");
             else
                 justiSoli.setText("No justificado");
+
+            if(soliExtraActual.isEstadoSolicitud()==true)
+                estadoSoli.setText("Aprobada");
+            else
+                estadoSoli.setText("Rechazada");
 
             //Titulo personalizado para Activity
             setTitle("Detalle de Solicitud Extraordinaria");

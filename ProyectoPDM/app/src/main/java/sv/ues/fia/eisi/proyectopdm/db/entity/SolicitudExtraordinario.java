@@ -35,6 +35,7 @@ public class SolicitudExtraordinario {
     private String motivoSolicitud;
     private String fechaSolicitudExtr;
     private boolean justificacion;
+    private boolean estadoSolicitud;
 
     public SolicitudExtraordinario(@NonNull String carnetAlumnoFK, int idEvaluacion, int tipoSolicitud, String motivoSolicitud, String fechaSolicitudExtr, boolean justificacion) {
         this.carnetAlumnoFK = carnetAlumnoFK;
@@ -101,4 +102,13 @@ public class SolicitudExtraordinario {
     public void setJustificacion(boolean justificacion){
         this.justificacion = justificacion;
     }
+
+    public boolean isEstadoSolicitud() {
+        return estadoSolicitud;
+    }
+
+    public void setEstadoSolicitud(boolean estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
+    }
+
 }

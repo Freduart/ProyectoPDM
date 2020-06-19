@@ -21,6 +21,8 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
@@ -29,6 +31,8 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
     private SolicitudExtraordinarioViewModel soliExtraVM;
     private TipoEvaluacionViewModel tipoEvaVM;
+
+    private int id_usuario, rol_usuario;
 
     private EditText idAlumno;
     private EditText idEvaluacion;
@@ -53,6 +57,12 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
 
             //Título personalizado para Activity
             setTitle("Nueva Solicitud Extraordinaria");
+
+            final Bundle extras = getIntent().getExtras();
+            if (extras != null){
+                id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+                rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+            }
 
             //Spinner Tipo evaluacion
             final ArrayList<String> tipoEvaluacionesNom = new ArrayList<>();

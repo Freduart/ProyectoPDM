@@ -67,14 +67,14 @@ public class EditarCicloActivity extends AppCompatActivity {
             //Inicializa el constructor de String para Fecha de Inicio
             StringBuilder fechaIniBuilder = new StringBuilder(10);
             //Concatena los valores de fecha de inicio
-            fechaIniBuilder.append(dpFechaInicio.getDayOfMonth()).append("-").append(dpFechaInicio.getMonth()).append("-").append(dpFechaInicio.getYear());
+            fechaIniBuilder.append(dpFechaInicio.getDayOfMonth()).append("-").append(dpFechaInicio.getMonth()+1).append("-").append(dpFechaInicio.getYear());
             //Asigna la cadena de texto desde el constructor de String
             String fechaInicio = fechaIniBuilder.toString();
 
             //Inicializa el constructor de String para Fecha de Finalización
             StringBuilder fechaFinBuilder = new StringBuilder(10);
             //Concatena los valores de fecha de finalización
-            fechaFinBuilder.append(dpFechaFin.getDayOfMonth()).append("-").append(dpFechaFin.getMonth()).append("-").append(dpFechaFin.getYear());
+            fechaFinBuilder.append(dpFechaFin.getDayOfMonth()).append("-").append(dpFechaFin.getMonth()+1).append("-").append(dpFechaFin.getYear());
             //Asigna la cadena de texto desde el constructor de String
             String fechaFin = fechaFinBuilder.toString();
 

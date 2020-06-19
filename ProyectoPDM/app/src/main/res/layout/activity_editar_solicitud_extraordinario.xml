@@ -79,6 +79,17 @@
             android:textAlignment="center"
             android:layout_gravity="center_horizontal"
             tools:ignore="Autofill"
+            android:paddingBottom="2dp"/>
+        <TextView
+            android:text="@string/estadoSoliExtra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingBottom="20dp"/>
+        <CheckBox
+            android:id="@+id/EstadoSoliExtra"
+            android:text="@string/textoEstadoSoliExtra"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="Autofill"
+            android:paddingBottom="2dp"/>
     </TableLayout>
 </ScrollView>

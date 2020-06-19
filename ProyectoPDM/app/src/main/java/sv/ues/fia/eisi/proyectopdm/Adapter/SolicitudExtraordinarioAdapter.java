@@ -47,6 +47,7 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
         private TextView motivoSolicitud;
         private TextView fechaSolicitud;
         private TextView justificacion;
+        private TextView estadoSolicitud;
 
         public SolicitudExtraordinarioHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,6 +59,7 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
             motivoSolicitud = itemView.findViewById(R.id.seMotivo);
             fechaSolicitud = itemView.findViewById(R.id.seFecha);
             justificacion = itemView.findViewById(R.id.seJusti);    //Modificar
+            estadoSolicitud = itemView.findViewById(R.id.se_Estado);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,6 +114,11 @@ public class SolicitudExtraordinarioAdapter extends RecyclerView.Adapter<Solicit
                 holder.justificacion.setText("Justificado");
             else
                 holder.justificacion.setText("No justificado");
+
+            if(currentSoliExtra.isEstadoSolicitud()==true)
+                holder.estadoSolicitud.setText("Aprobada");
+            else
+                holder.estadoSolicitud.setText("Rechazada");
         }
 
     @Override

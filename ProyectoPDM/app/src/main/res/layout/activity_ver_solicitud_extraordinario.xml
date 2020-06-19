@@ -125,5 +125,21 @@
             app:layout_constraintTop_toBottomOf="@id/vSoliExtra_justi"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
+        <TextView
+            android:id="@+id/vSoliExtra_estado"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/estadoSoliExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_disp_justi"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:id="@+id/vSoliExtra_disp_estado"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/textoEstadoSoliExtra"
+            app:layout_constraintTop_toBottomOf="@id/vSoliExtra_estado"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
     </TableLayout>
 </ScrollView>

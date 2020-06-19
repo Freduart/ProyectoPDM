@@ -29,11 +29,20 @@ public class LocalActivity extends AppCompatActivity {
 
     private LocalViewModel LocalVM;
     String cod;
+    private int id_usuario, rol_usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            //recibe id del usuario desde el extra
+            id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+            //recibe rol del usuario desde el extra
+            rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+        }
 
         //Título personalizado para Activity
         setTitle("Lista de Locales");
@@ -67,37 +76,43 @@ public class LocalActivity extends AppCompatActivity {
         try{
             //Inicializando ViewModel
             LocalVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LocalViewModel.class);
-            //Obtiene la lista de Locales en un LiveData
-            LocalVM.getAllLocales().observe(this, new Observer<List<Local>>() {
-                @Override
-                public void onChanged(final List<Local> locals) {
-                    //Asigna los locales extraídos al adaptador
-                    adaptador.setLocales(locals);
-                }
-            });
 
-            //Consultar Local con click corto
-            adaptador.setOnItemClickListener(new LocalAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Local local) {
-                    cod = local.getIdLocal();
-                    Intent intent = new Intent(LocalActivity.this, VerLocalActivity.class);
-                    intent.putExtra(IDENTIFICADOR_LOCAL, cod);
-                    startActivity(intent);
-                }
-            });
-            //Click largo para mostrar alertdialog con opciones
-            adaptador.setOnLongClickListner(new LocalAdapter.OnItemLongClickListener() {
-                @Override
-                public void onItemLongClick(Local local) {
-                    try {
-                        cod = local.getIdLocal();
-                        createCustomDialog(local).show();
-                    }catch (Exception e){
-                        Toast.makeText(LocalActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+            switch (rol_usuario){
+                case 5:
+                default:
+                    //Obtiene la lista de Locales en un LiveData
+                    LocalVM.getAllLocales().observe(this, new Observer<List<Local>>() {
+                        @Override
+                        public void onChanged(final List<Local> locals) {
+                            //Asigna los locales extraídos al adaptador
+                            adaptador.setLocales(locals);
+                        }
+                    });
+
+                    //Consultar Local con click corto
+                    adaptador.setOnItemClickListener(new LocalAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Local local) {
+                            cod = local.getIdLocal();
+                            Intent intent = new Intent(LocalActivity.this, VerLocalActivity.class);
+                            intent.putExtra(IDENTIFICADOR_LOCAL, cod);
+                            startActivity(intent);
+                        }
+                    });
+                    //Click largo para mostrar alertdialog con opciones
+                    adaptador.setOnLongClickListner(new LocalAdapter.OnItemLongClickListener() {
+                        @Override
+                        public void onItemLongClick(Local local) {
+                            try {
+                                cod = local.getIdLocal();
+                                createCustomDialog(local).show();
+                            }catch (Exception e){
+                                Toast.makeText(LocalActivity.this, e.getMessage() + " - " +e.getCause(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                break;
+            }
         }catch(Exception e){
             Toast.makeText(LocalActivity.this, "Error en el ViewModel",
                     Toast.LENGTH_SHORT).show();
