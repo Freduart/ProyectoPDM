@@ -25,7 +25,7 @@ public class InscripcionViewModel extends AndroidViewModel {
     }
 
 
-    private void insertarInscripcion(Inscripcion inscripcion){
+    public void insertarInscripcion(Inscripcion inscripcion){
         repository.insertarInscripcion(inscripcion);
     }
 

@@ -251,7 +251,10 @@
 
     <!-- Strings para inscripcion -->
     <string name="AppBarNameInscripcion">Inscripcion</string>
-    <string name="Inscripcion_carnet">carnet</string>
+    <string name="Inscripcion_carnet">CARNET</string>
+    <string name="textGLab_Inscripcion">Grupo de Laboratorio</string>
+    <string name="textGTeo_Inscripcion">Grupo de Teorico</string>
+    <string name="textGDisc_Inscripcion">Grupo de Discusion</string>
 
     <string name="textCerrarSesion">CERRAR SESIÓN</string>
 

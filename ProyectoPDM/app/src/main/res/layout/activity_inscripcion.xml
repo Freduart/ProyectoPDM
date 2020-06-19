@@ -22,17 +22,83 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
-            android:hint="@string/carnet_addhint_Alumno"
+            android:text="@string/Inscripcion_carnet"
             android:padding="8dp"
+            android:gravity="center"
             android:textSize="24sp"/>
-
 
         <Spinner
             android:id="@+id/spn_Asignatura"
             app:layout_constraintTop_toBottomOf="@+id/tw_Carrera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:padding="24dp"/>
+
+        <TextView
+            android:id="@+id/et_GLab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:text="@string/textGLab_Inscripcion"
+            android:layout_marginTop="6dp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textSize="12sp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/textGLab_Inscripcion"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:id="@+id/glabnumber"
+            />
+
+        <TextView
+            android:id="@+id/et_GTeo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:text="@string/textGTeo_Inscripcion"
+            android:padding="8dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:textSize="12sp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/textGTeo_Inscripcion"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:id="@+id/gteonumber"
+            />
+
+        <TextView
+            android:id="@+id/et_GDisc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/et_Carnet"
+            android:text="@string/textGDisc_Inscripcion"
+            android:padding="6dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:textSize="12sp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/textGDisc_Inscripcion"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:id="@+id/gdiscnumber"
+            />
+
+
 
     </TableLayout>
 
