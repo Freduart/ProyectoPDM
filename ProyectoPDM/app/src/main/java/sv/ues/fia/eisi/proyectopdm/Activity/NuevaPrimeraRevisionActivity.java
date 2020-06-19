@@ -1,7 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
@@ -58,7 +56,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             dpickfechaSoli = (DatePicker) findViewById(R.id.editarFechaSolicitud);
             notaAntes = (EditText) findViewById(R.id.editarNotaAntesPR);
             observaciones = (EditText) findViewById(R.id.editarObservacionesPR);
-            FECHA_ENTREGA = getText(R.string.fecha_placeholder_eval).toString();
+            FECHA_ENTREGA = getText(R.string.fecha_noenc_eval).toString();
 
             //Spinner de detalle por alumno loggueado
             final ArrayList<String> detallesNom = new ArrayList<>();
@@ -95,6 +93,8 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
                 }
             });//fin de llenado spinner detalle por alumno
 
+            dpickfechaSoli.setEnabled(false);
+
         } catch (Exception e) {
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
         }
@@ -118,6 +118,8 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.error_form_incompleto_eval, Toast.LENGTH_LONG).show();
                 return;
             }
+            primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+            evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
 
             String[] fechaAuxiliar = evaluacionPr.getFechaEntregaNotas().split("/");
             int dia = Integer.parseInt(fechaAuxiliar[0]);
@@ -126,16 +128,19 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             int diaActual = dpickfechaSoli.getDayOfMonth();
             int mesActual = dpickfechaSoli.getMonth();
             int anioActual = dpickfechaSoli.getYear();
-            if (evaluacionPr.getFechaEntregaNotas().equals(FECHA_ENTREGA)) {
-                Toast.makeText(NuevaPrimeraRevisionActivity.this, R.string.peridohabilantes, Toast.LENGTH_LONG).show();
-            } else if (((diaActual > dia) && (diaActual <= (dia + 5))) && (mesActual == mes) && (anioActual == anio)) {
+
+            
+
+            if (((diaActual >= dia) && (diaActual <= (dia + 5))) && (mesActual == mes) && (anioActual == anio)) {
                 PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
                 primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
                 primeraRevisionViewModel.insertPrimeraRevision(pr);
                 Toast.makeText(NuevaPrimeraRevisionActivity.this, R.string.prinsertada, Toast.LENGTH_SHORT).show();
                 finish();
-            } else {
+            } else if(diaActual>(dia+5)){
                 Toast.makeText(NuevaPrimeraRevisionActivity.this, R.string.periodohabildespues, Toast.LENGTH_LONG).show();
+            }if (evaluacionPr.getFechaEntregaNotas().equals(FECHA_ENTREGA)||(dia>diaActual)) {
+                Toast.makeText(NuevaPrimeraRevisionActivity.this, R.string.peridohabilantes, Toast.LENGTH_LONG).show();
             }
 
         } catch (Exception e) {
