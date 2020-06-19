@@ -28,4 +28,7 @@ public interface DocenteDao {
 
     @Query("select * from Docente where carnetDocente == :docenteid")
     Docente obtenerDocente(String docenteid);
+
+    @Query("select * from Docente where idUsuarioFk == :idUsuario")
+    Docente obtenerDocentePorIdUsuario(int idUsuario);
 }

@@ -43,7 +43,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textCarnetDocenteEditar" />
+                app:layout_constraintTop_toBottomOf="@+id/textDatosDocente" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -280,14 +280,14 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Carnet Docente: "
+                android:text="@string/textDocente"
                 android:textColor="@color/colorNegro"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Spinner
-                android:id="@+id/textCarnetDocenteEditar"
+            <TextView
+                android:id="@+id/textDatosDocente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -295,9 +295,14 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
+                android:text="TextView"
+                android:textColor="@color/colorNegro"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

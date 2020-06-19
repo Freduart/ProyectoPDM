@@ -51,4 +51,12 @@ public class SolicitudImpresionViewModel extends AndroidViewModel {
     public LiveData<List<SolicitudImpresion>> obtenerSolicitudPorEstado(String estado) throws InterruptedException, ExecutionException, TimeoutException{
         return solicitudImpresionRepository.obtenerSolicitudPorEstado(estado);
     }
+
+    public LiveData<List<SolicitudImpresion>> obtenerSolicitudesPorCarnet(String carnetDocente) throws InterruptedException, ExecutionException, TimeoutException{
+        return solicitudImpresionRepository.ontenerSolicitudesPorCarnet(carnetDocente);
+    }
+
+    public LiveData<List<SolicitudImpresion>> obtenerSolicitudesPorDirector(String docDirector) throws InterruptedException, ExecutionException, TimeoutException{
+        return solicitudImpresionRepository.obtenerSolicitudesPorDirector(docDirector);
+    }
 }

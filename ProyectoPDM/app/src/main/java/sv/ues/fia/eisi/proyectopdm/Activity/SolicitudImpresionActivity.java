@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -36,17 +37,21 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.UsuarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
 
 public class SolicitudImpresionActivity extends AppCompatActivity {
 
     public static final String IDENTIFICADOR_IMPRESION = "ID_IMPREISON";
+    private static final String DIRECTORIO_DOCUMENTOS = "DocumentosImpresion";
     private SolicitudImpresionViewModel solicitudImpresionViewModel;
     private DocenteViewModel docenteViewModel;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
     private UsuarioViewModel usuarioViewModel;
     private Usuario usuarioIngresado;
+    private Docente docente;
+    private int id_usuario,rol_usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,18 +60,20 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("SOLICITUD IMPRESIÓN");
 
-        final RecyclerView recyclerSolicitudImpresiones=(RecyclerView)findViewById(R.id.recycler_lista_solicitudes);
-        recyclerSolicitudImpresiones.setLayoutManager(new LinearLayoutManager(this));
-        //AdapterSolicitudesimpresion
-        final ListaSolicitudesImpresionAdapter listaSolicitudesImpresionAdapter=new ListaSolicitudesImpresionAdapter();
-        recyclerSolicitudImpresiones.setAdapter(listaSolicitudesImpresionAdapter);
-        //Obtenemos los datos del usuario
-        String usuario=PreferenceSingleton.getInstance().readPreference(LoginActivity.USERNAME);
-        String password=PreferenceSingleton.getInstance().readPreference(LoginActivity.USER_PASSWORD);
-        String[] credenciales={usuario,password};
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
         usuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(UsuarioViewModel.class);
+        solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
+
+        final Bundle extras = getIntent().getExtras();
+        //verifica que los extra no estén vacíos
+        if(extras != null) {
+            //recibe id del usuario desde el extra
+            id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+            //recibe rol del usuario desde el extra
+            rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+        }
         try {
-            usuarioIngresado=usuarioViewModel.obtenerCredenciales(credenciales);
+            docente=docenteViewModel.obtenerDocentePorIdUsuario(id_usuario);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -75,25 +82,27 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
-                .create(DocenteViewModel.class);
+        final RecyclerView recyclerSolicitudImpresiones=(RecyclerView)findViewById(R.id.recycler_lista_solicitudes);
+        recyclerSolicitudImpresiones.setLayoutManager(new LinearLayoutManager(this));
+        //AdapterSolicitudesimpresion
+        final ListaSolicitudesImpresionAdapter listaSolicitudesImpresionAdapter=new ListaSolicitudesImpresionAdapter();
+        recyclerSolicitudImpresiones.setAdapter(listaSolicitudesImpresionAdapter);
 
         FloatingActionButton nuevaSolicitud=(FloatingActionButton)findViewById(R.id.nuevaSolicitudImpresion);
         //Para cualquier otro usuario que no sea docente, se deshabilita la opcion de agregar solicitudes de impresion
-        if(usuarioIngresado.getRol()!=2){
+        if(rol_usuario!=2){
             nuevaSolicitud.setVisibility(View.INVISIBLE);
         }
         nuevaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent nuevaSolicitud=new Intent(getApplicationContext(), NuevaSolicitudImpresionActivity.class);
+                nuevaSolicitud.putExtra(LoginActivity.ID_USUARIO, id_usuario);//Mandamos solo el ID del usuairo...
                 startActivity(nuevaSolicitud);
             }
         });
         try{
-            solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
-            //Para un usuario tipo encargado impresion mostramos solo las solicitudes aprobadas...
-            if(usuarioIngresado.getRol()==4){
+            if(rol_usuario==4){//Para un usuario tipo encargado impresion mostramos solo las solicitudes aprobadas...
                 solicitudImpresionViewModel.obtenerSolicitudPorEstado("APROBADA/\nEN CURSO").observe(this, new Observer<List<SolicitudImpresion>>() {
                     @Override
                     public void onChanged(List<SolicitudImpresion> solicitudImpresions) {
@@ -114,34 +123,51 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                     }
                 });
             }else{
-                //De lo contrario se veran todas las solicitudes de cualquier tipo para docentes...
-                solicitudImpresionViewModel.getAllSolicitudesImpresion().observe(this, new Observer<List<SolicitudImpresion>>() {
-                    @Override
-                    public void onChanged(final List<SolicitudImpresion> solicitudImpresions) {
-                        listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
-                        listaSolicitudesImpresionAdapter.setDocenteViewModel(docenteViewModel);
-                        listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
-                            @Override
-                            public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
-                                dialogVerSolicitud(solicitudImpresion).show();
-                            }
-                        });
-                        listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
-                            @Override
-                            public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
-                                //Opciones de AlertDialog
-                                //Si el usuario es un director, le asignamos los botones para aprobar/reprobar la solicitud
-                                //En lugar de editar y eliminar
-                                if(usuarioIngresado.getRol()==1){
+                if(rol_usuario==1){//Para un usuario de tipo director mostramos las solicitudes de impresion por docente director...
+                    solicitudImpresionViewModel.obtenerSolicitudesPorDirector(docente.getCarnetDocente()).observe(this, new Observer<List<SolicitudImpresion>>() {
+                        @Override
+                        public void onChanged(List<SolicitudImpresion> solicitudImpresions) {
+                            listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
+                            listaSolicitudesImpresionAdapter.setDocenteViewModel(docenteViewModel);
+                            listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
+                                @Override
+                                public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
+                                    dialogVerSolicitud(solicitudImpresion).show();
+                                }
+                            });
+                            listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
+                                @Override
+                                public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
+                                    //Opciones de AlertDialog
                                     createCustomAlertDialog2(solicitudImpresion).show();
-                                }else{
+                                }
+                            });
+                            listaSolicitudesImpresionAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }else{//De lo contrario, obtenemos las solicitudes de impresion por carnet de docente...
+                    solicitudImpresionViewModel.obtenerSolicitudesPorCarnet(docente.getCarnetDocente()).observe(this, new Observer<List<SolicitudImpresion>>() {
+                        @Override
+                        public void onChanged(List<SolicitudImpresion> solicitudImpresions) {
+                            listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
+                            listaSolicitudesImpresionAdapter.setDocenteViewModel(docenteViewModel);
+                            listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
+                                @Override
+                                public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
+                                    dialogVerSolicitud(solicitudImpresion).show();
+                                }
+                            });
+                            listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
+                                @Override
+                                public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
+                                    //Opciones de AlertDialog
                                     createCustomAlertDialog(solicitudImpresion).show();
                                 }
-                            }
-                        });
-                        listaSolicitudesImpresionAdapter.notifyDataSetChanged();
-                    }
-                });
+                            });
+                            listaSolicitudesImpresionAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             }
         }catch (Exception e){
             Toast.makeText(this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
@@ -241,7 +267,6 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         builder.setView(v);
         alertDialog = builder.create();
         ArrayList<String> listaDocumentos = new ArrayList<>();
-        Uri uriSeleccionado=Uri.fromFile(new File(solicitudImpresion.getDocumento()));
         listaDocumentos.add(solicitudImpresion.getDocumento());
         recyclerArchivos.setLayoutManager(new LinearLayoutManager(this));
         ListaArchivosAdapter listaArchivosAdapter = new ListaArchivosAdapter(listaDocumentos);
@@ -249,9 +274,11 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         listaArchivosAdapter.setOnItemClickListener(new ListaArchivosAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(int position, String documento) {
+                String ruta=descargarArchivo(documento);
+                Uri uri=Uri.fromFile(new File(ruta));
                 //Previsualizar
                 Intent intent = new Intent( Intent.ACTION_VIEW );
-                intent.setDataAndType(uriSeleccionado, "application/pdf");
+                intent.setDataAndType(uri,"Application/pdf");
                 intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                 startActivity(intent);
                 alertDialog.dismiss();
@@ -315,5 +342,42 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             }
         });
         return alertDialog;
+    }
+
+    private String getFileName(String filePath){
+        String[] path=filePath.split("/");
+        String name;
+        int position=0;
+        position=path.length-1;
+        name=path[position];
+        return name;
+    }
+
+    private String descargarArchivo(String urlDocumento){
+        File file=new File(Environment.getExternalStorageDirectory(),DIRECTORIO_DOCUMENTOS);
+        //Verificamos si la carpeta ya existe...
+        boolean existe=file.exists();
+        if(!existe){
+            existe=file.mkdirs();
+        }
+        //Verificamos si el documento ya existe...
+        String path=Environment.getExternalStorageDirectory()+"/"+DIRECTORIO_DOCUMENTOS+"/"+getFileName(urlDocumento);
+        File file2=new File(path);
+        if(!file2.exists()){
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlDocumento));
+            request.setDescription("Descargando Documento Del Servidor.");
+            request.setTitle("Iniciando Descarga...");
+            // in order for this if to run, you must use the android 3.2 to compile your app
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            }
+            request.setDestinationInExternalPublicDir(DIRECTORIO_DOCUMENTOS, getFileName(urlDocumento));
+            // get download service and enqueue file
+            DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+            Toast.makeText(this, "Guardado En: "+path, Toast.LENGTH_SHORT).show();
+        }
+        return path;
     }
 }

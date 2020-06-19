@@ -57,6 +57,10 @@ public class DocenteRepository {
         return new obtenerDocenteAsyncTask(docenteDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
+    public Docente obtenerDocentePorIdUsuario(Integer id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerDocentePorIdUsuarioAsyncTask(docenteDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
     //Async de insertar
     private static class InsertarDocenteAsyncTask extends AsyncTask<Docente, Void, Void>{
         private DocenteDao docenteDao;
@@ -128,6 +132,19 @@ public class DocenteRepository {
         @Override
         protected Docente doInBackground(String... docentes) {
             return docenteDao.obtenerDocente(docentes[0]);
+        }
+    }
+
+    private static class obtenerDocentePorIdUsuarioAsyncTask extends AsyncTask<Integer,Void,Docente>{
+        private DocenteDao docenteDao;
+
+        public obtenerDocentePorIdUsuarioAsyncTask(DocenteDao docenteDao) {
+            this.docenteDao = docenteDao;
+        }
+
+        @Override
+        protected Docente doInBackground(Integer... integers) {
+            return docenteDao.obtenerDocentePorIdUsuario(integers[0]);
         }
     }
 }

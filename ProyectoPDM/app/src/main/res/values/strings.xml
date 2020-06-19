@@ -242,6 +242,7 @@
     <string name="hintApellidoDocente">Apellido Docente</string>
     <string name="hintCorreoDocente">someone@example.com</string>
     <string name="hintTelefonoDocente">+503 ### ###</string>
+    <string name="textDocente">DOCENTE</string>
 
     <!-- Strings para enc_impres_item -->
     <string name="AppBarNameEncImpres">Encargado Impresón</string>
