@@ -216,7 +216,7 @@ public abstract class DataBase extends RoomDatabase {
             usuarioDao.insertUser(new Usuario("DOCEIQA1", "torres", 1));
             usuarioDao.insertUser(new Usuario("DOCEICI1", "nuevodir", 1));
             //Usuarios con rol de docente
-            usuarioDao.insertUser(new Usuario("DOCEISI2", "gozalez", 2));
+            usuarioDao.insertUser(new Usuario("DOCEISI2", "gonzalez", 2));
             usuarioDao.insertUser(new Usuario("DOCEISI3", "carballo", 2));
             usuarioDao.insertUser(new Usuario("DOCEIQA2", "gamero", 2));
             usuarioDao.insertUser(new Usuario("DOCEIQA3", "nuevodoc", 2));
@@ -294,11 +294,11 @@ public abstract class DataBase extends RoomDatabase {
             evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
             //Cargo
             cargoDao.insertCargo(new Cargo(1, "Director de la EISI"));
-            cargoDao.insertCargo(new Cargo(2, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
-            cargoDao.insertCargo(new Cargo(3, "Jefe de Dpto. de Programación y Manejo de datos"));
-            cargoDao.insertCargo(new Cargo(4, "Jefe de Dpto. de Desarrollo de Sistemas"));
-            cargoDao.insertCargo(new Cargo(5, "Jefa de Dpto. de Administración"));
-            cargoDao.insertCargo(new Cargo(6, "Docente de la EISI"));
+            cargoDao.insertCargo(new Cargo(1, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
+            cargoDao.insertCargo(new Cargo(1, "Jefe de Dpto. de Programación y Manejo de datos"));
+            cargoDao.insertCargo(new Cargo(1, "Jefe de Dpto. de Desarrollo de Sistemas"));
+            cargoDao.insertCargo(new Cargo(1, "Jefa de Dpto. de Administración"));
+            cargoDao.insertCargo(new Cargo(1, "Docente de la EISI"));
             cargoDao.insertCargo(new Cargo(7, "Directora de la EIQA"));
             cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. de Ingeniería de Alimentos"));
             cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. de CC. Básicas de la Ingeniería Química"));
@@ -326,6 +326,8 @@ public abstract class DataBase extends RoomDatabase {
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "Ejercicio 1"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
             primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 3, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
             //Encargado de impresión
             encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 14));
             //Segunda revisión

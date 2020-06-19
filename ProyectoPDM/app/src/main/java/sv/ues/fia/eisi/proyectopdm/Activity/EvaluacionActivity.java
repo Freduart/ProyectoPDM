@@ -186,6 +186,8 @@ public class EvaluacionActivity extends AppCompatActivity {
                     //se mete en un extra del intent, el id
                     intent.putExtra(IDENTIFICADOR_EVALUACION, id);
                     intent.putExtra(OPERACION_EVALUACION, EDITAR_EVALUACION);
+                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                     //inicia la activity
                     startActivity(intent);
                 }catch (Exception e){

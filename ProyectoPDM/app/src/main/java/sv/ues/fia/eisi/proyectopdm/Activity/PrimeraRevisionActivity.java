@@ -22,21 +22,33 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.PrimeraRevisionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
 public class PrimeraRevisionActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_PR = "ID_PRIMERA_REVISION_ACTUAL";
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
+    private List<PrimeraRevision> primeraRevisionDocente;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primera_revision);
-
+        final Bundle extraidAlUser = getIntent().getExtras();
         setTitle(R.string.AppBarNamePrimerasRevisiones);
+
+        int idUser = 0;
+        int rolUser = 0;
+        String username = "";
+        if(extraidAlUser != null){
+            idUser = extraidAlUser.getInt(LoginActivity.ID_USUARIO);
+            rolUser = extraidAlUser.getInt(LoginActivity.USER_ROL);
+            username = extraidAlUser.getString(LoginActivity.USERNAME);
+        }
 
         FloatingActionButton btnNuevaPR = findViewById(R.id.add_pr_button);
 
@@ -52,6 +64,10 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             }
         });
 
+        if(rolUser == 1 || rolUser == 2 || rolUser == 5){
+            btnNuevaPR.setVisibility(View.GONE);
+        }
+
         final RecyclerView recyclerView = findViewById(R.id.recycler_list_primerarevision);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -60,12 +76,19 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         try {
-            primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+        primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
 
-            primeraRevisionViewModel.getAllPrimerasRevisiones().observe(this, new Observer<List<PrimeraRevision>>() {
+       /*     primeraRevisionViewModel.getAllPrimerasRevisiones().observe(this, new Observer<List<PrimeraRevision>>() {
                 @Override
                 public void onChanged(List<PrimeraRevision> primeraRevisiones) {
                     adapter.setPrs(primeraRevisiones);
+                }
+            });*/
+            DocenteViewModel docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+            primeraRevisionViewModel.obtenerPRDocente(primeraRevisionViewModel.obtenerDocUsuario(idUser).getCarnetDocente()).observe(this, new Observer<List<PrimeraRevision>>() {
+                @Override
+                public void onChanged(List<PrimeraRevision> primeraRevisions) {
+                            adapter.setPrs(primeraRevisions);
                 }
             });
 
