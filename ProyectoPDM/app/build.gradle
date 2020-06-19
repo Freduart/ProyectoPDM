@@ -20,6 +20,10 @@ android {
         }
     }
 
+    android{
+        useLibrary'org.apache.http.legacy'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
