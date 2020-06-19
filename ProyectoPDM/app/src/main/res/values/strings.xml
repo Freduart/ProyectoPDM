@@ -174,6 +174,8 @@
     <string name="practualizada">Solicitud de primera revisión, actualizada con éxito.</string>
     <string name="preliminada">Solicitud de primera revisión, eliminada con éxito.</string>
     <string name="errodenota">Error. La nota final no puede ser menor que la nota actual.</string>
+    <string name="peridohabilantes">Aún no se ha habilitado el perido de registro de solicitud de primera revisión.</string>
+    <string name="periodohabildespues">El tiempo hábil para registrar solicitud de primera revisión para la evaluación actual, ha terminado.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

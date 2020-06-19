@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.repository.PrimeraRevisionRepository;
 
@@ -56,6 +57,10 @@ public class PrimeraRevisionViewModel extends AndroidViewModel {
 
     public Docente obtenerDocUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException{
         return primeraRevisionRepository.obtenerDocUsuario(id);
+    }
+
+    public Evaluacion obtenerEvaPR(int id) throws InterruptedException, ExecutionException, TimeoutException{
+        return primeraRevisionRepository.obtenerEvaluacionEnPR(id);
     }
     
 }

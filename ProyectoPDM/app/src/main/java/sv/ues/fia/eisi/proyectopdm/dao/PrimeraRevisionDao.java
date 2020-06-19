@@ -11,6 +11,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
 @Dao
@@ -45,4 +46,12 @@ public interface PrimeraRevisionDao {
 
    @Query("select * from Docente where idUsuarioFk == :id")
     Docente obtenerDocUsuario(int id);
+
+   @Query("Select Evaluacion.* from PrimeraRevision " +
+           "inner join DetalleEvaluacion on PrimeraRevision.idDetalleEvFK = DetalleEvaluacion.idDetalleEv " +
+           "inner join Evaluacion on DetalleEvaluacion.idEvaluacionFK = Evaluacion.idEvaluacion " +
+           "where PrimeraRevision.idPrimerRevision == :idPrimera")
+   Evaluacion obtenerEvaluacionEnPR(int idPrimera);
+
+
 }

@@ -14,6 +14,7 @@ import sv.ues.fia.eisi.proyectopdm.DataBase;
 import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.PrimeraRevisionDao;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
 public class PrimeraRevisionRepository {
@@ -61,6 +62,10 @@ public class PrimeraRevisionRepository {
 
     public Docente obtenerDocUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return new PrimeraRevisionRepository.obtenerDocUsuarioAsyncTask(primeraRevisionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
+    public Evaluacion obtenerEvaluacionEnPR(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new obtenerEvaluacionEnPRAsyncTask(primeraRevisionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     public static class InsertarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
@@ -150,6 +155,17 @@ public class PrimeraRevisionRepository {
         @Override
         protected Docente doInBackground(Integer... id) {
             return docenteDao.obtenerDocUsuario(id[0]);
+        }
+    }
+
+    public static class obtenerEvaluacionEnPRAsyncTask extends AsyncTask<Integer, Void, Evaluacion>{
+        private PrimeraRevisionDao evaluacionDao;
+        private obtenerEvaluacionEnPRAsyncTask(PrimeraRevisionDao evaluacionDao){
+            this.evaluacionDao = evaluacionDao;
+        }
+        @Override
+        protected Evaluacion doInBackground(Integer... id) {
+            return evaluacionDao.obtenerEvaluacionEnPR(id[0]);
         }
     }
 }
