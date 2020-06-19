@@ -496,7 +496,8 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     }
 
     public int uploadFile(String sourceFileUri) {
-        String fileName = getFileName(sourceFileUri).replace(" ","_");
+        String fileName1 = getFileName(sourceFileUri).replace(" ","_");
+        String fileName = fileName1.replaceAll("[^a-zA-Z0-9]", "");
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
@@ -680,7 +681,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             fechaHoy=simpleDateFormat.format(calendar.getTime());
             //Documentos
-            String rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+getFileName(listaDocumentos.get(0)).replace(" ","_");
+            String rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+(getFileName(listaDocumentos.get(0)).replace(" ","_")).replaceAll("[^a-zA-Z0-9]", "");
             detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
             solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
                     Integer.parseInt(nImpresiones),detalleImpresion2,"",

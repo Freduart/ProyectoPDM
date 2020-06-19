@@ -590,7 +590,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     }
 
     public int uploadFile(String sourceFileUri) {
-        String fileName = getFileName(sourceFileUri).replace(" ","_");
+        String fileName = (getFileName(sourceFileUri).replace(" ","_")).replaceAll("[^a-zA-Z0-9]", "");
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
