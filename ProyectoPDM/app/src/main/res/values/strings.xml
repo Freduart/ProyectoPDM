@@ -19,7 +19,7 @@
     <string name="justificacionSoliExtra">Justificación: </string>
     <string name="estadoSoliExtra">Estado: </string>
     <string name="textoJustiSoliExtra">Marque si se presenta Justificación</string>
-    <string name="textoEstadoSoliExtra">Marque para aceptar la Solicitud</string>
+    <string name="textoEstadoSoliExtra">Marque para aprobar la Solicitud</string>
     <string name="hintIdSoli">Correlativo</string>
     <string name="hintCarnetAlumno">DUE</string>
     <string name="hintIdEva">Código de Evaluación</string>
@@ -163,9 +163,9 @@
     <string name="AppBarNamePrimerasRevisiones">Primeras revisiones</string>
     <string name="detallePrimera">Detalle de primera revisión</string>
     <string name="EditarPrimera">Editar primera revisión</string>
-    <string name="nota_place_holder_PR">0.0</string>
-    <string name="local_placeholder_PR">LComp1</string>
-    <string name="estado_placeholder_PR">true</string>
+    <string name="nota_place_holder_PR" translatable="false">0.0</string>
+    <string name="local_placeholder_PR" translatable="false">LComp1</string>
+    <string name="estado_placeholder_PR" translatable="false">true</string>
     <string-array name="estado_array">
         <item>true</item>
         <item>false</item>
@@ -176,7 +176,7 @@
     <string name="errodenota">Error. La nota final no puede ser menor que la nota actual.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
     <!-- Strings para Alumno -->
     <string name="tituloParaAlumno">Alumno</string>
@@ -193,7 +193,7 @@
 
     <!-- Strings para Agregar Alumno -->
     <string name="titulo_Add_Alumn">Añadir alumno</string>
-    <string name="carnet_addhint_Alumno">DUE</string>
+    <string name="carnet_addhint_Alumno" translatable="false">DUE</string>
     <string name="nombre_addhint_Alumno">Nombre</string>
     <string name="apellidos_addhint_Alumno">Apellidos</string>
     <string name="carrera_addhint_Alumno">Carrera</string>
@@ -214,6 +214,9 @@
     <string name="fechaDesde">Fecha de Inicio: </string>
     <string name="fechaHasta">Fecha de Finalización: </string>
     <string name="nomCiclo">Ciclo N°: </string>
+    <string name="hintNumCiclo">Número de Ciclo</string>
+    <string name="hintFechaIni">Inicio de Clases</string>
+    <string name="hintFechaFin">Cierre del Sistema</string>
 
     <!-- Strings para Local -->
     <string name="AppBarNameLocal">Local</string>
@@ -222,6 +225,11 @@
     <string name="ubicacionLocal">Ubicación del Local: </string>
     <string name="latLocal">Latitud: </string>
     <string name="lonLocal">Longitud: </string>
+    <string name="hintIDLocal">Identificador del Local Seleccionado.</string>
+    <string name="hintNomLocal">Nombre del Local Seleccionado.</string>
+    <string name="hintUbLocal">Ubicación exacta del Local Seleccionado.</string>
+    <string name="hintLatLocal">Latitud del Local</string>
+    <string name="hintLonLocal">Longitud del Local</string>
 
     <!-- Strings para activity_menu -->
     <string name="btnAlumno_menu">Alumnos</string>
@@ -240,8 +248,8 @@
     <string name="hintCarnetDocente">Carnet Docente</string>
     <string name="hintNomDocente">Nombre Docente</string>
     <string name="hintApellidoDocente">Apellido Docente</string>
-    <string name="hintCorreoDocente">someone@example.com</string>
-    <string name="hintTelefonoDocente">+503 ### ###</string>
+    <string name="hintCorreoDocente" translatable="false">someone@example.com</string>
+    <string name="hintTelefonoDocente" translatable="false">+503 ### ###</string>
 
     <!-- Strings para enc_impres_item -->
     <string name="AppBarNameEncImpres">Encargado Impresón</string>
