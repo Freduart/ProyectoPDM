@@ -32,6 +32,9 @@ public interface EvaluacionDao {
     @Query("select * from Evaluacion")
     LiveData<List<Evaluacion>> obtenerEvaluaciones();
 
+    @Query("select * from Evaluacion")
+    List<Evaluacion> obtenerEvaluacionesAsync();
+
     @Query("select * from Evaluacion where idEvaluacion == :evaluacionid")
     Evaluacion obtenerEvaluacion(int evaluacionid);
 

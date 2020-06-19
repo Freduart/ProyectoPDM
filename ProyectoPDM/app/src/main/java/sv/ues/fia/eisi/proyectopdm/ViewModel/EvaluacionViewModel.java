@@ -98,4 +98,8 @@ public class EvaluacionViewModel extends AndroidViewModel{
     public LiveData<List<Docente>> obtenerDocentesPorEscuela(int id) {
         return repo.obtenerDocentesDeEscuela(id);
     }
+
+    public List<Evaluacion> obtenerEvaluacionesTodasAsync() throws InterruptedException, ExecutionException, TimeoutException {
+        return repo.obtenerEvaluacionNoLiveData();
+    }
 }
