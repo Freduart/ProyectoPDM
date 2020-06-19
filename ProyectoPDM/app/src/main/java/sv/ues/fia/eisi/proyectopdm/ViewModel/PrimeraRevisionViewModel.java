@@ -1,6 +1,7 @@
 package sv.ues.fia.eisi.proyectopdm.ViewModel;
 
 import android.app.Application;
+import android.text.format.Time;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.repository.PrimeraRevisionRepository;
 
@@ -47,4 +49,13 @@ public class PrimeraRevisionViewModel extends AndroidViewModel {
     public List<PrimeraRevision> getRevisionPorDetalle(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return primeraRevisionRepository.obtenerRevisionPorDetalle(id);
     }
+
+    public LiveData<List<PrimeraRevision>> obtenerPRDocente(String carnet){
+        return primeraRevisionRepository.getPRDocente(carnet);
+    }
+
+    public Docente obtenerDocUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException{
+        return primeraRevisionRepository.obtenerDocUsuario(id);
+    }
+    
 }

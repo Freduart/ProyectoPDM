@@ -62,7 +62,6 @@ public class VerPrimeraRevisionActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_ver_primera_revision);
-
             codPR = (TextView) findViewById(R.id.tvCodPR);
             localFK = (TextView) findViewById(R.id.tvLocalFK);
             detalleEFK = (TextView) findViewById(R.id.tvDetalleEvaFK);

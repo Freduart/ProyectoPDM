@@ -98,11 +98,11 @@ public class NuevaAsignaturaActivity extends AppCompatActivity {
                     try {
                         Asignatura asignaturaAInsertar= asignaturaViewModel.obtenerAsignatura(auxasignatura.getCodigoAsignatura());
                         if(asignaturaAInsertar!=null){
-                            Toast.makeText(NuevaAsignaturaActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NuevaAsignaturaActivity.this, R.string.registroduplicado, Toast.LENGTH_SHORT).show();
                         }else {
                             //insrtar
                             asignaturaViewModel.insert(auxasignatura);
-                            Toast.makeText(NuevaAsignaturaActivity.this, "Asignatura " + auxasignatura.getCodigoAsignatura() + " insertada con éxito.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NuevaAsignaturaActivity.this, R.string.asignaturainsertada, Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }catch (Exception e){

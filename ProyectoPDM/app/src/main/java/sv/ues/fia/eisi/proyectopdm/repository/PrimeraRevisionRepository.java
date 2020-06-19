@@ -11,7 +11,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.DataBase;
+import sv.ues.fia.eisi.proyectopdm.dao.EvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.PrimeraRevisionDao;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
 public class PrimeraRevisionRepository {
@@ -51,6 +53,14 @@ public class PrimeraRevisionRepository {
 
     public List<PrimeraRevision> obtenerRevisionPorDetalle(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return new PrimeraRevisionRepository.obtenerRevisionPorDetalleAsyncTask(primeraRevisionDao).execute(id).get(12, TimeUnit.SECONDS);
+    }
+
+    public LiveData<List<PrimeraRevision>> getPRDocente(String carnet){
+        return primeraRevisionDao.obtenerPrimerasRevisionesAsDocente(carnet);
+    }
+
+    public Docente obtenerDocUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return new PrimeraRevisionRepository.obtenerDocUsuarioAsyncTask(primeraRevisionDao).execute(id).get(12, TimeUnit.SECONDS);
     }
 
     public static class InsertarPrimeraRevisionAsyncTask extends AsyncTask<PrimeraRevision, Void, Void>{
@@ -128,6 +138,18 @@ public class PrimeraRevisionRepository {
         @Override
         protected List<PrimeraRevision> doInBackground(Integer... ints) {
             return primeraRevisionDao.obtenerRevisionPorDetalle(ints[0]);
+        }
+    }
+
+
+    private static class obtenerDocUsuarioAsyncTask extends AsyncTask<Integer, Void, Docente>{
+        private PrimeraRevisionDao docenteDao;
+        private obtenerDocUsuarioAsyncTask(PrimeraRevisionDao docenteDao){
+            this.docenteDao=docenteDao;
+        }
+        @Override
+        protected Docente doInBackground(Integer... id) {
+            return docenteDao.obtenerDocUsuario(id[0]);
         }
     }
 }

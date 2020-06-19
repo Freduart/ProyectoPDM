@@ -76,7 +76,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
                         for (DetalleEvaluacion d : detalleEvaluacions){
                             detalleEvaluacionPorAlumno = detalleEvaluacionViewModel.getDetallePorAlumno(d.getCarnetAlumnoFK());
                             if(!detalleEvaluacionPorAlumno.isEmpty()){
-                                detallesNom.add(d.getIdEvaluacionFK()+ " - " + d.getCarnetAlumnoFK());
+                                detallesNom.add(d.getIdDetalleEv()+ " - "+ d.getIdEvaluacionFK()+ " / " + d.getCarnetAlumnoFK());
                             }
                             adapterSpinnerDetalleE.notifyDataSetChanged();
                         }
@@ -109,14 +109,14 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             String notaAn = notaAntes.getText().toString();
             String ob = observaciones.getText().toString();
             if(notaAn.trim().isEmpty()||ob.isEmpty()){
-                Toast.makeText(this, "Por favor, llena todos los campos.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error_form_incompleto_eval, Toast.LENGTH_LONG).show();
                 return;
             }
             PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
             primeraRevisionViewModel.insertPrimeraRevision(pr);
 
-            Toast.makeText(NuevaPrimeraRevisionActivity.this, "Primera revisión insertada con éxito.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NuevaPrimeraRevisionActivity.this, R.string.prinsertada, Toast.LENGTH_SHORT).show();
             finish();
         }catch (Exception e){
             Toast.makeText(NuevaPrimeraRevisionActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
