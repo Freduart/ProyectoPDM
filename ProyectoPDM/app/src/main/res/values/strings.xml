@@ -214,6 +214,9 @@
     <string name="fechaDesde">Fecha de Inicio: </string>
     <string name="fechaHasta">Fecha de Finalización: </string>
     <string name="nomCiclo">Ciclo N°: </string>
+    <string name="hintNumCiclo">Número de Ciclo</string>
+    <string name="hintFechaIni">Inicio de Clases</string>
+    <string name="hintFechaFin">Cierre del Sistema</string>
 
     <!-- Strings para Local -->
     <string name="AppBarNameLocal">Local</string>
@@ -222,6 +225,11 @@
     <string name="ubicacionLocal">Ubicación del Local: </string>
     <string name="latLocal">Latitud: </string>
     <string name="lonLocal">Longitud: </string>
+    <string name="hintIDLocal">Identificador del Local Seleccionado.</string>
+    <string name="hintNomLocal">Nombre del Local Seleccionado.</string>
+    <string name="hintUbLocal">Ubicación exacta del Local Seleccionado.</string>
+    <string name="hintLatLocal">Latitud del Local</string>
+    <string name="hintLonLocal">Longitud del Local</string>
 
     <!-- Strings para activity_menu -->
     <string name="btnAlumno_menu">Alumnos</string>
