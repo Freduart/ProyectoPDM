@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,7 +135,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                 fechaAuxSalida = String.format("%s/%s/%s", fechaAux[0],mesAux,fechaAux[2]);
                 dispFechaEntregaEvaluacion.setText(fechaAuxSalida);
             } else {
-                dispFechaEntregaEvaluacion.setText(getText(R.string.fecha_placeholder_eval));
+                dispFechaEntregaEvaluacion.setText(getText(R.string.fecha_noenc_eval));
             }
             dispParticipantesEvaluacion.setText(partAux);
 
@@ -174,6 +175,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                             //intent.putExtra(PrimeraRevisionActivity.IDENTIFICADOR_PR, primeraRevisions.get(0).getIdPrimerRevision());
                             intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
                             intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                            intent.putExtra(ID_EVAL, evaluacionActual.getIdEvaluacion());
                             //inicia la activity
                             startActivity(intent);
                         } catch (Exception e){
@@ -205,6 +207,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.fillInStackTrace().toString() ,Toast.LENGTH_LONG).show();
+            Log.d("error en OnCreate", e.getMessage(), e.fillInStackTrace());
         }
     }
 

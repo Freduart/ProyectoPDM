@@ -64,6 +64,10 @@ public class DetalleEvaluacionViewModel extends AndroidViewModel {
         return detalleEvaluacionRepository.obtenerNotasEvaluacion(id);
     }
 
+    public LiveData<List<DetalleEvaluacion>> getDetallePorUsuarioYEvaluacion(int id, int idEval) throws InterruptedException, ExecutionException, TimeoutException {
+        return detalleEvaluacionRepository.getDetallesPorUsuarioYEvaluacion(id, idEval);
+    }
+
     public List<Alumno> getAlumnosEvaluacion(int id) throws InterruptedException, ExecutionException, TimeoutException {
         return detalleEvaluacionRepository.obtenerAlumnosEnEvaluacion(id);
     }
