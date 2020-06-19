@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -38,9 +40,14 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,21 +68,29 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
 
     static final int PICK_DOCUMENT_REQUEST = 1;
     //Botones
+    TextView textDatosDocente;
     EditText text_detalleImpresiones;
     TextInputLayout text_impresiones,text_anexos;
     RecyclerView recyclerDocumentos;
     ListaArchivosAdapter listaArchivosAdapter;
-    Spinner docDirector,encImpres,carnetDoc;
+    Spinner docDirector,encImpres;
     //Variables
     Uri documentUri;
-    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres,listDocentes;
-    ArrayAdapter<String> adapterDocDirector,adapterEncImpres,adapterCarnetDocente;
+    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres;
+    ArrayAdapter<String> adapterDocDirector,adapterEncImpres;
     DocenteViewModel docenteViewModel;
     EncargadoImpresionViewModel encargadoImpresionViewModel;
     SolicitudImpresionViewModel solicitudImpresionViewModel;
     private SolicitudImpresion solicitudImpresionActual,solicitudImpresion;
     private Docente docenteActual,docDirectorActual;
     private EncargadoImpresion encImpresActual;
+    boolean documentoModificado;
+
+    ProgressDialog dialog = null;
+    public static final String upLoadServerUri="http://dr17010pdm115.000webhostapp.com/procesar.php";
+    int serverResponseCode = 0;
+    private String rutaArchivoServer="";
+    boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +131,9 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion_editar);
         text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones_editar);
         text_anexos=(TextInputLayout)findViewById(R.id.text_anexos_editar);
+        textDatosDocente=(TextView)findViewById(R.id.textDatosDocente);
+        String datosDocente=docenteActual.getCarnetDocente()+"-"+docenteActual.getNomDocente()+" "+docenteActual.getApellidoDocente();
+        textDatosDocente.setText(datosDocente);
         listaDocumentos=new ArrayList<>();
         //Valor por defecto para las cajas de texto
         text_impresiones.getEditText().setText(Integer.toString(solicitudImpresionActual.getNumImpresiones()));
@@ -127,7 +145,6 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         //Spinners
         docDirector=(Spinner)findViewById(R.id.textDocDirectorEditar);
         encImpres=(Spinner)findViewById(R.id.textEncImpresEditar);
-        carnetDoc=(Spinner)findViewById(R.id.textCarnetDocenteEditar);
 
         //RecyclerView
         recyclerDocumentos=(RecyclerView)findViewById(R.id.recycler_archivos_ver);
@@ -198,32 +215,6 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                     adapterEncImpres.notifyDataSetChanged();
                 }
             });
-            //Spinner CarnetDocente:
-            listDocentes=new ArrayList<>();
-            adapterCarnetDocente=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,listDocentes);
-            adapterCarnetDocente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            carnetDoc.setAdapter(adapterCarnetDocente);
-            docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
-                @Override
-                public void onChanged(List<Docente> docentes) {
-                    try {
-                        Docente doc=docenteViewModel.getDocente(solicitudImpresionActual.getCarnetDocenteFK());
-                        for (Docente docente:docentes){
-                            listDocentes.add(docente.getCarnetDocente()+"-"+docente.getNomDocente()+" "+docente.getApellidoDocente());
-                            if(docente.getCarnetDocente().equals(doc.getCarnetDocente())){
-                                carnetDoc.setSelection(listDocentes.indexOf(docente.getCarnetDocente()+"-"+docente.getNomDocente()+" "+docente.getApellidoDocente()));
-                            }
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (TimeoutException e) {
-                        e.printStackTrace();
-                    }
-                    adapterCarnetDocente.notifyDataSetChanged();
-                }
-            });
         }catch (Exception e){
             Toast.makeText(this, "Ha ocurrido un error: "+e, Toast.LENGTH_SHORT).show();
         }
@@ -269,13 +260,41 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.guardar:
-                actualizarSolicitudImpresion();
+                if(documentoModificado){
+                    dialog = ProgressDialog.show(EditarSolicitudImpresionActivity.this, "", "Subiendo Archivo...", true);
+                    new Thread(new Runnable() {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(EditarSolicitudImpresionActivity.this, "Subiendo Archivo.....", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            uploadFile(listaDocumentos.get(0));
+                            if(result){
+                                actualizarSolicitudImpresion();
+                                if(result){
+                                    finish();
+                                }
+                            }
+                        }
+                    }).start();
+                }else{
+                    actualizarSolicitudImpresion();
+                    finish();
+                }
                 return true;
             case R.id.agregar:
                 //Intent para seleccionar un documento...
+                String[] mimeTypes =
+                        {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                                "application/pdf"};
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
-                intent.setDataAndType(uri, "application/pdf");
+                intent.setData(uri);
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                 startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
             default:
                 return super.onOptionsItemSelected(item);
@@ -283,59 +302,52 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     }
 
     public void actualizarSolicitudImpresion(){
-        if(listaDocumentos.size()==0){
-            Toast.makeText(getApplicationContext(), "Debe añadir un documento...", Toast.LENGTH_SHORT).show();
-        }else if((text_impresiones.getEditText().getText().toString().trim().isEmpty())){
-            text_impresiones.setError("Ingrese N° Impreisones");
-        }else{
-            //Carnet Docente
-            String carnetDocente1=carnetDoc.getSelectedItem().toString();
-            String[] carnetDocente2=carnetDocente1.split("-");
-            String carnetDocente=carnetDocente2[0];
-            //Docente Director
-            String docente=docDirector.getSelectedItem().toString();
-            String docente2[]=docente.split("-");
-            String carnetDocDirector=docente2[0];
-            //Encargado Impresión
-            String encargado=encImpres.getSelectedItem().toString();
-            String encargado2[]=encargado.split("-");
-            String encargadoID=encargado2[0];
-            //Impresiones
-            String nImpresiones=text_impresiones.getEditText().getText().toString();
-            //Variables
-            String nHojasAnexas,detallesDeImpresion1,detalleImpresion2,fechaHoy;
-            try {
-                //Hojas Anexas
-                if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
-                    nHojasAnexas="0";
-                }else{
-                    nHojasAnexas=text_anexos.getEditText().getText().toString();
-                }
-                //Detalles de Impresión
-                detallesDeImpresion1=text_detalleImpresiones.getText().toString();
-                //Fecha del sistema
-                Calendar calendar=Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                fechaHoy=simpleDateFormat.format(calendar.getTime());
-                //Documentos
-                detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
-                solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
-                solicitudImpresion=solicitudImpresionViewModel.obtenerSolicitudImpresion(solicitudImpresionActual.getIdImpresion());
-                solicitudImpresion.setCarnetDocenteFK(carnetDocente);
-                solicitudImpresion.setIdEncargadoFK(Integer.parseInt(encargadoID));
-                solicitudImpresion.setDocDirector(carnetDocDirector);
-                solicitudImpresion.setNumImpresiones(Integer.parseInt(nImpresiones));
-                solicitudImpresion.setDetalleImpresion(detalleImpresion2);
-                solicitudImpresion.setEstadoSolicitud("MODIFICADO");
-                solicitudImpresion.setResultadoImpresion("En Curso");
-                solicitudImpresion.setFechaSolicitud(fechaHoy);
-                solicitudImpresion.setDocumento(listaDocumentos.get(0));
-                solicitudImpresionViewModel.update(solicitudImpresion);
-                Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
-                finish();
-            }catch (Exception e){
-                Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
+        //Carnet Docente
+        String carnetDocente=docenteActual.getCarnetDocente();
+        //Docente Director
+        String docente=docDirector.getSelectedItem().toString();
+        String docente2[]=docente.split("-");
+        String carnetDocDirector=docente2[0];
+        //Encargado Impresión
+        String encargado=encImpres.getSelectedItem().toString();
+        String encargado2[]=encargado.split("-");
+        String encargadoID=encargado2[0];
+        //Impresiones
+        String nImpresiones=text_impresiones.getEditText().getText().toString();
+        //Variables
+        String nHojasAnexas,detallesDeImpresion1,detalleImpresion2,fechaHoy;
+        try {
+            //Hojas Anexas
+            if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
+                nHojasAnexas="0";
+            }else{
+                nHojasAnexas=text_anexos.getEditText().getText().toString();
             }
+            //Detalles de Impresión
+            detallesDeImpresion1=text_detalleImpresiones.getText().toString();
+            //Fecha del sistema
+            Calendar calendar=Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            fechaHoy=simpleDateFormat.format(calendar.getTime());
+            //Documentos
+            detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
+            solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
+            solicitudImpresion=solicitudImpresionViewModel.obtenerSolicitudImpresion(solicitudImpresionActual.getIdImpresion());
+            solicitudImpresion.setCarnetDocenteFK(carnetDocente);
+            solicitudImpresion.setIdEncargadoFK(Integer.parseInt(encargadoID));
+            solicitudImpresion.setDocDirector(carnetDocDirector);
+            solicitudImpresion.setNumImpresiones(Integer.parseInt(nImpresiones));
+            solicitudImpresion.setDetalleImpresion(detalleImpresion2);
+            solicitudImpresion.setEstadoSolicitud("MODIFICADO");
+            solicitudImpresion.setResultadoImpresion("");
+            solicitudImpresion.setFechaSolicitud(fechaHoy);
+            if(documentoModificado){
+                solicitudImpresion.setDocumento(rutaArchivoServer);
+            }
+            solicitudImpresionViewModel.update(solicitudImpresion);
+            Toast.makeText(getApplicationContext(), "Guardado Exitosamente", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -358,11 +370,19 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         // Add action buttons
         btnPrevisualizar.setOnClickListener(
                 new View.OnClickListener() {
+                    @SuppressLint("IntentReset")
                     @Override
                     public void onClick(View v) {
                         //Previsualizar
+                        String[] mimeTypes =
+                                {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                        "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                                        "application/pdf"};
                         Intent intent = new Intent( Intent.ACTION_VIEW );
-                        intent.setDataAndType(uriSeleccionado, "application/pdf");
+                        intent.setData(uriSeleccionado);
+                        intent.setType("*/*");
+                        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity(intent);
                         alertDialog.dismiss();
@@ -376,6 +396,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                         //Quitar
                         listaDocumentos.remove(position);
                         listaArchivosAdapter.notifyDataSetChanged();
+                        documentoModificado=true;
                         alertDialog.dismiss();
                     }
                 }
@@ -550,5 +571,118 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         position=path.length-1;
         name=path[position];
         return name;
+    }
+
+    public int uploadFile(String sourceFileUri) {
+        String fileName = getFileName(sourceFileUri).replace(" ","_");
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        File sourceFile = new File(sourceFileUri);
+        if (!sourceFile.isFile()) {
+            dialog.dismiss();
+            Log.e("uploadFile", "Source File not exist :" +sourceFileUri);
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(EditarSolicitudImpresionActivity.this, "Source File not exist :" +sourceFileUri , Toast.LENGTH_SHORT).show();
+                    result=false;
+                }
+            });
+            return 0;
+        }
+        else
+        {
+            try {
+                // open a URL connection to the Servlet
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                URL url = new URL(upLoadServerUri);
+
+                // Open a HTTP  connection to  the URL
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true); // Allow Inputs
+                conn.setDoOutput(true); // Allow Outputs
+                conn.setUseCaches(false); // Don't use a Cached Copy
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("archivo", fileName);
+
+                dos = new DataOutputStream(conn.getOutputStream());
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=archivo; filename=" + fileName + "" + lineEnd);
+                dos.writeBytes(lineEnd);
+
+                // create a buffer of  maximum size
+                bytesAvailable = fileInputStream.available();
+
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                }
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                // Responses from the server (code and message)
+                serverResponseCode = conn.getResponseCode();
+                String serverResponseMessage = conn.getResponseMessage();
+
+                Log.i("uploadFile", "HTTP Response is : "
+                        + serverResponseMessage + ": " + serverResponseCode);
+                if(serverResponseCode == 200){
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            String msg = "File Upload Completed.\n\n" + sourceFileUri;
+                            Toast.makeText(EditarSolicitudImpresionActivity.this, "File Upload Complete.", Toast.LENGTH_SHORT).show();
+                            rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+fileName;
+                            result=true;
+                        }
+                    });
+                }
+                //close the streams //
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+            } catch (MalformedURLException ex) {
+                dialog.dismiss();
+                ex.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(EditarSolicitudImpresionActivity.this, "MalformedURLException", Toast.LENGTH_SHORT).show();
+                        result=false;
+                    }
+                });
+                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+            } catch (Exception e) {
+                dialog.dismiss();
+                e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
+                        result=false;
+                    }
+                });
+                Log.e("Upload file Exception", "Exception : " + e.getMessage(), e);
+            }
+            dialog.dismiss();
+            return serverResponseCode;
+        } // End else block
     }
 }

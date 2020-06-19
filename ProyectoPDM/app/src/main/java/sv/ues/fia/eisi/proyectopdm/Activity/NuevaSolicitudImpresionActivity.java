@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
@@ -22,6 +23,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -55,6 +58,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
@@ -73,19 +78,21 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     TextInputLayout text_impresiones,text_anexos;
     RecyclerView recyclerDocumentos;
     ListaArchivosAdapter listaArchivosAdapter;
-    Spinner docDirector,encImpres,carnetDoc;
+    Spinner docDirector,encImpres;
+    TextView textDocente;
     //Variables
     Uri documentUri;
-    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres,listDocentes;
+    ArrayList<String> listaDocumentos,listDocDirector,listEncImpres;
     ArrayAdapter<String> adapterDocDirector,adapterEncImpres,adapterCarnetDocente;
     DocenteViewModel docenteViewModel;
     EncargadoImpresionViewModel encargadoImpresionViewModel;
     SolicitudImpresionViewModel solicitudImpresionViewModel;
     private SolicitudImpresion solicitudImpresion;
+    private Docente docente;
 
     ProgressDialog dialog = null;
     public static final String upLoadServerUri="http://dr17010pdm115.000webhostapp.com/procesar.php";
-    int serverResponseCode = 0;
+    int serverResponseCode = 0, id_usuario;
     boolean result;
 
     @Override
@@ -95,6 +102,26 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         //Titulo de ActionBar
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("NUEVA SOLICITUD");
+
+        docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
+        encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
+
+        final Bundle extras = getIntent().getExtras();
+        //verifica que los extra no estén vacíos
+        if(extras != null) {
+            //recibe id del usuario desde el extra
+            id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+        }
+        try {
+            docente=docenteViewModel.obtenerDocentePorIdUsuario(id_usuario);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
         //Cajas de texto
         text_detalleImpresiones=(EditText)findViewById(R.id.text_detalleImpresion_editar);
         text_impresiones=(TextInputLayout)findViewById(R.id.text_impresiones_editar);
@@ -103,7 +130,10 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         //Spinners
         docDirector=(Spinner)findViewById(R.id.textDocDirectorEditar);
         encImpres=(Spinner)findViewById(R.id.textEncImpresEditar);
-        carnetDoc=(Spinner)findViewById(R.id.textCarnetDocenteEditar);
+        //TextView
+        textDocente=(TextView)findViewById(R.id.textUserDocente);
+        String datosDocente=docente.getCarnetDocente()+"-"+docente.getNomDocente()+" "+docente.getApellidoDocente();
+        textDocente.setText(datosDocente);
 
         //Boton flotante
         FloatingActionButton enviarSolicitud=(FloatingActionButton)findViewById(R.id.fab_enviar_solicitud);
@@ -120,7 +150,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             adapterDocDirector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             docDirector.setAdapter(adapterDocDirector);
             //DocenteViewModel
-            docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
             docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
                 @Override
                 public void onChanged(List<Docente> docentes) {
@@ -138,7 +167,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             adapterEncImpres.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             encImpres.setAdapter(adapterEncImpres);
             //EncargadoImpresionViewModel
-            encargadoImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EncargadoImpresionViewModel.class);
             encargadoImpresionViewModel.getAllEncargadoImpresion().observe(this, new Observer<List<EncargadoImpresion>>() {
                 @Override
                 public void onChanged(List<EncargadoImpresion> encargadoImpresions) {
@@ -148,26 +176,11 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     adapterEncImpres.notifyDataSetChanged();
                 }
             });
-            //Spinner CarnetDocente:
-            listDocentes=new ArrayList<>();
-            adapterCarnetDocente=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,listDocentes);
-            adapterCarnetDocente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            carnetDoc.setAdapter(adapterCarnetDocente);
-            //DocenteViewModel
-            docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
-            docenteViewModel.getTodosDocentes().observe(this, new Observer<List<Docente>>() {
-                @Override
-                public void onChanged(List<Docente> docentes) {
-                    for (Docente docente:docentes){
-                        listDocentes.add(docente.getCarnetDocente()+"-"+docente.getNomDocente()+" "+docente.getApellidoDocente());
-                    }
-                    adapterCarnetDocente.notifyDataSetChanged();
-                }
-            });
 
         }catch (Exception e){
             Toast.makeText(this, "Ha ocurrido un error: "+e, Toast.LENGTH_SHORT).show();
         }
+
         //Boton Enviar Solicitud
         enviarSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +192,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     text_impresiones.setError("Ingrese N° Impreisones");
                     result=false;
                 }else{
-                    dialog = ProgressDialog.show(NuevaSolicitudImpresionActivity.this, "", "Uploading file...", true);
+                    dialog = ProgressDialog.show(NuevaSolicitudImpresionActivity.this, "", "Subiendo Archivo...", true);
                     new Thread(new Runnable() {
                         public void run() {
                             runOnUiThread(new Runnable() {
@@ -233,19 +246,28 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("IntentReset")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.añadirDocumento:
                 //Intent para seleccionar un documento...
                 if(listaDocumentos.size()<1){
+                    String[] mimeTypes =
+                            {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                    "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                    "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                                    "application/pdf"};
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                     Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath());
-                    intent.setDataAndType(uri, "application/pdf");
+                    intent.setData(uri);
+                    intent.setType("*/*");
+                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                     startActivityForResult(Intent.createChooser(intent, "Open Document"),PICK_DOCUMENT_REQUEST);
                 }
             case R.id.ajustesServer:
                 //ajustes del servidor
+                new CheckInternetAsyncTask(getApplicationContext()).execute();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -270,11 +292,19 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         // Add action buttons
         btnPrevisualizar.setOnClickListener(
                 new View.OnClickListener() {
+                    @SuppressLint("IntentReset")
                     @Override
                     public void onClick(View v) {
                         //Previsualizar
+                        String[] mimeTypes =
+                                {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                        "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                                        "application/pdf"};
                         Intent intent = new Intent( Intent.ACTION_VIEW );
-                        intent.setDataAndType(uriSeleccionado, "application/pdf");
+                        intent.setData(uriSeleccionado);
+                        intent.setType("*/*");
+                        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity(intent);
                         alertDialog.dismiss();
@@ -465,7 +495,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     }
 
     public int uploadFile(String sourceFileUri) {
-        new CheckInternetAsyncTask(getApplicationContext()).execute();
         String fileName = getFileName(sourceFileUri).replace(" ","_");
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
@@ -595,8 +624,11 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     urlc.setRequestProperty("Connection", "close");
                     urlc.setConnectTimeout(1500);
                     urlc.connect();
-                    if (urlc.getResponseCode() == 204 && urlc.getContentLength() == 0)
+                    if (urlc.getResponseCode() == 204 && urlc.getContentLength() == 0){
                         return true;
+                    }else{
+                        return false;
+                    }
                 } catch (IOException e) {
                     Log.e("TAG", "Error checking internet connection", e);
                     return false;
@@ -605,7 +637,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                 Log.d("TAG", "No network available!");
                 return false;
             }
-            return null;
         }
         @Override
         protected void onPostExecute(Boolean result) {
@@ -613,15 +644,15 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             Log.d("TAG", "result" + result);
             if(!result){
                 Toast.makeText(NuevaSolicitudImpresionActivity.this, "No hay conexion a internet", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(NuevaSolicitudImpresionActivity.this, "Si hay conexion a internet", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     public void guardarSolicitud(){
         //Carnet Docente
-        String carnetDocente1=carnetDoc.getSelectedItem().toString();
-        String[] carnetDocente2=carnetDocente1.split("-");
-        String carnetDocente=carnetDocente2[0];
+        String carnetDocente=docente.getCarnetDocente();
         //Docente Director
         String docente=docDirector.getSelectedItem().toString();
         String docente2[]=docente.split("-");
@@ -648,10 +679,11 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             fechaHoy=simpleDateFormat.format(calendar.getTime());
             //Documentos
+            String rutaArchivoServer="http://dr17010pdm115.000webhostapp.com/uploads/"+getFileName(listaDocumentos.get(0)).replace(" ","_");
             detalleImpresion2="Hojas Anexas Por Documento: "+nHojasAnexas+"\n"+detallesDeImpresion1;
             solicitudImpresion=new SolicitudImpresion(carnetDocente,Integer.parseInt(encargadoID),carnetDocDirector,
-                    Integer.parseInt(nImpresiones),detalleImpresion2,"En Curso",
-                    "NUEVA",fechaHoy,listaDocumentos.get(0));
+                    Integer.parseInt(nImpresiones),detalleImpresion2,"",
+                    "NUEVA",fechaHoy,rutaArchivoServer);
             solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication())
                     .create(SolicitudImpresionViewModel.class);
             solicitudImpresionViewModel.insert(solicitudImpresion);

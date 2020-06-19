@@ -25,7 +25,7 @@
             android:id="@+id/vciclo_disp_nomCiclo"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Número de Ciclo"
+            android:text="@string/hintNumCiclo"
             app:layout_constraintTop_toBottomOf="@id/vciclo_nomCiclo"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -41,7 +41,7 @@
             android:id="@+id/vciclo_disp_fDesde"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Inicio de Clases"
+            android:text="@string/hintFechaIni"
             app:layout_constraintTop_toBottomOf="@id/vciclo_fechaDesde"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -57,7 +57,7 @@
             android:id="@+id/vciclo_disp_fHasta"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="Cierre del Sistema"
+            android:text="@string/hintFechaFin"
             app:layout_constraintTop_toBottomOf="@id/vciclo_fHasta"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 

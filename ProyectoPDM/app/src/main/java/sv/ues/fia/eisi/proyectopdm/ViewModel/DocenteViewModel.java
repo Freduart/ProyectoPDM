@@ -49,4 +49,8 @@ public class DocenteViewModel extends AndroidViewModel {
     public Docente getDocente(String id) throws InterruptedException, ExecutionException, TimeoutException {
         return repo.obtenerDocente(id);
     }
+
+    public Docente obtenerDocentePorIdUsuario(int id) throws InterruptedException, ExecutionException, TimeoutException {
+        return repo.obtenerDocentePorIdUsuario(id);
+    }
 }

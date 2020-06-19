@@ -52,6 +52,14 @@ public class SolicitudImpresionRepository {
         return new ObtenerSolicitudesPorEstadoAsyncTask(solicitudImpresionDao).execute(estado).get(12, TimeUnit.SECONDS);
     }
 
+    public LiveData<List<SolicitudImpresion>> ontenerSolicitudesPorCarnet(String carnetDocente) throws InterruptedException, ExecutionException, TimeoutException {
+        return new ObtenerSolicitudesPorCarnetAsyncTask(solicitudImpresionDao).execute(carnetDocente).get(12, TimeUnit.SECONDS);
+    }
+
+    public LiveData<List<SolicitudImpresion>> obtenerSolicitudesPorDirector(String docDirector) throws InterruptedException, ExecutionException, TimeoutException {
+        return new ObtenerSOlicitudesPorDirectorAsyncTask(solicitudImpresionDao).execute(docDirector).get(12, TimeUnit.SECONDS);
+    }
+
     private static class InsertarSolicitudImpresionAsyncTask extends AsyncTask<SolicitudImpresion,Void,Void>{
         private SolicitudImpresionDao solicitudImpresionDao;
 
@@ -131,6 +139,32 @@ public class SolicitudImpresionRepository {
         @Override
         protected LiveData<List<SolicitudImpresion>> doInBackground(String... strings) {
             return solicitudImpresionDao.obtenerSolicitudesPorEstado(strings[0]);
+        }
+    }
+
+    private static class ObtenerSolicitudesPorCarnetAsyncTask extends AsyncTask<String,Void,LiveData<List<SolicitudImpresion>>>{
+        private SolicitudImpresionDao solicitudImpresionDao;
+
+        public ObtenerSolicitudesPorCarnetAsyncTask(SolicitudImpresionDao solicitudImpresionDao) {
+            this.solicitudImpresionDao = solicitudImpresionDao;
+        }
+
+        @Override
+        protected LiveData<List<SolicitudImpresion>> doInBackground(String... strings) {
+            return solicitudImpresionDao.obtenerSolicitudesPorCarnet(strings[0]);
+        }
+    }
+
+    private static class ObtenerSOlicitudesPorDirectorAsyncTask extends AsyncTask<String,Void,LiveData<List<SolicitudImpresion>>>{
+        private SolicitudImpresionDao solicitudImpresionDao;
+
+        public ObtenerSOlicitudesPorDirectorAsyncTask(SolicitudImpresionDao solicitudImpresionDao) {
+            this.solicitudImpresionDao = solicitudImpresionDao;
+        }
+
+        @Override
+        protected LiveData<List<SolicitudImpresion>> doInBackground(String... strings) {
+            return solicitudImpresionDao.obtenerSolicitudesPorDirector(strings[0]);
         }
     }
 }

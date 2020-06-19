@@ -25,7 +25,7 @@
             android:id="@+id/vlocal_disp_idLocal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Identificador del Local Seleccionado."
+            android:text="@string/hintIDLocal"
             app:layout_constraintTop_toBottomOf="@id/vlocal_idLocal"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -41,7 +41,7 @@
             android:id="@+id/vlocal_disp_nomLocal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre del Local Seleccionado."
+            android:text="@string/hintNomLocal"
             app:layout_constraintTop_toBottomOf="@id/vlocal_nomLocal"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -57,7 +57,7 @@
             android:id="@+id/vlocal_disp_ubLocal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ubicación exacta del Local Seleccionado."
+            android:text="@string/hintUbLocal"
             app:layout_constraintTop_toBottomOf="@id/vlocal_ubLocal"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -73,7 +73,7 @@
             android:id="@+id/vlocal_disp_latitud"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Latitud del Local"
+            android:text="@string/hintLatLocal"
             app:layout_constraintTop_toBottomOf="@id/vlocal_latitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -89,7 +89,7 @@
             android:id="@+id/vlocal_disp_longitud"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Longitud del Local"
+            android:text="@string/hintLonLocal"
             app:layout_constraintTop_toBottomOf="@id/vlocal_longitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </TableLayout>

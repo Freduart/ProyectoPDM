@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText usernom, passuser;
     Button login;
     UsuarioViewModel usuarioViewModel;
-    SharedPreferences sharedPreferences;
     Usuario usuarioIngresado;
 
     @Override
