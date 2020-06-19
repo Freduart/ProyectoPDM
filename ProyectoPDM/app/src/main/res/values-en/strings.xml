@@ -211,4 +211,7 @@
     <string name="radioSolicitudFallida">Failed Request</string>
     <string name="radioSolicitudExitosa">Request Ended Successfully.</string>
     <string name="textResultadoImpresion">PRINTING COMMENTS</string>
+    <string name="textGLab_Inscripcion">Lab Group</string>
+    <string name="textGTeo_Inscripcion">Theoric Group</string>
+    <string name="textGDisc_Inscripcion">Debate Group</string>
 </resources>
