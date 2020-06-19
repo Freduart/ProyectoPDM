@@ -20,11 +20,13 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.SegundaRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
+import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 public class VerEvaluacionActivity extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
     private TipoEvaluacion tipoEvaluacionActual;
     private Asignatura asignaturaActual;
     private Docente docenteActual;
+    private DetalleEvaluacion detalleEvaluacion;
 
     private int id_usuario, rol_usuario;
 
@@ -142,25 +145,44 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             //si es alumno, mostrar nota y solicitud de revisión
             if(currentUserAlumno){
                 EvaluacionViewModel evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
-                DetalleEvaluacion detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(evaluacionActual.getIdEvaluacion(),evaluacionViewModel.getAlumnConUsuario(id_usuario).getCarnetAlumno());
-                PrimeraRevisionViewModel primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
+                detalleEvaluacion = detalleEvaluacionViewModel.getDetalleAlumnoEvaluacion(evaluacionActual.getIdEvaluacion(),evaluacionViewModel.getAlumnConUsuario(id_usuario).getCarnetAlumno());
+                //PrimeraRevisionViewModel
+                //primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
                 headlineNotaAlumno.setVisibility(View.VISIBLE);
                 notaAlumnoDisplay.setVisibility(View.VISIBLE);
                 solicitarRevisionBtn.setVisibility(View.VISIBLE);
                 if(detalleEvaluacion==null){
                     solicitarRevisionBtn.setEnabled(false);
                     noseharealizado.setVisibility(View.VISIBLE);
-
                 }
-                else{
-                    solicitarRevisionBtn.setEnabled(true);
-                    noseharealizado.setVisibility(View.GONE);
-                    List<PrimeraRevision> primeraRevisionList = primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
-                    if(!primeraRevisionList.isEmpty())
-                    {
+                else {
+                    if(!evaluacionActual.getFechaEntregaNotas().equals(getText(R.string.fecha_placeholder_eval).toString())) {
+                        notaAlumnoDisplay.setText(String.format("%s", detalleEvaluacion.getNota()));
+                        solicitarRevisionBtn.setEnabled(true);
+                        noseharealizado.setVisibility(View.GONE);
+                        List<PrimeraRevision> primeraRevisionList = primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
+                        if (primeraRevisionList.size() != 0) {
+                            notaAlumnoDisplay.setText(String.format("%s", primeraRevisionList.get(0).getNotaDespuesPrimeraRev()));
+                            solicitarRevisionBtn.setEnabled(false);
+                            noseharealizado.setVisibility(View.VISIBLE);
+                            noseharealizado.setText(getText(R.string.sehasolicitado).toString());
+                            SegundaRevisionViewModel segundaRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SegundaRevisionViewModel.class);
+                            SegundaRevision segundaRevisionAux = segundaRevisionViewModel.getSegundaRevision(primeraRevisionList.get(0).getIdPrimerRevision());
+                            if (segundaRevisionAux != null) {
+                                Double notaSegundaRevision = segundaRevisionAux.getNotaFinalSegundaRev();
+
+                                if (!String.format("%s", notaSegundaRevision).trim().equals(""))
+                                    notaAlumnoDisplay.setText(String.format("%s", notaSegundaRevision));
+                                else {
+                                    notaAlumnoDisplay.setText("-");
+                                    noseharealizado.setText(getText(R.string.enrevision));
+                                }
+                            }
+                        }
+                    } else {
                         solicitarRevisionBtn.setEnabled(false);
                         noseharealizado.setVisibility(View.VISIBLE);
-                        noseharealizado.setText(getText(R.string.sehasolicitado).toString());
+                        noseharealizado.setText(getText(R.string.sinentreganota));
                     }
                 }
                 alumnosDeEvaluacion.setVisibility(View.GONE);
@@ -226,6 +248,50 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                 startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (currentUserAlumno) {
+                if (detalleEvaluacion == null) {
+                    solicitarRevisionBtn.setEnabled(false);
+                    noseharealizado.setVisibility(View.VISIBLE);
+                } else {
+                    if (!evaluacionActual.getFechaEntregaNotas().equals(getText(R.string.fecha_placeholder_eval).toString())) {
+                        notaAlumnoDisplay.setText(String.format("%s", detalleEvaluacion.getNota()));
+                        solicitarRevisionBtn.setEnabled(true);
+                        noseharealizado.setVisibility(View.GONE);
+                        List<PrimeraRevision> primeraRevisionList = primeraRevisionViewModel.getRevisionPorDetalle(detalleEvaluacion.getIdDetalleEv());
+                        if (primeraRevisionList.size() != 0) {
+                            notaAlumnoDisplay.setText(String.format("%s", primeraRevisionList.get(0).getNotaDespuesPrimeraRev()));
+                            solicitarRevisionBtn.setEnabled(false);
+                            noseharealizado.setVisibility(View.VISIBLE);
+                            noseharealizado.setText(getText(R.string.sehasolicitado).toString());
+                            SegundaRevisionViewModel segundaRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SegundaRevisionViewModel.class);
+                            SegundaRevision segundaRevisionAux = segundaRevisionViewModel.getSegundaRevision(primeraRevisionList.get(0).getIdPrimerRevision());
+                            if (segundaRevisionAux != null) {
+                                Double notaSegundaRevision = segundaRevisionAux.getNotaFinalSegundaRev();
+
+                                if (!String.format("%s", notaSegundaRevision).trim().equals(""))
+                                    notaAlumnoDisplay.setText(String.format("%s", notaSegundaRevision));
+                                else {
+                                    notaAlumnoDisplay.setText("-");
+                                    noseharealizado.setText(getText(R.string.enrevision));
+                                }
+                            }
+                        }
+                    } else {
+                        solicitarRevisionBtn.setEnabled(false);
+                        noseharealizado.setVisibility(View.VISIBLE);
+                        noseharealizado.setText(getText(R.string.sinentreganota));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.fillInStackTrace();
         }
     }
 }
