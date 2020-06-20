@@ -109,7 +109,7 @@ public class MenuActivity extends AppCompatActivity {
                         extraordinaria.setVisibility(View.VISIBLE);
                         docente.setVisibility(View.GONE);
                         encargado.setVisibility(View.GONE);
-                        inscripcion.setVisibility(View.VISIBLE);
+                        inscripcion.setVisibility(View.GONE);
                         ;
                         break;
                     //en caso de que el usuario sea encargado de impresion
@@ -142,7 +142,7 @@ public class MenuActivity extends AppCompatActivity {
                         extraordinaria.setVisibility(View.VISIBLE);
                         docente.setVisibility(View.VISIBLE);
                         encargado.setVisibility(View.VISIBLE);
-                        inscripcion.setVisibility(View.VISIBLE);
+                        inscripcion.setVisibility(View.GONE);
                         break;
                 }
             }
