@@ -61,6 +61,7 @@ import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
+import sv.ues.fia.eisi.proyectopdm.Ws.UploadFileAsyncTask;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.EncargadoImpresion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
@@ -277,19 +278,8 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
                                 eliminarArchivoDelServer(url);
                             }
                         }).start();
-                        dialog = ProgressDialog.show(EditarSolicitudImpresionActivity.this, "", "Subiendo Nuevo Archivo...", true);
-                        new Thread(new Runnable() {
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Subiendo Nuevo Archivo.....", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                uploadFile(listaDocumentos.get(0));
-                                actualizarSolicitudImpresion();
-                                finish();
-                            }
-                        }).start();
+                        actualizarSolicitudImpresion();
+                        new UploadFileAsyncTask(EditarSolicitudImpresionActivity.this,listaDocumentos.get(0)).execute();
                     }else{
                         Toast.makeText(EditarSolicitudImpresionActivity.this, "Debe Añadir Un Documento...", Toast.LENGTH_SHORT).show();
                     }
@@ -589,118 +579,6 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
         return name;
     }
 
-    public int uploadFile(String sourceFileUri) {
-        String fileName1 = (getFileName(sourceFileUri).replace(" ","_"));
-        String fileName=removeEspecial(fileName1);
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
-        String lineEnd = "\r\n";
-        String twoHyphens = "--";
-        String boundary = "*****";
-        int bytesRead, bytesAvailable, bufferSize;
-        byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024;
-        File sourceFile = new File(sourceFileUri);
-        if (!sourceFile.isFile()) {
-            dialog.dismiss();
-            Log.e("uploadFile", "Source File not exist :" +sourceFileUri);
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(EditarSolicitudImpresionActivity.this, "Source File not exist :" +sourceFileUri , Toast.LENGTH_SHORT).show();
-                    result=false;
-                }
-            });
-            return 0;
-        }
-        else
-        {
-            try {
-                // open a URL connection to the Servlet
-                FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL(upLoadServerUri);
-
-                // Open a HTTP  connection to  the URL
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setDoInput(true); // Allow Inputs
-                conn.setDoOutput(true); // Allow Outputs
-                conn.setUseCaches(false); // Don't use a Cached Copy
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("archivo", fileName);
-
-                dos = new DataOutputStream(conn.getOutputStream());
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=archivo; filename=" + fileName + "" + lineEnd);
-                dos.writeBytes(lineEnd);
-
-                // create a buffer of  maximum size
-                bytesAvailable = fileInputStream.available();
-
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
-
-                // read file and write it into form...
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-                while (bytesRead > 0) {
-
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-                }
-
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-                // Responses from the server (code and message)
-                serverResponseCode = conn.getResponseCode();
-                String serverResponseMessage = conn.getResponseMessage();
-
-                Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode);
-                if(serverResponseCode == 200){
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            String msg = "File Upload Completed.\n\n" + sourceFileUri;
-                            Toast.makeText(EditarSolicitudImpresionActivity.this, "File Upload Complete.", Toast.LENGTH_SHORT).show();
-                            result=true;
-                        }
-                    });
-                }
-                //close the streams //
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
-            } catch (MalformedURLException ex) {
-                dialog.dismiss();
-                ex.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(EditarSolicitudImpresionActivity.this, "MalformedURLException", Toast.LENGTH_SHORT).show();
-                        result=false;
-                    }
-                });
-                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-            } catch (Exception e) {
-                dialog.dismiss();
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(EditarSolicitudImpresionActivity.this, "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
-                        result=false;
-                    }
-                });
-                Log.e("Upload file Exception", "Exception : " + e.getMessage(), e);
-            }
-            dialog.dismiss();
-            return serverResponseCode;
-        } // End else block
-    }
     private void eliminarArchivoDelServer(String url){
         HttpURLConnection connection;
         try {

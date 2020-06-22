@@ -42,6 +42,7 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.UsuarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.Ws.DownloadFileAsyncTask;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
@@ -300,27 +301,10 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         ListaArchivosAdapter listaArchivosAdapter = new ListaArchivosAdapter(listaDocumentos);
         recyclerArchivos.setAdapter(listaArchivosAdapter);
         listaArchivosAdapter.setOnItemClickListener(new ListaArchivosAdapter.OnItemClickListener() {
-            @SuppressLint("IntentReset")
             @Override
             public void OnItemClick(int position, String documento) {
-                String ruta=descargarArchivo(documento);
-                File miFile=new File(ruta);
-                if(miFile.exists()){
-                    Uri uri=Uri.fromFile(miFile);
-                    //Previsualizar
-                    String[] mimeTypes =
-                            {"application/pdf","application/msword", // .doc & .docx
-                                    "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                                    "application/vnd.ms-excel"};
-                    Intent intent = new Intent( Intent.ACTION_VIEW );
-                    intent.setData(uri);
-                    intent.setType("application/*");
-                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                    intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(SolicitudImpresionActivity.this, "El Archivo No Existe...", Toast.LENGTH_SHORT).show();
-                }
+                DownloadFileAsyncTask downloadFileAsyncTask=new DownloadFileAsyncTask(documento,SolicitudImpresionActivity.this);
+                downloadFileAsyncTask.execute();
                 alertDialog.dismiss();
             }
         });
@@ -393,34 +377,6 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         return name;
     }
 
-    private String descargarArchivo(String urlDocumento){
-        File file=new File(Environment.getExternalStorageDirectory(),DIRECTORIO_DOCUMENTOS);
-        //Verificamos si la carpeta ya existe...
-        boolean existe=file.exists();
-        if(!existe){
-            existe=file.mkdirs();
-        }
-        //Verificamos si el documento ya existe...
-        String path=Environment.getExternalStorageDirectory()+"/"+DIRECTORIO_DOCUMENTOS+"/"+getFileName(urlDocumento);
-        File file2=new File(Environment.getExternalStorageDirectory()+"/"+DIRECTORIO_DOCUMENTOS,getFileName(urlDocumento));
-        if(!file2.exists()){
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlDocumento));
-            request.setDescription("Descargando Documento Del Servidor.");
-            request.setTitle("Iniciando Descarga...");
-            // in order for this if to run, you must use the android 3.2 to compile your app
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            }
-            request.setDestinationInExternalPublicDir(DIRECTORIO_DOCUMENTOS, getFileName(urlDocumento));
-            // get download service and enqueue file
-            DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-            manager.enqueue(request);
-            Toast.makeText(this, "Guardado En: "+path, Toast.LENGTH_SHORT).show();
-        }
-        return path;
-    }
-
     private void eliminarArchivoDelServer(String url){
         HttpURLConnection connection;
         try {
@@ -436,6 +392,35 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("IntentReset")
+    public void abrirDocumento(String ruta){
+        Toast.makeText(SolicitudImpresionActivity.this,ruta,Toast.LENGTH_LONG).show();
+        File miFile=new File(ruta);
+        if(miFile.exists()){
+            Uri uri=Uri.fromFile(miFile);
+            if(ruta.endsWith(".pdf")){
+                Intent intent = new Intent( Intent.ACTION_VIEW );
+                intent.setDataAndType(uri,"application/pdf");
+                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                Intent intent1=Intent.createChooser(intent,"Abrir Con: ");
+                startActivity(intent1);
+            }else{
+                String[] mimeTypes =
+                        {"application/pdf","application/msword", // .doc & .docx
+                                "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                "application/vnd.ms-excel"};
+                Intent intent = new Intent( Intent.ACTION_VIEW );
+                intent.setData(uri);
+                intent.setType("application/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                startActivity(intent);
+            }
+        }else{
+            Toast.makeText(SolicitudImpresionActivity.this, "El Archivo No Existe...", Toast.LENGTH_SHORT).show();
         }
     }
 }
