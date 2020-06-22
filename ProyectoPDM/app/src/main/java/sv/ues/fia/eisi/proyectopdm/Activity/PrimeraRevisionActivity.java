@@ -84,7 +84,7 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
                     adapter.setPrs(primeraRevisiones);
                 }
             });
-        }else if(rolUser == 1) {
+        }else if(rolUser == 1 || rolUser==2 ) {
             DocenteViewModel docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
             primeraRevisionViewModel.obtenerPRDocente(primeraRevisionViewModel.obtenerDocUsuario(idUser).getCarnetDocente()).observe(this, new Observer<List<PrimeraRevision>>() {
                 @Override

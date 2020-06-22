@@ -93,7 +93,7 @@ public class EvaluacionActivity extends AppCompatActivity {
             final EvaluacionAdapter adaptador = new EvaluacionAdapter();
             //linkea adaptador en el recycler
             EvalRecycler.setAdapter(adaptador);
-
+/*
             //----Para actualización con el server
             //instanciar controlador
             ControladorEvaluacion controladorEvaluacion = new ControladorEvaluacion();
@@ -111,7 +111,7 @@ public class EvaluacionActivity extends AppCompatActivity {
                         EvaluacionVM.updateEval(eActualSinc);
                         eActualLocal=eActualSinc;
                     }
-
+*/
             switch(rol_usuario){
                 case 1:
                 case 2:
