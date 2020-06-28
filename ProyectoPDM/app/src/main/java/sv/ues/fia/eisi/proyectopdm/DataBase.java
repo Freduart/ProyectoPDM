@@ -392,12 +392,12 @@ public abstract class DataBase extends RoomDatabase {
                 docenteDao.insertDocente(new Docente("DOCEISI3", 3, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
                 docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
                 //Asignaturas por area administrativa(Departamentos)
-                asignaturaDao.insertAsignatura(new Asignatura("DSI115", 9, "Diseño de Sistemas I"));
-                asignaturaDao.insertAsignatura(new Asignatura("SGG115", 9, "Sistemas de Información Geográficos"));
-                asignaturaDao.insertAsignatura(new Asignatura("PDM115", 1, "Programación para Dispositivos Móviles"));
-                asignaturaDao.insertAsignatura(new Asignatura("MIP115", 1, "Microprogramación"));
-                asignaturaDao.insertAsignatura(new Asignatura("TAD115", 1, "Teoría Administrativa"));
-                asignaturaDao.insertAsignatura(new Asignatura("FQR215", 3, "Fisicoquímica II"));
+                asignaturaDao.insertAsignatura(new Asignatura("DSI115", 3, "Diseño de Sistemas I"));
+                asignaturaDao.insertAsignatura(new Asignatura("SGG115", 3, "Sistemas de Información Geográficos"));
+                asignaturaDao.insertAsignatura(new Asignatura("PDM115", 2, "Programación para Dispositivos Móviles"));
+                asignaturaDao.insertAsignatura(new Asignatura("MIP115", 2, "Microprogramación"));
+                asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
+                asignaturaDao.insertAsignatura(new Asignatura("FQR215", 5, "Fisicoquímica II"));
                 //Alumnos
                 alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",11));
                 alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 10));

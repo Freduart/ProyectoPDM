@@ -264,6 +264,7 @@ public class EvaluacionActivity extends AppCompatActivity {
                         Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;
