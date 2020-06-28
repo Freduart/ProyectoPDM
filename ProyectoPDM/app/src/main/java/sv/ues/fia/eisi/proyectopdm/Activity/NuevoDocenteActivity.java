@@ -18,8 +18,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
@@ -33,6 +36,7 @@ public class NuevoDocenteActivity extends AppCompatActivity {
     ArrayAdapter<String> cargoAdapter;
     CargoViewModel cargoViewModel;
     DocenteViewModel docenteViewModel;
+    AreaAdmViewModel areaAdmViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class NuevoDocenteActivity extends AppCompatActivity {
         textTelefonoDocente=(TextInputLayout)findViewById(R.id.textTelefonoDocenteVer);
         spinnerCargo=(Spinner)findViewById(R.id.textCargosVer);
 
+        areaAdmViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
+
         cargo=new ArrayList<>();
         cargoAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,cargo);
         cargoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -59,7 +65,16 @@ public class NuevoDocenteActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Cargo> cargos) {
                 for (Cargo c:cargos){
-                    cargo.add(c.getIdCargo()+"-"+c.getNomCargo());
+                    try {
+                        String area=areaAdmViewModel.getAreaAdm(c.getIdAreaAdminFK()).getNomDepartamento();
+                        cargo.add(c.getIdCargo()+"-"+c.getNomCargo()+" "+area);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    }
                 }
                 cargoAdapter.notifyDataSetChanged();
             }

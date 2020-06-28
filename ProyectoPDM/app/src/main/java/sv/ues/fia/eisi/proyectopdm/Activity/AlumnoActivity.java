@@ -16,10 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.AlumnoAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 
 /*
@@ -28,6 +32,9 @@ Funcionalidad de Alumno enlace con sus pantallas correspondientes
 
 public class AlumnoActivity extends AppCompatActivity {
     private AlumnoViewModel alumnoViewModel;
+    private int id_usuario,rol_usuario;
+    private boolean crearAlumno,editarAlumno,eliminarAlumno;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     public static final int AÑADIR_ALUMNO = 1;
     public static final int EDITAR_ALUMNO = 2;
@@ -35,19 +42,54 @@ public class AlumnoActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_ALUMNO = "ID_Alumno_Actual";
 
     public void addAlumno(View view) {
-        try {
-            Intent intent = new Intent(this, AgregarAlumnoActivity.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this, "Algo salio mal" + e, Toast.LENGTH_SHORT).show();
+        if(!crearAlumno){
+            Toast.makeText(AlumnoActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+        }else{
+            try {
+                Intent intent = new Intent(this, AgregarAlumnoActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Algo salio mal" + e, Toast.LENGTH_SHORT).show();
+            }
         }
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alumno);
+
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
+
+        Bundle bundle=getIntent().getExtras();
+        if(bundle!=null){
+            id_usuario=bundle.getInt(LoginActivity.ID_USUARIO);
+            rol_usuario=bundle.getInt(LoginActivity.USER_ROL);
+        }
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==15){
+                            crearAlumno=true;
+                        }
+                        if(acceso.getIdOpcionFK()==16){
+                            editarAlumno=true;
+                        }
+                        if(acceso.getIdOpcionFK()==17){
+                            eliminarAlumno=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         RecyclerView AlumnoRV = findViewById(R.id.recycler_alum_view);
         AlumnoRV.setLayoutManager(new LinearLayoutManager(this));
@@ -115,17 +157,22 @@ public class AlumnoActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //Guardar el carnet del item seleccionado
-                    String carnet = alumno.getCarnetAlumno();
-                    //Intent para redirigir al detalle del alumno que se toco
-                    Intent intent = new Intent(AlumnoActivity.this, NuevaEditarAlumnoActivity.class);
-                    intent.putExtra(IDENTIFICADOR_ALUMNO, carnet);
-                    intent.putExtra(OPERACION_ALUMNO, EDITAR_ALUMNO);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR EDITAR " + e, Toast.LENGTH_SHORT).show();
+                if(!editarAlumno){
+                    Toast.makeText(AlumnoActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        //Guardar el carnet del item seleccionado
+                        String carnet = alumno.getCarnetAlumno();
+                        //Intent para redirigir al detalle del alumno que se toco
+                        Intent intent = new Intent(AlumnoActivity.this, NuevaEditarAlumnoActivity.class);
+                        intent.putExtra(IDENTIFICADOR_ALUMNO, carnet);
+                        intent.putExtra(OPERACION_ALUMNO, EDITAR_ALUMNO);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR EDITAR " + e, Toast.LENGTH_SHORT).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
 
@@ -133,15 +180,18 @@ public class AlumnoActivity extends AppCompatActivity {
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    alumnoViewModel.delete(alumno);
-                    Toast.makeText(AlumnoActivity.this, "El alumno " + alumno.getCarnetAlumno() + " a sido borrado exitosamente",
-                            Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-
-                } catch (Exception e) {
-                    Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR BORRAR " + e, Toast.LENGTH_SHORT).show();
+                if(!eliminarAlumno){
+                    Toast.makeText(AlumnoActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        alumnoViewModel.delete(alumno);
+                        Toast.makeText(AlumnoActivity.this, "El alumno " + alumno.getCarnetAlumno() + " a sido borrado exitosamente",
+                                Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(AlumnoActivity.this, " ERROR AL INTENTAR BORRAR " + e, Toast.LENGTH_SHORT).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

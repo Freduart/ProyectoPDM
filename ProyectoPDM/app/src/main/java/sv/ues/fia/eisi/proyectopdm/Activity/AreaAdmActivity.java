@@ -21,8 +21,10 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.AreaAdmAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 
 public class AreaAdmActivity extends AppCompatActivity {
@@ -34,12 +36,17 @@ public class AreaAdmActivity extends AppCompatActivity {
     private AreaAdmViewModel AreaAdmVM;
     private String identificador;
     private int id_usuario, rol_usuario;
+    private boolean crearAreaAdm,editarAreaAdm,eliminarAreaAdm;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_area_adm);
+
+            accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
+
             Bundle extras = getIntent().getExtras();
             if(extras != null){
                 //recibe id del usuario desde el extra
@@ -47,6 +54,22 @@ public class AreaAdmActivity extends AppCompatActivity {
                 //recibe rol del usuario desde el extra
                 rol_usuario = extras.getInt(LoginActivity.USER_ROL);
             }
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==24){
+                            crearAreaAdm=true;
+                        }
+                        if(acceso.getIdOpcionFK()==25){
+                            editarAreaAdm=true;
+                        }
+                        if(acceso.getIdOpcionFK()==26){
+                            eliminarAreaAdm=true;
+                        }
+                    }
+                }
+            });
             //--nueva areaAdm
             //inicializa boton flotante de acción
             FloatingActionButton botonNuevaAreaAdm = findViewById(R.id.add_areaa_button);
@@ -54,14 +77,18 @@ public class AreaAdmActivity extends AppCompatActivity {
             botonNuevaAreaAdm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //intent hacia nueva areaAdm activity
-                    Intent intent = new Intent(AreaAdmActivity.this, NuevaEditarAreaAdmActivity.class);
-                    //añadir extra que definirá si añade o edita
-                    intent.putExtra(OPERACION_AREA, AÑADIR_AREA);
-                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
-                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
-                    //iniciar activity
-                    startActivity(intent);
+                    if(!crearAreaAdm){
+                        Toast.makeText(AreaAdmActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                    }else{
+                        //intent hacia nueva areaAdm activity
+                        Intent intent = new Intent(AreaAdmActivity.this, NuevaEditarAreaAdmActivity.class);
+                        //añadir extra que definirá si añade o edita
+                        intent.putExtra(OPERACION_AREA, AÑADIR_AREA);
+                        intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                        intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                        //iniciar activity
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -149,35 +176,44 @@ public class AreaAdmActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //guardar id de areaAdm que se tocó
-                    int id = areaAdm.getIdDeptarmento();
-                    //inicializa intent que dirige hacia el detalle de la areaAdm que se tocó
-                    Intent intent = new Intent(AreaAdmActivity.this, NuevaEditarAreaAdmActivity.class);
-                    //se mete en un extra del intent, el id
-                    intent.putExtra(IDENTIFICADOR_AREA, id);
-                    intent.putExtra(OPERACION_AREA, EDITAR_AREA);
-                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
-                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
-                    //inicia la activity
-                    startActivity(intent);
-                }catch (Exception e){
-                    Toast.makeText(AreaAdmActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                if(!editarAreaAdm){
+                    Toast.makeText(AreaAdmActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        //guardar id de areaAdm que se tocó
+                        int id = areaAdm.getIdDeptarmento();
+                        //inicializa intent que dirige hacia el detalle de la areaAdm que se tocó
+                        Intent intent = new Intent(AreaAdmActivity.this, NuevaEditarAreaAdmActivity.class);
+                        //se mete en un extra del intent, el id
+                        intent.putExtra(IDENTIFICADOR_AREA, id);
+                        intent.putExtra(OPERACION_AREA, EDITAR_AREA);
+                        intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                        intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                        //inicia la activity
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(AreaAdmActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    AreaAdmVM.deleteAreaAdm(areaAdm);
-                    Toast.makeText(AreaAdmActivity.this, getText(R.string.inic_notif_aarea) +
-                                    areaAdm.getNomDepartamento() + getText(R.string.accion_borrar_notif_eval),
-                            Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(AreaAdmActivity.this, e.getMessage() ,Toast.LENGTH_LONG).show();
+                if(!eliminarAreaAdm){
+                    Toast.makeText(AreaAdmActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        AreaAdmVM.deleteAreaAdm(areaAdm);
+                        Toast.makeText(AreaAdmActivity.this, getText(R.string.inic_notif_aarea) +
+                                        areaAdm.getNomDepartamento() + getText(R.string.accion_borrar_notif_eval),
+                                Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(AreaAdmActivity.this, e.getMessage() ,Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

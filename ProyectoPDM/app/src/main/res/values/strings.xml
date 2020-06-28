@@ -132,7 +132,7 @@
     <!-- Strings para Cargo -->
     <string name="AppBarNameCargos">Cargos</string>
     <string name="IdCargo">Identificador:</string>
-    <string name="IdEscuelaCargo">Escuela:</string>
+    <string name="IdEscuelaCargo">Área Administrativa:</string>
     <string name="NombreCargo">Nombre:</string>
     <string name="AppBarAddCargo">Agregar cargo</string>
     <string name="DetalleCargo">Detalle de cargo</string>
@@ -280,4 +280,62 @@
     <string name="radioSolicitudExitosa">Solicitud Terminada Exitosamente.</string>
     <string name="radioSolicitudFallida">Solicitud Fallida.</string>
     <string name="textResultadoImpresion">OBSERVACIONES DE IMPRESIÓN</string>
+
+    <!-- Strings para usuario -->
+    <string name="idUsuario">ID</string>
+    <string name="controlAcceso">CONTROL DE ACCESO</string>
+    <string name="AppBarNameusuario">Usuarios</string>
+    <string name="textNomUsuario">NOMBRE USUARIO</string>
+    <string name="textPasswordUsuario">CONTRASEÑA</string>
+    <string name="textRolUsuario">ROL DE USUARIO</string>
+
+    <!-- Strings Acceso Usuario -->
+    <string name="switchMenuAlumno">MENÚ ALUMNO</string>
+    <string name="checkEditarAlumno">Editar Almuno</string>
+    <string name="checkCrearAlumno">Crear Alumno</string>
+    <string name="checkEliminarAlumno">Eliminar Alumno</string>
+    <string name="switchMenuEvaluacion">MENÚ EVALUACIÓN</string>
+    <string name="checkEditarEvaluacion">Editar Evaluación</string>
+    <string name="checkCrearEvaluacion">Crear Evaluación</string>
+    <string name="checkEliminarEvaluacion">Eliminar Evaluación</string>
+    <string name="switchMenuCargo">MENÚ CARGO</string>
+    <string name="checkEditarCargo">Editar Cargo</string>
+    <string name="checkCrearCargo">Crear Cargo</string>
+    <string name="checkEliminarCargo">Eliminar Cargo</string>
+    <string name="switchAreaAdm">MENÚ ÁREA ADMINISTRATIVA</string>
+    <string name="checkEditarAreaAdm">Editar Área Administrativa</string>
+    <string name="checkCrearAreaAdm">Crear Área Administrativa</string>
+    <string name="checkEliminarAreaAdm">Eliminar Área Administrativa</string>
+    <string name="switchSolicitudImpresion">MENÚ SOLICITUD IMPRESIÓN</string>
+    <string name="checkEditarSolicitudImpresion">Editar Solicitud Impresión</string>
+    <string name="checkCrearSolicitudImpresion">Crear Solicitud Impresión</string>
+    <string name="checkEliminarSolicitudImpresion">Eliminar Solicitud Impresión</string>
+    <string name="switchAsignatura">MENÚ ASIGNATURA</string>
+    <string name="checkEditarAsignatura">Editar Asignatura</string>
+    <string name="checkCrearAsignatura">Crear Asignatura</string>
+    <string name="checkEliminarAsignatura">Eliminar Asignatura</string>
+    <string name="switchPrimRev">MENÚ PRIMERA REVISIÓN</string>
+    <string name="checkEditarPrimRev">Editar Primera Revisión</string>
+    <string name="checkCrearPrimRev">Crear Primera Revisión</string>
+    <string name="checkEliminarPrimRev">Eliminar Primera Revisión</string>
+    <string name="switchLocal">MENÚ LOCAL</string>
+    <string name="checkEditarLocal">Editar Local</string>
+    <string name="checkCrearLocal">Crear Local</string>
+    <string name="checkEliminarLocal">Eliminar Local</string>
+    <string name="switchCiclo">MENÚ CICLO</string>
+    <string name="checkEditarCiclo">Editar Ciclo</string>
+    <string name="checkCrearCiclo">Crear Ciclo</string>
+    <string name="checkEliminarCiclo">Eliminar Ciclo</string>
+    <string name="switchSoliExtr">MENÚ SOLICITUD EXTRAORDINARIO</string>
+    <string name="checkEditarSoliExtr">Editar Solicitud Extraordinario</string>
+    <string name="checkCrearSoliExtr">Crear Solicitud Extraordinario</string>
+    <string name="checkEliminarSoliExtr">Eliminar Solicitud Extraordinario</string>
+    <string name="switchDocente">MENÚ DOCENTE</string>
+    <string name="checkEditarDocente">Editar Docente</string>
+    <string name="checkCrearDocente">Crear Docente</string>
+    <string name="checkEliminarDocente">Eliminar Docente</string>
+    <string name="switchEncImpres">MENÚ ENCARGADO IMPRESIÓN</string>
+    <string name="checkEditarEncImpres">Editar Encargado Impresión</string>
+    <string name="checkCreacEncImpres">Crear Encargado Impresión</string>
+    <string name="checkEliminarEncImpres">Eliminar Encargado Impresión</string>
 </resources>

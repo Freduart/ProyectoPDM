@@ -18,16 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 public class NuevoCargoActivity extends AppCompatActivity {
 
     private EditText nomCargo;
-    private Spinner spinnerIdEscuela;
+    private Spinner spinnerIdAreaAdm;
     private EscuelaViewModel escuelaViewModel;
+    private AreaAdmViewModel areaAdmViewModel;
     private CargoViewModel cargoViewModel;
 
     @Override
@@ -37,32 +40,40 @@ public class NuevoCargoActivity extends AppCompatActivity {
             setContentView(R.layout.activity_nuevo_cargo);
 
             nomCargo = (EditText) findViewById(R.id.etNomCargo);
-            spinnerIdEscuela = (Spinner) findViewById(R.id.spinCodEscuelaFK);
+            spinnerIdAreaAdm = (Spinner) findViewById(R.id.spinCodEscuelaFK);
+
+            areaAdmViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
 
             //Llenar spinner de escuela
             //Almacena id y nombre de escuela
-            final ArrayList<String> escuelasNom = new ArrayList<>();
+            final ArrayList<String> areaAdmNom = new ArrayList<>();
             //Adaptador a arreglos para spinner
-            final ArrayAdapter<String> adapterSpinnerEscuela = new ArrayAdapter<>(this,
-                    android.R.layout.simple_spinner_item, escuelasNom);
+            final ArrayAdapter<String> adapterSpinnerAreaAdm = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, areaAdmNom);
             //Settea layout de dropdown del spinner
-            adapterSpinnerEscuela.setDropDownViewResource(android.R.layout
+            adapterSpinnerAreaAdm.setDropDownViewResource(android.R.layout
                     .simple_spinner_dropdown_item);
             //Settea el adaptador creado en el spinner
-            spinnerIdEscuela.setAdapter(adapterSpinnerEscuela);
+            spinnerIdAreaAdm.setAdapter(adapterSpinnerAreaAdm);
             //instancia Escuela View Model
             escuelaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
                     .create(EscuelaViewModel.class);
-            //Obtiene todas las escuelas en livedata
+            //Obtiene todas las areas administrativas en livedata
+            areaAdmViewModel.getAreaAdmAll().observe(this, new Observer<List<AreaAdm>>() {
+                @Override
+                public void onChanged(List<AreaAdm> areaAdms) {
+                    //añade los elementos del livedata a las listas para almacenar id y nombre de escuelas
+                    for (AreaAdm e : areaAdms) {
+                        areaAdmNom.add(e.getIdDeptarmento() + " - " + e.getNomDepartamento());
+                    }
+                    //Refresca
+                    adapterSpinnerAreaAdm.notifyDataSetChanged();
+                }
+            });
             escuelaViewModel.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
                 @Override
                 public void onChanged(List<Escuela> escuelas) {
-                    //añade los elementos del livedata a las listas para almacenar id y nombre de escuelas
-                    for (Escuela e : escuelas) {
-                        escuelasNom.add(e.getIdEscuela() + " - " + e.getNomEscuela());
-                    }
-                    //Refresca
-                    adapterSpinnerEscuela.notifyDataSetChanged();
+
                 }
             });
         } catch (Exception e) {
@@ -75,7 +86,7 @@ public class NuevoCargoActivity extends AppCompatActivity {
         try {
 
             //Obtener valor de spinner Escuela
-            String escuelaAuxiliar1 = spinnerIdEscuela.getSelectedItem().toString();
+            String escuelaAuxiliar1 = spinnerIdAreaAdm.getSelectedItem().toString();
             String [] escuelaAuxiliar2 = escuelaAuxiliar1.split("-");
             //almacenar id de Escuela
             String escuela = escuelaAuxiliar2[0].trim();

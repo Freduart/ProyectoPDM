@@ -48,7 +48,7 @@ public class VerCargoActivity extends AppCompatActivity {
             //Obtiene cargo actual por medio de EXTRA_ID_CARGO
             cargoActual =cargoViewModel.getCargo(identCargo);
             //Obtener idEscuelaCargo actual
-            escuelaActual = escuelaViewModel.getEscuela(cargoActual.getIdEscuelaFK());
+            escuelaActual = escuelaViewModel.getEscuela(cargoActual.getIdAreaAdminFK());
 
             idCargo.setText(String.valueOf(cargoActual.getIdCargo()));
             idEscuelaCargo.setText(String.valueOf(escuelaActual.getIdEscuela())+ " - "+escuelaActual.getNomEscuela());

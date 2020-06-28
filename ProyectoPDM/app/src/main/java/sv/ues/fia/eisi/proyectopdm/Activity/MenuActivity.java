@@ -18,8 +18,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.OpcionCrudViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
+import sv.ues.fia.eisi.proyectopdm.db.entity.OpcionCrud;
 
 import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.USERNAME;
 import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.USER_PASSWORD;
@@ -32,10 +43,16 @@ public class MenuActivity extends AppCompatActivity {
     //ImageView imageView1, imageView2, imageView3, imageView4;
     private int id_usuario;
     private int rol_usuario;
-    private CardView alumno, evaluacion, cargos, areaadm, solicitudimpresion, asignaturas, primerasrevisiones, ciclo, local, extraordinaria, docente, encargado, inscripcion;
+    private CardView alumno, evaluacion, cargos, areaadm, solicitudimpresion, asignaturas, primerasrevisiones, ciclo, local, extraordinaria, docente, encargado, inscripcion,usuario;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
+    private OpcionCrudViewModel opcionCrudViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
+        opcionCrudViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(OpcionCrudViewModel.class);
+
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_menu);
@@ -53,6 +70,22 @@ public class MenuActivity extends AppCompatActivity {
             docente = findViewById(R.id.cardDocente);
             encargado = findViewById(R.id.cardEncImpres);
             inscripcion = findViewById(R.id.cardInscripcion);
+            usuario = findViewById(R.id.cardUsuario);
+
+            alumno.setVisibility(View.GONE);
+            evaluacion.setVisibility(View.GONE);
+            cargos.setVisibility(View.GONE);
+            areaadm.setVisibility(View.GONE);
+            solicitudimpresion.setVisibility(View.GONE);
+            asignaturas.setVisibility(View.GONE);
+            primerasrevisiones.setVisibility(View.GONE);
+            ciclo.setVisibility(View.GONE);
+            local.setVisibility(View.GONE);
+            extraordinaria.setVisibility(View.GONE);
+            docente.setVisibility(View.GONE);
+            encargado.setVisibility(View.GONE);
+            inscripcion.setVisibility(View.GONE);
+            usuario.setVisibility(View.GONE);
 
             //crear un bundle para recibir los extra del intent
             final Bundle extras = getIntent().getExtras();
@@ -62,89 +95,65 @@ public class MenuActivity extends AppCompatActivity {
                 id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
                 //recibe rol del usuario desde el extra
                 rol_usuario = extras.getInt(LoginActivity.USER_ROL);
-                switch (rol_usuario) {
-                    //en caso de que el rol sea director
-                    case 1:
-                        alumno.setVisibility(View.GONE); //ocultar acceso a alumno
-                        evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
-                        cargos.setVisibility(View.GONE); //ocultar acceso a cargos
-                        areaadm.setVisibility(View.VISIBLE); //ocultar acceso a areaadm
-                        solicitudimpresion.setVisibility(View.VISIBLE); //permitir acceso a sol impr
-                        asignaturas.setVisibility(View.VISIBLE); //ocultar acceso a asignaturas
-                        primerasrevisiones.setVisibility(View.VISIBLE); //permitir acceso a pr
-                        ciclo.setVisibility(View.GONE); // ocultar acceso a ciclo
-                        local.setVisibility(View.GONE); //ocultar acceso a local
-                        extraordinaria.setVisibility(View.VISIBLE); //permitir acceso a sol extr.
-                        docente.setVisibility(View.GONE); //ocultar acceso a docentes
-                        encargado.setVisibility(View.GONE); //ocultar acceso a encargados impresion
-                        inscripcion.setVisibility(View.GONE);
-                        break;
-                    //caso en que el rol sea docente
-                    case 2:
-                        alumno.setVisibility(View.GONE); //ocultar acceso a alumno
-                        evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
-                        cargos.setVisibility(View.GONE); //ocultar acceso a cargos
-                        areaadm.setVisibility(View.GONE); //ocultar acceso a areaadm
-                        solicitudimpresion.setVisibility(View.VISIBLE); //permitir acceso a sol impr
-                        asignaturas.setVisibility(View.GONE); //ocultar acceso a asignaturas
-                        primerasrevisiones.setVisibility(View.VISIBLE); //permitir acceso a pr
-                        ciclo.setVisibility(View.GONE); // ocultar acceso a ciclo
-                        local.setVisibility(View.GONE); //ocultar acceso a local
-                        extraordinaria.setVisibility(View.VISIBLE); //permitir acceso a sol extr.
-                        docente.setVisibility(View.GONE); //ocultar acceso a docentes
-                        encargado.setVisibility(View.GONE); //ocultar acceso a encargados impresion
-                        inscripcion.setVisibility(View.GONE);
-                        break;
-                    //en caso de el usuario sea alumno
-                    case 3:
-                        alumno.setVisibility(View.GONE); //permitir acceso a alumno
-                        evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
-                        cargos.setVisibility(View.GONE); //ocultar acceso a cargos
-                        areaadm.setVisibility(View.GONE); //ocultar acceso a areaadm
-                        solicitudimpresion.setVisibility(View.GONE);
-                        asignaturas.setVisibility(View.GONE);
-                        primerasrevisiones.setVisibility(View.GONE);
-                        ciclo.setVisibility(View.GONE);
-                        local.setVisibility(View.GONE);
-                        extraordinaria.setVisibility(View.VISIBLE);
-                        docente.setVisibility(View.GONE);
-                        encargado.setVisibility(View.GONE);
-                        inscripcion.setVisibility(View.GONE);
-                        ;
-                        break;
-                    //en caso de que el usuario sea encargado de impresion
-                    case 4:
-                        alumno.setVisibility(View.GONE); //ocultar acceso a alumno
-                        evaluacion.setVisibility(View.GONE); //permitir acceso a evaluacion
-                        cargos.setVisibility(View.GONE); //ocultar acceso a cargos
-                        areaadm.setVisibility(View.GONE); //ocultar acceso a areaadm
-                        solicitudimpresion.setVisibility(View.VISIBLE); //permitir acceso a sol impr
-                        asignaturas.setVisibility(View.GONE); //ocultar acceso a asignaturas
-                        primerasrevisiones.setVisibility(View.GONE); //permitir acceso a pr
-                        ciclo.setVisibility(View.GONE); // ocultar acceso a ciclo
-                        local.setVisibility(View.GONE); //ocultar acceso a local
-                        extraordinaria.setVisibility(View.GONE); //permitir acceso a sol extr.
-                        docente.setVisibility(View.GONE); //ocultar acceso a docentes
-                        encargado.setVisibility(View.GONE); //ocultar acceso a encargados impresion
-                        inscripcion.setVisibility(View.GONE);
-                        break;
-                    //en caso de que el usuario sea el administrador
-                    case 5:
-                        alumno.setVisibility(View.VISIBLE); //permitir acceso a alumno
-                        evaluacion.setVisibility(View.VISIBLE); //permitir acceso a evaluacion
-                        cargos.setVisibility(View.VISIBLE); //ocultar acceso a cargos
-                        areaadm.setVisibility(View.VISIBLE); //ocultar acceso a areaadm
-                        solicitudimpresion.setVisibility(View.VISIBLE);
-                        asignaturas.setVisibility(View.VISIBLE);
-                        primerasrevisiones.setVisibility(View.VISIBLE);
-                        ciclo.setVisibility(View.VISIBLE);
-                        local.setVisibility(View.VISIBLE);
-                        extraordinaria.setVisibility(View.VISIBLE);
-                        docente.setVisibility(View.VISIBLE);
-                        encargado.setVisibility(View.VISIBLE);
-                        inscripcion.setVisibility(View.GONE);
-                        break;
-                }
+
+                accesoUsuarioViewModel.obtenerAccesosPorNumCrud(id_usuario,0).observe(this, new Observer<List<AccesoUsuario>>() {
+                    @Override
+                    public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                        for(AccesoUsuario acceso:accesoUsuarios){
+                            try {
+                                OpcionCrud opcionCrudNew=opcionCrudViewModel.obtenerOpcionCrud(acceso.getIdOpcionFK());
+                                //opcionCrud.add(opcionCrudNew);
+                                switch (opcionCrudNew.getDescOpcion()){
+                                    case "AlumnoMenu":
+                                        alumno.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "EvaluacionMenu":
+                                        evaluacion.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "CargoMenu":
+                                        cargos.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "AreaAdmMenu":
+                                        areaadm.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "SoliImpresMenu":
+                                        solicitudimpresion.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "AsignaturaMenu":
+                                        asignaturas.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "PrimRevMenu":
+                                        primerasrevisiones.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "CicloMenu":
+                                        ciclo.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "LocalMenu":
+                                        local.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "SoliExtrMenu":
+                                        extraordinaria.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "DocenteMenu":
+                                        docente.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "EncImpresMenu":
+                                        encargado.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "UsuarioMenu":
+                                        usuario.setVisibility(View.VISIBLE);
+                                        break;
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (TimeoutException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
             }
         }catch (Exception e){
             Toast.makeText(this, "Error al mostrar el menu "+e, Toast.LENGTH_SHORT).show();
@@ -232,6 +241,10 @@ public class MenuActivity extends AppCompatActivity {
 
     public void inscripcionRedirect(View view) {
         cambiarActividad(InscripcionActivity.class);
+    }
+
+    public void usuarioRedirect(View view){
+        cambiarActividad(UsuarioActivity.class);
     }
 
     public AlertDialog customAlertDialog() {

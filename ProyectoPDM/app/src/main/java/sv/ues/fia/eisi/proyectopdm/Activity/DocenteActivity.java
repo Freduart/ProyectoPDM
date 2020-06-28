@@ -24,8 +24,11 @@ import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.DocenteAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 
 public class DocenteActivity extends AppCompatActivity {
@@ -34,6 +37,10 @@ public class DocenteActivity extends AppCompatActivity {
     FloatingActionButton añadirDocente;
     private DocenteViewModel docenteViewModel;
     private CargoViewModel cargoViewModel;
+    private AreaAdmViewModel areaAdmViewModel;
+    private int id_usuario,rol_usuario;
+    private boolean crearDocente,editarDocente,eliminarDocente;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +48,43 @@ public class DocenteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_docente);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("DOCENTES");
+
+        Bundle bundle=getIntent().getExtras();
+        if(bundle!=null){
+            id_usuario=bundle.getInt(LoginActivity.ID_USUARIO);
+            rol_usuario=bundle.getInt(LoginActivity.USER_ROL);
+        }
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
         cargoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CargoViewModel.class);
         docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
         añadirDocente=(FloatingActionButton)findViewById(R.id.nuevoDocente);
+
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==45){
+                            crearDocente=true;
+                        }
+                        if(acceso.getIdOpcionFK()==46){
+                            editarDocente=true;
+                        }
+                        if(acceso.getIdOpcionFK()==47){
+                            eliminarDocente=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        areaAdmViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
 
         final RecyclerView recyclerDocentes=(RecyclerView)findViewById(R.id.recycler_lista_docentes);
         recyclerDocentes.setLayoutManager(new LinearLayoutManager(this));
@@ -53,8 +94,12 @@ public class DocenteActivity extends AppCompatActivity {
         añadirDocente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(DocenteActivity.this,NuevoDocenteActivity.class);
-                startActivity(intent);
+                if(!crearDocente){
+                    Toast.makeText(DocenteActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent=new Intent(DocenteActivity.this,NuevoDocenteActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -64,6 +109,7 @@ public class DocenteActivity extends AppCompatActivity {
                 public void onChanged(List<Docente> docentes) {
                     docenteAdapter.setListDocentes(docentes);
                     docenteAdapter.setCargoViewModel(cargoViewModel);
+                    docenteAdapter.setAreaAdmViewModel(areaAdmViewModel);
                     docenteAdapter.setOnItemClickListener(new DocenteAdapter.OnItemClickListener() {
                         @Override
                         public void OnItemClick(int position, Docente docente) {
@@ -97,19 +143,27 @@ public class DocenteActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String carnetDocente=docente.getCarnetDocente();
-                Intent intent=new Intent(DocenteActivity.this,EditarDocenteActivity.class);
-                intent.putExtra(CARNET_DOCENTE,carnetDocente);
-                startActivity(intent);
+                if(!editarDocente){
+                    Toast.makeText(DocenteActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    String carnetDocente=docente.getCarnetDocente();
+                    Intent intent=new Intent(DocenteActivity.this,EditarDocenteActivity.class);
+                    intent.putExtra(CARNET_DOCENTE,carnetDocente);
+                    startActivity(intent);
+                }
                 alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                docenteViewModel.deleteDocente(docente);
-                Toast.makeText(DocenteActivity.this, "Docente "+docente.getNomDocente()+
-                        " ha sido eliminado exitosamente.", Toast.LENGTH_SHORT).show();
+                if(!eliminarDocente){
+                    Toast.makeText(DocenteActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    docenteViewModel.deleteDocente(docente);
+                    Toast.makeText(DocenteActivity.this, "Docente "+docente.getNomDocente()+
+                            " ha sido eliminado exitosamente.", Toast.LENGTH_SHORT).show();
+                }
                 alertDialog.dismiss();
             }
         });
@@ -137,7 +191,8 @@ public class DocenteActivity extends AppCompatActivity {
         textTelefonoDocente.setText(docente.getTelefonoDocente());
         cargoViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CargoViewModel.class);
         try {
-            String cargoDocente=cargoViewModel.getCargo(docente.getIdCargoFK()).getNomCargo();
+            String cargoDocente=cargoViewModel.getCargo(docente.getIdCargoFK()).getNomCargo()+" "+areaAdmViewModel.getAreaAdm(
+                    cargoViewModel.getCargo(docente.getIdCargoFK()).getIdAreaAdminFK()).getNomDepartamento();
             textCargoDocente.setText(cargoDocente);
         } catch (InterruptedException e) {
             e.printStackTrace();

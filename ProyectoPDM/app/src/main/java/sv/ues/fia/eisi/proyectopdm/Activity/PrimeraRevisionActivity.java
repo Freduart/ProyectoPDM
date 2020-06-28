@@ -19,11 +19,15 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.PrimeraRevisionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 
@@ -32,7 +36,8 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
 
     private PrimeraRevisionViewModel primeraRevisionViewModel;
     private List<PrimeraRevision> primeraRevisionDocente;
-
+    private boolean crearPrimRev,editarPrimRev,eliminarPrimRev;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,8 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_primera_revision);
         final Bundle extraidAlUser = getIntent().getExtras();
         setTitle(R.string.AppBarNamePrimerasRevisiones);
+
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
 
         int idUser = 0;
         int rolUser = 0;
@@ -49,17 +56,44 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
             rolUser = extraidAlUser.getInt(LoginActivity.USER_ROL);
             username = extraidAlUser.getString(LoginActivity.USERNAME);
         }
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(idUser).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==33){
+                            crearPrimRev=true;
+                        }
+                        if(acceso.getIdOpcionFK()==34){
+                            editarPrimRev=true;
+                        }
+                        if(acceso.getIdOpcionFK()==35){
+                            eliminarPrimRev=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         FloatingActionButton btnNuevaPR = findViewById(R.id.add_pr_button);
-
         btnNuevaPR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PrimeraRevisionActivity.this, NuevaPrimeraRevisionActivity.class);
-                try {
-                    startActivity(intent);
-                }catch (Exception e){
-                       Toast.makeText(PrimeraRevisionActivity.this, e.getMessage()+" - "+e.getCause(), Toast.LENGTH_LONG).show();
+                if(!crearPrimRev){
+                    Toast.makeText(PrimeraRevisionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(PrimeraRevisionActivity.this, NuevaPrimeraRevisionActivity.class);
+                    try {
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(PrimeraRevisionActivity.this, e.getMessage()+" - "+e.getCause(), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -129,28 +163,36 @@ public class PrimeraRevisionActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    int id = primeraRevision.getIdPrimerRevision();
-                    Intent intent = new Intent(PrimeraRevisionActivity.this, EditarPrimeraRevisionActivity.class);
-                    intent.putExtra(IDENTIFICADOR_PR, id);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(PrimeraRevisionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                if(!editarPrimRev){
+                    Toast.makeText(PrimeraRevisionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        int id = primeraRevision.getIdPrimerRevision();
+                        Intent intent = new Intent(PrimeraRevisionActivity.this, EditarPrimeraRevisionActivity.class);
+                        intent.putExtra(IDENTIFICADOR_PR, id);
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(PrimeraRevisionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    primeraRevisionViewModel.deletePrimeraRevision(primeraRevision);
-                    Toast.makeText(PrimeraRevisionActivity.this, R.string.preliminada, Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(PrimeraRevisionActivity.this, e.getMessage() + " " +
-                            e.getCause(),Toast.LENGTH_LONG).show();
+                if(!eliminarPrimRev){
+                    Toast.makeText(PrimeraRevisionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        primeraRevisionViewModel.deletePrimeraRevision(primeraRevision);
+                        Toast.makeText(PrimeraRevisionActivity.this, R.string.preliminada, Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(PrimeraRevisionActivity.this, e.getMessage() + " " +
+                                e.getCause(),Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

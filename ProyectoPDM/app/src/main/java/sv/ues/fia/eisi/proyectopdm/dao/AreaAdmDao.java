@@ -32,8 +32,7 @@ public interface AreaAdmDao {
     AreaAdm obtenerAreaAdm(int areaid);
 
     @Query("select AreaAdm.* from AreaAdm " +
-            "inner join Escuela on Escuela.idEscuela=AreaAdm.idEscuelaFK "+
-            "inner join Cargo on Escuela.idEscuela=Cargo.idEscuelaFK "+
+            "inner join Cargo on AreaAdm.idDeptarmento=Cargo.idAreaAdminFK "+
             "inner join Docente on Cargo.idCargo=Docente.idCargoFK "+
             "where Docente.carnetDocente=:id")
     LiveData<List<AreaAdm>> obtenerAreasDesdeDocente(String id);

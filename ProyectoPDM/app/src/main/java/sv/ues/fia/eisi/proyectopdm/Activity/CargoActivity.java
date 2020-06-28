@@ -19,15 +19,24 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.CargoAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 
 public class CargoActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_CARGO = "ID_CARGO_ACTUAL";
     private CargoViewModel cargoViewModel;
+    private AreaAdmViewModel areaAdmViewModel;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
+    private boolean crearCargo,editarCargo,eliminarCargo;
+    private int id_usuario,rol_usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +46,55 @@ public class CargoActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.AppBarNameCargos);
 
-        FloatingActionButton btnNuevoCargo = findViewById(R.id.add_cargo_button);
+        final Bundle extras = getIntent().getExtras();
+        //verifica que los extra no estén vacíos
+        if(extras != null) {
+            //recibe id del usuario desde el extra
+            id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
+            //recibe rol del usuario desde el extra
+            rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+        }
 
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==21){
+                            crearCargo=true;
+                        }
+                        if(acceso.getIdOpcionFK()==22){
+                            editarCargo=true;
+                        }
+                        if(acceso.getIdOpcionFK()==23){
+                            eliminarCargo=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        FloatingActionButton btnNuevoCargo = findViewById(R.id.add_cargo_button);
         btnNuevoCargo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CargoActivity.this, NuevoCargoActivity.class);
-                startActivity(intent);
+                if(!crearCargo){
+                    Toast.makeText(CargoActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(CargoActivity.this, NuevoCargoActivity.class);
+                    startActivity(intent);
+                }
             }
         });
+
+        areaAdmViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
 
         /*Para enlazar el objeto RecyclerView con la View que se implementa para cargos,
           se debe usar los layout cargo_item y activity_cargo(contiene a cargo_item)
@@ -68,6 +117,7 @@ public class CargoActivity extends AppCompatActivity {
                 public void onChanged(final List<Cargo> cargos) {
                     //Actualiza el RecyclerView
                     adapter.setCargos(cargos);
+                    adapter.setAreaAdmViewModel(areaAdmViewModel);
                 }
             });
             //Consultar cargo con click corto
@@ -116,28 +166,36 @@ public class CargoActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    int id = cargo.getIdCargo();
-                    Intent intent = new Intent(CargoActivity.this, EditarCargoActivity.class);
-                    intent.putExtra(IDENTIFICADOR_CARGO, id);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(CargoActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                if(!editarCargo){
+                    Toast.makeText(CargoActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        int id = cargo.getIdCargo();
+                        Intent intent = new Intent(CargoActivity.this, EditarCargoActivity.class);
+                        intent.putExtra(IDENTIFICADOR_CARGO, id);
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(CargoActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    cargoViewModel.delete(cargo);
-                    Toast.makeText(CargoActivity.this, R.string.cargoeliminado,
-                            Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(CargoActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                if(!eliminarCargo){
+                    Toast.makeText(CargoActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        cargoViewModel.delete(cargo);
+                        Toast.makeText(CargoActivity.this, R.string.cargoeliminado,
+                                Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(CargoActivity.this, e.getMessage() + " " + e.getCause(),Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

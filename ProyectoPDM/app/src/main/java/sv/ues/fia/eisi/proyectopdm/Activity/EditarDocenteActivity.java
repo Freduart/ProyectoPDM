@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
@@ -35,6 +36,7 @@ public class EditarDocenteActivity extends AppCompatActivity {
     ArrayAdapter<String> cargoAdapter;
     CargoViewModel cargoViewModel;
     DocenteViewModel docenteViewModel;
+    AreaAdmViewModel areaAdmViewModel;
     Docente docenteActual;
 
     @Override
@@ -51,6 +53,8 @@ public class EditarDocenteActivity extends AppCompatActivity {
         textCorreoDocente=(TextInputLayout)findViewById(R.id.textNomEncVer);
         textTelefonoDocente=(TextInputLayout)findViewById(R.id.textTelefonoDocenteVer);
         spinnerCargo=(Spinner)findViewById(R.id.textCargosVer);
+
+        areaAdmViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
 
         cargo=new ArrayList<>();
         cargoAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,cargo);
@@ -88,9 +92,10 @@ public class EditarDocenteActivity extends AppCompatActivity {
                 try {
                     Cargo cg=cargoViewModel.getCargo(docenteActual.getIdCargoFK());
                     for (Cargo c:cargos){
-                        cargo.add(c.getIdCargo()+"-"+c.getNomCargo());
+                        String area=areaAdmViewModel.getAreaAdm(c.getIdAreaAdminFK()).getNomDepartamento();
+                        cargo.add(c.getIdCargo()+"-"+c.getNomCargo()+" "+area);
                         if(c.getIdCargo()==(cg.getIdCargo())){
-                            spinnerCargo.setSelection(cargo.indexOf(c.getIdCargo()+"-"+c.getNomCargo()));
+                            spinnerCargo.setSelection(cargo.indexOf(c.getIdCargo()+"-"+c.getNomCargo()+" "+area));
                         }
                     }
                 } catch (InterruptedException e) {
@@ -149,7 +154,7 @@ public class EditarDocenteActivity extends AppCompatActivity {
                 String correoDocente=textCorreoDocente.getEditText().getText().toString();
                 String telefonoDocente=textTelefonoDocente.getEditText().getText().toString();
 
-                Docente docente=new Docente(carnetDocente,idCargo,2,nomDocente,apellidoDocente,correoDocente,telefonoDocente);
+                Docente docente=new Docente(carnetDocente,idCargo,docenteActual.getIdUsuarioFk(),nomDocente,apellidoDocente,correoDocente,telefonoDocente);
                 docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
                 docenteViewModel.updateDocente(docente);
                 Toast.makeText(EditarDocenteActivity.this, "Guardado Exitosamente", Toast.LENGTH_SHORT).show();

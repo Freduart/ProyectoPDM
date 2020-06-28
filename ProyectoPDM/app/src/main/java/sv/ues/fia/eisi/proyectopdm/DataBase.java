@@ -1,8 +1,10 @@
 package sv.ues.fia.eisi.proyectopdm;
 
 import android.content.Context;
+import android.graphics.Path;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -13,6 +15,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
+import sv.ues.fia.eisi.proyectopdm.dao.AccesoUsuarioDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AlumnoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AreaAdmDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AsignaturaDao;
@@ -24,6 +27,7 @@ import sv.ues.fia.eisi.proyectopdm.dao.EncargadoImpresionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.EscuelaDao;
 import sv.ues.fia.eisi.proyectopdm.dao.InscripcionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.LocalDao;
+import sv.ues.fia.eisi.proyectopdm.dao.OpcionCrudDao;
 import sv.ues.fia.eisi.proyectopdm.dao.PrimeraRevisionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SegundaRevisionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SegundaRevision_DocenteDao;
@@ -32,6 +36,7 @@ import sv.ues.fia.eisi.proyectopdm.dao.SolicitudExtraordinarioDao;
 import sv.ues.fia.eisi.proyectopdm.dao.SolicitudImpresionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.TipoEvaluacionDao;
 import sv.ues.fia.eisi.proyectopdm.dao.UsuarioDao;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
@@ -46,6 +51,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Inscripcion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
+import sv.ues.fia.eisi.proyectopdm.db.entity.OpcionCrud;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision_Docente;
@@ -66,7 +72,8 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class, Usuario.class,
-    }, version = 7)
+        AccesoUsuario.class, OpcionCrud.class
+    }, version = 12)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -91,6 +98,8 @@ public abstract class DataBase extends RoomDatabase {
     public abstract PrimeraRevisionDao primeraRevisionDao();
     public abstract SegundaRevision_DocenteDao segundaRevision_docenteDao();
     public abstract UsuarioDao usuarioDao();
+    public abstract AccesoUsuarioDao accesoUsuarioDao();
+    public abstract OpcionCrudDao opcionCrudDao();
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
         es util para cuando todos los usuarios esten usando la misma instancia
@@ -184,6 +193,8 @@ public abstract class DataBase extends RoomDatabase {
         private PrimeraRevisionDao primeraRevisionDao;
         private SegundaRevision_DocenteDao segundaRevision_docenteDao;
         private UsuarioDao usuarioDao;
+        private AccesoUsuarioDao accesoUsuarioDao;
+        private OpcionCrudDao opcionCrudDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
@@ -205,136 +216,250 @@ public abstract class DataBase extends RoomDatabase {
             primeraRevisionDao = db.primeraRevisionDao();
             segundaRevision_docenteDao = db.segundaRevision_docenteDao();
             usuarioDao = db.usuarioDao();
+            accesoUsuarioDao = db.accesoUsuarioDao();
+            opcionCrudDao = db.opcionCrudDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
+            try {
+                //Opciones Crud para menus.
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("AlumnoMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EvaluacionMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CargoMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("AreaAdmMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("SoliImpresMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("AsignaturaMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("PrimRevMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CicloMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("LocalMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("SoliExtrMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("DocenteMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EncImpresMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("InscripcionMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("UsuarioMenu",0));//14
+                //Opciones Crud para editar, crear y eliminar.
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearAlumno",2));//15
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarAlumno",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarAlumno",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearEvaluacion",2));//18
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarEvaluacion",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarEvaluacion",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearCargo",2));//21
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarCargo",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarCargo",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearAreaAdm",2));//24
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarAreaAdm",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarAreaAdm",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearSoliImpres",2));//27
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarSoliImpres",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarSoliImpres",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearAsignatura",2));//30
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarAsignatura",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarAsignatura",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearPrimRev",2));//33
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarPrimRev",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarPrimRev",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearCiclo",2));//36
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarCiclo",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarCiclo",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearLocal",2));//39
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarLocal",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarLocal",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearSoliExtr",2));//42
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarSoliExtr",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarSoliExtr",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearDocente",2));//45
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarDocente",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarDocente",3));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearEncImpres",2));//48
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarEncImpres",1));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarEncImpres",3));
+                //Usuarios con rol de director
+                usuarioDao.insertUser(new Usuario("DOCEISI1", "chicas", 1));
+                usuarioDao.insertUser(new Usuario("DOCEIQA1", "torres", 1));
+                usuarioDao.insertUser(new Usuario("DOCEICI1", "nuevodir", 1));
+                //Usuarios con rol de docente
+                usuarioDao.insertUser(new Usuario("DOCEISI2", "gonzalez", 2));
+                usuarioDao.insertUser(new Usuario("DOCEISI3", "carballo", 2));
+                usuarioDao.insertUser(new Usuario("DOCEIQA2", "gamero", 2));
+                usuarioDao.insertUser(new Usuario("DOCEIQA3", "nuevodoc", 2));
+                //Usuarios con rol de estudiante
+                usuarioDao.insertUser(new Usuario("PP15001", "rubper", 3));
+                usuarioDao.insertUser(new Usuario("DR17010", "efrain", 3));
+                usuarioDao.insertUser(new Usuario("BC14026", "arelyb", 3));
+                usuarioDao.insertUser(new Usuario("MM16045", "fredyrol", 3));
+                usuarioDao.insertUser(new Usuario("MG17030", "jairois", 3));
+                usuarioDao.insertUser(new Usuario("MC16022", "julioc", 3));
+                //Usuario con rol de encargado de impresiones
+                usuarioDao.insertUser(new Usuario("EURFIA1","eliseo", 4));
+                usuarioDao.insertUser(new Usuario("EURFIA2", "nuevoei", 4));
+                //Usuario administrador
+                usuarioDao.insertUser(new Usuario("Administrador", "administrador", 5));
+                usuarioDao.insertUser(new Usuario("VR17035", "nuevoal", 3));
+                //AccesoUsuario para Directores
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,4));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,6));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,15));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,4));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,6));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,4));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,6));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,10));
+                //AccesoUsuario para Docentes
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,10));
+                //AccesoUsuario para Alumnos
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(9,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(9,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(12,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(12,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,10));
+                //AccesoUsuario para Encargado de Impresion
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(14,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(15,5));
+                //AccesoUsuario para Administrador
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,1));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,3));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,4));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,6));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,8));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,9));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,11));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,12));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,13));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,14));
+                //Escuelas
+                escuelaDao.insert(new Escuela("Escuela de Ingeniería de Sistemas Informáticos","Ingeniería de Sistemas Informáticos","DOCEISI1"));
+                escuelaDao.insert(new Escuela("Escuela de Ingeniería Química e Ingeniería de Alimentos","Ingeniería Quimica","DOCEIQA2"));
+                //Departamentos
+                areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Comunicaciones y CC.de la Computación"));
+                areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Programación y Manejo de datos"));
+                areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Desarrollo de Sistemas"));
+                areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Administración"));
+                areaAdmDao.insertAreaAdm(new AreaAdm(2, "Dpto. de CC. Básicas de la Ingeniería Quíimica"));
+                //Cargo
+                cargoDao.insertCargo(new Cargo(1, "Docente"));
+                cargoDao.insertCargo(new Cargo(1, "Jefe de Departamento"));
+                cargoDao.insertCargo(new Cargo(2, "Docente"));
+                cargoDao.insertCargo(new Cargo(2, "Jefe de Departamento"));
+                cargoDao.insertCargo(new Cargo(3, "Docente"));
+                cargoDao.insertCargo(new Cargo(3, "Jefe de Departamento"));
+                cargoDao.insertCargo(new Cargo(4, "Docente"));
+                cargoDao.insertCargo(new Cargo(4, "Jefe de Departamento"));
+                cargoDao.insertCargo(new Cargo(5, "Docente"));
+                cargoDao.insertCargo(new Cargo(5, "Jefe de Departamento"));
+                //Docente
+                docenteDao.insertDocente(new Docente("DOCEISI1", 1, 1, "Rudy Wilfredo", "Chicas Villegas", "chicas@ues.edu.sv", "+50378923456"));
+                docenteDao.insertDocente(new Docente("DOCEIQA1", 1, 2,"Tania", "Torres Rivera", "torres@ues.edu.sv", "+50364589879"));
+                docenteDao.insertDocente(new Docente("DOCEISI2", 3, 4,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "+50368923457"));
+                docenteDao.insertDocente(new Docente("DOCEISI3", 3, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
+                docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
+                //Asignaturas por area administrativa(Departamentos)
+                asignaturaDao.insertAsignatura(new Asignatura("DSI115", 9, "Diseño de Sistemas I"));
+                asignaturaDao.insertAsignatura(new Asignatura("SGG115", 9, "Sistemas de Información Geográficos"));
+                asignaturaDao.insertAsignatura(new Asignatura("PDM115", 1, "Programación para Dispositivos Móviles"));
+                asignaturaDao.insertAsignatura(new Asignatura("MIP115", 1, "Microprogramación"));
+                asignaturaDao.insertAsignatura(new Asignatura("TAD115", 1, "Teoría Administrativa"));
+                asignaturaDao.insertAsignatura(new Asignatura("FQR215", 3, "Fisicoquímica II"));
+                //Alumnos
+                alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",11));
+                alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 10));
+                alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com", 8));
+                alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com", 9));
+                alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 12));
+                alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","corcio@gmail.com", 13));
+                //Inscripción
+                inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "DSI115", 2, 1, 2));
+                inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
+                inscripcionDao.insertInscripcion(new Inscripcion("MG17030","PDM115", 2, 1, 2));
+                inscripcionDao.insertInscripcion(new Inscripcion("MG17030", "MIP115", 1, 1, 1));
+                inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "DSI115", 1,2, 1));
+                inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "TAD115", 1, 1, 1));
+                inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "DSI115", 2, 1, 1));
+                inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "TAD115", 2, 1, 1));
+                inscripcionDao.insertInscripcion(new Inscripcion("BC14026", "PDM115", 2, 1, 1));
+                inscripcionDao.insertInscripcion(new Inscripcion("MC16022", "FQR215", 1, 1, 1));
+                //Ciclo
+                cicloDao.insertCiclo(new Ciclo("08-08-19", "10-12-19", 6));
+                cicloDao.insertCiclo(new Ciclo("17-02-2020", "20-06-2020", 7));
+                //Tipo de evaluación
+                tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Ordinario"));
+                tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Repetido"));
+                tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Diferido"));
+                //Evaluación
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
+                //Local
+                localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
+                localDao.insertarLocal(new Local("LComp4", "Laboratorio 2", "Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
+                localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
+                localDao.insertarLocal(new Local("D11","Aula D11", "Edificio D", 13.72077d,-89.200545d));
+                localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
+                //Detalle de evaluación
+                detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7.9f));
+                detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"DR17010", 8f));
+                detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(3,"PP15001", 8f));
+                detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(4,"DR17010", 8f));
+                detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(5, "BC14026", 7.5f));
+                //Primera revisión
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "Ejercicio 1"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 3, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                //Encargado de impresión
+                encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 14));
+                //Segunda revisión
+                segundaRevisionDao.insertSegundaRevision(new SegundaRevision(1, "9/06/2020", "12:22:00",10,"", "8/06/2020"));
+                segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
+                //Solicitud de extraordinario
+                solicitudExtraordinarioDao.insertSolicitudExtraordinario(new SolicitudExtraordinario("PP15001", 1, 3, "Enfermedad", "16-06-2020", true));
 
-
-            //Usuarios con rol de director
-            usuarioDao.insertUser(new Usuario("DOCEISI1", "chicas", 1));
-            usuarioDao.insertUser(new Usuario("DOCEIQA1", "torres", 1));
-            usuarioDao.insertUser(new Usuario("DOCEICI1", "nuevodir", 1));
-            //Usuarios con rol de docente
-            usuarioDao.insertUser(new Usuario("DOCEISI2", "gonzalez", 2));
-            usuarioDao.insertUser(new Usuario("DOCEISI3", "carballo", 2));
-            usuarioDao.insertUser(new Usuario("DOCEIQA2", "gamero", 2));
-            usuarioDao.insertUser(new Usuario("DOCEIQA3", "nuevodoc", 2));
-            //Usuarios con rol de estudiante
-            usuarioDao.insertUser(new Usuario("PP15001", "rubper", 3));
-            usuarioDao.insertUser(new Usuario("DR17010", "efrain", 3));
-            usuarioDao.insertUser(new Usuario("BC14026", "arelyb", 3));
-            usuarioDao.insertUser(new Usuario("MM16045", "fredyrol", 3));
-            usuarioDao.insertUser(new Usuario("MG17030", "jairois", 3));
-            usuarioDao.insertUser(new Usuario("MC16022", "julioc", 3));
-            //Usuario con rol de encargado de impresiones
-            usuarioDao.insertUser(new Usuario("EURFIA1","eliseo", 4));
-            usuarioDao.insertUser(new Usuario("EURFIA2", "nuevoei", 4));
-            //Usuario administrador
-            usuarioDao.insertUser(new Usuario("Administrador", "administrador", 5));
-
-            usuarioDao.insertUser(new Usuario("VR17035", "nuevoal", 3));
-
-            //Escuelas
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería de Sistemas Informáticos","Ingeniería de Sistemas Informáticos"));
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería Industrial","Ingeniería Industrial"));
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería Eléctrica","Ingeniería Electrica"));
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería Civil","Ingeniería Civil"));
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería Química","Ingeniería Quimica"));
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería de Alimentos","Ingeniería de Alimentos"));
-            escuelaDao.insert(new Escuela("Escuela de Arquitectura","Arquitectura"));
-            escuelaDao.insert(new Escuela("Escuela de Ingeniería Mecánica","Ingeniería Mecánica"));
-            //Areas administrativas por escuelas
-            areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Comunicaciones y CC.de la Computación"));
-            areaAdmDao.insertAreaAdm(new AreaAdm(1,  "Dpto. de Programación y Manejo de datos"));
-            areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Desarrollo de Sistemas"));
-            areaAdmDao.insertAreaAdm(new AreaAdm(1, "Dpto. de Administración"));
-            areaAdmDao.insertAreaAdm(new AreaAdm(5, "General"));
-            areaAdmDao.insertAreaAdm(new AreaAdm(5, "Dpto. de CC. Básicas de la Ingeniería Quíimica"));
-            areaAdmDao.insertAreaAdm(new AreaAdm(5, "Dpto. de Ciencias de la Ingeniería Química"));
-            //Asignaturas por area administrativa(Departamentos)
-            asignaturaDao.insertAsignatura(new Asignatura("DSI115", 3, "Diseño de Sistemas I"));
-            asignaturaDao.insertAsignatura(new Asignatura("SGG115", 3, "Sistemas de Información Geográficos"));
-            asignaturaDao.insertAsignatura(new Asignatura("PDM115", 2, "Programación para Dispositivos Móviles"));
-            asignaturaDao.insertAsignatura(new Asignatura("MIP115", 2, "Microprogramación"));
-            asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
-            asignaturaDao.insertAsignatura(new Asignatura("FQR215", 6, "Fisicoquímica II"));
-            asignaturaDao.insertAsignatura(new Asignatura("OPU215", 7, "Operaciones Unitarias II"));
-            //Alumnos
-            alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",11));
-            alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 10));
-            alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com", 8));
-            alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com", 9));
-            alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 12));
-            alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","corcio@gmail.com", 13));
-            //Inscripción
-            inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "DSI115", 2, 1, 2));
-            inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
-            inscripcionDao.insertInscripcion(new Inscripcion("MG17030","PDM115", 2, 1, 2));
-            inscripcionDao.insertInscripcion(new Inscripcion("MG17030", "MIP115", 1, 1, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "DSI115", 1,2, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("DR17010", "TAD115", 1, 1, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "DSI115", 2, 1, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("PP15001", "TAD115", 2, 1, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("BC14026", "PDM115", 2, 1, 1));
-            inscripcionDao.insertInscripcion(new Inscripcion("MC16022", "FQR215", 1, 1, 1));
-            //Ciclo
-            cicloDao.insertCiclo(new Ciclo("08-08-19", "10-12-19", 6));
-            cicloDao.insertCiclo(new Ciclo("17-02-2020", "20-06-2020", 7));
-            //Tipo de evaluación
-            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Ordinario"));
-            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Repetido"));
-            tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Diferido"));
-            //Evaluación
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
-            evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
-            //Cargo
-            cargoDao.insertCargo(new Cargo(1, "Director de la EISI"));
-            cargoDao.insertCargo(new Cargo(1, "Jefe de Dpto. de Comunicaciones y CC. de la Computación"));
-            cargoDao.insertCargo(new Cargo(1, "Jefe de Dpto. de Programación y Manejo de datos"));
-            cargoDao.insertCargo(new Cargo(1, "Jefe de Dpto. de Desarrollo de Sistemas"));
-            cargoDao.insertCargo(new Cargo(1, "Jefa de Dpto. de Administración"));
-            cargoDao.insertCargo(new Cargo(1, "Docente de la EISI"));
-            cargoDao.insertCargo(new Cargo(7, "Directora de la EIQA"));
-            cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. de Ingeniería de Alimentos"));
-            cargoDao.insertCargo(new Cargo(8, "Jefa de Dpto. de CC. Básicas de la Ingeniería Química"));
-            cargoDao.insertCargo(new Cargo(8, "Jefe de Dpto de Ciencias de la Ingeniería Química"));
-            cargoDao.insertCargo(new Cargo(8, "Docente de la EIQA"));
-            //Docente
-            docenteDao.insertDocente(new Docente("DOCEISI1", 1, 1, "Rudy Wilfredo", "Chicas", "chicas@ues.edu.sv", "78923456"));
-            docenteDao.insertDocente(new Docente("DOCEIQA1", 7, 2,"Tania", "Torres Rivera", "torres@ues.edu.sv", "64589879"));
-            docenteDao.insertDocente(new Docente("DOCEISI2", 6, 4,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "68923457"));
-            docenteDao.insertDocente(new Docente("DOCEISI3", 4, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "68793456"));
-            docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "65789034"));
-            //Local
-            localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
-            localDao.insertarLocal(new Local("LComp4", "Laboratorio 2", "Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
-            localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
-            localDao.insertarLocal(new Local("D11","Aula D11", "Edificio D", 13.72077d,-89.200545d));
-            localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
-            //Detalle de evaluación
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7.9f));
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"DR17010", 8f));
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(3,"PP15001", 8f));
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(4,"DR17010", 8f));
-            detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(5, "BC14026", 7.5f));
-            //Primera revisión
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "Ejercicio 1"));
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 3, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
-            primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
-            //Encargado de impresión
-            encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 14));
-            //Segunda revisión
-            segundaRevisionDao.insertSegundaRevision(new SegundaRevision(1, "9/06/2020", "12:22:00",10,"", "8/06/2020"));
-            segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
-            //Solicitud de extraordinario
-            solicitudExtraordinarioDao.insertSolicitudExtraordinario(new SolicitudExtraordinario("PP15001", 1, 3, "Enfermedad", "16-06-2020", true));
+            }catch (Exception e){
+                Log.d("equisde: ", e.getMessage() + "\n");
+                e.fillInStackTrace();
+            }
             return null;
         }
     }

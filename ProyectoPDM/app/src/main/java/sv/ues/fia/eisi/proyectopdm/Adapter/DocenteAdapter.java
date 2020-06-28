@@ -14,7 +14,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 
 public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHolderDocente> {
@@ -23,6 +25,7 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
     private OnItemClickListener onItemClickListener;
     private OnItemLongCLickListener onItemLongCLickListener;
     private CargoViewModel cargoViewModel;
+    private AreaAdmViewModel areaAdmViewModel;
 
     public interface OnItemClickListener{
         void OnItemClick(int position,Docente docente);
@@ -35,6 +38,10 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
     public void setListDocentes(List<Docente> listDocentes) {
         this.listDocentes = listDocentes;
         notifyDataSetChanged();
+    }
+
+    public void setAreaAdmViewModel(AreaAdmViewModel areaAdmViewModel) {
+        this.areaAdmViewModel = areaAdmViewModel;
     }
 
     public void setCargoViewModel(CargoViewModel cargoViewModel) {
@@ -62,7 +69,8 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
         String nomDocente=docente.getNomDocente()+" "+docente.getApellidoDocente();
         holder.textTitulo.setText(nomDocente);
         try {
-            String cargoDocente=cargoViewModel.getCargo(docente.getIdCargoFK()).getNomCargo();
+            String cargoDocente=cargoViewModel.getCargo(docente.getIdCargoFK()).getNomCargo()+" "+areaAdmViewModel.getAreaAdm(
+                    cargoViewModel.getCargo(docente.getIdCargoFK()).getIdAreaAdminFK()).getNomDepartamento();
             holder.textCargoDocente.setText(cargoDocente);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -108,11 +116,11 @@ public class DocenteAdapter extends RecyclerView.Adapter<DocenteAdapter.ViewHold
 
         public ViewHolderDocente(@NonNull View itemView) {
             super(itemView);
-            textTitulo=(TextView)itemView.findViewById(R.id.textNomEnc);
-            textCargoDocente=(TextView)itemView.findViewById(R.id.textIdEncImpres);
-            textCorreoDocente=(TextView)itemView.findViewById(R.id.textNomEncVer);
-            textTelefonoDocente=(TextView)itemView.findViewById(R.id.textTelefonoDocenteVer);
-            textCarnetDocente=(TextView)itemView.findViewById(R.id.textCarnetDocenteVer);
+            textTitulo=(TextView)itemView.findViewById(R.id.textNomDOcente);
+            textCargoDocente=(TextView)itemView.findViewById(R.id.textCargoDocente);
+            textCorreoDocente=(TextView)itemView.findViewById(R.id.textCorreoDocente);
+            textTelefonoDocente=(TextView)itemView.findViewById(R.id.textTelefonoDocente);
+            textCarnetDocente=(TextView)itemView.findViewById(R.id.textCarnetDocente);
         }
     }
 }

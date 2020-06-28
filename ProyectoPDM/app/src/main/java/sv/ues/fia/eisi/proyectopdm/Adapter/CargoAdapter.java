@@ -10,16 +10,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Activity.CargoActivity;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 
 public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder> {
     private List<Cargo> cargos =  new ArrayList<>();
     private OnItemClickListener listener;
     private OnItemLongClickListener longListener;
+    private AreaAdmViewModel areaAdmViewModel;
 
+    public void setAreaAdmViewModel(AreaAdmViewModel areaAdmViewModel) {
+        this.areaAdmViewModel = areaAdmViewModel;
+    }
 
     //listener para click corto
     public interface OnItemClickListener{
@@ -38,7 +45,6 @@ public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder>
         this.longListener=longListener;
     }
 
-
     @NonNull
     @Override
     public CargoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,9 +62,18 @@ public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoHolder>
             mostramos los valores en cada uno de los TextView y se ciclen con el LiveData
             Haremos uno por cada item que querramos mostar
         */
-        holder.idCargo.setText(String.valueOf(currentCargo.getIdCargo()));
-        holder.idEscuela.setText(String.valueOf(currentCargo.getIdEscuelaFK()));
-        holder.nomCargo.setText(currentCargo.getNomCargo());
+        try {
+            holder.idCargo.setText(String.valueOf(currentCargo.getIdCargo()));
+            String areaAdmin=areaAdmViewModel.getAreaAdm(currentCargo.getIdAreaAdminFK()).getNomDepartamento();
+            holder.idEscuela.setText(areaAdmin);
+            holder.nomCargo.setText(currentCargo.getNomCargo());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

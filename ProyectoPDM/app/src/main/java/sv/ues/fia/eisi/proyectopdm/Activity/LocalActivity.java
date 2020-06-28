@@ -18,10 +18,14 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.LocalAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 
 public class LocalActivity extends AppCompatActivity {
@@ -30,11 +34,15 @@ public class LocalActivity extends AppCompatActivity {
     private LocalViewModel LocalVM;
     String cod;
     private int id_usuario, rol_usuario;
+    private boolean crearLocal,editarLocal,eliminarLocal;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local);
+
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -43,21 +51,48 @@ public class LocalActivity extends AppCompatActivity {
             //recibe rol del usuario desde el extra
             rol_usuario = extras.getInt(LoginActivity.USER_ROL);
         }
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==39){
+                            crearLocal=true;
+                        }
+                        if(acceso.getIdOpcionFK()==40){
+                            editarLocal=true;
+                        }
+                        if(acceso.getIdOpcionFK()==41){
+                            eliminarLocal=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         //Título personalizado para Activity
         setTitle("Lista de Locales");
 
         //Para Agregar Local: Inicializa botón flotante de acción
         FloatingActionButton botonNuevoLocal = findViewById(R.id.add_local_button);
-
         //al hacer un clic corto
         botonNuevoLocal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //intent hacia nuevo Local activity
-                Intent intent = new Intent(LocalActivity.this, NuevoLocalActivity.class);
-                //iniciar activity
-                startActivity(intent);
+                if(!crearLocal){
+                    Toast.makeText(LocalActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    //intent hacia nuevo Local activity
+                    Intent intent = new Intent(LocalActivity.this, NuevoLocalActivity.class);
+                    //iniciar activity
+                    startActivity(intent);
+                }
             }
         });
 
@@ -135,15 +170,19 @@ public class LocalActivity extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    cod = local.getIdLocal();
-                    Intent intent = new Intent(LocalActivity.this, EditarLocalActivity.class);
-                    intent.putExtra(IDENTIFICADOR_LOCAL, cod);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch(Exception e){
-                    Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                if(!editarLocal){
+                    Toast.makeText(LocalActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        cod = local.getIdLocal();
+                        Intent intent = new Intent(LocalActivity.this, EditarLocalActivity.class);
+                        intent.putExtra(IDENTIFICADOR_LOCAL, cod);
+                        startActivity(intent);
+                    }catch(Exception e){
+                        Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
 
@@ -151,13 +190,17 @@ public class LocalActivity extends AppCompatActivity {
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    LocalVM.deleteLocal(local);
-                    Toast.makeText(LocalActivity.this, "Local" + " " + local.getIdLocal() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                if(!eliminarLocal){
+                    Toast.makeText(LocalActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        LocalVM.deleteLocal(local);
+                        Toast.makeText(LocalActivity.this, "Local" + " " + local.getIdLocal() + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(LocalActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

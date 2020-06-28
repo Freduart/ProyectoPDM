@@ -87,8 +87,8 @@ public class EncargadoImpresionAdapter extends RecyclerView.Adapter<EncargadoImp
 
         public ViewHolderEncImpres(@NonNull View itemView) {
             super(itemView);
-            textTitulo=(TextView)itemView.findViewById(R.id.textNomEnc);
-            textIdEnc=(TextView)itemView.findViewById(R.id.textIdEncImpres);
+            textTitulo=(TextView)itemView.findViewById(R.id.textNombreEncargado);
+            textIdEnc=(TextView)itemView.findViewById(R.id.textIdEncargado);
         }
     }
 }

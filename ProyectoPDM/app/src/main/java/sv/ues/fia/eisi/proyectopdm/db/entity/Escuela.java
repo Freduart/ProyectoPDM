@@ -2,6 +2,7 @@ package sv.ues.fia.eisi.proyectopdm.db.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 
@@ -12,10 +13,17 @@ public class Escuela {
     private int idEscuela;
     private String nomEscuela;
     private String carrera;
+    @ForeignKey(
+            entity = Docente.class,
+            parentColumns = "carnetDocente",
+            childColumns = "docDirector"
+    )
+    private String docDirector;
 
-    public Escuela(String nomEscuela,String carrera) {
+    public Escuela(String nomEscuela,String carrera,String docDirector) {
         this.nomEscuela = nomEscuela;
         this.carrera=carrera;
+        this.docDirector=docDirector;
     }
 
     public int getIdEscuela() {
@@ -40,6 +48,14 @@ public class Escuela {
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
+    }
+
+    public String getDocDirector() {
+        return docDirector;
+    }
+
+    public void setDocDirector(String docDirector) {
+        this.docDirector = docDirector;
     }
 
     @NonNull

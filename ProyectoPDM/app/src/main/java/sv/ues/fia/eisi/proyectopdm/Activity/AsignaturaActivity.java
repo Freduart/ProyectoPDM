@@ -19,17 +19,23 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.AsignaturaAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
 
 public class AsignaturaActivity extends AppCompatActivity {
     public static final String IDENTIFICADOR_AS = "ID_ASIGNATURA_ACTUAL";
 
     private AsignaturaViewModel asignaturaViewModel;
-
+    private int id_usuario,rol_usuario;
+    private boolean crearAsignatura,editarAsignatura,eliminarAsignatura;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +45,50 @@ public class AsignaturaActivity extends AppCompatActivity {
         ActionBar actionBar= getSupportActionBar();
         actionBar.setTitle(R.string.AppBarNameAsignaturas);
 
-        FloatingActionButton btnNuevaAsignatura = findViewById(R.id.add_asign_button);
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
 
+        Bundle bundle=getIntent().getExtras();
+        if(bundle!=null){
+            id_usuario=bundle.getInt(LoginActivity.ID_USUARIO);
+            rol_usuario=bundle.getInt(LoginActivity.USER_ROL);
+        }
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==30){
+                            crearAsignatura=true;
+                        }
+                        if(acceso.getIdOpcionFK()==31){
+                            editarAsignatura=true;
+                        }
+                        if(acceso.getIdOpcionFK()==32){
+                            eliminarAsignatura=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        FloatingActionButton btnNuevaAsignatura = findViewById(R.id.add_asign_button);
 
         btnNuevaAsignatura.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Para dirigir a la activity de nueva asignatura
-                Intent intent = new Intent(AsignaturaActivity.this, NuevaAsignaturaActivity.class);
-                startActivity(intent);
+                if(!crearAsignatura){
+                    Toast.makeText(AsignaturaActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    //Para dirigir a la activity de nueva asignatura
+                    Intent intent = new Intent(AsignaturaActivity.this, NuevaAsignaturaActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -121,30 +162,38 @@ public class AsignaturaActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    String id = asignatura.getCodigoAsignatura();
-                    Intent intent = new Intent(AsignaturaActivity.this, EditarAsignaturaActivity.class);
-                    intent.putExtra(IDENTIFICADOR_AS, id);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+                if(!editarAsignatura){
+                    Toast.makeText(AsignaturaActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try{
+                        String id = asignatura.getCodigoAsignatura();
+                        Intent intent = new Intent(AsignaturaActivity.this, EditarAsignaturaActivity.class);
+                        intent.putExtra(IDENTIFICADOR_AS, id);
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(AsignaturaActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
 
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    asignaturaViewModel.delete(asignatura);
-                    Toast.makeText(AsignaturaActivity.this, R.string.asignaturaeliminada,
-                            Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(AsignaturaActivity.this, e.getMessage() + " " +
-                            e.getCause(),Toast.LENGTH_LONG).show();
+                if(!eliminarAsignatura){
+                    Toast.makeText(AsignaturaActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        asignaturaViewModel.delete(asignatura);
+                        Toast.makeText(AsignaturaActivity.this, R.string.asignaturaeliminada,
+                                Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(AsignaturaActivity.this, e.getMessage() + " " +
+                                e.getCause(),Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

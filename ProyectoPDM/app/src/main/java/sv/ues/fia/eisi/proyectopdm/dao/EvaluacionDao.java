@@ -81,14 +81,16 @@ public interface EvaluacionDao {
     //recupera los docentes usando el id de escuela
     @Query("select Docente.* from Docente " +
             "inner join Cargo on Docente.idCargoFK=Cargo.idCargo "+
-            "inner join Escuela on Cargo.idEscuelaFK=Escuela.idEscuela "+
+            "inner join AreaAdm on Cargo.idAreaAdminFK=AreaAdm.idDeptarmento "+
+            "inner join Escuela on AreaAdm.idEscuelaFK=Escuela.idEscuela "+
             "where Escuela.idEscuela=:id")
     LiveData<List<Docente>> obtenerDocentePorEscuela(int id);
 
     //recupera la escuela del docente selecionado
     @Query("select Escuela.* from Docente " +
             "inner join Cargo on Docente.idCargoFK=Cargo.idCargo "+
-            "inner join Escuela on Cargo.idEscuelaFK=Escuela.idEscuela "+
+            "inner join AreaAdm on Cargo.idAreaAdminFK=AreaAdm.idDeptarmento "+
+            "inner join Escuela on AreaAdm.idEscuelaFK=Escuela.idEscuela "+
             "where Docente.carnetDocente=:id")
     Escuela obtenerEscuelaDeDocente(String id);
 

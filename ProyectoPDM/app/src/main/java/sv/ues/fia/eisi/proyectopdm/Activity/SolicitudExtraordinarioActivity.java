@@ -21,7 +21,9 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.SolicitudExtraordinarioAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
 
 public class SolicitudExtraordinarioActivity extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
     SolicitudExtraordinario soliExtraActual;
     int cod;
     private int id_usuario, rol_usuario;
+    private boolean crearSoliExtr,editarSoliExtr,eliminarSoliExtr;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
             //Título personalizado para Activity
             setTitle("Solicitudes de Evaluación Extraordinaria");
 
+            accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
+
             final Bundle extras = getIntent().getExtras();
             //verifica que los extra no estén vacíos
             if(extras != null){
@@ -49,10 +55,25 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
                 //recibe rol del usuario desde el extra
                 rol_usuario = extras.getInt(LoginActivity.USER_ROL);
             }
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==42){
+                            crearSoliExtr=true;
+                        }
+                        if(acceso.getIdOpcionFK()==43){
+                            editarSoliExtr=true;
+                        }
+                        if(acceso.getIdOpcionFK()==44){
+                            eliminarSoliExtr=true;
+                        }
+                    }
+                }
+            });
 
             //Para Agregar Solicitud Extraordinaria: Inicializa botón flotante de acción
             FloatingActionButton botonNuevaSoliExtra = findViewById(R.id.add_soliExtra_button);
-
             //Inicializando RecyclerView
             final RecyclerView SoliExtraRecycler = findViewById(R.id.recycler_soliExtra_view);
             //Asignando Layout
@@ -110,10 +131,14 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
                     botonNuevaSoliExtra.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //intent hacia NuevaSoliExtraActivity
-                            Intent intent = new Intent(SolicitudExtraordinarioActivity.this, NuevaSolicitudExtraordinarioActivity.class);
-                            //iniciar activity
-                            startActivity(intent);
+                            if(!crearSoliExtr){
+                                Toast.makeText(SolicitudExtraordinarioActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                            }else{
+                                //intent hacia NuevaSoliExtraActivity
+                                Intent intent = new Intent(SolicitudExtraordinarioActivity.this, NuevaSolicitudExtraordinarioActivity.class);
+                                //iniciar activity
+                                startActivity(intent);
+                            }
                         }
                     });
 
@@ -196,13 +221,17 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    soliExtraVM.delete(soliExtraActual);
-                    Toast.makeText(SolicitudExtraordinarioActivity.this, "Local" + " " + String.valueOf(soliExtraActual.getIdSolicitud()) + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                if(!eliminarSoliExtr){
+                    Toast.makeText(SolicitudExtraordinarioActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        soliExtraVM.delete(soliExtraActual);
+                        Toast.makeText(SolicitudExtraordinarioActivity.this, "Local" + " " + String.valueOf(soliExtraActual.getIdSolicitud()) + " ha sido borrado exitosamente", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
 
@@ -210,14 +239,18 @@ public class SolicitudExtraordinarioActivity extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Intent intent = new Intent(SolicitudExtraordinarioActivity.this, EditarSolicitudExtraordinarioActivity.class);
-                    intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
-                    startActivity(intent);
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                if(!editarSoliExtr){
+                    Toast.makeText(SolicitudExtraordinarioActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        Intent intent = new Intent(SolicitudExtraordinarioActivity.this, EditarSolicitudExtraordinarioActivity.class);
+                        intent.putExtra(IDENTIFICADOR_SOLI_EXTRA, cod);
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(SolicitudExtraordinarioActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         return alertDialog;

@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 import sv.ues.fia.eisi.proyectopdm.repository.CargoRepository;
@@ -28,11 +30,11 @@ import sv.ues.fia.eisi.proyectopdm.repository.CargoRepository;
 public class EditarCargoActivity extends AppCompatActivity {
 
     private Cargo cargoActual;
-    private Escuela escuelaActual;
+    private AreaAdm areaAdmActual;
     private CargoViewModel cargoViewModel;
-    private EscuelaViewModel escuelaViewModel;
+    private AreaAdmViewModel areaAdmViewModel;
     private TextView idCargo;
-    private Spinner idEscuelaCargo;
+    private Spinner idAreaAdmCargo;
     private EditText nomCargo;
 
     @Override
@@ -42,12 +44,12 @@ public class EditarCargoActivity extends AppCompatActivity {
             setContentView(R.layout.activity_editar_cargo);
 
             idCargo = (TextView) findViewById(R.id.textViewIdCargoE);
-            idEscuelaCargo = (Spinner) findViewById(R.id.spEscuelaCargoE);
+            idAreaAdmCargo = (Spinner) findViewById(R.id.spEscuelaCargoE);
             nomCargo = (EditText) findViewById(R.id.textViewNomCargoE);
 
             //Instancias viewmodels
             cargoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CargoViewModel.class);
-            escuelaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EscuelaViewModel.class);
+            areaAdmViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
             //obtiene intent de CargoActivity
             Bundle extras = getIntent().getExtras();
             int identCargo = 0;
@@ -57,38 +59,36 @@ public class EditarCargoActivity extends AppCompatActivity {
             //Obtiene cargo actual por medio de EXTRA_ID_CARGO
             cargoActual =cargoViewModel.getCargo(identCargo);
             //Obtener idEscuelaCargo actual
-            escuelaActual = escuelaViewModel.getEscuela(cargoActual.getIdEscuelaFK());
+            areaAdmActual = areaAdmViewModel.getAreaAdm(cargoActual.getIdAreaAdminFK());
 
             idCargo.setText(String.valueOf(cargoActual.getIdCargo()));
 
             //Llenar spinner de escuela
             //Almacena id y nombre de escuela
-            final ArrayList<String> escuelasNom = new ArrayList<>();
+            final ArrayList<String> areaAdmNom = new ArrayList<>();
             //Adaptador a arreglos para spinner
-            final ArrayAdapter<String> adapterSpinnerEscuela = new ArrayAdapter<>(this,
-                    android.R.layout.simple_spinner_item, escuelasNom);
+            final ArrayAdapter<String> adapterSpinnerAreaAdm = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, areaAdmNom);
             //Settea layout de dropdown del spinner
-            adapterSpinnerEscuela.setDropDownViewResource(android.R.layout
+            adapterSpinnerAreaAdm.setDropDownViewResource(android.R.layout
                     .simple_spinner_dropdown_item);
             //Settea el adaptador creado en el spinner
-            idEscuelaCargo.setAdapter(adapterSpinnerEscuela);
-            //instancia Escuela View Model
-            escuelaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
-                    .create(EscuelaViewModel.class);
+            idAreaAdmCargo.setAdapter(adapterSpinnerAreaAdm);
+
             //Obtiene todas las escuelas en livedata
-            escuelaViewModel.getAllEscuelas().observe(this, new Observer<List<Escuela>>() {
+            areaAdmViewModel.getAreaAdmAll().observe(this, new Observer<List<AreaAdm>>() {
                 @Override
-                public void onChanged(List<Escuela> escuelas) {
+                public void onChanged(List<AreaAdm> areaAdms) {
                     try {
                         Cargo c = cargoViewModel.getCargo(cargoActual.getIdCargo());
                         //añade los elementos del livedata a las listas para almacenar id y nombre de escuelas
-                        for (Escuela e : escuelas) {
-                            escuelasNom.add(e.getIdEscuela() + " - " + e.getNomEscuela());
-                            if(e.getIdEscuela()==(c.getIdEscuelaFK()))
-                                idEscuelaCargo.setSelection(escuelasNom.indexOf(e.getIdEscuela() + " - " + e.getNomEscuela()));
+                        for (AreaAdm e : areaAdms) {
+                            areaAdmNom.add(e.getIdDeptarmento() + " - " + e.getNomDepartamento());
+                            if(e.getIdDeptarmento()==(c.getIdAreaAdminFK()))
+                                idAreaAdmCargo.setSelection(areaAdmNom.indexOf(e.getIdDeptarmento() + " - " + e.getNomDepartamento()));
                         }
                         //Refresca
-                        adapterSpinnerEscuela.notifyDataSetChanged();
+                        adapterSpinnerAreaAdm.notifyDataSetChanged();
                     }catch (Exception e){
                         Toast.makeText(EditarCargoActivity.this, e.getMessage() + " - " + e.getCause(), Toast.LENGTH_LONG).show();
                     }
@@ -109,10 +109,10 @@ public class EditarCargoActivity extends AppCompatActivity {
             int id = cargoActual.getIdCargo();
 
             //Obtener valor de spinner Escuela
-            String escuelaAuxiliar1 = idEscuelaCargo.getSelectedItem().toString();
+            String escuelaAuxiliar1 = idAreaAdmCargo.getSelectedItem().toString();
             String [] escuelaAuxiliar2 = escuelaAuxiliar1.split("-");
             //almacenar id de Escuela
-            String escuela = escuelaAuxiliar2[0].trim();
+            String areaAdm = escuelaAuxiliar2[0].trim();
 
             //Almacenar nombre de cargo
             String nombre = nomCargo.getText().toString();
@@ -126,7 +126,7 @@ public class EditarCargoActivity extends AppCompatActivity {
                     .create(CargoViewModel.class);
             Cargo aux2 = cargoViewModel.getCargo(id);
             aux2.setNomCargo(nombre);
-            aux2.setIdEscuelaFK(Integer.parseInt(escuela));
+            aux2.setIdAreaAdminFK(Integer.parseInt(areaAdm));
             //actualizar
             cargoViewModel.update(aux2);
 

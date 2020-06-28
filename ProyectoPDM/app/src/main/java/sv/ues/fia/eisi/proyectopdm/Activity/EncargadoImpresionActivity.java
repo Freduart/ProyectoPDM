@@ -19,10 +19,14 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.EncargadoImpresionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.EncargadoImpresion;
 
 public class EncargadoImpresionActivity extends AppCompatActivity {
@@ -30,6 +34,9 @@ public class EncargadoImpresionActivity extends AppCompatActivity {
     public static final String ID_ENCARGADO="id_enc_impres";
     FloatingActionButton añadirEncImpres;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
+    private int id_usuario,rol_usuario;
+    private boolean crearEncImpres,editarEncImpres,eliminarEncImpres;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,38 @@ public class EncargadoImpresionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_encargado_impresion);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("ENCARGADO IMPRESIÓN");
+
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
+
+        Bundle bundle=getIntent().getExtras();
+        if(bundle!=null){
+            id_usuario=bundle.getInt(LoginActivity.ID_USUARIO);
+            rol_usuario=bundle.getInt(LoginActivity.USER_ROL);
+        }
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==48){
+                            crearEncImpres=true;
+                        }
+                        if(acceso.getIdOpcionFK()==49){
+                            editarEncImpres=true;
+                        }
+                        if(acceso.getIdOpcionFK()==50){
+                            eliminarEncImpres=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         añadirEncImpres=(FloatingActionButton)findViewById(R.id.nuevoEncImpres);
         final RecyclerView recyclerEncImpres=(RecyclerView)findViewById(R.id.recycler_lista_enc_impres);
@@ -47,8 +86,12 @@ public class EncargadoImpresionActivity extends AppCompatActivity {
         añadirEncImpres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(EncargadoImpresionActivity.this,NuevoEncargadoImpresionActivity.class);
-                startActivity(intent);
+                if(!crearEncImpres){
+                    Toast.makeText(EncargadoImpresionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent=new Intent(EncargadoImpresionActivity.this,NuevoEncargadoImpresionActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -92,9 +135,13 @@ public class EncargadoImpresionActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(EncargadoImpresionActivity.this,EditarEncargadoImpresionActivity.class);
-                intent.putExtra(ID_ENCARGADO,encargadoImpresion.getIdEncargadoImpresion());
-                startActivity(intent);
+                if(!editarEncImpres){
+                    Toast.makeText(EncargadoImpresionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent=new Intent(EncargadoImpresionActivity.this,EditarEncargadoImpresionActivity.class);
+                    intent.putExtra(ID_ENCARGADO,encargadoImpresion.getIdEncargadoImpresion());
+                    startActivity(intent);
+                }
                 alertDialog.dismiss();
             }
         });
@@ -102,9 +149,13 @@ public class EncargadoImpresionActivity extends AppCompatActivity {
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                encargadoImpresionViewModel.delete(encargadoImpresion);
-                Toast.makeText(EncargadoImpresionActivity.this, "Encargado: "+
-                        encargadoImpresion.getIdEncargadoImpresion()+" ha sido eliminado exitosamente.", Toast.LENGTH_SHORT).show();
+                if(!eliminarEncImpres){
+                    Toast.makeText(EncargadoImpresionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    encargadoImpresionViewModel.delete(encargadoImpresion);
+                    Toast.makeText(EncargadoImpresionActivity.this, "Encargado: "+
+                            encargadoImpresion.getIdEncargadoImpresion()+" ha sido eliminado exitosamente.", Toast.LENGTH_SHORT).show();
+                }
                 alertDialog.dismiss();
             }
         });

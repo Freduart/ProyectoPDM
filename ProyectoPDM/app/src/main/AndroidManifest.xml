@@ -3,9 +3,9 @@
     package="sv.ues.fia.eisi.proyectopdm">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.ProcesarSolicitudImpresionActivity"></activity>
+        <activity android:name=".Activity.EditarUsuarioActivity"></activity>
+        <activity android:name=".Activity.NuevoUsuarioActivity" />
+        <activity android:name=".Activity.UsuarioActivity" />
+        <activity android:name=".Activity.ProcesarSolicitudImpresionActivity" />
         <activity android:name=".Activity.SegundaRevision_DocenteActivity" />
         <activity android:name=".Activity.NuevoEncargadoImpresionActivity" />
         <activity android:name=".Activity.EditarEncargadoImpresionActivity" />
@@ -61,7 +64,7 @@
         <activity android:name=".Activity.AgregarAlumnoActivity" />
         <activity android:name=".Activity.verAlumnoActivity" />
         <activity android:name=".Activity.NuevaEditarAlumnoActivity" />
-        <activity android:name=".Activity.InscripcionActivity"/>
+        <activity android:name=".Activity.InscripcionActivity" />
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

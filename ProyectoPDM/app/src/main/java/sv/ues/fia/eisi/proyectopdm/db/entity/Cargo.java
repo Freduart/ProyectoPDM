@@ -12,16 +12,16 @@ public class Cargo {
     @PrimaryKey(autoGenerate = true)
     private int idCargo;
     @ForeignKey(
-            entity = Escuela.class,
-            parentColumns = "idEscuela",
-            childColumns ="idEscuelaFK"
+            entity = AreaAdm.class,
+            parentColumns = "idDeptarmento",
+            childColumns ="idAreaAdminFK"
     )
-    private int idEscuelaFK;
+    private int idAreaAdminFK;
     private String nomCargo;
 
 
-    public Cargo(int idEscuelaFK, String nomCargo) {
-        this.idEscuelaFK = idEscuelaFK;
+    public Cargo(int idAreaAdminFK, String nomCargo) {
+        this.idAreaAdminFK = idAreaAdminFK;
         this.nomCargo = nomCargo;
     }
 
@@ -33,12 +33,12 @@ public class Cargo {
         this.idCargo = idCargo;
     }
 
-    public int getIdEscuelaFK() {
-        return idEscuelaFK;
+    public int getIdAreaAdminFK() {
+        return idAreaAdminFK;
     }
 
-    public void setIdEscuelaFK(int idEscuelaFK) {
-        this.idEscuelaFK = idEscuelaFK;
+    public void setIdAreaAdminFK(int idAreaAdminFK) {
+        this.idAreaAdminFK = idAreaAdminFK;
     }
 
     public String getNomCargo() {

@@ -38,14 +38,17 @@ import java.util.concurrent.TimeoutException;
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaArchivosAdapter;
 import sv.ues.fia.eisi.proyectopdm.Adapter.ListaSolicitudesImpresionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EncargadoImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudImpresionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.UsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.Ws.DownloadFileAsyncTask;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudImpresion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
+import sv.ues.fia.eisi.proyectopdm.repository.AccesoUsuarioRepository;
 
 public class SolicitudImpresionActivity extends AppCompatActivity {
 
@@ -55,10 +58,11 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
     private DocenteViewModel docenteViewModel;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
     private UsuarioViewModel usuarioViewModel;
-    private Usuario usuarioIngresado;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
     private Docente docente;
     private int id_usuario,rol_usuario;
     private String urlDeleteArchivo="http://dr17010pdm115.000webhostapp.com/deleteArchivo.php?archivo=";
+    private boolean crearSolicitud,editarSolicitud,eliminarSolicitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
         usuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(UsuarioViewModel.class);
         solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
+        accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
 
         final Bundle extras = getIntent().getExtras();
         //verifica que los extra no estén vacíos
@@ -98,17 +103,30 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
 
         FloatingActionButton nuevaSolicitud=(FloatingActionButton)findViewById(R.id.nuevaSolicitudImpresion);
         //Para cualquier otro usuario que no sea docente, se deshabilita la opcion de agregar solicitudes de impresion
-        if(rol_usuario!=2){
-            nuevaSolicitud.setVisibility(View.INVISIBLE);
+        try {
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==27){
+                            crearSolicitud=true;
+                        }
+                        if(acceso.getIdOpcionFK()==28){
+                            editarSolicitud=true;
+                        }
+                        if(acceso.getIdOpcionFK()==29){
+                            eliminarSolicitud=true;
+                        }
+                    }
+                }
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
-        nuevaSolicitud.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nuevaSolicitud=new Intent(getApplicationContext(), NuevaSolicitudImpresionActivity.class);
-                nuevaSolicitud.putExtra(LoginActivity.ID_USUARIO, id_usuario);//Mandamos solo el ID del usuairo...
-                startActivity(nuevaSolicitud);
-            }
-        });
         try{
             if(rol_usuario==4){//Para un usuario tipo encargado impresion mostramos solo las solicitudes aprobadas...
                 solicitudImpresionViewModel.obtenerSolicitudPorEstado("APROBADA/\nEN CURSO").observe(this, new Observer<List<SolicitudImpresion>>() {
@@ -180,6 +198,18 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast.makeText(this, "Error en el ViewModel", Toast.LENGTH_SHORT).show();
         }
+        nuevaSolicitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!crearSolicitud){
+                    Toast.makeText(SolicitudImpresionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent nuevaSolicitud=new Intent(getApplicationContext(), NuevaSolicitudImpresionActivity.class);
+                    nuevaSolicitud.putExtra(LoginActivity.ID_USUARIO, id_usuario);//Mandamos solo el ID del usuairo...
+                    startActivity(nuevaSolicitud);
+                }
+            }
+        });
     }
     //AlertDialog para docentes..
     public AlertDialog createCustomAlertDialog(SolicitudImpresion solicitudImpresion){
@@ -210,33 +240,41 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int idSolicitud=solicitudImpresion.getIdImpresion();
-                Intent intent=new Intent(SolicitudImpresionActivity.this,EditarSolicitudImpresionActivity.class);
-                intent.putExtra(IDENTIFICADOR_IMPRESION,idSolicitud);
-                startActivity(intent);
+                if(!editarSolicitud){
+                    Toast.makeText(SolicitudImpresionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    int idSolicitud=solicitudImpresion.getIdImpresion();
+                    Intent intent=new Intent(SolicitudImpresionActivity.this,EditarSolicitudImpresionActivity.class);
+                    intent.putExtra(IDENTIFICADOR_IMPRESION,idSolicitud);
+                    startActivity(intent);
+                }
                 alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url=urlDeleteArchivo+getFileName(solicitudImpresion.getDocumento());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(SolicitudImpresionActivity.this,"Eliminando Archivo Del Servidor...",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        eliminarArchivoDelServer(url);
-                    }
-                }).start();
-                solicitudImpresionViewModel.delete(solicitudImpresion);
-                Toast.makeText(SolicitudImpresionActivity.this, "Solicitud #"+
-                        solicitudImpresion.getIdImpresion()+" de "+solicitudImpresion.getCarnetDocenteFK()+
-                        " ha sido borrada exitosamente", Toast.LENGTH_SHORT).show();
+                if(!eliminarSolicitud){
+                    Toast.makeText(SolicitudImpresionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    String url=urlDeleteArchivo+getFileName(solicitudImpresion.getDocumento());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SolicitudImpresionActivity.this,"Eliminando Archivo Del Servidor...",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            eliminarArchivoDelServer(url);
+                        }
+                    }).start();
+                    solicitudImpresionViewModel.delete(solicitudImpresion);
+                    Toast.makeText(SolicitudImpresionActivity.this, "Solicitud #"+
+                            solicitudImpresion.getIdImpresion()+" de "+solicitudImpresion.getCarnetDocenteFK()+
+                            " ha sido borrada exitosamente", Toast.LENGTH_SHORT).show();
+                }
                 alertDialog.dismiss();
             }
         });

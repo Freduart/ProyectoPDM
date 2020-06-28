@@ -25,10 +25,12 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.Adapter.EvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AccesoUsuarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.Ws.ControladorEvaluacion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 
 public class EvaluacionActivity extends AppCompatActivity {
@@ -40,6 +42,8 @@ public class EvaluacionActivity extends AppCompatActivity {
     private EvaluacionViewModel EvaluacionVM;
     private String identificador;
     private int id_usuario, rol_usuario;
+    private boolean crearEvaluacion,editarEvaluacion,eliminarEvaluacion;
+    private AccesoUsuarioViewModel accesoUsuarioViewModel;
 
     private String url_retrieve = "https://eisi.fia.ues.edu.sv/eisi02/PP15001/ws_evaluacion_retrieve.php";
 
@@ -51,6 +55,7 @@ public class EvaluacionActivity extends AppCompatActivity {
 
             //inicializa viewmodel de evaluacion
             EvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+            accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
 
             //obtiene id de usuario y su rol
             //crear un bundle para recibir los extra del intent
@@ -62,6 +67,22 @@ public class EvaluacionActivity extends AppCompatActivity {
                 //recibe rol del usuario desde el extra
                 rol_usuario = extras.getInt(LoginActivity.USER_ROL);
             }
+            accesoUsuarioViewModel.obtenerAccesosPorUsuario(id_usuario).observe(this, new Observer<List<AccesoUsuario>>() {
+                @Override
+                public void onChanged(List<AccesoUsuario> accesoUsuarios) {
+                    for(AccesoUsuario acceso:accesoUsuarios){
+                        if(acceso.getIdOpcionFK()==18){
+                            crearEvaluacion=true;
+                        }
+                        if(acceso.getIdOpcionFK()==19){
+                            editarEvaluacion=true;
+                        }
+                        if(acceso.getIdOpcionFK()==20){
+                            eliminarEvaluacion=true;
+                        }
+                    }
+                }
+            });
 
             //--nueva evaluacion
             //inicializa boton flotante de acción
@@ -70,14 +91,18 @@ public class EvaluacionActivity extends AppCompatActivity {
             botonNuevaEvaluacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //intent hacia nueva evaluacion activity
-                    Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
-                    //añadir extra que definirá si añade o edita
-                    intent.putExtra(OPERACION_EVALUACION, AÑADIR_EVALUACION);
-                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
-                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
-                    //iniciar activity
-                    startActivity(intent);
+                    if(!crearEvaluacion){
+                        Toast.makeText(EvaluacionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                    }else{
+                        //intent hacia nueva evaluacion activity
+                        Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
+                        //añadir extra que definirá si añade o edita
+                        intent.putExtra(OPERACION_EVALUACION, AÑADIR_EVALUACION);
+                        intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                        intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                        //iniciar activity
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -200,35 +225,44 @@ public class EvaluacionActivity extends AppCompatActivity {
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //guardar id de evaluacion que se tocó
-                    int id = evaluacion.getIdEvaluacion();
-                    //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
-                    Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
-                    //se mete en un extra del intent, el id
-                    intent.putExtra(IDENTIFICADOR_EVALUACION, id);
-                    intent.putExtra(OPERACION_EVALUACION, EDITAR_EVALUACION);
-                    intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
-                    intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
-                    //inicia la activity
-                    startActivity(intent);
-                }catch (Exception e){
-                    Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                if(!editarEvaluacion){
+                    Toast.makeText(EvaluacionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        //guardar id de evaluacion que se tocó
+                        int id = evaluacion.getIdEvaluacion();
+                        //inicializa intent que dirige hacia el detalle de la evaluacion que se tocó
+                        Intent intent = new Intent(EvaluacionActivity.this, NuevaEditarEvaluacionActivity.class);
+                        //se mete en un extra del intent, el id
+                        intent.putExtra(IDENTIFICADOR_EVALUACION, id);
+                        intent.putExtra(OPERACION_EVALUACION, EDITAR_EVALUACION);
+                        intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
+                        intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
+                        //inicia la activity
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                    }
                 }
+                alertDialog.dismiss();
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    EvaluacionVM.deleteEval(evaluacion);
+                if(!eliminarEvaluacion){
+                    Toast.makeText(EvaluacionActivity.this,"Permiso Denegado",Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        EvaluacionVM.deleteEval(evaluacion);
 
-                    Toast.makeText(EvaluacionActivity.this, getText(R.string.inic_notif_eval) +
-                                    evaluacion.getNomEvaluacion() +getText(R.string.accion_borrar_notif_eval),
-                            Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
-                }catch (Exception e){
-                    Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(EvaluacionActivity.this, getText(R.string.inic_notif_eval) +
+                                        evaluacion.getNomEvaluacion() +getText(R.string.accion_borrar_notif_eval),
+                                Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }catch (Exception e){
+                        Toast.makeText(EvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
