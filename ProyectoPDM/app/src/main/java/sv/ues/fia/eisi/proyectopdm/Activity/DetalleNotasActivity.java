@@ -22,14 +22,17 @@ import java.util.concurrent.TimeoutException;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.PrimeraRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SegundaRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 
 public class DetalleNotasActivity extends AppCompatActivity {
     public static final String ID_DETALLE = "ID_det_Actual";
+    public static final String NOTAMAX = "sv.ues.fia.eisi.proyectopdm.Activity.eval.NOTAMAX";
 
     private int idActual;
     private PrimeraRevision revisionRespectiva;
@@ -42,6 +45,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
     private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
     private PrimeraRevisionViewModel primeraRevisionViewModel;
     private SegundaRevisionViewModel segundaRevisionViewModel;
+    private EvaluacionViewModel evaluacionViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
         editarPrimeraRevision = findViewById(R.id.boton_primera_revision_detalle);
         mensajeRevisionExistente = findViewById(R.id.mensaje_revision_existente);
         detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
+        evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
         primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
         segundaRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SegundaRevisionViewModel.class);
         Double notaAux = 0d;
@@ -88,7 +93,15 @@ public class DetalleNotasActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.guardar_detalleeval:
-                guardarDetalle();
+                try {
+                    guardarDetalle();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -102,13 +115,26 @@ public class DetalleNotasActivity extends AppCompatActivity {
         actualizarBotonesRevision();
     }
 
-    private void guardarDetalle(){
+    private void guardarDetalle() throws InterruptedException, ExecutionException, TimeoutException {
         DetalleEvaluacion aux = new DetalleEvaluacion(detalleEvaluacion.getIdEvaluacionFK(),detalleEvaluacion.getCarnetAlumnoFK());
+        Evaluacion evDeDetalle = evaluacionViewModel.getEval(detalleEvaluacion.getIdEvaluacionFK());
+
+        //VALIDACION NOTA
         String campoNota = notaEstudiante.getText().toString();
+        //nota no puede estar vacía
         if(campoNota.trim().isEmpty()){
             Toast.makeText(this,getText(R.string.error_form_incompleto_eval), Toast.LENGTH_LONG).show();
             return;
+            //caso contrario, no puede ser mayor a la nota máxima de evaluacion
+        } else if(Float.parseFloat(campoNota.trim()) > (float) evDeDetalle.getNotaMaxima()){
+            //obtiene nota máxima de evaluacion en string
+            String notaMaxAux = String.format("%s",evDeDetalle.getNotaMaxima());
+            //mensaje de error, informa al usuario que la nota no puede ser mayor a la nota máxima
+            Toast.makeText(this,getText(R.string.notamaxerror) + notaMaxAux, Toast.LENGTH_LONG).show();
+            //cancela
+            return;
         }
+
         Double notaAux = Double.parseDouble(campoNota);
         aux.setNota(notaAux);
         aux.setIdDetalleEv(detalleEvaluacion.getIdDetalleEv());
@@ -135,6 +161,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
                 notaEstudiante.setEnabled(false);
                 mensajeRevisionExistente.setVisibility(View.VISIBLE);
                 revisionRespectiva = listRevision.get(0);
+                Evaluacion evDeDetalle = evaluacionViewModel.getEval(detalleEvaluacion.getIdEvaluacionFK());
                 //al hacer clic corto en un objeto del recycler
                 editarPrimeraRevision.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -143,11 +170,17 @@ public class DetalleNotasActivity extends AppCompatActivity {
                         Intent intent = new Intent(DetalleNotasActivity.this, EditarPrimeraRevisionActivity.class);
                         //se mete en un extra del intent, el id
                         intent.putExtra(PrimeraRevisionActivity.IDENTIFICADOR_PR, listRevision.get(0).getIdPrimerRevision());
+
+                        intent.putExtra(NOTAMAX,evDeDetalle.getNotaMaxima());
                         //inicia la activity
                         startActivityForResult(intent,113);
                     }
                 });
-                double notaDespues = revisionRespectiva.getNotaDespuesPrimeraRev();
+                double notaDespues;
+                if(revisionRespectiva.getNotaDespuesPrimeraRev() != 0.0)
+                    notaDespues = revisionRespectiva.getNotaDespuesPrimeraRev();
+                else
+                    notaDespues = revisionRespectiva.getNotasAntesPrimeraRev();
                 notaEstudiante.setText(String.format("%s", notaDespues));
                 detalleEvaluacion = detalleEvaluacionViewModel.getDetalleEvaluacion(idActual);
                 if(!Double.isNaN(notaDespues)){
@@ -166,6 +199,7 @@ public class DetalleNotasActivity extends AppCompatActivity {
                             //se mete en un extra del intent, el id
                             intent.putExtra(EditarPrimeraRevisionActivity.IDENTIFICADOR_PRIMERA_REVISION, segundaRevision.getIdPrimeraRevisionFK());
                             intent.putExtra(EditarPrimeraRevisionActivity.OPERACION_SEGUNDA_REVISION, EditarPrimeraRevisionActivity.EDITAR_SEGUNDA_REVISION);
+                            intent.putExtra(NOTAMAX,evDeDetalle.getNotaMaxima());
                             //inicia la activity
                             startActivity(intent);
                         }

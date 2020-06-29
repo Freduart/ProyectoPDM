@@ -73,7 +73,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class, Usuario.class,
         AccesoUsuario.class, OpcionCrud.class
-    }, version = 12)
+    }, version = 13)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -326,6 +326,7 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,18));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,7));
@@ -424,12 +425,12 @@ public abstract class DataBase extends RoomDatabase {
                 tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Repetido"));
                 tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Diferido"));
                 //Evaluación
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2,40));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12,50));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2,60));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32,70));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52,70));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102,100));
                 //Local
                 localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
                 localDao.insertarLocal(new Local("LComp4", "Laboratorio 2", "Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));

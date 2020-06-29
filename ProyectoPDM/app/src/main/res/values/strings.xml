@@ -95,6 +95,12 @@
     <string name="labelx_eval">Notas</string>
     <string name="mensaje_grafica_vacia">Sin evaluaciones</string>
     <string name="sinentreganota">La entrega de nota no se ha realizado aún.</string>
+    <string name="notamax">Nota máxima de evaluación.</string>
+    <string name="valornota">Valor de la evaluación</string>
+    <string name="notamaxerror">La nota ingresada es mayor que la nota máxima permitida, por favor ingresa una nota igual o menor a \u0020</string>
+    <string name="graficopastel">Gráfica de aprobación</string>
+    <string name="reprobados">Reprobados</string>
+    <string name="aprobados">Aprobados</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>

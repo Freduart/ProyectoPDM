@@ -36,9 +36,10 @@ public class Evaluacion {
     private String descripcion;
     private String fechaEntregaNotas;
     private int numParticipantes;
+    private int notaMaxima;
 
 
-    public Evaluacion(String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignaturaFK, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes) {
+    public Evaluacion(String carnetDocenteFK, int idTipoEvaluacionFK, String codigoAsignaturaFK, String nomEvaluacion, String fechaInicio, String fechaFin, String descripcion, String fechaEntregaNotas, int numParticipantes, int notaMaxima) {
         this.carnetDocenteFK = carnetDocenteFK;
         this.idTipoEvaluacionFK = idTipoEvaluacionFK;
         this.codigoAsignaturaFK = codigoAsignaturaFK;
@@ -48,6 +49,7 @@ public class Evaluacion {
         this.descripcion = descripcion;
         this.fechaEntregaNotas = fechaEntregaNotas;
         this.numParticipantes=numParticipantes;
+        this.notaMaxima = notaMaxima;
     }
 
     @Ignore
@@ -134,4 +136,13 @@ public class Evaluacion {
     public void setNumParticipantes(int numParticipantes) {
         this.numParticipantes = numParticipantes;
     }
+
+    public int getNotaMaxima() {
+        return notaMaxima;
+    }
+
+    public void setNotaMaxima(int notaMaxima) {
+        this.notaMaxima = notaMaxima;
+    }
+
 }
