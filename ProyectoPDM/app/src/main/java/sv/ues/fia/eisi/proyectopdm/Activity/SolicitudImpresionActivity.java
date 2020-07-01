@@ -442,7 +442,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             if(ruta.endsWith(".pdf")){
                 Intent intent = new Intent( Intent.ACTION_VIEW );
                 intent.setDataAndType(uri,"application/pdf");
-                intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
+                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                 Intent intent1=Intent.createChooser(intent,"Abrir Con: ");
                 startActivity(intent1);
             }else{
@@ -454,7 +454,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 intent.setData(uri);
                 intent.setType("application/*");
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
+                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                 startActivity(intent);
             }
         }else{
