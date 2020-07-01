@@ -73,7 +73,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class, Usuario.class,
         AccesoUsuario.class, OpcionCrud.class
-    }, version = 12)
+    }, version = 13)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -326,6 +326,7 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,18));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,7));
@@ -392,12 +393,12 @@ public abstract class DataBase extends RoomDatabase {
                 docenteDao.insertDocente(new Docente("DOCEISI3", 3, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
                 docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
                 //Asignaturas por area administrativa(Departamentos)
-                asignaturaDao.insertAsignatura(new Asignatura("DSI115", 9, "Diseño de Sistemas I"));
-                asignaturaDao.insertAsignatura(new Asignatura("SGG115", 9, "Sistemas de Información Geográficos"));
-                asignaturaDao.insertAsignatura(new Asignatura("PDM115", 1, "Programación para Dispositivos Móviles"));
-                asignaturaDao.insertAsignatura(new Asignatura("MIP115", 1, "Microprogramación"));
-                asignaturaDao.insertAsignatura(new Asignatura("TAD115", 1, "Teoría Administrativa"));
-                asignaturaDao.insertAsignatura(new Asignatura("FQR215", 3, "Fisicoquímica II"));
+                asignaturaDao.insertAsignatura(new Asignatura("DSI115", 3, "Diseño de Sistemas I"));
+                asignaturaDao.insertAsignatura(new Asignatura("SGG115", 3, "Sistemas de Información Geográficos"));
+                asignaturaDao.insertAsignatura(new Asignatura("PDM115", 2, "Programación para Dispositivos Móviles"));
+                asignaturaDao.insertAsignatura(new Asignatura("MIP115", 2, "Microprogramación"));
+                asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
+                asignaturaDao.insertAsignatura(new Asignatura("FQR215", 5, "Fisicoquímica II"));
                 //Alumnos
                 alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",11));
                 alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 10));
@@ -424,18 +425,21 @@ public abstract class DataBase extends RoomDatabase {
                 tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Repetido"));
                 tipoEvaluacionDao.insertarTipoEv(new TipoEvaluacion("Diferido"));
                 //Evaluación
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52));
-                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Parcial de prueba","11/11/2000","12/11/2005","descripción de parcial de prueba","Sin Fecha",2,40));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Tarea de prueba","11/11/2000","11/11/2000","segunda prueba de descripción","Sin Fecha",12,50));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Actividad de prueba","11/11/2000","10/11/2002","tercera prueba de descripción esta vez mucho más larga más de una línea","Sin Fecha",2,60));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI3",1,"DSI115","Control de lectura","11/11/2000","11/11/2000","cuarta prueba de descripción","Sin Fecha",32,70));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Ensayo de prueba","11/11/2000","10/10/2010","prueba corta","Sin Fecha",52,70));
+                evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102,100));
                 //Local
-                localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
-                localDao.insertarLocal(new Local("LComp4", "Laboratorio 2", "Escuela de Ingeniería de Sistemas Informáticos", 13.711282d, -89.200222d));
-                localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720434d, -89.202106d));
-                localDao.insertarLocal(new Local("D11","Aula D11", "Edificio D", 13.72077d,-89.200545d));
-                localDao.insertarLocal(new Local("F2","Laboratorio UCB F2", "Unidad de Ciencias Básicas",13.720003d,-89.200787d));
+                localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.721252d, -89.200072d));
+                localDao.insertarLocal(new Local("EIIC2", "Cúbiculo 2", "Escuela de Ingeniería Industrial", 13.721354d, -89.200242d));
+                localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720522d, -89.201918d));
+                localDao.insertarLocal(new Local("EIQIAC1", "Cúbiculo 1", "Escuela de Ingeniería Química e Ingeniería de Alimentos", 13.720333d, -89.202191d));
+                localDao.insertarLocal(new Local("EIMC3","Cúbiculo 3", "Escuela de Ingeniería Mecánica", 13.721254d,-89.200997d));
+                localDao.insertarLocal(new Local("F2","Laboratorio F2", "Unidad de Ciencias Básicas",13.719670d,-89.200853d));
+                localDao.insertarLocal(new Local("LabArq", "Aula EA", "Laboratorio de Arquitectura", 13.721739d, -89.200349d));
+                localDao.insertarLocal(new Local("EIEC4", "Cúbiculo 4", "Escuela de Ingeniería Eléctrica", 13720670d, -89.200158d));
                 //Detalle de evaluación
                 detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7.9f));
                 detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"DR17010", 8f));
@@ -445,9 +449,9 @@ public abstract class DataBase extends RoomDatabase {
                 //Primera revisión
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "Ejercicio 1"));
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
-                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 3, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
-                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
-                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp4", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 3, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("EIIC2", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("EIMC1", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
                 //Encargado de impresión
                 encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 14));
                 //Segunda revisión

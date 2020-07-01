@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -58,6 +59,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
     private DatePicker dpickFechaEntregaEvaluacion;
     private TextView fechaEntregaEvaluacionLabel;
     private Button botonDetalleEval;
+    private EditText editNotaMax;
 
 
     @Override
@@ -81,6 +83,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             dpickFechaEntregaEvaluacion = findViewById(R.id.edit_fechaEntregaNotas);
             fechaEntregaEvaluacionLabel = findViewById(R.id.fechaEntregaNotas);
             botonDetalleEval = findViewById(R.id.agregar_detalle_evaluacion);
+            editNotaMax = findViewById(R.id.edit_notamaxima_eval);
             //instancia asignatura view model
             docenteVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
             asignaturaVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
@@ -297,7 +300,8 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     //settear editTexts con los objetos obtenidos
                     editNombreEvaluacion.setText(auxiliar.getNomEvaluacion());
                     editDescripcionEvaluacion.setText(auxiliar.getDescripcion());
-                    editNumParticipantesEvaluacion.setText(auxiliar.getNumParticipantes()+"");
+                    editNumParticipantesEvaluacion.setText(String.format(Locale.US,"%d", auxiliar.getNumParticipantes()));
+                    editNotaMax.setText(String.format(Locale.US,"%d", auxiliar.getNotaMaxima()));
                     //separa en array la fecha obtenida
                     String[] fechaInicioAux = auxiliar.getFechaInicio().split("/");
                     //se ingresa la fecha desde el array
@@ -371,7 +375,10 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             //---almacenar PARTICIPANTES
             String participantes = editNumParticipantesEvaluacion.getText().toString();
 
-            if(nombre.trim().isEmpty() || descripcion.trim().isEmpty() || participantes.trim().isEmpty()){
+            //OBTIENE NOTA MAXIMA DE EVALUACION
+            String notaMax = editNotaMax.getText().toString();
+
+            if(nombre.trim().isEmpty() || descripcion.trim().isEmpty() || participantes.trim().isEmpty() || notaMax.trim().isEmpty()){
                 Toast.makeText(this,getText(R.string.error_form_incompleto_eval), Toast.LENGTH_LONG).show();
                 return;
             }            //instancia View Model de evaluacion
@@ -379,14 +386,15 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
 
             //obtener extras del intent
             Bundle extras = getIntent().getExtras();
-            int idEvaluacion = 0, operacionEv = 0;
+            int idEvaluacion = 0, operacionEv = 0, notaMaxInt = -1;
             if (extras != null) {
                 idEvaluacion = extras.getInt(EvaluacionActivity.IDENTIFICADOR_EVALUACION);
                 operacionEv = extras.getInt(EvaluacionActivity.OPERACION_EVALUACION);
                 //verificar extras de intent
                 if (operacionEv == EvaluacionActivity.EDITAR_EVALUACION && idEvaluacion != 0) {
+                    notaMaxInt = Integer.parseInt(notaMax);
                     //Objeto Evaluación auxiliar construido a partir de los datos almacenados
-                    Evaluacion aux = new Evaluacion(docenteAux1.getCarnetDocente(),tipoEvalAux1.getIdTipoEvaluacion(),asignaturaAux1.getCodigoAsignatura(),nombre,fechaInicio,fechaFin,descripcion,fechaEntrega,Integer.parseInt(participantes));
+                    Evaluacion aux = new Evaluacion(docenteAux1.getCarnetDocente(),tipoEvalAux1.getIdTipoEvaluacion(),asignaturaAux1.getCodigoAsignatura(),nombre,fechaInicio,fechaFin,descripcion,fechaEntrega,Integer.parseInt(participantes),notaMaxInt);
                     aux.setIdEvaluacion(idEvaluacion);
                     //insertar
                     evaluacionViewModel.updateEval(aux);
@@ -395,8 +403,9 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
                     Toast.makeText(NuevaEditarEvaluacionActivity.this, getText(R.string.inic_notif_eval) + idEval + "-" + nombre + getText(R.string.accion_actualizar_notif_eval), Toast.LENGTH_LONG).show();
                 } else if (operacionEv == EvaluacionActivity.AÑADIR_EVALUACION && idEvaluacion == 0) {
+                    notaMaxInt = Integer.parseInt(notaMax);
                     //Objeto Evaluación auxiliar construido a partir de los datos almacenados
-                    Evaluacion aux = new Evaluacion(docenteAux1.getCarnetDocente(),tipoEvalAux1.getIdTipoEvaluacion(),asignaturaAux1.getCodigoAsignatura(),nombre,fechaInicio,fechaFin,descripcion,ENTREGA_NOTAS_PLACEHOLDER,Integer.parseInt(participantes));
+                    Evaluacion aux = new Evaluacion(docenteAux1.getCarnetDocente(),tipoEvalAux1.getIdTipoEvaluacion(),asignaturaAux1.getCodigoAsignatura(),nombre,fechaInicio,fechaFin,descripcion,ENTREGA_NOTAS_PLACEHOLDER,Integer.parseInt(participantes),notaMaxInt);
                     //insertar
                     evaluacionViewModel.insertEval(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)

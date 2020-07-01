@@ -54,6 +54,14 @@
             android:hint="@string/descripcion_eval"
             android:inputType="textMultiLine"
             />
+        <EditText
+            android:id="@+id/edit_notamaxima_eval"
+            app:layout_constraintTop_toBottomOf="@+id/edit_nombre_eval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/notamax"
+            android:inputType="number"
+            />
         <TextView
             android:id="@+id/tipoEvalLabel"
             android:layout_width="match_parent"

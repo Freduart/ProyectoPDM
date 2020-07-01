@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.resources.TextAppearance;
 
 import java.util.List;
 
@@ -31,6 +34,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 public class VerEvaluacionActivity extends AppCompatActivity {
     public static final String ID_EVAL = "sv.ues.fia.eisi.proyectopdm.Activity.EXTRA_ID";
+    public static final String NOTAMAX = "sv.ues.fia.eisi.proyectopdm.Activity.eval.NOTAMAX";
 
     private Evaluacion evaluacionActual;
     private TipoEvaluacion tipoEvaluacionActual;
@@ -39,6 +43,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
     private DetalleEvaluacion detalleEvaluacion;
 
     private int id_usuario, rol_usuario;
+    private int notamax;
 
     private boolean currentUserAlumno = false;
     private TextView headlineNotaAlumno;
@@ -84,9 +89,6 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             noseharealizado.setVisibility(View.GONE);
             //inicializar viewmodels
             evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
-            //docenteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
-            //tipoEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
-            //asignaturaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
             detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
             //obtener intent de activity
@@ -117,6 +119,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             dispAsignaturaEvaluacion.setText(String.format("%s - %s", asignaturaActual.getCodigoAsignatura(), asignaturaActual.getNomasignatura()));
             dispDocenteEvaluacion.setText(String.format("%s - %s %s", docenteActual.getCarnetDocente(), docenteActual.getNomDocente(), docenteActual.getApellidoDocente()));
             dispTipoEvaluacion.setText(tipoEvaluacionActual.getTipoEvaluacion());
+            notamax = evaluacionActual.getNotaMaxima();
             //separa, añade 1 a mes e imprime fecha inicio
             String[] fechaAux = evaluacionActual.getFechaInicio().split("/");
             int mesAux = Integer.parseInt(fechaAux[1]) + 1;
@@ -198,6 +201,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                             intent.putExtra(LoginActivity.ID_USUARIO, id_usuario);
                             intent.putExtra(LoginActivity.USER_ROL, rol_usuario);
                             intent.putExtra(ID_EVAL, evaluacionActual.getIdEvaluacion());
+                            intent.putExtra(NOTAMAX,notamax);
                             //inicia la activity
                             startActivity(intent);
                         } catch (Exception e){
@@ -206,8 +210,15 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                headlineNotaAlumno.setVisibility(View.GONE);
-                notaAlumnoDisplay.setVisibility(View.GONE);
+                headlineNotaAlumno.setVisibility(View.VISIBLE);
+                headlineNotaAlumno.setText(getText(R.string.valornota).toString());
+                notaAlumnoDisplay.setVisibility(View.VISIBLE);
+                notaAlumnoDisplay.setText(String.format("%s",evaluacionActual.getNotaMaxima()));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    notaAlumnoDisplay.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                    notaAlumnoDisplay.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
+                    notaAlumnoDisplay.setPaddingRelative(notaAlumnoDisplay.getPaddingStart(),notaAlumnoDisplay.getPaddingTop(),notaAlumnoDisplay.getPaddingEnd(),40);
+                }
                 solicitarRevisionBtn.setVisibility(View.GONE);
                 alumnosDeEvaluacion.setVisibility(View.VISIBLE);
                 //al hacer clic en el boton

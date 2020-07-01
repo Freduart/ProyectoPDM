@@ -185,6 +185,14 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             if(notaA.trim().isEmpty()||notaD.trim().isEmpty()||ob.trim().isEmpty()){
                 Toast.makeText(this, R.string.error_form_incompleto_eval, Toast.LENGTH_LONG).show();
             }
+            Bundle extras = getIntent().getExtras();
+            //validacion nota ingresada
+            if(Float.parseFloat(notaD.trim()) > (float)extras.getInt(DetalleNotasActivity.NOTAMAX)){
+                String notaMaxAux = String.format("%s",(float)extras.getInt(DetalleNotasActivity.NOTAMAX));
+                //mensaje de error, informa al usuario que la nota no puede ser mayor a la nota máxima
+                Toast.makeText(this,getText(R.string.notamaxerror) + notaMaxAux, Toast.LENGTH_LONG).show();
+                return;
+            }
             DetalleEvaluacion detalleEvaluacionActual;
             detalleEvaluacionActual = detalleEvaluacionViewModel.getDetalleEvaluacion(primeraRevisionActual.getIdDetalleEvFK());
 

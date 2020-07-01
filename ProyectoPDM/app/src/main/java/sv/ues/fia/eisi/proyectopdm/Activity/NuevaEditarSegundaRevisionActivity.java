@@ -152,6 +152,16 @@ public class NuevaEditarSegundaRevisionActivity extends AppCompatActivity {
                     //---almacenar OBSERVACIONES
                     String observaciones = editObservacionesSegundaRevision.getText().toString().trim();
 
+                    //obtiene nota máxima de evaluacion en string
+                    String notaMaxAux = String.format("%s",extras.getInt(DetalleNotasActivity.NOTAMAX));
+
+                    //validacion nota ingresada
+                    if(Float.parseFloat(notaFinal.trim()) > (float)extras.getInt(DetalleNotasActivity.NOTAMAX)){
+                        //mensaje de error, informa al usuario que la nota no puede ser mayor a la nota máxima
+                        Toast.makeText(this,getText(R.string.notamaxerror) + notaMaxAux, Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     //Objeto SegRevuación auxiliar construido a partir de los datos almacenados
                     SegundaRevision aux = new SegundaRevision(idPrimera,fechaRevision,hora,Double.parseDouble(notaFinal),observaciones,fechaSolicitud);
                     aux.setIdSegundaRevision(segundaRevisionActual.getIdSegundaRevision());

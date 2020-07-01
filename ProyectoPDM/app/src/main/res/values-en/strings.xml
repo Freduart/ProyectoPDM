@@ -61,7 +61,7 @@
     <string name="accion_actualizar_notif_eval">\u0020 has been updated.</string>
     <string name="accion_insertar_notif_eval">\u0020 has ben successfully inserted.</string>
     <string name="fecha_noenc_eval">No Date</string>
-    <string name="error_form_incompleto_eval">Please, fill in all the fields</string>
+    <string name="error_form_incompleto_eval">Please fill all the fields</string>
     <string name="añadir_estudiante_evaluacion">Add</string>
     <string name="headline_lista_alumnos_detalleeval">Students in the Assessment:</string>
     <string name="detalle_eval">Students in Assessment</string>
@@ -106,7 +106,7 @@
     <string name="eliminar_docentesmsg1">Teacher \u0020</string>
     <string name="eliminar_docentesmsg2">\u0020 has been deleted.</string>
     <string name="errormsg">An error has occurred. Did you fill in all fields?</string>
-    <string name="adv_msg_rev">There is an existing review for this Grade, if you want to change this grade please edit it in the review\'s screen.</string>
+    <string name="adv_msg_rev">There is an existing review for this Grade, if you want to change this grade edit it in the review\'s screen.</string>
     <string name="noseharealizado">This grade has not been posted yet.</string>
     <string name="sehasolicitado">Review of this grade has been requested.</string>
     <string name="AppBarNameCargos">Posts</string>
@@ -226,6 +226,12 @@
     <string name="textNomUsuario">USERNAME</string>
     <string name="textPasswordUsuario">PASSWORD</string>
     <string name="textRolUsuario">USER ROLE</string>
+    <string name="notamax">Max possible grade for assessment.</string>
+    <string name="notamaxerror">Current grade is greater than the max possible grade for this assessment, provide a grade equal or less to \u0020</string>
+    <string name="graficopastel">Grade\'s Pie Chart.</string>
+    <string name="reprobados">Failed</string>
+    <string name="aprobados">Passed</string>
+    <string name="valornota">Assessment max grade</string>
 
     <!-- Strings Acceso Usuario -->
     <string name="switchMenuAlumno">STUDENTS MENU</string>
