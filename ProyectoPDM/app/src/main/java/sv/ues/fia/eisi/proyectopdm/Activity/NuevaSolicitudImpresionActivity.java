@@ -288,7 +288,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //Previsualizar
-                        String[] mimeTypes =
+                        /*String[] mimeTypes =
                                 {"application/pdf","application/msword", // .doc & .docx
                                         "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
                                         "application/vnd.ms-excel"};
@@ -297,7 +297,33 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
                         intent.setType("application/*");
                         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                         intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                        startActivity(intent);
+                        startActivity(intent);*/
+
+                        File miFile=new File(documento);
+                        if(miFile.exists()){
+                            Uri uri=Uri.fromFile(miFile);
+                            if(documento.endsWith(".pdf")){
+                                Intent intent = new Intent( Intent.ACTION_VIEW );
+                                intent.setDataAndType(uri,"application/pdf");
+                                intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
+                                Intent intent1=Intent.createChooser(intent,"Abrir Con: ");
+                                startActivity(intent1);
+                            }else{
+                                String[] mimeTypes =
+                                        {"application/pdf","application/msword", // .doc & .docx
+                                                "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                                "application/vnd.ms-excel"};
+                                Intent intent = new Intent( Intent.ACTION_VIEW );
+                                intent.setData(uri);
+                                intent.setType("application/*");
+                                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                                intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
+                                startActivity(intent);
+                            }
+                        }else{
+                            Toast.makeText(NuevaSolicitudImpresionActivity.this, "El Archivo No Existe...", Toast.LENGTH_SHORT).show();
+                        }
+
                         alertDialog.dismiss();
                     }
                 }
