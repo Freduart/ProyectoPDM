@@ -2,12 +2,15 @@ package sv.ues.fia.eisi.proyectopdm.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,11 +39,13 @@ public class LocalActivity extends AppCompatActivity {
     private int id_usuario, rol_usuario;
     private boolean crearLocal,editarLocal,eliminarLocal;
     private AccesoUsuarioViewModel accesoUsuarioViewModel;
-
+    private int MY_PERMISSIONS_REQUEST_LOCATION;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local);
+
+        permisoUbicacion();
 
         accesoUsuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AccesoUsuarioViewModel.class);
 
@@ -152,6 +157,21 @@ public class LocalActivity extends AppCompatActivity {
             Toast.makeText(LocalActivity.this, "Error en el ViewModel",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void permisoUbicacion(){
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(LocalActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+
+            return;
+        }
+
     }
 
     public AlertDialog createCustomDialog(final Local local){

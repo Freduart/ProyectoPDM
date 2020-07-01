@@ -92,6 +92,10 @@
             android:text="@string/hintLonLocal"
             app:layout_constraintTop_toBottomOf="@id/vlocal_longitud"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <ImageButton
+            android:id="@+id/btnMap"
+            android:onClick="redirectMaps"
+            android:src="@drawable/ic_map"/>
     </TableLayout>
 
 </ScrollView>

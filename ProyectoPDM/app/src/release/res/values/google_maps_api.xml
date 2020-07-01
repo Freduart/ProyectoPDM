@@ -1,0 +1,23 @@
+<resources>
+    <!--
+    TODO: Before you release your application, you need a Google Maps API key.
+
+    To do this, you can either add your release key credentials to your existing
+    key, or create a new key.
+
+    Note that this file specifies the API key for the release build target.
+    If you have previously set up a key for the debug target with the debug signing certificate,
+    you will also need to set up a key for your release certificate.
+
+    Follow the directions here:
+
+    SHA-1 certificate fingerprint:
+    9D:1F:25:C8:8F:C5:4F:5A:3C:E8:FA:59:D8:8D:CE:B4:FE:D6:CF:DF
+
+    https://developers.google.com/maps/documentation/android/signup
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAbGvt4CbaGcEI0U5hr6YX9mRs139DVnnU</string>
+</resources>
