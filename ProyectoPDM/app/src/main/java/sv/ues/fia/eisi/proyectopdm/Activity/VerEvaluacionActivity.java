@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
 
     private int id_usuario, rol_usuario;
     private int notamax;
+    private Boolean entregaNotas = true;
 
     private boolean currentUserAlumno = false;
     private TextView headlineNotaAlumno;
@@ -105,11 +107,8 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             //obtener evaluación actual por medio de EXTRA_ID de intent
             evaluacionActual = evaluacionViewModel.getEval(idEvaluacion);
             //obtener objetos relacionados
-            //tipoEvaluacionActual = tipoEvaluacionViewModel.getTipoEvaluacion(evaluacionActual.getIdTipoEvaluacionFK());
             tipoEvaluacionActual = evaluacionViewModel.getTiposEval(idEvaluacion);
-            //docenteActual = docenteViewModel.getDocente(evaluacionActual.getCarnetDocenteFK());
             docenteActual = evaluacionViewModel.getDocentesEvaluacion(idEvaluacion);
-            //asignaturaActual = asignaturaViewModel.obtenerAsignatura(evaluacionActual.getCodigoAsignaturaFK());
             asignaturaActual = evaluacionViewModel.getAsignaturaEvaluacion(idEvaluacion);
             //convertir participantes en string
             String partAux = evaluacionActual.getNumParticipantes() + "";
@@ -155,11 +154,12 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                 notaAlumnoDisplay.setVisibility(View.VISIBLE);
                 solicitarRevisionBtn.setVisibility(View.VISIBLE);
                 if(detalleEvaluacion==null){
+                    entregaNotas = false;
                     solicitarRevisionBtn.setEnabled(false);
                     noseharealizado.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     if(!evaluacionActual.getFechaEntregaNotas().equals(getText(R.string.fecha_placeholder_eval).toString())) {
+                        entregaNotas = true;
                         notaAlumnoDisplay.setText(String.format("%s", detalleEvaluacion.getNota()));
                         solicitarRevisionBtn.setEnabled(true);
                         noseharealizado.setVisibility(View.GONE);
@@ -183,6 +183,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                             }
                         }
                     } else {
+                        entregaNotas = false;
                         solicitarRevisionBtn.setEnabled(false);
                         noseharealizado.setVisibility(View.VISIBLE);
                         noseharealizado.setText(getText(R.string.sinentreganota));
@@ -247,6 +248,15 @@ public class VerEvaluacionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.ver_evaluacion_menu, menu);
+        MenuItem botonEstad = menu.findItem(R.id.abrir_estadisticas);
+        if(entregaNotas){
+            botonEstad.setEnabled(true);
+            botonEstad.setIcon(R.drawable.ic_chart);
+        }
+        else {
+            botonEstad.setEnabled(false);
+            botonEstad.setIcon(R.drawable.ic_chart_deac);
+        }
         return true;
     }
 
@@ -256,6 +266,8 @@ public class VerEvaluacionActivity extends AppCompatActivity {
             case R.id.abrir_estadisticas:
                 Intent intent = new Intent(VerEvaluacionActivity.this, EvaluacionGraficasActivity.class);
                 intent.putExtra(ID_EVAL, evaluacionActual.getIdEvaluacion());
+                intent.putExtra(LoginActivity.USER_ROL,rol_usuario);
+                intent.putExtra(LoginActivity.ID_USUARIO,id_usuario);
                 startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
@@ -272,6 +284,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                     noseharealizado.setVisibility(View.VISIBLE);
                 } else {
                     if (!evaluacionActual.getFechaEntregaNotas().equals(getText(R.string.fecha_placeholder_eval).toString())) {
+                        entregaNotas = true;
                         notaAlumnoDisplay.setText(String.format("%s", detalleEvaluacion.getNota()));
                         solicitarRevisionBtn.setEnabled(true);
                         noseharealizado.setVisibility(View.GONE);
@@ -295,6 +308,7 @@ public class VerEvaluacionActivity extends AppCompatActivity {
                             }
                         }
                     } else {
+                        entregaNotas = false;
                         solicitarRevisionBtn.setEnabled(false);
                         noseharealizado.setVisibility(View.VISIBLE);
                         noseharealizado.setText(getText(R.string.sinentreganota));

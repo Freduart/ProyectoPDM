@@ -21,18 +21,6 @@
         android:paddingRight="20dp"
         android:paddingEnd="20dp"/>
     <RelativeLayout
-        android:id="@+id/labelylayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rotation="270"
-        app:layout_constraintTop_toBottomOf="@id/desc_notas_grafica"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tablelayoutchart"
-        app:layout_constraintRight_toLeftOf="@id/tablelayoutchart"
-        app:layout_constraintVertical_weight="2">
-    </RelativeLayout>
-    <RelativeLayout
         android:id="@+id/tablelayoutchart"
         android:layout_height="500dp"
         android:layout_width="0dp"
@@ -41,12 +29,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desc_notas_grafica"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/boton_repetido_repr"
         >
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </RelativeLayout>
+    <Button
+        android:id="@+id/boton_repetido_repr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tablelayoutchart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/solicitarrepetido"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -101,6 +101,7 @@
     <string name="graficopastel">Gráfica de aprobación</string>
     <string name="reprobados">Reprobados</string>
     <string name="aprobados">Aprobados</string>
+    <string name="solicitarrepetido">Solicitar repetido</string>
 
     <!-- Strings para Area Administrativa -->
     <string name="nombre_area">Nombre de área administrativa</string>
