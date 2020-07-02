@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +23,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,6 +214,52 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             });
         } catch (Exception e){
             e.fillInStackTrace();
+        }
+    }
+
+    //Para agregar el icono de agregar un nuevo alumno con zxing en el layout
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater=getMenuInflater();
+        menuInflater.inflate(R.menu.agregar_conzxing,menu);
+        return true;
+    }
+
+    //Funcion de boton guardado en la barra de tareas
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.agregar_zxing:
+                escanear();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    //Metodo para activar la camara y para poder escanear el codigo QR
+    public void escanear(){
+        IntentIntegrator zxingIntent=new IntentIntegrator(this);
+        zxingIntent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        zxingIntent.setPrompt("ESCANEAR CODIGO");
+        zxingIntent.setCameraId(0);
+        zxingIntent.setBeepEnabled(false);
+        zxingIntent.setBarcodeImageEnabled(false);
+        zxingIntent.initiateScan();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult resultzxing=IntentIntegrator.parseActivityResult(requestCode,resultCode, data);
+        if(resultzxing!=null){
+             if(resultzxing.getContents()==null){
+                 Toast.makeText(this, "CANCELASTE EL ESCANEO", Toast.LENGTH_SHORT).show();
+             }else{
+
+             }
+        }else{
+            super.onActivityResult(requestCode,resultCode,data);
         }
     }
 }

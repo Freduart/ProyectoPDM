@@ -121,7 +121,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
             evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
 
-            /*
+/*
             String[] fechaAuxiliar = evaluacionPr.getFechaEntregaNotas().split("/");
             int dia = Integer.parseInt(fechaAuxiliar[0]);
             int mes = Integer.parseInt(fechaAuxiliar[1]);
@@ -129,8 +129,7 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             int diaActual = dpickfechaSoli.getDayOfMonth();
             int mesActual = dpickfechaSoli.getMonth();
             int anioActual = dpickfechaSoli.getYear();
-
-            */
+ */
 
             //if (((diaActual >= dia) && (diaActual <= (dia + 5))) && (mesActual == mes) && (anioActual == anio)) {
                 PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
