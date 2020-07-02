@@ -433,13 +433,13 @@ public abstract class DataBase extends RoomDatabase {
                 evaluacionDao.insertEvaluacion(new Evaluacion("DOCEISI2",1,"PDM115","Parcial de unidad","11/11/2000","11/11/2000","prueba de distintas longitudes de descripción","Sin Fecha",102,100));
                 //Local
                 localDao.insertarLocal(new Local("LComp1","Laboratorio 1","Escuela de Ingeniería de Sistemas Informáticos", 13.721252d, -89.200072d));
-                localDao.insertarLocal(new Local("EIIC2", "Cúbiculo 2", "Escuela de Ingeniería Industrial", 13.721354d, -89.200242d));
+                localDao.insertarLocal(new Local("EIIC2", "Cúbiculo 2", "Escuela de Ingeniería Industrial", 13.721303d, -89.200351d));
                 localDao.insertarLocal(new Local("BIB301","Salón 1 de la biblioteca","Biblioteca de Ingeniería y Arquitectura", 13.720522d, -89.201918d));
                 localDao.insertarLocal(new Local("EIQIAC1", "Cúbiculo 1", "Escuela de Ingeniería Química e Ingeniería de Alimentos", 13.720333d, -89.202191d));
                 localDao.insertarLocal(new Local("EIMC3","Cúbiculo 3", "Escuela de Ingeniería Mecánica", 13.721254d,-89.200997d));
                 localDao.insertarLocal(new Local("F2","Laboratorio F2", "Unidad de Ciencias Básicas",13.719670d,-89.200853d));
                 localDao.insertarLocal(new Local("LabArq", "Aula EA", "Laboratorio de Arquitectura", 13.721739d, -89.200349d));
-                localDao.insertarLocal(new Local("EIEC4", "Cúbiculo 4", "Escuela de Ingeniería Eléctrica", 13720670d, -89.200158d));
+                localDao.insertarLocal(new Local("EIEC4", "Cúbiculo 4", "Escuela de Ingeniería Eléctrica", 13.637352d, -89.377031d));
                 //Detalle de evaluación
                 detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(1, "MM16045", 7.9f));
                 detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(2,"DR17010", 8f));
