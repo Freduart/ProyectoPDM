@@ -1,21 +1,28 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
@@ -33,6 +40,10 @@ public class NuevoCargoActivity extends AppCompatActivity {
     private AreaAdmViewModel areaAdmViewModel;
     private CargoViewModel cargoViewModel;
 
+    //Para reconocimiento de voz a texto
+    private ImageButton ibMic;
+    public static final int REC_CODE_INPUT=100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -41,6 +52,15 @@ public class NuevoCargoActivity extends AppCompatActivity {
 
             nomCargo = (EditText) findViewById(R.id.etNomCargo);
             spinnerIdAreaAdm = (Spinner) findViewById(R.id.spinCodEscuelaFK);
+
+            ibMic = (ImageButton) findViewById(R.id.ibMicCargo);
+
+            ibMic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    iniciarEntradaDeVoz();
+                }
+            });
 
             areaAdmViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
 
@@ -79,6 +99,33 @@ public class NuevoCargoActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(NuevoCargoActivity.this, e.getMessage() + " " +
                     e.getCause(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void iniciarEntradaDeVoz(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hable ahora.");
+        try{
+            startActivityForResult(intent, REC_CODE_INPUT);
+        }catch (ActivityNotFoundException e){
+
+            Toast.makeText(NuevoCargoActivity.this, e.getMessage()+" - "+e.getCause(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REC_CODE_INPUT:{
+                if(resultCode==RESULT_OK && null!=data){
+                    ArrayList<String> result=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    nomCargo.setText(result.get(0));
+                }
+                break;
+            }
         }
     }
 
