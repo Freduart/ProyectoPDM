@@ -22,7 +22,7 @@
         android:paddingEnd="20dp"/>
     <RelativeLayout
         android:id="@+id/tablelayoutchart"
-        android:layout_height="500dp"
+        android:layout_height="425dp"
         android:layout_width="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -30,6 +30,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desc_notas_grafica"
         app:layout_constraintBottom_toTopOf="@+id/boton_repetido_repr"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         >
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart"
