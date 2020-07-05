@@ -59,7 +59,7 @@ public class NuevoCicloActivity extends AppCompatActivity {
             //Inicializa el constructor de String para Fecha de Finalización
             StringBuilder fechaFinBuilder = new StringBuilder(10);
             //Concatena los valores de fecha de finalización
-            fechaIniBuilder.append(dpFechaFin.getDayOfMonth()).append("-").append(dpFechaFin.getMonth()+1).append("-").append(dpFechaFin.getYear());
+            fechaFinBuilder.append(dpFechaFin.getDayOfMonth()).append("-").append(dpFechaFin.getMonth()+1).append("-").append(dpFechaFin.getYear());
             //Asigna la cadena de texto desde el constructor de String
             String fechaFin = fechaIniBuilder.toString();
 

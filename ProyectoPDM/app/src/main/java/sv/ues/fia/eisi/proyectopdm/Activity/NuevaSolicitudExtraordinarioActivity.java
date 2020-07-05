@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,26 +20,30 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.Activity.GraficaEvaluacion.FragmentPastelAprobacion;
 import sv.ues.fia.eisi.proyectopdm.R;
 
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
     private SolicitudExtraordinarioViewModel soliExtraVM;
     private TipoEvaluacionViewModel tipoEvaVM;
+    private AlumnoViewModel alumnoVM;
 
-    private int id_usuario, rol_usuario;
+    private int id_usuario, rol_usuario, graficas;
+    private String id_alum, id_eval;
 
     private EditText idAlumno;
     private EditText idEvaluacion;
     private Spinner tipoSoli;
     private EditText motivoSoli;
-    private EditText fechaSoli;
+    private DatePicker dpFechaSoli;
     private CheckBox justiSoli;
 
     @Override
@@ -52,7 +57,7 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             idEvaluacion = (EditText) findViewById(R.id.editNIdEvaluacion);
             tipoSoli = (Spinner) findViewById(R.id.editNTipoSoli);
             motivoSoli = (EditText) findViewById(R.id.editNMotivoSoliExtra);
-            fechaSoli = (EditText) findViewById(R.id.editNFechaSoliExtra);
+            dpFechaSoli = (DatePicker) findViewById(R.id.editNFechaSoliExtra);
             justiSoli = (CheckBox) findViewById(R.id.NJustiSoliExtra);
 
             //Título personalizado para Activity
@@ -60,8 +65,13 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
 
             final Bundle extras = getIntent().getExtras();
             if (extras != null){
+                //Extras cuando se llega desde el menú
                 id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
                 rol_usuario = extras.getInt(LoginActivity.USER_ROL);
+                //Extras cuando se llega desde las gráficas a solicitar repetido
+                graficas = extras.getInt(FragmentPastelAprobacion.KEY_IS_ROLE);
+                id_alum = extras.getString(FragmentPastelAprobacion.KEY_ID_ESTUDIANTE);
+                id_eval = extras.getString(FragmentPastelAprobacion.KEY_ID_EVALUACION);
             }
 
             //Spinner Tipo evaluacion
@@ -73,12 +83,43 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             tipoEvaVM.getTodosTiposEvaluaciones().observe(this, new Observer<List<TipoEvaluacion>>() {
                 @Override
                 public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
-                    for (TipoEvaluacion x : tiposEvaluaciones) {
-                            tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+" - " + x.getTipoEvaluacion());
+                    try {
+                        for (TipoEvaluacion x : tiposEvaluaciones) {
+                            tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+ " - "+x.getTipoEvaluacion());
+                            if(graficas==1){
+                                //Si la Activity se ha cargado desde el Fragmento para solicitar repetido, se deja fija la opción
+                                tipoSoli.setSelection(graficas);
+                                tipoSoli.setEnabled(false);
+                            }
+                        }
+                        adaptadorSpinnerTipoEval.notifyDataSetChanged();
+                    } catch (Exception e){
+
                     }
-                    adaptadorSpinnerTipoEval.notifyDataSetChanged();
                 }
             });
+
+            //Se importa el ID del Alumno
+            idAlumno.setText(id_alum);
+            //Se deshabilita el ET
+            idAlumno.setEnabled(false);
+
+            //Si se carga la Actividad desde el fragmento de grafica para solicitar repetido, se setean los campos
+            if(graficas==1){
+                //Se importa el ID de la Evaluación
+                idEvaluacion.setText(id_eval);
+                //Se deshabilita el ET
+                idEvaluacion.setEnabled(false);
+
+                //Setea la Justificación para que exista y no se pueda cambiar
+                justiSoli.setChecked(true);
+                justiSoli.setClickable(false);
+
+                //Se deja el motivo en blanco
+                motivoSoli.setText("");
+                //Se deshabilita el ET
+                motivoSoli.setEnabled(false);
+            }
         }catch(Exception e){
             Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, e.getMessage() + " " +
                     e.getCause(), Toast.LENGTH_SHORT).show();
@@ -90,7 +131,14 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
             String carnetAlumno = idAlumno.getText().toString();
             int idEval = Integer.parseInt(idEvaluacion.getText().toString());
             String motivo = motivoSoli.getText().toString();
-            String fecha = fechaSoli.getText().toString();
+
+            //Inicializa el constructor de String para Fecha de Solicitud
+            StringBuilder fechaBuilder = new StringBuilder(10);
+            //Concatena los valores de fecha
+            fechaBuilder.append(dpFechaSoli.getDayOfMonth()).append("-").append(dpFechaSoli.getMonth()+1).append("-").append(dpFechaSoli.getYear());
+            //Asigna la cadena de texto desde el constructor de String
+            String fecha = fechaBuilder.toString();
+
             boolean justi = justiSoli.isSelected();
 
             //---obtener valor de spinner TIPO EVALUACION

@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.proyectopdm.Activity.GraficaEvaluacion.FragmentPastelAprobacion;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
@@ -44,7 +46,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
     private EditText idEvaluacion;
     private Spinner tipoSoli;
     private EditText motivoSoli;
-    private EditText fechaSoli;
+    private DatePicker dpFechaSoli;
     private CheckBox justiSoli;
     private CheckBox estadoSoli;
 
@@ -62,25 +64,9 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             idEvaluacion = (EditText) findViewById(R.id.editIdEvaluacion);
             tipoSoli = (Spinner) findViewById(R.id.editTipoSoli);
             motivoSoli = (EditText) findViewById(R.id.editMotivoSoliExtra);
-            fechaSoli = (EditText) findViewById(R.id.editFechaSoliExtra);
+            dpFechaSoli = (DatePicker) findViewById(R.id.editFechaSoliExtra);
             justiSoli = (CheckBox) findViewById(R.id.JustiSoliExtra);
             estadoSoli = (CheckBox) findViewById(R.id.EstadoSoliExtra);
-
-            //Spinner Tipo evaluacion
-            final ArrayList<String> tipoEvaluacionesNom = new ArrayList<>();
-            final ArrayAdapter<String> adaptadorSpinnerTipoEval = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,tipoEvaluacionesNom);
-            adaptadorSpinnerTipoEval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            tipoSoli.setAdapter(adaptadorSpinnerTipoEval);
-            tipoEvaVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
-            tipoEvaVM.getTodosTiposEvaluaciones().observe(this, new Observer<List<TipoEvaluacion>>() {
-                @Override
-                public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
-                    for (TipoEvaluacion x : tiposEvaluaciones) {
-                        tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+ " - "+x.getTipoEvaluacion());
-                    }
-                    adaptadorSpinnerTipoEval.notifyDataSetChanged();
-                }
-            });
 
             //Inicializa el ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
@@ -93,21 +79,51 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 idSoliExtra = extras.getInt(SolicitudExtraordinarioActivity.IDENTIFICADOR_SOLI_EXTRA);
             }
 
+            //Spinner Tipo evaluacion
+            final ArrayList<String> tipoEvaluacionesNom = new ArrayList<>();
+            final ArrayAdapter<String> adaptadorSpinnerTipoEval = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,tipoEvaluacionesNom);
+            adaptadorSpinnerTipoEval.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            tipoSoli.setAdapter(adaptadorSpinnerTipoEval);
+            tipoEvaVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
+            tipoEvaVM.getTodosTiposEvaluaciones().observe(this, new Observer<List<TipoEvaluacion>>() {
+                @Override
+                public void onChanged(@Nullable List<TipoEvaluacion> tiposEvaluaciones) {
+                    for (TipoEvaluacion x : tiposEvaluaciones) {
+                        tipoEvaluacionesNom.add(x.getIdTipoEvaluacion()+" - " + x.getTipoEvaluacion());
+                        if(x.getIdTipoEvaluacion()==soliExtraActual.getTipoSolicitud()){
+                            //Se selecciona el tipo de evaluación que corresponda, y se deshabilita el spinner
+                            tipoSoli.setSelection((soliExtraActual.getTipoSolicitud())-1);
+                            tipoSoli.setEnabled(false);
+                        }
+                    }
+                    adaptadorSpinnerTipoEval.notifyDataSetChanged();
+                }
+            });
+
             //Se asignan objetos extraídos del ViewModel
             soliExtraActual = soliExtraVM.getSoliExtra(idSoliExtra);
             evaActual = soliExtraVM.getEvaluacion(idSoliExtra);
             alumnoActual = soliExtraVM.getAlumno(idSoliExtra);
             tipoEvaActual = soliExtraVM.getTipoEval(idSoliExtra);
 
+            //El DatePicker queda deshabilitado, la fecha no puede alterarse
+            dpFechaSoli.setEnabled(false);
+
             //Se asignan los valores correspondientes en elementos del Layout
             idAlumno.setText(alumnoActual.getCarnetAlumno());
             idEvaluacion.setText(String.valueOf(evaActual.getIdEvaluacion()));
             motivoSoli.setText(soliExtraActual.getMotivoSolicitud());
-            fechaSoli.setText(soliExtraActual.getFechaSolicitudExtr());
 
             if(soliExtraActual.isJustificacion()){
                 justiSoli.isChecked();
             }
+
+            //Se deshabilitan los campos que no deben ser alterados, por ser llaves foráneas
+            idAlumno.setEnabled(false);
+            idEvaluacion.setEnabled(false);
+            motivoSoli.setEnabled(false);
+            justiSoli.setClickable(false);
+
 
         }catch (Exception e){
             Toast.makeText(this,e.getMessage() +  " - " + e.fillInStackTrace().toString(),Toast.LENGTH_LONG).show();
@@ -123,7 +139,11 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             String carnetAlumno = idAlumno.getText().toString();
             int idEval = Integer.parseInt(idEvaluacion.getText().toString());
             String motivo = motivoSoli.getText().toString();
-            String fecha = fechaSoli.getText().toString();
+
+            //Utiliza fecha original de solicitud.
+            String fechaAux = soliExtraActual.getFechaSolicitudExtr();
+            String fecha = fechaAux;
+
             boolean justi = justiSoli.isChecked();
             boolean estado = estadoSoli.isChecked();
 
