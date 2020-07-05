@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import sv.ues.fia.eisi.proyectopdm.Activity.zxing.CaptureActivityPortrait;
 import sv.ues.fia.eisi.proyectopdm.Adapter.DetalleEvaluacionAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
@@ -217,6 +218,8 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
         }
     }
 
+    //CODIGO DE FREDY PARA LIBRERIAS
+
     //Para agregar el icono de agregar un nuevo alumno con zxing en el layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -244,22 +247,35 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
         zxingIntent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         zxingIntent.setPrompt("ESCANEAR CODIGO");
         zxingIntent.setCameraId(0);
+        zxingIntent.setOrientationLocked(false);
         zxingIntent.setBeepEnabled(false);
+        zxingIntent.setCaptureActivity(CaptureActivityPortrait.class);
         zxingIntent.setBarcodeImageEnabled(false);
         zxingIntent.initiateScan();
     }
 
+    //Metodo para obtener el dato del scan
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         IntentResult resultzxing=IntentIntegrator.parseActivityResult(requestCode,resultCode, data);
         if(resultzxing!=null){
-             if(resultzxing.getContents()==null){
-                 Toast.makeText(this, "CANCELASTE EL ESCANEO", Toast.LENGTH_SHORT).show();
-             }else{
-
-             }
-        }else{
-            super.onActivityResult(requestCode,resultCode,data);
+            if(resultzxing.getContents()!=null){
+                try{
+                    //resultzxing.getContents() es para devolver la informacion obtenida en el scaneo del codigo
+                    DetalleEvaluacion detalleAux=new DetalleEvaluacion(idEvaluacion,resultzxing.getContents());
+                    detalleEvaluacionViewModel.insertDetaleEvalulacion(detalleAux);
+                    //Para actualizar tanto el layout como el listado de alumnos con los alumnos agregados al parcial
+                    adaptador.notifyDataSetChanged();
+                    actualizarScrollAlumnos();
+                }catch (Exception e){
+                    //Toast en caso de error al escanear un codigo
+                    Toast.makeText(this, "ERROR AL INTENTAR AÑADIR", Toast.LENGTH_SHORT).show();
+                }
+            }else {
+                //Mensaje de error al volver atras o no en caso que resultzxing no tenga informacion escanear codigo
+                Toast.makeText(this, "ERROR!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
