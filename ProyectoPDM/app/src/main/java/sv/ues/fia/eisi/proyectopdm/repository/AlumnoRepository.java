@@ -37,6 +37,7 @@ public class AlumnoRepository {
 
     public static class InsertarAlumnoAsyncTask extends AsyncTask<Alumno, Void, Void> {
         private AlumnoDao alumnoDao;
+
         public InsertarAlumnoAsyncTask(AlumnoDao alumnoDao){
             this.alumnoDao = alumnoDao;
         }
@@ -89,6 +90,10 @@ public class AlumnoRepository {
         new InsertarAlumnoAsyncTask(alumnoDao).execute(alumno);
     }
 
+    /*public void insertarServer(Alumno alumno,Context context){
+        new insertAlumnoServerAsynTask(alumno,context).execute();
+    }*/
+
     public void actualizar(Alumno alumno){
         new ActualizarAlumnoAsyncTask(alumnoDao).execute(alumno);
     }
@@ -135,4 +140,48 @@ public class AlumnoRepository {
             return alumnoDao.obtenerAlumno(alumnos[0]);
         }
     }
+/*
+    private static class insertAlumnoServerAsynTask extends AsyncTask<Void,Void,Void>{
+        private Alumno alumno;
+        private StringRequest stringRequest;
+        private String url="http://192.168.1.6/CrudAlumno/alumno_insert.php";
+        private Context context;
+
+        public insertAlumnoServerAsynTask(Alumno alumno, Context context) {
+            this.alumno = alumno;
+            this.context = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            stringRequest=new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Toast.makeText(context,response,Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Toast.makeText(context,error.toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            ){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String>  params = new HashMap<String, String>();
+                    params.put("carnetalumno",alumno.getCarnetAlumno());
+                    params.put("idusuariofk",String.valueOf(alumno.getIdUsuarioFk()));
+                    params.put("nombre",alumno.getNombre());
+                    params.put("apellido",alumno.getApellido());
+                    params.put("carrera",alumno.getCarrera());
+                    params.put("correo",alumno.getCorreo());
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+            return null;
+        }
+    }*/
 }

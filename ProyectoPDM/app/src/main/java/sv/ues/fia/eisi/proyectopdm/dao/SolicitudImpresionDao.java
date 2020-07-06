@@ -41,4 +41,7 @@ public interface SolicitudImpresionDao {
 
     @Query("select * from SolicitudImpresion where DocDirector == :docDirector")
     LiveData<List<SolicitudImpresion>> obtenerSolicitudesPorDirector(String docDirector);
+
+    @Query("delete from SolicitudImpresion where idImpresion=:idImpresion")
+    void eliminarSolicitudPorId(String idImpresion);
 }

@@ -37,6 +37,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -52,7 +58,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -88,11 +96,7 @@ public class EditarSolicitudImpresionActivity extends AppCompatActivity {
     private EncargadoImpresion encImpresActual;
     boolean documentoModificado;
 
-    ProgressDialog dialog = null;
-    public static final String upLoadServerUri="http://dr17010pdm115.000webhostapp.com/procesar.php";
-    int serverResponseCode = 0;
     private String archivoEliminado;
-    boolean result;
     private String urlDeleteArchivo="http://dr17010pdm115.000webhostapp.com/deleteArchivo.php?archivo=";
 
     @Override

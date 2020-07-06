@@ -3,15 +3,18 @@ package sv.ues.fia.eisi.proyectopdm.Activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +26,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -31,7 +40,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -52,6 +63,7 @@ import sv.ues.fia.eisi.proyectopdm.repository.AccesoUsuarioRepository;
 
 public class SolicitudImpresionActivity extends AppCompatActivity {
 
+    static final int READ_STORAGE_PERMISSION = 2, WRITE_STORAGE_PERMISSION = 3, INTERNET = 4, NETWORK_STATE = 5;
     public static final String IDENTIFICADOR_IMPRESION = "ID_IMPREISON";
     private static final String DIRECTORIO_DOCUMENTOS = "DocumentosImpresion";
     private SolicitudImpresionViewModel solicitudImpresionViewModel;
@@ -72,6 +84,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("SOLICITUD IMPRESIÓN");
 
+        solicitarPermisos();
         docenteViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DocenteViewModel.class);
         usuarioViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(UsuarioViewModel.class);
         solicitudImpresionViewModel=new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudImpresionViewModel.class);
@@ -171,8 +184,30 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                             listaSolicitudesImpresionAdapter.notifyDataSetChanged();
                         }
                     });
-                }else{//De lo contrario, obtenemos las solicitudes de impresion por carnet de docente...
+                }else if(rol_usuario==2){//De lo contrario, obtenemos las solicitudes de impresion por carnet de docente...
                     solicitudImpresionViewModel.obtenerSolicitudesPorCarnet(docente.getCarnetDocente()).observe(this, new Observer<List<SolicitudImpresion>>() {
+                        @Override
+                        public void onChanged(List<SolicitudImpresion> solicitudImpresions) {
+                            listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
+                            listaSolicitudesImpresionAdapter.setDocenteViewModel(docenteViewModel);
+                            listaSolicitudesImpresionAdapter.setOnItemClickListener(new ListaSolicitudesImpresionAdapter.OnItemClickListener() {
+                                @Override
+                                public void OnItemClick(int position, SolicitudImpresion solicitudImpresion) {
+                                    dialogVerSolicitud(solicitudImpresion).show();
+                                }
+                            });
+                            listaSolicitudesImpresionAdapter.setOnLongClickListener(new ListaSolicitudesImpresionAdapter.OnItemLongClickListener() {
+                                @Override
+                                public void OnItemLongClick(int position, SolicitudImpresion solicitudImpresion) {
+                                    //Opciones de AlertDialog
+                                    createCustomAlertDialog(solicitudImpresion).show();
+                                }
+                            });
+                            listaSolicitudesImpresionAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }else{
+                    solicitudImpresionViewModel.getAllSolicitudesImpresion().observe(this, new Observer<List<SolicitudImpresion>>() {
                         @Override
                         public void onChanged(List<SolicitudImpresion> solicitudImpresions) {
                             listaSolicitudesImpresionAdapter.setListaSolicitudesImpresion(solicitudImpresions);
@@ -383,6 +418,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
         textDetallesImpresion.setText(splitAnexos[1]);
         return alertDialog;
     }
+
     //AlertDialog para encargado de impresion
     public AlertDialog procesarSolicitudImpresionAlertDialog(SolicitudImpresion solicitudImpresion){
         final AlertDialog alertDialog;
@@ -459,6 +495,19 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             }
         }else{
             Toast.makeText(SolicitudImpresionActivity.this, "El Archivo No Existe...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Metodos para solicitar permisos de lectura, escritura y accceso a internet
+    private void solicitarPermisos() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(SolicitudImpresionActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_STORAGE_PERMISSION);
         }
     }
 }

@@ -346,4 +346,5 @@
     <string name="checkCreacEncImpres">Crear Encargado Impresión</string>
     <string name="checkEliminarEncImpres">Eliminar Encargado Impresión</string>
     <string name="title_activity_maps">Map</string>
+    <string name="ipServer">http://07dfc28ffa06.ngrok.io/</string>
 </resources>

@@ -176,4 +176,5 @@ public class EncargadoImpresionActivity extends AppCompatActivity {
         alertDialog = builder.create();
         return alertDialog;
     }
+
 }

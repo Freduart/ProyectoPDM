@@ -1,6 +1,7 @@
 package sv.ues.fia.eisi.proyectopdm.ViewModel;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -33,6 +34,10 @@ public class AlumnoViewModel extends AndroidViewModel {
         //Enlace con la clase dao
         repository.insertar(alumno);
     }
+
+    /*public void insertServer(Alumno alumno,Context context){
+        repository.insertarServer(alumno,context);
+    }*/
 
     public void update(Alumno alumno){
         repository.actualizar(alumno);
