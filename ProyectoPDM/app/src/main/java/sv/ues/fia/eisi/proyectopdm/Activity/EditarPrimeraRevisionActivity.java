@@ -297,6 +297,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
                 //Actualizar
                 primeraRevisionViewModel.updatePrimeraRevision(p);
 
+                setResult(RESULT_OK);
 
                 //Se setean propiedades para la conectividad del correo
                 Properties properties = new Properties();
@@ -326,7 +327,6 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
-                setResult(RESULT_OK);
             }
         }catch (Exception e){
             Toast.makeText(EditarPrimeraRevisionActivity.this, e.getMessage() + " " + e.getCause(), Toast.LENGTH_LONG).show();
