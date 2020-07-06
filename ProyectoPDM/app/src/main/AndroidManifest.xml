@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sv.ues.fia.eisi.proyectopdm">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -22,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".Activity.Perfil_Activity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,10 +34,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-
         <activity
             android:name=".Activity.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity android:name=".Activity.EditarUsuarioActivity" />
         <activity android:name=".Activity.NuevoUsuarioActivity" />
         <activity android:name=".Activity.UsuarioActivity" />
@@ -101,17 +99,13 @@
         <activity android:name=".Activity.VerEvaluacionActivity" />
         <activity android:name=".Activity.DetalleEvaluacionActivity" />
         <activity android:name=".Activity.DetalleNotasActivity" />
-        <activity android:name=".Activity.EvaluacionGraficasActivity" />
-
-        <!-- Para agregar zxing de manera vertical, la linea 108 es la encargada de la orientacion de la pantalla -->
-        <activity android:name=".Activity.zxing.CaptureActivityPortrait"
+        <activity android:name=".Activity.EvaluacionGraficasActivity" /> <!-- Para agregar zxing de manera vertical, la linea 108 es la encargada de la orientacion de la pantalla -->
+        <activity
+            android:name=".Activity.zxing.CaptureActivityPortrait"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
-
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
     </application>
 
 </manifest>

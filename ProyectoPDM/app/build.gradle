@@ -97,4 +97,7 @@ dependencies {
 
     //Zxing (Lector de codigo QR y codigo de barras)
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+
+    //Autentificacion con google
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 }
