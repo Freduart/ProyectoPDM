@@ -77,7 +77,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
 
         public void onPreExecute() {
             super.onPreExecute();
-            this.progressDialog = ProgressDialog.show(EditarSolicitudExtraordinarioActivity.this, "Please Wait", "Sending Mail...", true, false);
+            this.progressDialog = ProgressDialog.show(EditarSolicitudExtraordinarioActivity.this, "Por favor espere", "Enviando Correo...", true, false);
         }
 
         /* access modifiers changed from: protected */
@@ -102,7 +102,7 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditarSolicitudExtraordinarioActivity.this);
                 builder.setCancelable(false);
                 builder.setTitle(Html.fromHtml("<font color='#509324'>Éxito</font>"));
-                builder.setMessage("Correo de notificación enviado.");
+                builder.setMessage("Cambios guardados. Correo de notificación enviado.");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
