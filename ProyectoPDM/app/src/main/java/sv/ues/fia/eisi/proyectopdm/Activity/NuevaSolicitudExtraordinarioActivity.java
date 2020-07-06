@@ -38,9 +38,12 @@ import javax.mail.internet.MimeMessage;
 import sv.ues.fia.eisi.proyectopdm.Activity.GraficaEvaluacion.FragmentPastelAprobacion;
 import sv.ues.fia.eisi.proyectopdm.R;
 
+<<<<<<< HEAD
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
+=======
+>>>>>>> parent of c53d5a2... Revert "SincronizacioService"
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;

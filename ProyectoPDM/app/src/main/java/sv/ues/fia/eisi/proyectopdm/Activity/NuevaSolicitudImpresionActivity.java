@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +22,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -45,14 +42,11 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,10 +85,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
     private SolicitudImpresion solicitudImpresion;
     private Docente docente;
 
-    ProgressDialog dialog = null;
-    public static final String upLoadServerUri="http://dr17010pdm115.000webhostapp.com/procesar.php";
-    public static final String insertServerUri="https://eisi.fia.ues.edu.sv/eisi02/DR17010/InsertSolicitudImpresion.php?";
-    int serverResponseCode = 0, id_usuario;
+    int id_usuario;
     boolean result;
 
     @Override
@@ -573,34 +564,6 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
             result=false;
-        }
-    }
-
-    public void insertSolicitudImpresionServer(SolicitudImpresion solicitudImpresion){
-        HttpURLConnection connection;
-        String urlParams=insertServerUri+"idImpresion="+solicitudImpresion.getIdImpresion()+
-                "&carnetDocente="+solicitudImpresion.getCarnetDocenteFK()+
-                "&idEncargado="+solicitudImpresion.getIdEncargadoFK()+
-                "&docDirector="+solicitudImpresion.getDocDirector()+
-                "&numImpresiones="+solicitudImpresion.getNumImpresiones()+
-                "&detalleImpresion="+solicitudImpresion.getDetalleImpresion()+
-                "&resultadoImpresion="+solicitudImpresion.getResultadoImpresion()+
-                "&estadoSolicitud="+solicitudImpresion.getEstadoSolicitud()+
-                "&fechaSolicitudImp="+solicitudImpresion.getFechaSolicitud()+
-                "&documento="+solicitudImpresion.getDocumento();
-        try {
-            URL url=new URL(urlParams);
-            connection=(HttpURLConnection)url.openConnection();
-            connection.setReadTimeout(10000);
-            connection.setConnectTimeout(15000);
-            connection.setRequestMethod("GET");
-            String result=connection.getResponseMessage();
-            connection.disconnect();
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

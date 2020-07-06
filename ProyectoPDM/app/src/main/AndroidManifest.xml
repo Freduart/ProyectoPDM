@@ -21,7 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+<<<<<<< HEAD
         <activity android:name=".Activity.Perfil_Activity"></activity>
+=======
+
+        <service android:name=".Activity.SincronizacionService"></service>
+
+>>>>>>> parent of c53d5a2... Revert "SincronizacioService"
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

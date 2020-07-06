@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,10 +26,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-//import sv.ues.fia.eisi.proyectopdm.Adapter.SpinAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
-//import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
@@ -60,7 +57,6 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
     private TextView fechaEntregaEvaluacionLabel;
     private Button botonDetalleEval;
     private EditText editNotaMax;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -406,6 +402,8 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     notaMaxInt = Integer.parseInt(notaMax);
                     //Objeto Evaluación auxiliar construido a partir de los datos almacenados
                     Evaluacion aux = new Evaluacion(docenteAux1.getCarnetDocente(),tipoEvalAux1.getIdTipoEvaluacion(),asignaturaAux1.getCodigoAsignatura(),nombre,fechaInicio,fechaFin,descripcion,ENTREGA_NOTAS_PLACEHOLDER,Integer.parseInt(participantes),notaMaxInt);
+                    Evaluacion aux2=aux;
+                    aux2.setIdEvaluacion(idEvaluacion);
                     //insertar
                     evaluacionViewModel.insertEval(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)

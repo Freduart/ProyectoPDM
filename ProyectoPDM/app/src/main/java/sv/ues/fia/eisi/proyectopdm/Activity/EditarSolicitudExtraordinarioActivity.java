@@ -38,7 +38,6 @@ import javax.mail.internet.MimeMessage;
 import sv.ues.fia.eisi.proyectopdm.Activity.GraficaEvaluacion.FragmentPastelAprobacion;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;

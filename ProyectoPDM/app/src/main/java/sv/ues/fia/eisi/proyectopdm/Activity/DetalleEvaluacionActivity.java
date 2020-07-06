@@ -1,5 +1,16 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+<<<<<<< HEAD
+=======
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+>>>>>>> parent of c53d5a2... Revert "SincronizacioService"
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -59,6 +70,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_detalle_evaluacion);
+
             spinnerAlumnos = findViewById(R.id.spinner_alumnos_detalle);
             botonAgregar = findViewById(R.id.agregar_alumno_detalle);
             //Obtener bundle de extras (Del intent)

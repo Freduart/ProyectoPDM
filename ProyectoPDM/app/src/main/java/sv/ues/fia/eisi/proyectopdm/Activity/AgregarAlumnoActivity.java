@@ -1,12 +1,9 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.ActivityNotFoundException;
@@ -32,7 +29,6 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
-import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 
 public class AgregarAlumnoActivity extends AppCompatActivity {
@@ -62,6 +58,7 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
             et_correo=(EditText)findViewById(R.id.et_Correo);
             spin_Carrera=(Spinner)findViewById(R.id.spn_Carrera);
 
+<<<<<<< HEAD
             ibMic = (ImageButton) findViewById(R.id.micst);
 
             ibMic.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +68,8 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
                 }
             });
 
+=======
+>>>>>>> parent of c53d5a2... Revert "SincronizacioService"
             //Llenado del Spinner Carreras
             final ArrayList<String>carrerasNom=new ArrayList<>();
             final ArrayAdapter<String>adapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,carrerasNom);
