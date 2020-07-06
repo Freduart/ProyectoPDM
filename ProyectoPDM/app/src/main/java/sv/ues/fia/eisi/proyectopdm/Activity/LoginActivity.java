@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,11 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,12 +40,19 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
 Login sin restriccion de acceso... De momento
  */
 
-public class LoginActivity extends AppCompatActivity {
+//Se necesita implementar GoogleApiClient.onConnectionFailedListener para poder usar el sing in de google
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     public static final String ID_USUARIO = "ID_USUARIO_INGRESADO";
     public static final String USERNAME = "USER_NAME";
     public static final String USER_ROL = "USER_ROL";
     public static final String USER_PASSWORD = "USER_PASSWORD";
     static final int READ_STORAGE_PERMISSION = 2, WRITE_STORAGE_PERMISSION = 3, INTERNET = 4, NETWORK_STATE = 5;
+
+    //Codigo de Fredy
+    //Variables a utilizar para el sing In
+    private SignInButton signInButton;
+    private GoogleApiClient googleApiClient;
+    private static final int SING_IN=1;
 
 
     EditText usernom, passuser;
@@ -54,6 +72,24 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.btnLogin);
 
         usuarioViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(UsuarioViewModel.class);
+
+        //Codigo de Fredy para el login con google
+        GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
+        googleApiClient=new GoogleApiClient.Builder(this).enableAutoManage(this,this )
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
+
+        signInButton=findViewById(R.id.SingInGoogle);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loginIntent=Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(loginIntent, SING_IN);
+            }
+        });
+
+        //Fin del codigo de Fredy para el login con google
+
 
         PreferenceSingleton.getInstance().Initialize(getApplicationContext());
         String usuario=PreferenceSingleton.getInstance().readPreference(USERNAME);
@@ -194,5 +230,26 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+    //Codigo de Fredy para el logueo con google
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode== SING_IN){
+            GoogleSignInResult result=Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if(result.isSuccess()){
+                startActivity(new Intent(LoginActivity.this,Perfil_Activity.class));
+                finish();
+            }else{
+                Toast.makeText(this, "Error al loguearse", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

@@ -1,15 +1,5 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +13,15 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -57,7 +56,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_detalle_evaluacion);
             spinnerAlumnos = findViewById(R.id.spinner_alumnos_detalle);
@@ -88,8 +87,8 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(List<DetalleEvaluacion> detalles) {
                     listaSalida.clear();
-                    for(DetalleEvaluacion x : detalles)
-                        if (x.getIdEvaluacionFK()==idEvaluacion)
+                    for (DetalleEvaluacion x : detalles)
+                        if (x.getIdEvaluacionFK() == idEvaluacion)
                             listaSalida.add(x);
                     //mete los detalles en el adaptador
                     adaptador.setDetalleEvaluaciones(listaSalida, alumnoViewModel, escuelaViewModel);
@@ -119,11 +118,11 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             actualizarScrollAlumnos();
             setTitle(getText(R.string.evaluacion));
         } catch (Exception e) {
-            Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    public void ejecutarAñadirDetalle(View view){
+    public void ejecutarAñadirDetalle(View view) {
         try {
             Alumno alumno = (Alumno) spinnerAlumnos.getSelectedItem();
             DetalleEvaluacion detalleAux = new DetalleEvaluacion(idEvaluacion, alumno.getCarnetAlumno(), -1);
@@ -131,16 +130,16 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             adaptador.notifyDataSetChanged();
             actualizarScrollAlumnos();
         } catch (Exception e) {
-            Toast.makeText(this,e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    public AlertDialog createCustomDialog(final DetalleEvaluacion detalleEvaluacion){
+    public AlertDialog createCustomDialog(final DetalleEvaluacion detalleEvaluacion) {
         final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_opciones, null);
-        ImageButton editar = view.findViewById(R.id.imBEditar) ;
+        ImageButton editar = view.findViewById(R.id.imBEditar);
         editar.setVisibility(View.GONE);
         ImageButton eliminar = view.findViewById(R.id.imBEliminar);
         TextView textViewv = view.findViewById(R.id.tituloAlert);
@@ -154,19 +153,19 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
                     detalleEvaluacionViewModel.deleteDetalleEvaluacion(detalleEvaluacion);
 
                     Toast.makeText(DetalleEvaluacionActivity.this, getText(R.string.inic_notif_detalle) +
-                                    detalleEvaluacion.getCarnetAlumnoFK() +getText(R.string.accion_borrar_notif_Detalle),
+                                    detalleEvaluacion.getCarnetAlumnoFK() + getText(R.string.accion_borrar_notif_Detalle),
                             Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                     actualizarScrollAlumnos();
-                }catch (Exception e){
-                    Toast.makeText(DetalleEvaluacionActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(DetalleEvaluacionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
         return alertDialog;
     }
 
-    public void actualizarScrollAlumnos(){
+    public void actualizarScrollAlumnos() {
         try {
             //Spinner alumnos
             final ArrayList<Alumno> alumnosLista = new ArrayList<>();
@@ -213,7 +212,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
 
                 }
             });
-        } catch (Exception e){
+        } catch (Exception e) {
             e.fillInStackTrace();
         }
     }
@@ -223,8 +222,8 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
     //Para agregar el icono de agregar un nuevo alumno con zxing en el layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater=getMenuInflater();
-        menuInflater.inflate(R.menu.agregar_conzxing,menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.agregar_conzxing, menu);
         return true;
     }
 
@@ -242,8 +241,8 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
 
 
     //Metodo para activar la camara y para poder escanear el codigo QR
-    public void escanear(){
-        IntentIntegrator zxingIntent=new IntentIntegrator(this);
+    public void escanear() {
+        IntentIntegrator zxingIntent = new IntentIntegrator(this);
         zxingIntent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         zxingIntent.setPrompt("ESCANEAR CODIGO");
         zxingIntent.setCameraId(0);
@@ -263,7 +262,7 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
             if(resultzxing.getContents()!=null){
                 try{
                     //resultzxing.getContents() es para devolver la informacion obtenida en el scaneo del codigo
-                    DetalleEvaluacion detalleAux=new DetalleEvaluacion(idEvaluacion,resultzxing.getContents());
+                    DetalleEvaluacion detalleAux = new DetalleEvaluacion(idEvaluacion,resultzxing.getContents());
                     detalleEvaluacionViewModel.insertDetaleEvalulacion(detalleAux);
                     //Para actualizar tanto el layout como el listado de alumnos con los alumnos agregados al parcial
                     adaptador.notifyDataSetChanged();
@@ -279,3 +278,4 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
         }
     }
 }
+
