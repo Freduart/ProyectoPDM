@@ -21,8 +21,11 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
+import sv.ues.fia.eisi.proyectopdm.repository.CargoRepository;
 
 public class EditarCargoActivity extends AppCompatActivity {
 
@@ -137,7 +140,6 @@ public class EditarCargoActivity extends AppCompatActivity {
                     e.getCause(), Toast.LENGTH_SHORT).show();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

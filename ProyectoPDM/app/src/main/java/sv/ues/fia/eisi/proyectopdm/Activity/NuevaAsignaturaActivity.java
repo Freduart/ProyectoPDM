@@ -20,8 +20,10 @@ import java.util.List;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 public class NuevaAsignaturaActivity extends AppCompatActivity {
 

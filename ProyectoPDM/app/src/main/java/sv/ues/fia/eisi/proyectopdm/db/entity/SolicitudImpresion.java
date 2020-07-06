@@ -134,10 +134,4 @@ public class SolicitudImpresion {
     public void setDocumento(String documento) {
         this.documento = documento;
     }
-
-    public String toString(){
-        return idImpresion + " - "+carnetDocenteFK+" - "+idEncargadoFK+" - "+DocDirector+" - "+numImpresiones+"\n"
-                +detalleImpresion+" - "+resultadoImpresion+" - "+estadoSolicitud+" - "+fechaSolicitud+"\n"
-                +documento;
-    }
 }

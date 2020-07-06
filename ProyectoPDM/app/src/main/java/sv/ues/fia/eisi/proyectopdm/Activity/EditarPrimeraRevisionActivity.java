@@ -7,14 +7,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.SegundaRevisionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 import sv.ues.fia.eisi.proyectopdm.db.entity.PrimeraRevision;
+import sv.ues.fia.eisi.proyectopdm.db.entity.SegundaRevision;
 
 public class EditarPrimeraRevisionActivity extends AppCompatActivity {
 

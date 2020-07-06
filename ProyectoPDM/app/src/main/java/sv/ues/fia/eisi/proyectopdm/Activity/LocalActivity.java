@@ -40,7 +40,6 @@ public class LocalActivity extends AppCompatActivity {
     private boolean crearLocal,editarLocal,eliminarLocal;
     private AccesoUsuarioViewModel accesoUsuarioViewModel;
     private int MY_PERMISSIONS_REQUEST_LOCATION;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

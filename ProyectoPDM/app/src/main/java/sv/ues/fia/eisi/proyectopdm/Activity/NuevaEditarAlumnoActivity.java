@@ -18,11 +18,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.LocalViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Local;
 
 /*
 Metodo para editar alumno en base al carnet del estudiante y mostrando los datos correspondientes en su pantalla
@@ -118,6 +125,7 @@ public class NuevaEditarAlumnoActivity extends AppCompatActivity {
             alumno.setCorreo(correo);
             alumno.setIdUsuarioFk(3);
             //alumno.setCarrera(String.valueOf(carreraSelect));
+
             alumnoViewModel.update(alumno);
 
             Toast.makeText(this, "El alummno: " + carnet + " a sido actualizado correctamente", Toast.LENGTH_SHORT).show();

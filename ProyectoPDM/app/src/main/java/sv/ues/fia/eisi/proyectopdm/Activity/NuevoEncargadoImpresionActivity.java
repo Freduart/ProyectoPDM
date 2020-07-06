@@ -21,6 +21,7 @@ public class NuevoEncargadoImpresionActivity extends AppCompatActivity {
 
     TextInputLayout textNomenc;
     private EncargadoImpresionViewModel encargadoImpresionViewModel;
+    String idU;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

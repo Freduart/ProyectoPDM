@@ -89,5 +89,4 @@ public class EditarEncargadoImpresionActivity extends AppCompatActivity {
             }
         }
     }
-
 }

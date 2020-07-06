@@ -208,5 +208,4 @@ public class CicloActivity extends AppCompatActivity {
         });
         return alertDialog;
     }
-
 }

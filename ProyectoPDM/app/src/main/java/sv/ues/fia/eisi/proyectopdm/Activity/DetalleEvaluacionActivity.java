@@ -3,6 +3,7 @@ package sv.ues.fia.eisi.proyectopdm.Activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,7 +52,6 @@ public class DetalleEvaluacionActivity extends AppCompatActivity {
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_detalle_evaluacion);
-
             spinnerAlumnos = findViewById(R.id.spinner_alumnos_detalle);
             botonAgregar = findViewById(R.id.agregar_alumno_detalle);
             //Obtener bundle de extras (Del intent)

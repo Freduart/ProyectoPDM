@@ -263,7 +263,6 @@ public class MenuActivity extends AppCompatActivity {
                 PreferenceSingleton.getInstance().writePreference(USER_PASSWORD, "");
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(intent);
-                SincronizacionService.shouldContinue = false;
                 Toast.makeText(getApplicationContext(), "Hasta Pronto!", Toast.LENGTH_LONG).show();
                 finish();
                 alertDialog.dismiss();
