@@ -11,11 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.text.Html;
 import android.util.Log;
-=======
->>>>>>> parent of c53d5a2... Revert "SincronizacioService"
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

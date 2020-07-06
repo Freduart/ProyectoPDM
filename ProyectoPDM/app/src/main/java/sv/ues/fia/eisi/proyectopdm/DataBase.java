@@ -394,17 +394,10 @@ public abstract class DataBase extends RoomDatabase {
 
                 //Docente
                 docenteDao.insertDocente(new Docente("DOCEISI1", 1, 1, "Rudy Wilfredo", "Chicas Villegas", "chicas@ues.edu.sv", "+50378923456"));
-<<<<<<< HEAD
                 docenteDao.insertDocente(new Docente("DOCEIQA1", 9, 2,"Tania", "Torres Rivera", "torres@ues.edu.sv", "+50364589879"));
                 docenteDao.insertDocente(new Docente("DOCEISI2", 3, 4,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "+50368923457"));
                 docenteDao.insertDocente(new Docente("DOCEISI3", 6, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
                 docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
-=======
-                docenteDao.insertDocente(new Docente("DOCEIQA1", 1, 2,"Tania", "Torres Rivera", "torres@ues.edu.sv", "+50364589879"));
-                docenteDao.insertDocente(new Docente("DOCEISI2", 3, 3,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "+50368923457"));
-                docenteDao.insertDocente(new Docente("DOCEISI3", 3, 4,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
-                docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 5,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
->>>>>>> parent of c53d5a2... Revert "SincronizacioService"
                 //Asignaturas por area administrativa(Departamentos)
                 asignaturaDao.insertAsignatura(new Asignatura("DSI115", 3, "Diseño de Sistemas I"));
                 asignaturaDao.insertAsignatura(new Asignatura("SGG115", 3, "Sistemas de Información Geográficos"));

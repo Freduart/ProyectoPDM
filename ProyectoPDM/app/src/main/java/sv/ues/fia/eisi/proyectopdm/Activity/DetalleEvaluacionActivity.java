@@ -1,7 +1,5 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
-<<<<<<< HEAD
-=======
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
->>>>>>> parent of c53d5a2... Revert "SincronizacioService"
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;

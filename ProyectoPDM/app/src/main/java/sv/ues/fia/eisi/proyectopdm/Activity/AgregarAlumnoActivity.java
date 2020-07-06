@@ -58,7 +58,6 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
             et_correo=(EditText)findViewById(R.id.et_Correo);
             spin_Carrera=(Spinner)findViewById(R.id.spn_Carrera);
 
-<<<<<<< HEAD
             ibMic = (ImageButton) findViewById(R.id.micst);
 
             ibMic.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +67,6 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
                 }
             });
 
-=======
->>>>>>> parent of c53d5a2... Revert "SincronizacioService"
             //Llenado del Spinner Carreras
             final ArrayList<String>carrerasNom=new ArrayList<>();
             final ArrayAdapter<String>adapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,carrerasNom);
