@@ -6,8 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,15 +28,28 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AsignaturaViewModel;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.DetalleEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.DocenteViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
+import sv.ues.fia.eisi.proyectopdm.db.entity.DetalleEvaluacion;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Docente;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Evaluacion;
@@ -53,10 +71,63 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
     private DocenteViewModel docenteVME;
     private TipoEvaluacionViewModel tipoEvaluacionVM;
     private EvaluacionViewModel evaluacionViewModel;
+    private DetalleEvaluacionViewModel detalleEvaluacionViewModel;
     private DatePicker dpickFechaEntregaEvaluacion;
     private TextView fechaEntregaEvaluacionLabel;
     private Button botonDetalleEval;
     private EditText editNotaMax;
+
+    private String sMail;
+    private String sPass;
+
+    //Clase Privada para método de enviado de JavaMail API
+    private class SendMail extends AsyncTask<Message, String, String> {
+       // private ProgressDialog progressDialog;
+
+        private SendMail() {
+        }
+
+        public void onPreExecute() {
+            super.onPreExecute();
+            //this.progressDialog = ProgressDialog.show(NuevaEditarEvaluacionActivity.this, "Por favor espere", "Enviando Correo...", true, false);
+        }
+
+        /* access modifiers changed from: protected */
+        public String doInBackground(Message... messages) {
+            try {
+                //Método de JavaMail para envío
+                Transport.send(messages[0]);
+                //Mensaje de respuesta de éxito
+                return "Exito";
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+
+        /* access modifiers changed from: protected */
+        public void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //this.progressDialog.dismiss();
+            if (s.equals("Exito")) {
+                //Manda AlertDialog para avisar del enviado correcto del correo de notificación
+                /* AlertDialog.Builder builder = new AlertDialog.Builder(NuevaEditarEvaluacionActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle(Html.fromHtml("<font color='#509324'>Éxito</font>"));
+                builder.setMessage("Solicitud Ingresada exitosamente. Correo de notificación enviado.");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                builder.show(); */
+                return;
+            }
+            //Si no se envió correctamente, devuelve un Toast con el error
+            Toast.makeText(NuevaEditarEvaluacionActivity.this.getApplicationContext(), "¿Algo salió mal?", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +137,10 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             ENTREGA_NOTAS_PLACEHOLDER = getText(R.string.fecha_placeholder_eval).toString();
             //obtener extras del intent
             final Bundle extras = getIntent().getExtras();
+
+            //Carga datos del correo remitente de la notificación (A enviar usando JavaMail API)
+            sMail = "pdmproyecto2020@gmail.com";
+            sPass = "proyectopdm";
 
             //inicialización de elementos del layout
             editNombreEvaluacion = findViewById(R.id.edit_nombre_eval);
@@ -85,6 +160,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             asignaturaVME = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AsignaturaViewModel.class);
             tipoEvaluacionVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(TipoEvaluacionViewModel.class);
             evaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EvaluacionViewModel.class);
+            detalleEvaluacionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(DetalleEvaluacionViewModel.class);
 
             if (extras != null){
                 id_usuario = extras.getInt(LoginActivity.ID_USUARIO);
@@ -362,7 +438,7 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
             //almacenar FECHA FIN
             String fechaFin = String.format("%s/%s/%s",dpickFechaFinEvaluacion.getDayOfMonth(),dpickFechaFinEvaluacion.getMonth(),dpickFechaFinEvaluacion.getYear());
 
-            //almacenar FECHA FIN
+            //almacenar FECHA ENTREGA
             String fechaEntrega =String.format("%s/%s/%s", dpickFechaEntregaEvaluacion.getDayOfMonth(), dpickFechaEntregaEvaluacion.getMonth(), dpickFechaEntregaEvaluacion.getYear());
 
             //---almacenar DESCRIPCION
@@ -394,10 +470,51 @@ public class NuevaEditarEvaluacionActivity extends AppCompatActivity {
                     aux.setIdEvaluacion(idEvaluacion);
                     //insertar
                     evaluacionViewModel.updateEval(aux);
+
+                    //Obtenemos lista de alumnos que han realizado la evaluación
+                    List<Alumno> listaAlumnos = detalleEvaluacionViewModel.getAlumnosEvaluacion(idEvaluacion);
+
+                    //Se hace un ciclo para enviar individualmente los correos de notificación
+                    for(Alumno a : listaAlumnos){
+                        //Obtenemos correo del alumno
+                        String correoAlumno = a.getCorreo();
+                        //Construimos el mensaje a enviar
+                        String mensajeAux = "La entrega de notas de la evaluación " + nombre + " se hará el día " + fechaEntrega + ".";
+
+                        //Se setean propiedades para la conectividad del correo
+                        Properties properties = new Properties();
+                        String str = "true";
+                        properties.put("mail.smtp.auth", str);
+                        properties.put("mail.smtp.starttls.enable", str);
+                        properties.put("mail.smtp.host", "smtp.gmail.com");
+                        properties.put("mail.smtp.port", "587");
+                        try {
+                            //Se crea una instancia de Message para enviarla a la clase SendMail
+                            Message message = new MimeMessage(Session.getInstance(properties, new Authenticator() {
+                                public PasswordAuthentication getPasswordAuthentication() {
+                                    //Se autentifican los datos del remitente
+                                    return new PasswordAuthentication(sMail, sPass);
+                                }
+                            }));
+                            //Seteamos remitente
+                            message.setFrom(new InternetAddress(sMail));
+                            //Seteamos destinatario (extraído desde listaAlumnos)
+                            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correoAlumno.trim()));
+                            //Seteamos Asunto
+                            message.setSubject("Entrega de notas de Evaluación: " + nombre);
+                            //Seteamos Mensaje del correo
+                            message.setText(mensajeAux.trim());
+                            //Se ejecuta la clase SendMail como una Tarea Asíncrona
+                            new SendMail().execute(new Message[]{message});
+                        } catch (MessagingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     //convertir a string
                     String idEval = aux.getIdEvaluacion() + "";
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)
-                    Toast.makeText(NuevaEditarEvaluacionActivity.this, getText(R.string.inic_notif_eval) + idEval + "-" + nombre + getText(R.string.accion_actualizar_notif_eval), Toast.LENGTH_LONG).show();
+                    Toast.makeText(NuevaEditarEvaluacionActivity.this, getText(R.string.inic_notif_eval) + idEval + "-" + nombre + getText(R.string.accion_actualizar_notif_eval) + getText(R.string.accion_correoEnviado_notif_eval), Toast.LENGTH_LONG).show();
                 } else if (operacionEv == EvaluacionActivity.AÑADIR_EVALUACION && idEvaluacion == 0) {
                     notaMaxInt = Integer.parseInt(notaMax);
                     //Objeto Evaluación auxiliar construido a partir de los datos almacenados

@@ -73,7 +73,8 @@
     <string name="accion_borrar_notif_eval">\u0020 ha sido borrada con éxito.</string>
     <string name="accion_actualizar_notif_eval">\u0020 ha sido actualizada.</string>
     <string name="accion_insertar_notif_eval">\u0020 se ha insertado con éxito.</string>
-    <string name="fecha_placeholder_eval" translatable="false">Sin Fecha</string>
+    <string name="accion_correoEnviado_notif_eval">\u0020 Se ha notificado a los alumnos sobre la fecha de entrega de notas.</string>
+    <string name="fecha_placeholder_eval">Sin Fecha</string>
     <string name="fecha_noenc_eval">Sin Fecha</string>
     <string name="error_form_incompleto_eval">Por favor, llena todos los campos.</string>
     <string name="añadir_estudiante_evaluacion">Añadir</string>
