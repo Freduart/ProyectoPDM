@@ -1,24 +1,23 @@
 package sv.ues.fia.eisi.proyectopdm;
 
 import android.content.Context;
-import android.graphics.Path;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.RoomOpenHelper;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import sv.ues.fia.eisi.proyectopdm.dao.AccesoUsuarioDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AlumnoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AreaAdmDao;
 import sv.ues.fia.eisi.proyectopdm.dao.AsignaturaDao;
+import sv.ues.fia.eisi.proyectopdm.dao.BitacoraDao;
 import sv.ues.fia.eisi.proyectopdm.dao.CargoDao;
 import sv.ues.fia.eisi.proyectopdm.dao.CicloDao;
 import sv.ues.fia.eisi.proyectopdm.dao.DetalleEvaluacionDao;
@@ -40,6 +39,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Asignatura;
+import sv.ues.fia.eisi.proyectopdm.db.entity.Bitacora;
 import sv.ues.fia.eisi.proyectopdm.db.entity.CargaAcademica;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Ciclo;
@@ -72,8 +72,8 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Usuario;
         EncargadoImpresion.class, Escuela.class, Evaluacion.class, Inscripcion.class,
         Local.class, PrimeraRevision.class, SegundaRevision.class, SegundaRevision_Docente.class,
         SolicitudExtraordinario.class, SolicitudImpresion.class, TipoEvaluacion.class, Usuario.class,
-        AccesoUsuario.class, OpcionCrud.class
-    }, version = 13)
+        AccesoUsuario.class, OpcionCrud.class, Bitacora.class
+    }, version = 20)
 public abstract class DataBase extends RoomDatabase {
 
     private static DataBase instance;
@@ -100,6 +100,7 @@ public abstract class DataBase extends RoomDatabase {
     public abstract UsuarioDao usuarioDao();
     public abstract AccesoUsuarioDao accesoUsuarioDao();
     public abstract OpcionCrudDao opcionCrudDao();
+    public abstract BitacoraDao bitacoraDao();
     /*
         synchronized garantiza el patron singleton para que solo haya una instancia de una clase
         es util para cuando todos los usuarios esten usando la misma instancia
@@ -120,8 +121,27 @@ public abstract class DataBase extends RoomDatabase {
     private static RoomDatabase.Callback roomCallback=new RoomDatabase.Callback(){
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            new PoblarDBAsyncTask(instance).execute();
             try {
-                super.onCreate(db);
+                //ACCESOUSUARIO
+                db.execSQL("create trigger after_update_acceso_usuario after update on AccesoUsuario " +
+                        "begin " +
+                        "insert into Bitacora values (null,new.idAccesoUsuario,'AccesoUsuario','UPDATE'); "+
+                        "end ");
+                //SOLICITUDIMPRESION
+                db.execSQL("create trigger after_delete_soli_impres after delete on SolicitudImpresion " +
+                        "begin " +
+                        "insert into Bitacora values (null,old.idImpresion,'SolicitudImpresion','DELETE'); "+
+                        "end ");
+                db.execSQL("create trigger after_update_soli_impres after update on SolicitudImpresion " +
+                        "begin " +
+                        "insert into Bitacora values (null,new.idImpresion,'SolicitudImpresion','UPDATE'); "+
+                        "end ");
+                db.execSQL("create trigger after_insert_soli_impres after insert on SolicitudImpresion " +
+                        "begin " +
+                        "insert into Bitacora values (null,new.idImpresion,'SolicitudImpresion','INSERT'); "+
+                        "end ");
                 db.execSQL("create trigger eliminar_solicitudImpr before delete on Docente " +
                         "begin " +
                         "delete from SolicitudImpresion where SolicitudImpresion.carnetDocenteFK=old.carnetDocente; " +
@@ -163,14 +183,12 @@ public abstract class DataBase extends RoomDatabase {
                         "begin " +
                         "delete from DetalleEvaluacion where DetalleEvaluacion.carnetAlumnoFK=old.carnetAlumno; " +
                         "end");
-                new PoblarDBAsyncTask(instance).execute();
             } catch (Exception e) {
                 Log.d("equisde", e.getMessage() + "\n");
                 e.fillInStackTrace();
             }
         }
     };
-
 
     //Aca llenamos la base de datos con los objetos dao y las operaciones asignadas
     private static class PoblarDBAsyncTask extends AsyncTask<Void, Void, Void>{
@@ -195,6 +213,7 @@ public abstract class DataBase extends RoomDatabase {
         private UsuarioDao usuarioDao;
         private AccesoUsuarioDao accesoUsuarioDao;
         private OpcionCrudDao opcionCrudDao;
+        private BitacoraDao bitacoraDao;
 
         private PoblarDBAsyncTask(DataBase db){
             escuelaDao=db.escuelaDao();
@@ -218,6 +237,7 @@ public abstract class DataBase extends RoomDatabase {
             usuarioDao = db.usuarioDao();
             accesoUsuarioDao = db.accesoUsuarioDao();
             opcionCrudDao = db.opcionCrudDao();
+            bitacoraDao = db.bitacoraDao();
         }
 
         @Override
@@ -276,27 +296,23 @@ public abstract class DataBase extends RoomDatabase {
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("EditarEncImpres",1));
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("EliminarEncImpres",3));
                 //Usuarios con rol de director
-                usuarioDao.insertUser(new Usuario("DOCEISI1", "chicas", 1));
+                usuarioDao.insertUser(new Usuario("DOCEISI1", "chicas", 1));//1
                 usuarioDao.insertUser(new Usuario("DOCEIQA1", "torres", 1));
-                usuarioDao.insertUser(new Usuario("DOCEICI1", "nuevodir", 1));
                 //Usuarios con rol de docente
-                usuarioDao.insertUser(new Usuario("DOCEISI2", "gonzalez", 2));
+                usuarioDao.insertUser(new Usuario("DOCEISI2", "gonzalez", 2));//3
                 usuarioDao.insertUser(new Usuario("DOCEISI3", "carballo", 2));
-                usuarioDao.insertUser(new Usuario("DOCEIQA2", "gamero", 2));
-                usuarioDao.insertUser(new Usuario("DOCEIQA3", "nuevodoc", 2));
+                usuarioDao.insertUser(new Usuario("DOCEIQA2", "gamero", 2));//5
                 //Usuarios con rol de estudiante
                 usuarioDao.insertUser(new Usuario("PP15001", "rubper", 3));
-                usuarioDao.insertUser(new Usuario("DR17010", "efrain", 3));
+                usuarioDao.insertUser(new Usuario("DR17010", "efrain", 3));//7
                 usuarioDao.insertUser(new Usuario("BC14026", "arelyb", 3));
-                usuarioDao.insertUser(new Usuario("MM16045", "fredyrol", 3));
+                usuarioDao.insertUser(new Usuario("MM16045", "fredyrol", 3));//9
                 usuarioDao.insertUser(new Usuario("MG17030", "jairois", 3));
-                usuarioDao.insertUser(new Usuario("MC16022", "julioc", 3));
+                usuarioDao.insertUser(new Usuario("MC16022", "julioc", 3));//11
                 //Usuario con rol de encargado de impresiones
                 usuarioDao.insertUser(new Usuario("EURFIA1","eliseo", 4));
-                usuarioDao.insertUser(new Usuario("EURFIA2", "nuevoei", 4));
                 //Usuario administrador
                 usuarioDao.insertUser(new Usuario("Administrador", "administrador", 5));
-                usuarioDao.insertUser(new Usuario("VR17035", "nuevoal", 3));
                 //AccesoUsuario para Directores
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,4));
@@ -311,13 +327,11 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,6));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,10));
+                //AccesoUsuario para Docentes
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,2));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,4));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,5));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,6));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,10));
-                //AccesoUsuario para Docentes
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,7));
@@ -327,15 +341,11 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,18));
+                //AccesoUsuario para Alumnos
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,2));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,5));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,2));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,5));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,10));
-                //AccesoUsuario para Alumnos
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(9,2));
@@ -344,28 +354,23 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,10));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(12,2));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(12,10));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,2));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,10));
                 //AccesoUsuario para Encargado de Impresion
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(14,5));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(15,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(12,5));
                 //AccesoUsuario para Administrador
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,1));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,2));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,3));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,4));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,5));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,6));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,7));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,8));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,9));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,10));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,11));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,12));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,13));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(16,14));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,1));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,2));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,3));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,4));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,5));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,6));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,7));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,8));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,9));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,10));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,11));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,12));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,13));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,14));
                 //Escuelas
                 escuelaDao.insert(new Escuela("Escuela de Ingeniería de Sistemas Informáticos","Ingeniería de Sistemas Informáticos","DOCEISI1"));
                 escuelaDao.insert(new Escuela("Escuela de Ingeniería Química e Ingeniería de Alimentos","Ingeniería Quimica","DOCEIQA2"));
@@ -389,9 +394,9 @@ public abstract class DataBase extends RoomDatabase {
                 //Docente
                 docenteDao.insertDocente(new Docente("DOCEISI1", 1, 1, "Rudy Wilfredo", "Chicas Villegas", "chicas@ues.edu.sv", "+50378923456"));
                 docenteDao.insertDocente(new Docente("DOCEIQA1", 1, 2,"Tania", "Torres Rivera", "torres@ues.edu.sv", "+50364589879"));
-                docenteDao.insertDocente(new Docente("DOCEISI2", 3, 4,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "+50368923457"));
-                docenteDao.insertDocente(new Docente("DOCEISI3", 3, 5,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
-                docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 6,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
+                docenteDao.insertDocente(new Docente("DOCEISI2", 3, 3,"Cesar Augusto", "González", "gonzalez@ues.edu.sv", "+50368923457"));
+                docenteDao.insertDocente(new Docente("DOCEISI3", 3, 4,"Elmer Arturo", "Carballo Ruiz", "carballo@ues.edu.sv", "+50368793456"));
+                docenteDao.insertDocente(new Docente("DOCEIQA2", 9, 5,"Eugenia Salvadora", "Gamero de Ayala", "gamero@ues.edu.sv", "+50365789034"));
                 //Asignaturas por area administrativa(Departamentos)
                 asignaturaDao.insertAsignatura(new Asignatura("DSI115", 3, "Diseño de Sistemas I"));
                 asignaturaDao.insertAsignatura(new Asignatura("SGG115", 3, "Sistemas de Información Geográficos"));
@@ -400,12 +405,12 @@ public abstract class DataBase extends RoomDatabase {
                 asignaturaDao.insertAsignatura(new Asignatura("TAD115", 4, "Teoría Administrativa"));
                 asignaturaDao.insertAsignatura(new Asignatura("FQR215", 5, "Fisicoquímica II"));
                 //Alumnos
-                alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",11));
-                alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 10));
-                alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com", 8));
-                alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com", 9));
-                alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 12));
-                alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","corcio@gmail.com", 13));
+                alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",9));
+                alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 8));
+                alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com", 6));
+                alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com", 7));
+                alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 10));
+                alumnoDao.insertarAlumno(new Alumno("MC16022", "Julio Antonio", "Merino Corcio", "5","corcio@gmail.com", 11));
                 //Inscripción
                 inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "DSI115", 2, 1, 2));
                 inscripcionDao.insertInscripcion(new Inscripcion("MM16045", "PDM115", 3, 1, 3));
@@ -453,7 +458,7 @@ public abstract class DataBase extends RoomDatabase {
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("EIIC2", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("EIMC1", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
                 //Encargado de impresión
-                encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 14));
+                encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 12));
                 //Segunda revisión
                 segundaRevisionDao.insertSegundaRevision(new SegundaRevision(1, "9/06/2020", "12:22:00",10,"", "8/06/2020"));
                 segundaRevisionDao.insertSegundaRevision(new SegundaRevision(2, "9/06/2020", "12:22:00", "8/06/2020"));
@@ -467,4 +472,53 @@ public abstract class DataBase extends RoomDatabase {
             return null;
         }
     }
+
+    public static String getYear(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha=simpleDateFormat.format(calendar.getTime());
+        String obj=fecha.split(" ")[0];
+        return obj.split("-")[0];
+    }
+
+    public static String getMonth(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha=simpleDateFormat.format(calendar.getTime());
+        String obj=fecha.split(" ")[0];
+        return obj.split("-")[1];
+    }
+
+    public static String getDay(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha=simpleDateFormat.format(calendar.getTime());
+        String obj=fecha.split(" ")[0];
+        return obj.split("-")[2];
+    }
+
+    public static String getHour(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha=simpleDateFormat.format(calendar.getTime());
+        String obj=fecha.split(" ")[1];
+        return obj.split(":")[0];
+    }
+
+    public static String getMinute(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha=simpleDateFormat.format(calendar.getTime());
+        String obj=fecha.split(" ")[1];
+        return obj.split(":")[1];
+    }
+
+    public static String getSecond(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fecha=simpleDateFormat.format(calendar.getTime());
+        String obj=fecha.split(" ")[1];
+        return obj.split(":")[2];
+    }
+
 }

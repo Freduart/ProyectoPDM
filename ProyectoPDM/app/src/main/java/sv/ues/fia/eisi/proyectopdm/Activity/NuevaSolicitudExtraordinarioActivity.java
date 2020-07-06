@@ -21,8 +21,6 @@ import java.util.List;
 
 import sv.ues.fia.eisi.proyectopdm.R;
 
-import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
-import sv.ues.fia.eisi.proyectopdm.ViewModel.EvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.SolicitudExtraordinarioViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.TipoEvaluacionViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.SolicitudExtraordinario;

@@ -7,25 +7,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-//import sv.ues.fia.eisi.proyectopdm.Adapter.SpinAdapter;
 import sv.ues.fia.eisi.proyectopdm.R;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
@@ -182,6 +173,8 @@ public class NuevaEditarAreaAdmActivity extends AppCompatActivity {
                 } else if (operacionEv == AreaAdmActivity.AÑADIR_AREA && idAreaAdm == 0) {
                     //Objeto Areauación auxiliar construido a partir de los datos almacenados
                     AreaAdm aux = new AreaAdm(escuelaAux.getIdEscuela(),nombre);
+                    AreaAdm aux2 = new AreaAdm(escuelaAux.getIdEscuela(),nombre);
+                    aux2.setIdDeptarmento(idAreaAdm);
                     //insertar
                     areaAdmViewModel.insertAreaAdm(aux);
                     //mensaje de éxito (si falla, el try lo atrapa y en vez de mostrar este toast, muestra el toast con la excepción más abajo)

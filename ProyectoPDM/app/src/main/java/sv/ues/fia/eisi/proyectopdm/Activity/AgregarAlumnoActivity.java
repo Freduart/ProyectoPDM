@@ -1,12 +1,9 @@
 package sv.ues.fia.eisi.proyectopdm.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -26,7 +23,6 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.AlumnoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
-import sv.ues.fia.eisi.proyectopdm.db.entity.TipoEvaluacion;
 
 
 public class AgregarAlumnoActivity extends AppCompatActivity {
@@ -52,8 +48,6 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
             et_apellidos=(EditText)findViewById(R.id.et_Apellidos);
             et_correo=(EditText)findViewById(R.id.et_Correo);
             spin_Carrera=(Spinner)findViewById(R.id.spn_Carrera);
-
-
 
             //Llenado del Spinner Carreras
             final ArrayList<String>carrerasNom=new ArrayList<>();

@@ -282,4 +282,6 @@
     <string name="checkEditarEncImpres">Edit Print Manager</string>
     <string name="checkCreacEncImpres">Create Print Manager</string>
     <string name="checkEliminarEncImpres">Delete Print Manager</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="ipServer">http://07dfc28ffa06.ngrok.io/</string>
 </resources>
