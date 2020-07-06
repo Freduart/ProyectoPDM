@@ -232,6 +232,7 @@
     <string name="reprobados">Failed</string>
     <string name="aprobados">Passed</string>
     <string name="valornota">Assessment max grade</string>
+    <string name="solicitarrepetido">Request repeated test</string>
 
     <!-- Strings Acceso Usuario -->
     <string name="switchMenuAlumno">STUDENTS MENU</string>

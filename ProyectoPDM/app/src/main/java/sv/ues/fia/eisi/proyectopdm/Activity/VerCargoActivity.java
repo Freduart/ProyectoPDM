@@ -8,8 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import sv.ues.fia.eisi.proyectopdm.R;
+import sv.ues.fia.eisi.proyectopdm.ViewModel.AreaAdmViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.CargoViewModel;
 import sv.ues.fia.eisi.proyectopdm.ViewModel.EscuelaViewModel;
+import sv.ues.fia.eisi.proyectopdm.db.entity.AreaAdm;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Cargo;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
@@ -17,13 +19,13 @@ public class VerCargoActivity extends AppCompatActivity {
     public static final String EXTRA_ID_CARGO = "sv.ues.fia.eisi.proyectopdm.Activity.EXTRA_ID_CARGO";
 
     private Cargo cargoActual;
-    private Escuela escuelaActual;
+    private AreaAdm areaAdmActual;
 
     private CargoViewModel cargoViewModel;
-    private EscuelaViewModel escuelaViewModel;
+    private AreaAdmViewModel areaAdmViewModel;
 
     private TextView idCargo;
-    private TextView idEscuelaCargo;
+    private TextView idAreaCargo;
     private TextView nomCargo;
 
     @Override
@@ -33,12 +35,12 @@ public class VerCargoActivity extends AppCompatActivity {
             setContentView(R.layout.activity_ver_cargo);
 
             idCargo = (TextView) findViewById(R.id.textViewIdCargo);
-            idEscuelaCargo = (TextView) findViewById(R.id.textViewEscuelaCargo);
+            idAreaCargo = (TextView) findViewById(R.id.textViewEscuelaCargo);
             nomCargo = (TextView) findViewById(R.id.textViewNomCargo);
 
             //Instancias viewmodels
             cargoViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(CargoViewModel.class);
-            escuelaViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(EscuelaViewModel.class);
+            areaAdmViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(AreaAdmViewModel.class);
             //obtiene intent de CargoActivity
             Bundle extras = getIntent().getExtras();
             int identCargo = 0;
@@ -47,11 +49,10 @@ public class VerCargoActivity extends AppCompatActivity {
             }
             //Obtiene cargo actual por medio de EXTRA_ID_CARGO
             cargoActual =cargoViewModel.getCargo(identCargo);
-            //Obtener idEscuelaCargo actual
-            escuelaActual = escuelaViewModel.getEscuela(cargoActual.getIdAreaAdminFK());
-
+            //Obtener idAreaCargo actual
+            areaAdmActual = areaAdmViewModel.getAreaAdm(cargoActual.getIdAreaAdminFK());
             idCargo.setText(String.valueOf(cargoActual.getIdCargo()));
-            idEscuelaCargo.setText(String.valueOf(escuelaActual.getIdEscuela())+ " - "+escuelaActual.getNomEscuela());
+            idAreaCargo.setText(areaAdmActual.getIdDeptarmento() + " - " + areaAdmActual.getNomDepartamento());
             nomCargo.setText(cargoActual.getNomCargo());
 
             //titulo appbar

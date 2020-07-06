@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorBlanco"
     tools:context=".Activity.AgregarAlumnoActivity">
     <!-- Pantalla para agregar un nuevo alumno -->
     <TableLayout
@@ -15,7 +16,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:layout_marginRight="8dp"
+        android:background="@color/colorBlanco">
 
         <EditText
             android:id="@+id/et_Carnet"
@@ -79,6 +81,12 @@
             android:layout_height="wrap_content"
             android:padding="24dp"/>
 
-    </TableLayout>
+        <ImageButton
+            android:id="@+id/micst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlanco"
+            android:src="@drawable/ic_mic" />
 
+    </TableLayout>
 </ScrollView>

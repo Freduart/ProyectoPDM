@@ -63,11 +63,13 @@
             android:text="@string/fechaSolicitudExtra"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:paddingBottom="20dp"/>
-        <EditText
+        <DatePicker
             android:id="@+id/editFechaSoliExtra"
-            android:inputType="date|text"
-            android:hint="@string/hintFechaSoli"
-            tools:ignore="Autofill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
             android:paddingBottom="20dp"/>
         <TextView
             android:text="@string/justificacionSoliExtra"
