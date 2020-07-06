@@ -6,7 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +24,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import sv.ues.fia.eisi.proyectopdm.Activity.GraficaEvaluacion.FragmentPastelAprobacion;
 import sv.ues.fia.eisi.proyectopdm.R;
@@ -50,6 +65,58 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
     private CheckBox justiSoli;
     private CheckBox estadoSoli;
 
+    private String sMail;
+    private String sPass;
+
+    //Clase Privada para método de enviado de JavaMail API
+    private class SendMail extends AsyncTask<Message, String, String> {
+        private ProgressDialog progressDialog;
+
+        private SendMail() {
+        }
+
+        public void onPreExecute() {
+            super.onPreExecute();
+            this.progressDialog = ProgressDialog.show(EditarSolicitudExtraordinarioActivity.this, "Please Wait", "Sending Mail...", true, false);
+        }
+
+        /* access modifiers changed from: protected */
+        public String doInBackground(Message... messages) {
+            try {
+                //Método de JavaMail para envío
+                Transport.send(messages[0]);
+                //Mensaje de respuesta de éxito
+                return "Exito";
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+
+        /* access modifiers changed from: protected */
+        public void onPostExecute(String s) {
+            super.onPostExecute(s);
+            this.progressDialog.dismiss();
+            if (s.equals("Exito")) {
+                //Manda AlertDialog para avisar del enviado correcto del correo de notificación
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditarSolicitudExtraordinarioActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle(Html.fromHtml("<font color='#509324'>Éxito</font>"));
+                builder.setMessage("Correo de notificación enviado.");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                builder.show();
+                return;
+            }
+            //Si no se envió correctamente, devuelve un Toast con el error
+            Toast.makeText(EditarSolicitudExtraordinarioActivity.this.getApplicationContext(), "¿Algo salió mal?", Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -67,6 +134,10 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             dpFechaSoli = (DatePicker) findViewById(R.id.editFechaSoliExtra);
             justiSoli = (CheckBox) findViewById(R.id.JustiSoliExtra);
             estadoSoli = (CheckBox) findViewById(R.id.EstadoSoliExtra);
+
+            //Carga datos del correo remitente de la notificación (A enviar usando JavaMail API)
+            sMail = "pdmproyecto2020@gmail.com";
+            sPass = "proyectopdm";
 
             //Inicializa el ViewModel
             soliExtraVM = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(SolicitudExtraordinarioViewModel.class);
@@ -154,6 +225,17 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
             String tipoEvaAux3 = tipoEvalAux2[0].trim();
             int tipoEva = Integer.parseInt(tipoEvaAux3);
 
+            //Extraemos el correo del alumno que hizo la solicitud
+            String correoAlumno = alumnoActual.getCorreo();
+
+            //Se construye mensaje para el correo de notificación según el tipo y el estado de la solicitud
+            String mensajeAux = "Su solicitud de evaluación " + tipoEvalAux2[1].trim() + " ha sido ";
+            if(estado==true){
+                mensajeAux = mensajeAux + "aprobada";
+            } else {
+                mensajeAux = mensajeAux + "rechazada";
+            }
+
             //Se extrae el identificador de la solicitud a editar del Intent
             Bundle extras = getIntent().getExtras();
             int idSoliExtra = 0;
@@ -183,10 +265,34 @@ public class EditarSolicitudExtraordinarioActivity extends AppCompatActivity {
                 //Se actualiza la Solicitud
                 soliExtraVM.update(soliAux);
 
-                //Mensaje de éxito de la operación. En caso de error, es atrapado y se muestra en el Toast del segmento de catch
-                Toast.makeText(EditarSolicitudExtraordinarioActivity.this, "Solicitud Actualizada con éxito", Toast.LENGTH_SHORT).show();
-
-                finish();
+                //Se setean propiedades para la conectividad del correo
+                Properties properties = new Properties();
+                String str = "true";
+                properties.put("mail.smtp.auth", str);
+                properties.put("mail.smtp.starttls.enable", str);
+                properties.put("mail.smtp.host", "smtp.gmail.com");
+                properties.put("mail.smtp.port", "587");
+                try {
+                    //Se crea una instancia de Message para enviarla a la clase SendMail
+                    Message message = new MimeMessage(Session.getInstance(properties, new Authenticator() {
+                        public PasswordAuthentication getPasswordAuthentication() {
+                            //Se autentifican los datos del remitente
+                            return new PasswordAuthentication(sMail, sPass);
+                        }
+                    }));
+                    //Seteamos remitente
+                    message.setFrom(new InternetAddress(sMail));
+                    //Seteamos destinatario (extraído desde alumnoActual)
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correoAlumno.trim()));
+                    //Seteamos Asunto
+                    message.setSubject("Estado de su solicitud extraordinaria");
+                    //Seteamos Mensaje del correo
+                    message.setText(mensajeAux.trim());
+                    //Se ejecuta la clase SendMail como una Tarea Asíncrona
+                    new SendMail().execute(new Message[]{message});
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
             }
         } catch(Exception e){
             Toast.makeText(EditarSolicitudExtraordinarioActivity.this, e.getMessage() + " " +

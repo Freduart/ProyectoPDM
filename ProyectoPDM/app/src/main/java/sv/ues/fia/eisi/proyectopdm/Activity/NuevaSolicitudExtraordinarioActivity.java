@@ -99,13 +99,13 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
                 }
             });
 
-            //Se importa el ID del Alumno
-            idAlumno.setText(id_alum);
-            //Se deshabilita el ET
-            idAlumno.setEnabled(false);
-
             //Si se carga la Actividad desde el fragmento de grafica para solicitar repetido, se setean los campos
             if(graficas==1){
+                //Se importa el ID del Alumno
+                idAlumno.setText(id_alum);
+                //Se deshabilita el ET
+                idAlumno.setEnabled(false);
+
                 //Se importa el ID de la Evaluación
                 idEvaluacion.setText(id_eval);
                 //Se deshabilita el ET
@@ -115,8 +115,8 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
                 justiSoli.setChecked(true);
                 justiSoli.setClickable(false);
 
-                //Se deja el motivo en blanco
-                motivoSoli.setText("");
+                //Se deja el motivo predeterminado
+                motivoSoli.setText("Mejora de Calificación");
                 //Se deshabilita el ET
                 motivoSoli.setEnabled(false);
             }
