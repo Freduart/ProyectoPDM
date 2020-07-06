@@ -407,7 +407,7 @@ public abstract class DataBase extends RoomDatabase {
                 asignaturaDao.insertAsignatura(new Asignatura("FQR215", 5, "Fisicoquímica II"));
                 //Alumnos
                 alumnoDao.insertarAlumno(new Alumno("MM16045", "Fredy Rolando", "Martínez Méndez", "1","fredymartinezues@gmail.com",9));
-                alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","vabcgv@outlook.com", 8));
+                alumnoDao.insertarAlumno(new Alumno("BC14026", "Vilma Arely", "Bárcenas Cruz", "1","crzabarcenas@gmail.com", 8));
                 alumnoDao.insertarAlumno(new Alumno("PP15001", "Rubén Alejandro", "Pérez Pineda", "1","rubper@gmail.com", 6));
                 alumnoDao.insertarAlumno(new Alumno("DR17010", "José Efraín", "Díaz Rivas", "1","efra.00@gmail.com", 7));
                 alumnoDao.insertarAlumno(new Alumno("MG17030", "Jairo Isaac", "Montoya Galdámez", "1","jairomontoya.raices@gmail.com", 10));

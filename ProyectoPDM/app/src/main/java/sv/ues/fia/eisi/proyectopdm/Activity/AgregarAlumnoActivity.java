@@ -7,7 +7,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -31,7 +36,7 @@ import sv.ues.fia.eisi.proyectopdm.db.entity.Alumno;
 import sv.ues.fia.eisi.proyectopdm.db.entity.Escuela;
 
 
-public class AgregarAlumnoActivity extends AppCompatActivity {
+public class AgregarAlumnoActivity extends AppCompatActivity implements SensorEventListener {
 
     //Variables a utilizar
     private EditText et_carnet;
@@ -45,11 +50,23 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
     private ImageButton ibMic;
     public static final int REC_CODE_INPUT=100;
 
+    //Para gestos
+    private SensorManager senSensorManager;
+    private Sensor senAccelerometer;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 600;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_agregar_alumno);
+
+            //Para gestos
+            senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
             //Enlaces con el layout
             et_carnet=(EditText)findViewById(R.id.et_Carnet);
@@ -202,4 +219,46 @@ public class AgregarAlumnoActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Sensor mySensor = event.sensor;
+
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    guardarAlumno();
+                }
+
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    protected void onPause() {
+        super.onPause();
+        senSensorManager.unregisterListener(this);
+    }
+    protected void onResume() {
+        super.onResume();
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
 }
