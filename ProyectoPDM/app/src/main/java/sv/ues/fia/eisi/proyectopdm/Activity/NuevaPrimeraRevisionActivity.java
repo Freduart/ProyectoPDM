@@ -224,8 +224,10 @@ public class NuevaPrimeraRevisionActivity extends AppCompatActivity {
             String mensajeAux = "El Alumno con carnet: " + detaEvaAux.getCarnetAlumnoFK().trim() + " ha solicitado una revisión de su nota en la evaluación " + evaAux.getNomEvaluacion().trim();
             mensajeAux = mensajeAux + " Por favor revisar la solicitud a brevedad.";
 
+            double nAF = detaEvaAux.getNota();
+
             //if (((diaActual >= dia) && (diaActual <= (dia + 5))) && (mesActual == mes) && (anioActual == anio)) {
-                PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), Double.parseDouble(notaAn), Double.parseDouble(NOTA_PH_PR), ob);
+                PrimeraRevision pr = new PrimeraRevision(LOCAL_PH_PR, Integer.parseInt(detalle), fechaSolicitud, Boolean.parseBoolean(ESTADO_PH_PR), nAF, nAF, ob);
                 primeraRevisionViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(PrimeraRevisionViewModel.class);
                 primeraRevisionViewModel.insertPrimeraRevision(pr);
 

@@ -454,10 +454,10 @@ public abstract class DataBase extends RoomDatabase {
                 detalleEvaluacionDao.insertDetalleEvaluacion(new DetalleEvaluacion(5, "BC14026", 7.5f));
                 //Primera revisión
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 1, "7/06/2020", true, 7f, 9f, "Ejercicio 1"));
-                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("D11", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("BIB301", 2, "9/06/2020", true, 6f, 8f, "Ejercicio 2"));
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("LComp1", 3, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
                 primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("EIIC2", 4, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
-                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("EIMC1", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
+                primeraRevisionDao.insertPrimeraRevision(new PrimeraRevision("F2", 5, "9/07/2020", true, 6f, 8f, "Pregunta 2"));
                 //Encargado de impresión
                 encargadoImpresionDao.insertEncargadoImpresion(new EncargadoImpresion( "Pedro Eliseo Peñate", 12));
                 //Segunda revisión

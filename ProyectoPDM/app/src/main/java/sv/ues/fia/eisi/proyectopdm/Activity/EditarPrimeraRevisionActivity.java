@@ -138,6 +138,7 @@ public class EditarPrimeraRevisionActivity extends AppCompatActivity {
             notaAntes = (EditText) findViewById(R.id.editarNotaAntesPR);
             notaDespues = (EditText) findViewById(R.id.editarNotaDespuesPR);
             observaciones = (EditText) findViewById(R.id.editarObservacionesPR);
+            notaAntes.setEnabled(false);
 
             //Carga datos del correo remitente de la notificación (A enviar usando JavaMail API)
             sMail = "pdmproyecto2020@gmail.com";
