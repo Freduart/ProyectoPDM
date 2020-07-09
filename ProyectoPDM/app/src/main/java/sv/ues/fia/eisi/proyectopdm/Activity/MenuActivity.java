@@ -262,7 +262,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PreferenceSingleton.getInstance().writePreference(USERNAME, "");
                 PreferenceSingleton.getInstance().writePreference(USER_PASSWORD, "");
-                //PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO, "");
+                PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO, "");
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(intent);
                 SincronizacionService.shouldContinue = false;
