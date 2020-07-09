@@ -537,7 +537,7 @@ public class NuevaSolicitudImpresionActivity extends AppCompatActivity {
         String nHojasAnexas,detallesDeImpresion1,detalleImpresion2,fechaHoy;
         try {
             //Hojas Anexas
-            if(!text_anexos.getEditText().getText().toString().trim().isEmpty()){
+            if(text_anexos.getEditText().getText().toString().trim().isEmpty()){
                 nHojasAnexas="0";
             }else{
                 nHojasAnexas=text_anexos.getEditText().getText().toString();

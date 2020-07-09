@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     SincronizacionService.shouldContinue = true;
                     startService(new Intent(LoginActivity.this, SincronizacionService.class));
                     startActivity(intent);
-                    PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO,fechaHoy);
+                    //PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO,fechaHoy);
                     Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
                     finish();
                 /*} else {

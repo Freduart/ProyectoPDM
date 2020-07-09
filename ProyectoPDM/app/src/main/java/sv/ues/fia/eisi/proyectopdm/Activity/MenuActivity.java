@@ -32,6 +32,7 @@ import sv.ues.fia.eisi.proyectopdm.ViewModel.OpcionCrudViewModel;
 import sv.ues.fia.eisi.proyectopdm.db.entity.AccesoUsuario;
 import sv.ues.fia.eisi.proyectopdm.db.entity.OpcionCrud;
 
+import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.FECHA_INGRESO;
 import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.USERNAME;
 import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.USER_PASSWORD;
 
@@ -261,6 +262,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PreferenceSingleton.getInstance().writePreference(USERNAME, "");
                 PreferenceSingleton.getInstance().writePreference(USER_PASSWORD, "");
+                PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO, "");
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(intent);
                 SincronizacionService.shouldContinue = false;

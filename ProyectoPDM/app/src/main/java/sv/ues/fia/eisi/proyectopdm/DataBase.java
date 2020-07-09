@@ -244,19 +244,19 @@ public abstract class DataBase extends RoomDatabase {
         protected Void doInBackground(Void... voids) {
             try {
                 //Opciones Crud para menus.
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("AlumnoMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("AlumnoMenu",0));//1
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("EvaluacionMenu",0));
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CargoMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("CargoMenu",0));//3
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("AreaAdmMenu",0));
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("SoliImpresMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("SoliImpresMenu",0));//5
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("AsignaturaMenu",0));
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("PrimRevMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("PrimRevMenu",0));//7
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("CicloMenu",0));
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("LocalMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("LocalMenu",0));//9
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("SoliExtrMenu",0));
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("DocenteMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("DocenteMenu",0));//11
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("EncImpresMenu",0));
-                opcionCrudDao.insertOpcionCrud(new OpcionCrud("InscripcionMenu",0));
+                opcionCrudDao.insertOpcionCrud(new OpcionCrud("InscripcionMenu",0));//13
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("UsuarioMenu",0));//14
                 //Opciones Crud para editar, crear y eliminar.
                 opcionCrudDao.insertOpcionCrud(new OpcionCrud("CrearAlumno",2));//15
@@ -313,21 +313,51 @@ public abstract class DataBase extends RoomDatabase {
                 usuarioDao.insertUser(new Usuario("EURFIA1","eliseo", 4));
                 //Usuario administrador
                 usuarioDao.insertUser(new Usuario("Administrador", "administrador", 5));
-                //AccesoUsuario para Directores
+                //AccesoUsuario para menus de Directores
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,4));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,6));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,10));
-                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,15));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,4));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,6));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,10));
-                //AccesoUsuario para Docentes
+                //Accesousuario para opciones de Directores
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,18));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,19));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,20));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,27));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,28));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,29));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,30));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,31));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,32));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,33));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,34));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,35));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,18));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,19));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,20));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,27));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,28));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,29));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,30));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,31));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,32));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,33));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,34));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,35));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(2,44));
+                //AccesoUsuario para menus de Docentes
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,5));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,7));
@@ -341,7 +371,44 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,7));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,18));
-                //AccesoUsuario para Alumnos
+                //Accesousuario para opciones de Docentes
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,18));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,19));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,20));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,27));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,28));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,29));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,33));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,34));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,35));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(3,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,18));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,19));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,20));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,27));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,28));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,29));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,33));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,34));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,35));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(4,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,18));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,19));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,20));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,27));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,28));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,29));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,33));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,34));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,35));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(5,44));
+                //AccesoUsuario para menus de Alumnos
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,2));
@@ -354,9 +421,28 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,10));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,10));
-                //AccesoUsuario para Encargado de Impresion
+                //Accesousuario para opciones de Alumnos
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(6,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(7,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(8,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(9,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(9,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(9,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(10,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(11,44));
+                //AccesoUsuario para menus de Encargado de Impresion
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(12,5));
-                //AccesoUsuario para Administrador
+                //AccesoUsuario para menus de Administrador
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,1));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,3));
@@ -371,6 +457,43 @@ public abstract class DataBase extends RoomDatabase {
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,12));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,13));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,14));
+                //Accesousuario para opciones de Administrador
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,15));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,16));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,17));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,18));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,19));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,20));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,21));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,22));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,23));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,24));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,25));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,26));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,27));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,28));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,29));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,30));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,31));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,32));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,33));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,34));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,35));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,36));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,37));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,38));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,39));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,40));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,41));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,42));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,43));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,44));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,45));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,46));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,47));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,48));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,49));
+                accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(13,50));
                 //Escuelas
                 escuelaDao.insert(new Escuela("Escuela de Ingeniería de Sistemas Informáticos","Ingeniería de Sistemas Informáticos","DOCEISI1"));
                 escuelaDao.insert(new Escuela("Escuela de Ingeniería Química e Ingeniería de Alimentos","Ingeniería Quimica","DOCEIQA2"));

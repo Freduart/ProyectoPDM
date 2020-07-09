@@ -490,7 +490,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 intent.setData(uri);
                 intent.setType("application/*");
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
                 startActivity(intent);
             }
         }else{
