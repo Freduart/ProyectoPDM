@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -91,89 +92,93 @@ public class SincronizacionService extends IntentService {
     private class Sincronizacion extends TimerTask{
         @Override
         public void run() {
-            if (!shouldContinue) {
-                stopSelf();
-                mTimer.cancel();
-                mTimer.purge();
-            }
+            try {
+                if (!shouldContinue) {
+                    stopSelf();
+                    mTimer.cancel();
+                    mTimer.purge();
+                }
 
-            fechaHoy=PreferenceSingleton.getInstance().readPreference(FECHA_INGRESO);
+                fechaHoy = PreferenceSingleton.getInstance().readPreference(FECHA_INGRESO);
 
-            String formatFecha=fechaHoy.split(" ")[0],fromatHora=fechaHoy.split(" ")[1];
-            String[] fecha=formatFecha.split("-"),hora=fromatHora.split(":");
-            String fechayhora="day="+fecha[2]+"&month="+fecha[1]+"&year="+fecha[0]+"&hora="+hora[0]+"&minuto="+hora[1]+"&segundo="+hora[2];
-            System.out.print(fechayhora+"\n");
-            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getString(R.string.ipServer)+url+fechayhora, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    JSONArray jsonArray = response.optJSONArray("resultado");
-                    JSONObject jsonObject = null;
-                    listaBitacoras=new ArrayList<>();
-                    for(int i=0; i<jsonArray.length();i++){
-                        Bitacora bitacora=new Bitacora();
-                        try {
-                            jsonObject = jsonArray.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        bitacora.setIdObjeto(jsonObject.optString("IDOBJETO"));
-                        bitacora.setNomTabla(jsonObject.optString("NOMTABLA"));
-                        bitacora.setOperacion(jsonObject.optString("OPERACION"));
-                        String fecha_json=jsonObject.optString("FECHAOPERACION");
-                        listaBitacoras.add(bitacora);
-                    }
-                    if(listaBitacoras.size()>0){
-                        for(Bitacora bitacora:listaBitacoras){
-                            String idObjeto=bitacora.getIdObjeto(),nomTabla=bitacora.getNomTabla();
-                            if(!(idObjeto.equalsIgnoreCase("NoData")||nomTabla.equalsIgnoreCase("NoData"))){
-                                if(nomTabla.equals("SolicitudImpresion")){
-                                    obtenerSolicitud(idObjeto,bitacora.getOperacion());
-                                }
+                String formatFecha = fechaHoy.split(" ")[0], fromatHora = fechaHoy.split(" ")[1];
+                String[] fecha = formatFecha.split("-"), hora = fromatHora.split(":");
+                String fechayhora = "day=" + fecha[2] + "&month=" + fecha[1] + "&year=" + fecha[0] + "&hora=" + hora[0] + "&minuto=" + hora[1] + "&segundo=" + hora[2];
+                System.out.print(fechayhora + "\n");
+                jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, getString(R.string.ipServer) + url + fechayhora, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray jsonArray = response.optJSONArray("resultado");
+                        JSONObject jsonObject = null;
+                        listaBitacoras = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            Bitacora bitacora = new Bitacora();
+                            try {
+                                jsonObject = jsonArray.getJSONObject(i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            System.out.print(bitacora.toString()+"\n");
+                            bitacora.setIdObjeto(jsonObject.optString("IDOBJETO"));
+                            bitacora.setNomTabla(jsonObject.optString("NOMTABLA"));
+                            bitacora.setOperacion(jsonObject.optString("OPERACION"));
+                            String fecha_json = jsonObject.optString("FECHAOPERACION");
+                            listaBitacoras.add(bitacora);
                         }
-                        System.out.println(fechaHoy);
+                        if (listaBitacoras.size() > 0) {
+                            for (Bitacora bitacora : listaBitacoras) {
+                                String idObjeto = bitacora.getIdObjeto(), nomTabla = bitacora.getNomTabla();
+                                if (!(idObjeto.equalsIgnoreCase("NoData") || nomTabla.equalsIgnoreCase("NoData"))) {
+                                    if (nomTabla.equals("SolicitudImpresion")) {
+                                        obtenerSolicitud(idObjeto, bitacora.getOperacion());
+                                    }
+                                }
+                                System.out.print(bitacora.toString() + "\n");
+                            }
+                            System.out.println(fechaHoy);
+                        }
                     }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            });
-            requestQueue.add(jsonObjectRequest);
-            //Para las bitacoras internas...
-            try {
-                bitacora=new obtenerBitacoraFechaAsyncTask(bitacoraDao).execute().get();
-                if(bitacora.size()>0){
-                    System.out.print("SI Hay Bitacora! \n");
-                    for(Bitacora b:bitacora){
-                        System.out.print(b.toString()+"\n");
-                        procesarBitacoras(b);
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
                     }
-                    new borrarBitacorasAsyncTask(bitacoraDao).execute();
-                }else{
-                    System.out.print("NO Hay Bitacora! \n");
+                });
+                requestQueue.add(jsonObjectRequest);
+                //Para las bitacoras internas...
+                try {
+                    bitacora = new obtenerBitacoraFechaAsyncTask(bitacoraDao).execute().get();
+                    if (bitacora.size() > 0) {
+                        System.out.print("SI Hay Bitacora! \n");
+                        for (Bitacora b : bitacora) {
+                            System.out.print(b.toString() + "\n");
+                            procesarBitacoras(b);
+                        }
+                        new borrarBitacorasAsyncTask(bitacoraDao).execute();
+                    } else {
+                        System.out.print("NO Hay Bitacora! \n");
+                    }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-/*
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-*/
-            simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            calendar=Calendar.getInstance();
-            fechaHoy=simpleDateFormat.format(calendar.getTime());
-            PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO,fechaHoy);
-            if (!shouldContinue) {
-                stopSelf();
-                mTimer.cancel();
-                mTimer.purge();
+    /*
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+    */
+                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                calendar = Calendar.getInstance();
+                fechaHoy = simpleDateFormat.format(calendar.getTime());
+                PreferenceSingleton.getInstance().writePreference(FECHA_INGRESO, fechaHoy);
+                if (!shouldContinue) {
+                    stopSelf();
+                    mTimer.cancel();
+                    mTimer.purge();
+                }
+            } catch (Exception e){
+                Log.e("Sincronizacion", e.getMessage(), e.fillInStackTrace());
             }
         }
     }
