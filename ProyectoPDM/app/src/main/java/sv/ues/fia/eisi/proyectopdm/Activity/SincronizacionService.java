@@ -42,7 +42,7 @@ import static sv.ues.fia.eisi.proyectopdm.Activity.LoginActivity.FECHA_INGRESO;
 public class SincronizacionService extends IntentService {
 
     public static volatile boolean shouldContinue = true;
-    public static final int TIME_SINCRONIZE=10000;
+    public static final int TIME_SINCRONIZE=5000;
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
     private String url="sincronizacion.php?";
@@ -161,13 +161,11 @@ public class SincronizacionService extends IntentService {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-    /*
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-    */
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 calendar = Calendar.getInstance();
                 fechaHoy = simpleDateFormat.format(calendar.getTime());
