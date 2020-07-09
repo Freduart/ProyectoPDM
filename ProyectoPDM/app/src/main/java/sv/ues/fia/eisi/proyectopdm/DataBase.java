@@ -108,7 +108,8 @@ public abstract class DataBase extends RoomDatabase {
     public static synchronized DataBase getInstance(Context context){
         if(instance==null){
             instance= Room.databaseBuilder(context.getApplicationContext(),
-                    DataBase.class,"PDMDataBaseVer2").fallbackToDestructiveMigration().addCallback(roomCallback)
+                    DataBase.class,"PDMDataBaseVer2.s3db").fallbackToDestructiveMigration().addCallback(roomCallback)
+                    .setJournalMode(JournalMode.TRUNCATE)
                     .build();
         }
         return instance;
@@ -184,8 +185,7 @@ public abstract class DataBase extends RoomDatabase {
                         "delete from DetalleEvaluacion where DetalleEvaluacion.carnetAlumnoFK=old.carnetAlumno; " +
                         "end");
             } catch (Exception e) {
-                Log.d("equisde", e.getMessage() + "\n");
-                e.fillInStackTrace();
+                Log.e("dbError", e.getMessage() + "\n",e.fillInStackTrace());
             }
         }
     };

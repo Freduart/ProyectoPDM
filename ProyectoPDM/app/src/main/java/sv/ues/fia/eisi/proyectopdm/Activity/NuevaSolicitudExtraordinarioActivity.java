@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,8 +56,8 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
     private DocenteViewModel docenteVM;
     private EvaluacionViewModel evaluacionVM;
 
-    private int id_usuario, rol_usuario, graficas;
-    private String id_alum, id_eval;
+    private int id_usuario, rol_usuario, graficas, id_eval;
+    private String id_alum;
     private String sMail;
     private String sPass;
 
@@ -145,7 +146,7 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
                 //Extras cuando se llega desde las gráficas a solicitar repetido
                 graficas = extras.getInt(FragmentPastelAprobacion.KEY_IS_ROLE);
                 id_alum = extras.getString(FragmentPastelAprobacion.KEY_ID_ESTUDIANTE);
-                id_eval = extras.getString(FragmentPastelAprobacion.KEY_ID_EVALUACION);
+                id_eval = extras.getInt(FragmentPastelAprobacion.KEY_ID_EVALUACION);
             }
 
             //Inicializando VM para extraer datos para correo de notificación
@@ -185,7 +186,7 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
                 idAlumno.setEnabled(false);
 
                 //Se importa el ID de la Evaluación
-                idEvaluacion.setText(id_eval);
+                idEvaluacion.setText(id_eval+"");
                 //Se deshabilita el ET
                 idEvaluacion.setEnabled(false);
 
@@ -199,8 +200,8 @@ public class NuevaSolicitudExtraordinarioActivity extends AppCompatActivity {
                 motivoSoli.setEnabled(false);
             }
         }catch(Exception e){
-            Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, e.getMessage() + " " +
-                    e.getCause(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(NuevaSolicitudExtraordinarioActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("errorSolExtr", e.getMessage(),e.fillInStackTrace());
         }
     }
 
