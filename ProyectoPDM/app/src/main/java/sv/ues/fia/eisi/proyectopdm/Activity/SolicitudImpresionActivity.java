@@ -460,8 +460,8 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
             connection.setConnectTimeout(15000);
             connection.setRequestMethod("GET");
             String result=connection.getResponseMessage();
+            System.out.print(result);
             connection.disconnect();
-            Toast.makeText(SolicitudImpresionActivity.this,result,Toast.LENGTH_LONG).show();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

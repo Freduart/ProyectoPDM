@@ -284,7 +284,7 @@
     <string name="checkCreacEncImpres">Create Print Manager</string>
     <string name="checkEliminarEncImpres">Delete Print Manager</string>
     <string name="title_activity_maps">Map</string>
-    <string name="ipServer">http://650e2ef5cc3d.ngrok.io/</string>
+    <string name="ipServer">http://e7f235a10f93.ngrok.io/</string>
     <string name="accion_correoEnviado_notif_eval">\\u0020 Students have been notified of Notes\' delivery date</string>
     <string name="fecha_placeholder_eval" translatable="false">No Date</string>
 </resources>

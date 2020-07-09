@@ -81,7 +81,7 @@ public class UploadFileAsyncTask extends AsyncTask<Void,Integer,Void> {
         File sourceFile = new File(sourceFileUri);
         if (!sourceFile.isFile()) {
             progressDialog.dismiss();
-            Toast.makeText(activity, "Source File not exist :" +sourceFileUri , Toast.LENGTH_SHORT).show();
+            System.out.print("Source File not exist :" +sourceFileUri);
         }
         else
         {
@@ -138,7 +138,7 @@ public class UploadFileAsyncTask extends AsyncTask<Void,Integer,Void> {
                         + serverResponseMessage + ": " + serverResponseCode);
                 if(serverResponseCode == 200){
                     String msg = "File Upload Completed.\n\n" + sourceFileUri;
-                    Toast.makeText(activity, "File Upload Complete.", Toast.LENGTH_SHORT).show();
+                    System.out.print(msg);
                 }
                 //close the streams //
                 fileInputStream.close();
@@ -147,12 +147,12 @@ public class UploadFileAsyncTask extends AsyncTask<Void,Integer,Void> {
             } catch (MalformedURLException ex) {
                 progressDialog.dismiss();
                 ex.printStackTrace();
-                Toast.makeText(activity, "MalformedURLException", Toast.LENGTH_SHORT).show();
+                System.out.print("MalformedURLException");
                 Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
             } catch (Exception e) {
                 progressDialog.dismiss();
                 e.printStackTrace();
-                Toast.makeText(activity, "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
+                System.out.print("Got Exception : see logcat ");
                 Log.e("Upload file Exception", "Exception : " + e.getMessage(), e);
             }
         } // End else block
