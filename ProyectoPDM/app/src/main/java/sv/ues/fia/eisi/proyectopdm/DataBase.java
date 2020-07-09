@@ -312,7 +312,7 @@ public abstract class DataBase extends RoomDatabase {
                 //Usuario con rol de encargado de impresiones
                 usuarioDao.insertUser(new Usuario("EURFIA1","eliseo", 4));
                 //Usuario administrador
-                usuarioDao.insertUser(new Usuario("Administrador", "administrador", 5));
+                usuarioDao.insertUser(new Usuario("admin", "admin", 5));
                 //AccesoUsuario para menus de Directores
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,2));
                 accesoUsuarioDao.insertAccesoUsuario(new AccesoUsuario(1,4));

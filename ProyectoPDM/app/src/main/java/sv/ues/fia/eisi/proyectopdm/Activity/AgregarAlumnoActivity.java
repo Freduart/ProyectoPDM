@@ -182,7 +182,7 @@ public class AgregarAlumnoActivity extends AppCompatActivity implements SensorEv
                     try {
                         Alumno alumnoAInsertar = alumnoViewModel.getAlumn(alumno.getCarnetAlumno());
                         if(alumnoAInsertar!=null){
-                            Toast.makeText(AgregarAlumnoActivity.this, "Error, registro duplicado.", Toast.LENGTH_SHORT).show();
+                            String error="Error: Registro duplicado";
                         }else {
                             //Insercion
                             alumnoViewModel.insert(alumno);
