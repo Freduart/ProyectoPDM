@@ -159,13 +159,13 @@ public class SincronizacionService extends IntentService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-/*
+
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-*/
+
             simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             calendar=Calendar.getInstance();
             fechaHoy=simpleDateFormat.format(calendar.getTime());
