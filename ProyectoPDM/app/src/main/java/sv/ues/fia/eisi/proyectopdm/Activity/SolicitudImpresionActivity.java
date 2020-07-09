@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -472,13 +473,16 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
     @SuppressLint("IntentReset")
     public void abrirDocumento(String ruta){
         Toast.makeText(SolicitudImpresionActivity.this,ruta,Toast.LENGTH_LONG).show();
+        System.out.print(ruta);
         File miFile=new File(ruta);
         if(miFile.exists()){
-            Uri uri=Uri.fromFile(miFile);
+            //Uri uri=Uri.fromFile(miFile);
+            Uri uri= FileProvider.getUriForFile(SolicitudImpresionActivity.this,"pdm.paifa.fileprovider",miFile);
             if(ruta.endsWith(".pdf")){
                 Intent intent = new Intent( Intent.ACTION_VIEW );
                 intent.setDataAndType(uri,"application/pdf");
-                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                //intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
                 Intent intent1=Intent.createChooser(intent,"Abrir Con: ");
                 startActivity(intent1);
             }else{
@@ -493,6 +497,7 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 intent.addFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION );
                 startActivity(intent);
             }
+            Toast.makeText(SolicitudImpresionActivity.this, "El Archivo Existe...", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(SolicitudImpresionActivity.this, "El Archivo No Existe...", Toast.LENGTH_SHORT).show();
         }
@@ -505,6 +510,9 @@ public class SolicitudImpresionActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
+            ActivityCompat.requestPermissions(SolicitudImpresionActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_STORAGE_PERMISSION);
             ActivityCompat.requestPermissions(SolicitudImpresionActivity.this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     READ_STORAGE_PERMISSION);

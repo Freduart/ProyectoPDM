@@ -3,7 +3,9 @@ package sv.ues.fia.eisi.proyectopdm.Ws;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.FileUtils;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
